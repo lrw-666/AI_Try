@@ -87,6 +87,63 @@ The user's current video-plugin work should be expanded from edge business logic
 
 The recommended thesis bridge is an applied research direction around long video stream semantic event indexing and agent-based retrieval/question answering. This can connect the advisor's computer vision background, the user's C++ video work, and the user's interest in AI-native agent development without requiring pure algorithm research or heavy mathematical novelty.
 
+## Recent Planning Decisions
+
+As of 2026-05-25, the planning focus has evolved from one fixed thesis title into a broader "video stream + agent" thesis and career topic space.
+
+The important conclusion is that the user should not lock onto a single title too early. The current best strategy is to explore several adjacent video stream + agent topics from June to August 2026, then choose the strongest one for the September 2026 thesis proposal.
+
+The field frontier should be understood in several layers:
+
+- Long video understanding: models and benchmarks are improving, but long context remains expensive and evidence localization is still difficult.
+- Video-RAG: recent work converts video into auxiliary text, events, documents, keyframes, or graph structures before retrieval and reasoning.
+- Multi-agent video understanding: agents are used for task decomposition, retrieval, evidence aggregation, reflection, and anomaly explanation.
+- Online or streaming video understanding: research is moving toward incremental memory, sliding-window reasoning, low-latency understanding, and proactive responses.
+- Video library question answering: systems are expanding from single-video QA toward multi-video retrieval, entity discovery, schema generation, and cross-video search.
+
+For the user's part-time master's background and limited learning time, the feasible research strategy is not to train a new video foundation model or reproduce large-scale benchmark results. The feasible strategy is to build a lightweight, reproducible, system-level method using existing models and tools.
+
+The recommended innovation level is system-method innovation rather than model-parameter innovation:
+
+- Design event schemas for video streams.
+- Combine temporal indexing, keyword retrieval, vector retrieval, and event-type filtering.
+- Build agent toolchains with explicit retrieval, evidence localization, verification, and reporting tools.
+- Return traceable evidence such as timestamps, keyframes, event clips, confidence notes, and source fields.
+- Evaluate with small but controlled datasets using Recall@K, temporal localization error, evidence hit rate, answer accuracy, latency, and cost.
+
+Five thesis topic candidates have been identified:
+
+- Topic A: Semantic event indexing and agent-based retrieval QA for long video streams.
+- Topic B: Incremental event memory and proactive summarization agents for real-time video streams.
+- Topic C: Multimodal entity/event graph construction and agent querying for video libraries.
+- Topic D: Frame-log joint diagnostic agents for video system engineering.
+- Topic E: Lightweight Video-RAG agent event explanation for a vertical scenario such as campus, meeting, teaching, robot first-person view, or equipment operation videos.
+
+The current recommendation is:
+
+- Primary candidate: Topic A, because it is the most balanced across thesis feasibility, job relevance, reproducibility, and limited training requirements.
+- Strong secondary candidate: Topic D, because it is closest to the user's current video-plugin work and can become a strong engineering portfolio project.
+- Frontier enhancement module: Topic B, because online/streaming video understanding is more forward-looking but should be implemented as a simplified low-frequency sampling and sliding-window memory module rather than a full streaming VLM.
+- Optional applied variant: Topic E, if the advisor prefers a clearer application scenario.
+- Lower priority for first proposal: Topic C, because it has strong innovation potential but higher data, schema, and evaluation cost.
+
+The June to September 2026 validation strategy should be:
+
+- June 2026: Build small prototypes for Topic A and Topic D. Topic A should include video input, frame extraction, auxiliary text/event generation, indexing, and simple QA. Topic D should sketch frame-log joint diagnosis using playback logs, push/pull stream state, and visual evidence.
+- July 2026: Read and summarize core papers such as DrVideo, Video-RAG, VideoRAG, VideoStir, LongVideoBench, Video-MME, HM-RAG, RAVEN, and online video understanding papers.
+- August 2026: Build a demonstrable system with video input, event extraction, indexing, agent tool calls, timestamp/keyframe evidence return, and basic evaluation.
+- September 2026: Propose Topic A as the main thesis direction, optionally adding Topic B or Topic D as a distinctive enhancement module.
+
+Important implementation boundaries:
+
+- Avoid training a new video large model.
+- Avoid large-scale dataset construction.
+- Avoid deep SLAM, 3D reconstruction, or robotics control as the thesis core.
+- Avoid making the thesis only a chatbot or shallow API wrapper.
+- Avoid traditional surveillance operations as the main narrative unless it is reframed as video stream intelligence, event indexing, or system diagnostics.
+
+The thesis should be framed as applied computer vision plus AI engineering, not merely software engineering. When discussing with the advisor, emphasize video understanding, temporal evidence localization, multimodal retrieval, event indexing, and evaluation metrics. Agent engineering should be presented as the orchestration layer that makes the vision system usable and explainable.
+
 ## Discussion Style For Future Planning
 
 When analyzing problems in this folder, help the user:
