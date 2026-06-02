@@ -1,0 +1,67 @@
+{
+  "run_date": "2026-05-27",
+  "output_monday": "2026-05-25",
+  "cover_start": "2026-05-18",
+  "cover_end": "2026-05-24",
+  "output_dir": "automation-work\\2026-05-25",
+  "qa_mode": "structural_only",
+  "visual_qa": {
+    "status": "not_completed",
+    "reason": "LibreOffice/soffice unavailable and Word COM automation could not be used reliably in this environment."
+  },
+  "files": [
+    "automation-work\\2026-05-25\\2026-05-25_international-news-weekly.docx",
+    "automation-work\\2026-05-25\\2026-05-25_china-news-weekly.docx",
+    "automation-work\\2026-05-25\\2026-05-25_personal-development-trends-weekly.docx"
+  ],
+  "qa_results": [
+    {
+      "file": "automation-work\\2026-05-25\\2026-05-25_international-news-weekly.docx",
+      "zip_valid": true,
+      "required_parts": {
+        "[Content_Types].xml": true,
+        "_rels/.rels": true,
+        "word/document.xml": true,
+        "word/styles.xml": true,
+        "word/settings.xml": true,
+        "word/_rels/document.xml.rels": true,
+        "docProps/core.xml": true,
+        "docProps/app.xml": true
+      },
+      "paragraph_count_estimate": 83,
+      "qa_mode": "structural_only"
+    },
+    {
+      "file": "automation-work\\2026-05-25\\2026-05-25_china-news-weekly.docx",
+      "zip_valid": true,
+      "required_parts": {
+        "[Content_Types].xml": true,
+        "_rels/.rels": true,
+        "word/document.xml": true,
+        "word/styles.xml": true,
+        "word/settings.xml": true,
+        "word/_rels/document.xml.rels": true,
+        "docProps/core.xml": true,
+        "docProps/app.xml": true
+      },
+      "paragraph_count_estimate": 96,
+      "qa_mode": "structural_only"
+    },
+    {
+      "file": "automation-work\\2026-05-25\\2026-05-25_personal-development-trends-weekly.docx",
+      "zip_valid": true,
+      "required_parts": {
+        "[Content_Types].xml": true,
+        "_rels/.rels": true,
+        "word/document.xml": true,
+        "word/styles.xml": true,
+        "word/settings.xml": true,
+        "word/_rels/document.xml.rels": true,
+        "docProps/core.xml": true,
+        "docProps/app.xml": true
+      },
+      "paragraph_count_estimate": 72,
+      "qa_mode": "structural_only"
+    }
+  ]
+}

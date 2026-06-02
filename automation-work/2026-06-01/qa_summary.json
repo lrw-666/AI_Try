@@ -1,0 +1,65 @@
+{
+  "run_date": "2026-06-01",
+  "output_monday": "2026-06-01",
+  "cover_start": "2026-05-25",
+  "cover_end": "2026-05-31",
+  "output_dir": "C:\\Users\\10746\\Desktop\\专业书籍\\study\\AI_Try\\automation-work\\2026-06-01",
+  "qa_mode": "structural_and_render_attempt",
+  "render_status": "failed",
+  "render_failure_reason": "Documents render_docx.py could not run in this environment because the local Python runtime lacks pdf2image, and no alternate local renderer was detected.",
+  "files": [
+    "C:\\Users\\10746\\Desktop\\专业书籍\\study\\AI_Try\\automation-work\\2026-06-01\\2026-06-01_international-news-weekly.docx",
+    "C:\\Users\\10746\\Desktop\\专业书籍\\study\\AI_Try\\automation-work\\2026-06-01\\2026-06-01_china-news-weekly.docx",
+    "C:\\Users\\10746\\Desktop\\专业书籍\\study\\AI_Try\\automation-work\\2026-06-01\\2026-06-01_personal-development-trends-weekly.docx"
+  ],
+  "qa_results": [
+    {
+      "file": "C:\\Users\\10746\\Desktop\\专业书籍\\study\\AI_Try\\automation-work\\2026-06-01\\2026-06-01_international-news-weekly.docx",
+      "zip_valid": true,
+      "required_parts": {
+        "[Content_Types].xml": true,
+        "_rels/.rels": true,
+        "word/document.xml": true,
+        "word/styles.xml": true,
+        "word/settings.xml": true,
+        "word/_rels/document.xml.rels": true,
+        "docProps/core.xml": true,
+        "docProps/app.xml": true
+      },
+      "paragraph_count_estimate": 76,
+      "qa_mode": "structural_only"
+    },
+    {
+      "file": "C:\\Users\\10746\\Desktop\\专业书籍\\study\\AI_Try\\automation-work\\2026-06-01\\2026-06-01_china-news-weekly.docx",
+      "zip_valid": true,
+      "required_parts": {
+        "[Content_Types].xml": true,
+        "_rels/.rels": true,
+        "word/document.xml": true,
+        "word/styles.xml": true,
+        "word/settings.xml": true,
+        "word/_rels/document.xml.rels": true,
+        "docProps/core.xml": true,
+        "docProps/app.xml": true
+      },
+      "paragraph_count_estimate": 76,
+      "qa_mode": "structural_only"
+    },
+    {
+      "file": "C:\\Users\\10746\\Desktop\\专业书籍\\study\\AI_Try\\automation-work\\2026-06-01\\2026-06-01_personal-development-trends-weekly.docx",
+      "zip_valid": true,
+      "required_parts": {
+        "[Content_Types].xml": true,
+        "_rels/.rels": true,
+        "word/document.xml": true,
+        "word/styles.xml": true,
+        "word/settings.xml": true,
+        "word/_rels/document.xml.rels": true,
+        "docProps/core.xml": true,
+        "docProps/app.xml": true
+      },
+      "paragraph_count_estimate": 78,
+      "qa_mode": "structural_only"
+    }
+  ]
+}
