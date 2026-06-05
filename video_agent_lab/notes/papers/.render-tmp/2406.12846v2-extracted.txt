@@ -1,0 +1,1457 @@
+
+
+===== PAGE 1 =====
+DrVideo: Document Retrieval Based Long Video Understanding
+Ziyu Ma*1,2, Chenhui Gou*2, Hengcan Shi1,2, Bin Sun1, Shutao Li1,
+Hamid Rezatofighi2, Jianfei Cai2
+1 College of Electrical and Information Engineering, Hunan University,
+2 Data Science & AI Department, Faculty of IT, Monash University
+{maziyu, sunbin611, shutao li}@hnu.edu.cn
+{chenhui.gou, hengcan.shi, hamid.rezatofighi, jianfei.cai }@monash.edu
+* Equal contribution
+Abstract
+Most of the existing methods for video understanding pri-
+marily focus on videos only lasting tens of seconds, with
+limited exploration of techniques for handling long videos.
+The increased number of frames in long videos poses two
+main challenges: difficulty in locating key information
+and performing long-range reasoning. Thus, we propose
+DrVideo, a document-retrieval-based system designed for
+long video understanding. Our key idea is to convert the
+long-video understanding problem into a long-document
+understanding task so as to effectively leverage the power
+of large language models. Specifically, DrVideo first trans-
+forms a long video into a coarse text-based long docu-
+ment to initially retrieve key frames and then updates the
+documents with the augmented key frame information. It
+then employs an agent-based iterative loop to continuously
+search for missing information and augment the document
+until sufficient question-related information is gathered for
+making the final predictions in a chain-of-thought manner.
+Extensive experiments on long video benchmarks confirm
+the effectiveness of our method. DrVideo significantly out-
+performs existing LLM-based state-of-the-art methods on
+EgoSchema benchmark (3 minutes), MovieChat-1K bench-
+mark (10 minutes), and the long split of Video-MME bench-
+mark (average of 44 minutes).
+1. Introduction
+Video understanding is a challenging task in computer vi-
+sion, requiring the processing of spatio-temporal informa-
+tion and advanced reasoning abilities. Previous works have
+successfully processed short videos lasting around tens of
+seconds [8, 27, 32, 53, 68, 69]. However, how to deal with
+long video understanding remains unclear. Recent advance-
+ments in large language models (LLMs) [6, 10, 34, 41,
+45, 48, 56] demonstrate strong abilities in language under-
+standing and reasoning across long text sequences. These
+advancements have inspired the development of video-
+language models (Video-LMs) [26, 38, 67, 76] to address
+long video understanding issues.
+Video-LMs typically encode a video as a sequence of
+visual tokens, which are then concatenated with language
+tokens into a long sequence and LLM is then used to un-
+derstand this long sequence. Although Video-LMs improve
+video understanding, they have the following limitations.
+(i) They cannot process an entire video as input to a Video-
+LM (e.g., the visual encoder OpenAI’s CLIP-L-14 outputs
+24×24 tokens for each image, while the max length of
+LLaV A-NeXT-Video [76] is only 8192). (ii) They typically
+perform uniform or random frame sampling at large strides
+to handle long videos without considering the content (e.g.,
+16 for PLLaV A [67] and 6 for IG-VLM [26]), leading to
+potential key information loss. (iii) The simple concatena-
+tion of visual tokens increases the difficulty for the LLM
+to locate question-related (key) visual information within
+the long video sequence, complicating long-range reason-
+ing across the vision token sequences.
+Apart from the studies of encoding a video as a sequence
+of visual tokens, another line of research converts raw
+videos into captions and then utilities the long-range rea-
+soning abilities of LLMs to predict the final answer. A pio-
+neering work - LLoVi [73] uses a short-term video model
+[77] in conjunction with an LLM [40] to solve the long
+video understanding task. Given a long video, LLoVi first
+divides it into multiple short clips and converts them into
+short textual descriptions. Afterward, these short textual
+descriptions are summarized by the LLM, and the summary
+is finally used by LLoVi to answer the given question. In-
+spired by LLoVi, VideoAgent [61] designs an agent-based
+system to further leverage the reasoning abilities of LLMs
+and locate question-related video clips or images. Initially,
+arXiv:2406.12846v2  [cs.CV]  24 Nov 2024
+
+
+===== PAGE 2 =====
+…Frame 1
+Frame 89
+Frame 90
+Document (Frames) Retrieval Module
+Question
+Takingintoaccountalltheactionsperformedbyc,whatcanyoudeduceabouttheprimaryobjectiveandfocuswithinthevideocontent?
+Video-Document ConversionModule
+Frame4
+Frame24
+DocumentAugmentationTopKframes
+……Updated Video Document
+Potential keyframesUpdatedVideo Document
+Question
+Ques-tion
+Frame 2
+Multi-Stage Agent Interaction Loop
+Final Video Document
+Answer
+RawVideo
+Initial Video Document
+Figure 1. Overview of our DrVideo framework. It comprises five components: a video-document conversion module, a retrieval module,
+a document augmentation module, a multi-stage agent interaction loop and an answering module.
+VideoAgent samples only a minimal number of frames from
+the video ( i.e., 5 frames), converting them into textual de-
+scriptions as input for the LLM. Then, through continu-
+ous feedback and interaction with the LLM [1], VLM [77],
+and CLIP [51], it gradually finds question-related frames in
+a coarse-to-fine manner via image-text similarity. Finally,
+VideoAgent answers the question based on these question-
+related frames. Despite these LLM-based methods over-
+coming the challenge of performing long-range reasoning
+and achieving promising results, they still suffer from the
+following problems.
+• These methods struggle to accurately identify question-
+related frames. For instance, VideoAgent [61] leverages
+the LLM to infer missing question-related information
+based on prior knowledge and current key frame infor-
+mation, then uses CLIP’s image-text similarity to select
+the most likely frames. However, such a coarse-to-fine
+method lacks a holistic grasp of video content and overly
+depends on the LLM’s priors, often failing in locating
+question-relate frames, particularly in long videos.
+• These methods convert videos into captions, addressing
+long-range reasoning but overlooking critical informa-
+tion loss. Specifically, even if question-related frames
+are identified, the generated captions cannot cover all the
+essential information in the key frames. For example,
+the caption “a woman is looking in the mirror” does
+not contribute to answering the question “what is the
+woman wearing when standing in front of the mirror in
+the video”. In this case, LLM can only make an aimless
+and biased surmise to answer the question.
+To solve the above problem, we turn to how human un-
+derstands a long video. In particular, a human needs to gain
+a general understanding of the video, identifying events
+across segments. Then, the human locates question-related
+segments, examines them in detail, and answers the ques-
+tion based on the extracted information. Inspired by this,
+in this paper, we propose DrVideo, a document retrieval-
+based system for long video understanding that progres-
+sively finds key frames and generates a question-related
+augmented document for LLMs to make confident predic-
+tions. Our key idea is to convert long video understanding
+into long document understanding and leverage the impres-
+sive capabilities of LLMs in key information location [46]
+and long-range reasoning [12] on various NLP tasks.
+Specifically, DrVideo transforms raw long videos into
+long documents using a pretrained frame/clip-level visual
+captioner (e.g., LLaV A-NeXT [33]) to make the LLM have
+a holistic grasp of video content. Different from VideoA-
+gent [61], which identifies key frames via image-text simi-
+larity without information augmentation, DrVideo proposes
+a retrieval module and a multi-stage agent interaction loop
+that dynamically finds the potential missing information
+through sequential steps of reasoning and then interacts
+with a document augmentation module to request augmen-
+tation of the information within language space. Once suffi-
+cient question-related information is gathered, it feeds into
+the answering module to get the final prediction.
+DrVideo achieves significant performance gains (3.8%
+on EgoSchema subset [36], 8.3% on MovieChat-1K global
+mode, 24.8% on MovieChat-1K breakpoint mode [49], and
+6.3% on the long split of Video-MME [15]) over the ex-
+isting LLM-based state-of-the-art methods [14, 37, 61, 73]
+across different long video benchmarks, from 3 minutes to
+10 minutes and longer than 1 hour. Surprisingly, combin-
+ing the subtitles on the long split of Video-MME bench-
+mark, DrVideo obtains 71.7% accuracy, outperforming
+many heavily-engineered large-scale proprietary models
+(e.g., Gemini 1.5 Flash [55], GPT-4o mini [44], and GPT-
+4V [42]). This highlights the great potential of DrVideo.
+Moreover, DrVideo is a training-free framework and is
+
+
+===== PAGE 3 =====
+researcher-friendly, as our results can be replicated on an
+RTX 4090 with a reasonable number of GPT accesses.
+The contribution of this work can be summarized as:
+• We propose DrVideo, the first document-retrieval-based
+system designed for the long video understanding task by
+converting it into a long-document retrieval and under-
+standing task to effectively leverage the power of large
+language models.
+• Different from previous works, we propose a retrieval
+module and a new multi-stage agent interaction loop that
+dynamically finds the potential missing information and
+augments these information within language space.
+• DrVideo outperforms the existing LLM-based state-of-
+the-art methods across different long video benchmarks
+(i.e., EgoSchema [36], MovieChat-1K [49], and the long
+split of Video-MME [15]) by a margin.
+2. Related Work
+Long Video Understanding. Modeling long videos, which
+are several minutes or more in length, generally requires
+advanced temporal modeling, resulting in complex model
+designs. LF-VILA [52] introduces a Temporal Window At-
+tention (HTW A) mechanism to capture long-range depen-
+dencies in long videos. MeMViT [66] and MovieChat [49]
+employ a memory-based design to save question-related in-
+formation from previous video segments. Some other ap-
+proaches employ space-time graphs [22, 62] or relational
+space-time modules [70] to capture spatio-temporal depen-
+dencies from the raw long videos. Recently, S4ND [39],
+ViS4mer [23], and S5 [58] have used Structured State-
+Space Sequence (S4) [19] layers to capture long-range de-
+pendencies in videos. Different from these methods, our
+DrVideo does not design a complex module to perform
+long video understanding. Instead, we develop a document
+retrieval-based system with LLM for zero-shot long video
+understanding.
+LLMs for Video Understanding. The recent rise of
+LLMs [72] and VideoChat [30] align the visual features
+extracted by pretrained visual models to LLMs and apply
+them to video understanding. Video ChatCaptioner [7] and
+ChatVideo [57] utilize LLMs to represent videos and en-
+gage users through dialogues, respectively. VidIL [64] ap-
+plies the image-level models to video understanding tasks
+via few-shot learning. In addition to short-term video un-
+derstanding, recent studies [4, 11, 32] have explored LLMs
+for long-range video modeling. For instance, GPT-4 is ap-
+plied in various long-range video modeling tasks in [32],
+though quantitative evaluation is limited. Meanwhile, the
+research in [11] focuses on movie datasets with minimal vi-
+sual analysis [36], relying largely on speech and subtitles.
+In contrast, DrVideo focuses on vision modality in multiple
+benchmarks.
+LLM Agents. In parallel, the computer vision community
+has started exploring the use of LLMs as agents in vari-
+ous vision tasks such as GUI understanding and robot nav-
+igation [5, 13, 21, 53]. In the realm of long video com-
+prehension, initial efforts have employed an agent-like ap-
+proach, where LLMs interact with external tools or inte-
+grate additional functionalities [14, 17, 53, 61, 71]. In con-
+trast to these approaches, our method, DrVideo, reconcep-
+tualizes long video understanding as a process of document
+retrieval, augmentation, and understanding, to leverage the
+strong capability of LLMs.
+3. Methodology
+In this section, we detail our proposed document retrieval-
+based system for long video understanding. As illustrated
+in Figure 1, given a long video and a question about the
+video, DrVideo first translates the long video into a long
+document, referred to as the initial video document. Then,
+the retrieval module identifies the top K key frames by cal-
+culating the similarity between the question and the initial
+video document. The document augmentation module en-
+riches the information of these key frames and adds it to
+the initial video document, creating a new video document
+(named the updated video document), which is used as the
+starting point for the subsequent multi-stage agent interac-
+tion loop.
+The loop contains two distinct agents: the planning
+agent and the interaction agent. The planning agent judges
+whether the updated video document is sufficient for an-
+swering the question. If not, the updated video document
+is fed into the interaction agent to dynamically find missing
+key frames. The interaction agent interacts with the doc-
+ument augmentation module to request the required infor-
+mation of these key frames. The output of the document
+augmentation module is added to the current document to
+obtain the latest updated video document. The new video
+document is then sent to the planning agent again to further
+judge whether the current information is sufficient. This
+searching and interaction loop continues until the planning
+agent considers the current information sufficient for an-
+swering the question or the maximum iteration is reached.
+After the loop ends, the final video document and the re-
+lated question are given to the answering module to get the
+final prediction.
+3.1. Video-Document Conversion Module
+By translating each single video frame Vt (or a short video
+clip) into a short description SVt, we convert an input long
+video into the initial video document Docinit:
+Docinit = {{1, SV1 }, {2, SV2 }, . . . ,{T, SVT }} (1)
+where T is the length of the video. Specifically, SVt is gen-
+erated by a large vision-language captioning model ϕvlm
+
+
+===== PAGE 4 =====
+(e.g., LLaV A-NeXT [33]) ,i.e., SVt = ϕvlm(P, Vt), where
+P is the prompt for requesting a short description about the
+image, e.g., describe the picture in no more than 50 words.
+The captioning model used in DrVideo can be replaced by
+other captioning models ( e.g., LaViLa [77], BLIP-2 [29]).
+The experimental results with different captioning models
+can be found in Table 6.
+3.2. Document (Frames) Retrieval Module
+After obtaining Docinit, we introduce a document retrieval
+module to identify the top question-related frames by cal-
+culating the similarity between the question and the whole
+document. Specifically, we use the OpenAI embedding
+model ϕemb [43] to obtain the vector representation of the
+initial document, i.e., Edoc = ϕemb(Docinit). Given a spe-
+cific retrieval text RT , i.e., the question Q, the retrieval
+module first computes the embedding ERT = ϕemb(RT ),
+and then retrieves the top K frames based on the cosine
+similarity between ERT and Edoc:
+topk doc = arg top K
+t
+cos( ERT , Edoc t ) (2)
+where Edoct is the embedding of the t-th description SVt.
+3.3. Document Augmentation Module
+For each t′ ∈ topk doc, we use the LLaV A-NeXT
+model [33] with different prompts AP (augmented
+prompts) to generate a detailed description LVt′ , i.e.,
+LVt′ = ϕvlm(AP t′, Vt′). The initial AP t′ is a general
+prompt: If there are factual errors in the question, provide
+a precise description of the image; if not, proceed to an-
+swer the question: {Q}. The updated video document AD
+becomes
+AD =
+((
+{t, SVt, LV ′t } if t = t′
+{t, SVt} otherwise
+t = 1, . . . , T
+)
+. (3)
+Note that K is significantly smaller than the total number
+of frames ( e.g., K = 5 compared to T = 90), so the addi-
+tional descriptions will not substantially increase the overall
+length of the document.
+3.4. Multi-Stage Agent Interaction Loop
+Apart from the retrieved key frames, we further introduce a
+multi-stage agent interaction loop to dynamically find other
+potential key frames and augment them with different types
+of information for the final answer. We employ two dis-
+tinct agents: planning and interaction agents, each tailored
+for a specific task. Both agents utilize the same LLM, i.e.,
+GPT-3.5, but are given different prompts and reason varying
+types of information. The detail is shown in Fig. 2
+Planning Agent. Given the question Q and the updated
+video document ADi (where i denotes the iteration step),
+along with the analysis history H from all previous steps
+(initialized as empty {}), the planning agent first determines
+UpdatedVideo Document
+FinalVideo Document
+UpdateAddHistory 
+Question
+Question
+UpdatedVideoDocument
+Frame4Frame24Frame59
+…
+LMMs
+Frame4:Theimageshowsapersonwashingdishesinakitchensink.……ofplacingadishsinkandthepresenceFrame24:Theimageshowsapersoninakitchen,holdingabottleofdishsoapandpouringitintoasink…
+Frame59:Theimageshowsakitchenscenewithvariousitemsonthecountertop.Thereisaperson...…DocumentAugmentationModule
+ℋ
+Figure 2. Illustration of the multi-stage agent interaction loop
+and answering module. There are two agents in the multi-stage
+agent interaction loop: a planning agent to plan the next step and
+an interaction agent to dynamically find missing information and
+interact with the document augmentation module.
+whether the updated video document is sufficient to gener-
+ate a confident answer. If the information is sufficient, the
+process moves to the answering module to get the final an-
+swer. If not, the agent provides an analysis of why the up-
+dated video document ADi is inadequate. The agent then
+updates Hi with its analysis and passes the updated Hi to
+the interaction agent.
+Interaction Agent. Given the current video document
+ADi and the updated Hi, the interaction agent finds N
+frames with missing details crucial for answering Q:
+∀n ∈ N, n ∈ T, n /∈ topk doc , and N < K . (4)
+In addition to identifying the missing N key frames, the
+interaction agent also determines the augmented informa-
+tion type for each n ∈ N. To achieve it, we give a task-
+specific prompt to the interaction agent, i.e., Your task is
+to determine which frame needs which type of information
+and can answer this question accurately, reasonably, and
+without contradiction. The two types of information are as
+follows: A: Given an image, get a detailed description of
+the image (image caption, just like what is shown in this
+image?) B: Given an image, get a response to the above
+question (visual question answering) . After obtaining N
+frames along with their required information type, the agent
+interacts with the document augmentation module to enrich
+the information of these frames to update the current video
+document for the next step.
+3.5. Answering Module
+Given the final video document ADf inal, we employ an-
+other agent to provide a prediction using a chain-of-thought
+
+
+===== PAGE 5 =====
+Method (M)LLM Subset Fullset
+MoReVQA [37] PaLM-2 - 51.7
+Vamos [60] GPT-4 51.2 48.3
+ProViQ [9] GPT-3.5 57.1 -
+LLoVi [73] GPT-3.5 57.6 50.3
+IG-VLM [26] GPT-4V 59.8 -
+VideoAgent [61] GPT-4 60.2 54.1
+MVU [47] Mistral-13B 60.3 37.6
+LLoVi [73] GPT-4 61.2 -
+VideoAgent [14] GPT-4 62.8 60.2
+DrVideo (ours) GPT-3.5 62.6 -
+DrVideo (ours) GPT-4 66.4 61.0
+Table 1. Results on EgoSchema compared to existing LLM-based
+state-of-the-art methods.
+(CoT) approach [65]. The answering module outputs the
+corresponding answer, the confidence score, and the reason-
+ing behind the answer. Besides improving prediction accu-
+racy, the CoT approach allows us to trace inference steps,
+ensuring transparency and explainability in the decision-
+making process.
+4. Experiments
+In this section, we first introduce the datasets and imple-
+mentation details and then present the results and ablations
+of our proposed DrVideo.
+4.1. Datasets and Metrics
+In our experiments, we evaluate our DrVideo using three
+well-established datasets, emphasizing its zero-shot long
+video understanding capabilities.
+EgoSchema. EgoSchema dataset [36] consists of 5000
+multiple-choice questions sourced from 5000 three-minute
+egocentric videos. This dataset only has a subset of 500
+questions with publicly accessible labels, while the full set
+is evaluated on the leaderboard.
+MovieChat-1K. MovieChat-1K [49] is a longer video
+understanding benchmark, which contains 1000 videos
+from movies and TV shows, each video lasting approxi-
+mately 10 minutes. This dataset has two modes: global
+mode and breakpoint mode. The global mode refers to ana-
+lyzing the entire video to understand its overall content and
+context, while the breakpoint mode focuses on analyzing
+specific frames or scenes.
+Video-MME. Video-MME [15] is a recently proposed
+benchmark for comprehensive video analysis evaluation.
+We evaluate DrVideo on the ”long-term videos” split of this
+dataset (long split), where video lengths vary from 30 to 60
+minutes, with an average duration of 44 minutes.
+Since EgoSchema and Video-MME are multi-choice
+tasks, we use accuracy as the evaluation metric for both
+Method Global Breakpoint
+Acc. Score Acc. Score
+Open-Source MLLM
+Video LLaMA [74] 51.7 2.72 39.1 2.11
+Video Chat [30] 57.8 3.08 46.1 2.32
+Video-ChatGPT [35] 47.6 2.89 48.0 2.43
+MovieChat [49] 68.3 3.15 48.3 2.46
+MovieChat+ [50] 71.2 3.51 49.6 2.62
+Based on Open-source Captioners and Proprietary LLMs
+MM-VID [32] 58.6 2.86 10.4 0.56
+LLoVi [73] 58.3 2.87 17.8 1.03
+VideoAgent* [61] 65.4* 3.12* 31.6* 2.05*
+Sullam Jeoung, et al [24]84.8 - - -
+DrVideo (ours) 93.1 4.41 56.4 2.75
+Table 2. Performance comparison on the MoiveChat-1K [49]
+benchmark against state-of-the-art methods. * represents re-
+implemented results, implementation details refer to appendix.
+datasets. The MovieChat-1K benchmark focuses on open-
+ended questions, We use GPT-assisted evaluation to assess
+both the accuracy (true/false) and quality (score 0-5) of the
+models. We select Gemini-Pro [54] as the evaluation assis-
+tant and use the same prompt [38] to conduct a fair compar-
+ison.
+4.2. Implementation Details
+For EgoSchema [36] dataset, we choose LaViLa [77] as the
+captioning model to convert videos into documents. Note
+that the training data of our LaViLa model does not in-
+clude EgoSchema videos, which is the same as LLoVi [73].
+For MovieChat-1K and Video-MME benchmarks, LLaV A-
+NeXT [33] is used as our captioning model to generate
+brief descriptions for each frame. We preprocess videos
+by simply sampling them at 0.5 FPS for EgoSchema [36]
+and MovieChat-1K [49] and 0.2 FPS for Video-MME [15].
+LLaV A-NeXT [33] is chosen to augment key frames in
+both datasets via different prompts. In the comparison
+experiments, GPT-4 [1], i.e., gpt-4-1106-preview, is used
+as the agent to evaluate the performance of our DrVideo
+on EgoSchema and MovieChat-1K. DeepSeek [20], i.e.,
+DeepSeek V2.5, is used as the agent to evaluate the per-
+formance on Video-MME. For the ablation study, we use
+GPT-3.5 [40], i.e., gpt-3.5-turbo-1106, to evaluate the ef-
+fectiveness of our DrVideo due to the API cost.
+4.3. Main Results
+Comparative results on EgoSchema. Table 1 com-
+pares our DrVideo with existing LLM-based state-of-the-
+art methods [9, 14, 26, 37, 47, 60, 61, 73] on EgoSchema
+benchmark [36]. Specifically, compared with LLoVi [73]
+and VideoAgent [61] that leverage the same visual captioner
+(LaViLa [77]) and LLM (GPT-4), DrVideo significantly
+
+
+===== PAGE 6 =====
+Method Frames w/o Subs w Subs
+Proprietary MLLM
+Claude 3.5 Sonnet [2] 20 51.2 54.7
+GPT-4V [42] 10 53.5 56.9
+GPT-4o mini [44] 250 58.6 63.4
+Gemini 1.5 Flash [55] 0.5 FPS 61.1 68.8
+GPT-4o [44] 384 65.3 72.1
+Gemini 1.5 Pro [55] 0.5 FPS 67.4 77.4
+Open-Source MLLM
+LongV A [75] 128 46.2 47.6
+VITA-8x7B [16] 32 48.6 50.9
+LLaV A-OneVision-72B [28] 32 60.0 62.4
+Qwen2-VL-72B [3] 768 62.2 74.3
+Based on Open-source Captioners and Proprietary LLMs
+VideoAgent* [61] 7.6 40.2* 44.4*
+LLoVi* [73] 0.2 FPS 45.4* 67.7*
+DrVideo (ours) 0.2 FPS 51.7 71.7
+-only subs 0.2 FPS - 68.5
+Table 3. Video-MME long split results. w/o subs represents the
+model without any subtitles. w subs represents that the subtitles
+corresponding to the sampled frames are both fed into the LLM
+to evaluate the performance. Our DrVideo outperforms a strong
+proprietary MLLM (Claude 3.5 Sonnet) and some open-source
+MLLMs (e.g., VITA-8x7B). * represents re-implemented results,
+implementation details refer to appendix.
+outperforms these methods by 5.2% and 6.2% respec-
+tively. Compared with VideoAgent [14] which uses video-
+specific models (ViCLIP from InternVid [63] and Video-
+LLaV A [31]), DrVideo still performs better and achieves
+3.6% higher accuracy on the subset evaluation. Moreover,
+DrVideo significantly outperforms IG-VLM [26] by 6.6%,
+which uses strong MLLM, i.e., GPT-4V . These results con-
+firm our idea of converting the long-video understanding
+task into a long-document understanding task is feasible and
+our DrVideo can find the question-related key frames more
+accurately.
+Comparative results on longer video benchmarks. To
+further emphasize the advantage of our method on longer
+videos, we evaluate our DrVideo on the other two video
+benchmarks, i.e., MoiveChat-1K (10 minutes) [49], and the
+long split of Video-MME (average 44 minutes) [15]. Ta-
+ble 2 presents the comparative results of our DrVideo and
+the current state-of-the-art methods [30, 38, 49, 73, 74] on
+the MovieChat-1K benchmark. Table 3 shows the com-
+parative results of our DrVideo on the Video-MME bench-
+mark, with comparisons against three types of methods:
+proprietary MLLMs [2, 42, 44, 55], open-source MLLMs
+[3, 16, 28, 75], and methods based on open-source caption-
+ers and proprietary LLMs [61, 73].
+Compared to methods like LLoVi [73] and VideoA-
+gent [61] that are based on open-source captioners ( e.g.,
+RM MSAIL CoT Acc.(%)
+✓ ✓ ✓ 62.6
+✓ ✓ ✗ 62.2
+✓ ✗ ✓ 60.6
+✗ ✓ ✓ 59.4
+✗ ✗ ✓ 57.4
+Table 4. Ablation results on different combinations of the retrieval
+module (RM), the multi-stage agent interaction loop (MSAIL),
+and the CoT on EgoSchema.
+LLaV A-NeXT [33]) and proprietary LLMs ( e.g., GPT-
+4 [1]), DrVideo achieves a 8.3% improvement in global
+mode and a 24.8% improvement in breakpoint mode on the
+MovieChat-1K benchmark in Table 2. It also achieves at
+least 6.3% improvement under the w/o subtitle setting on
+the Video-MME benchmark in Table 3. This indicates that
+DrVideo can accurately identify question-related frames
+and avoid critical information loss through augmentation,
+highlighting the potential of document retrieval methods for
+processing longer videos. Compared to proprietary MLLMs
+and open-source MLLMs, DrVideo outperforms Claude 3.5
+Sonnet [2] by 0.5% and some open-source MLLMs ( e.g.,
+VITA-8x7B [16]) under the w/o subtitle setting on Video-
+MME benchmark. It also achieves a 21.9% improvement in
+global mode and a 6.8% improvement in breakpoint mode
+on MovieChat-1K benchmark. Moreover, combining the
+subtitle on the Video-MME benchmark, DrVideo achieves
+71.7% accuracy and outperforms many heavily-engineered
+large-scale proprietary models (e.g., Gemini 1.5 Flash [55],
+GPT-4o mini [44], and GPT-4V [42]). To better under-
+stand this significant improvement, we conduct an experi-
+ment where only the subtitle, question and options are input
+into the LLM ( i.e., DeepSeek [20]) to predict the answer
+and the accuracy is 68.5%. This suggests: (i) subtitles con-
+tain extensive question-related information, playing a cru-
+cial role in understanding long videos; (ii) compared with
+LLoVi and VideoAgent, DrVideo enhances visual informa-
+tion via document retrieval and augmentation, effectively
+integrating subtitles and resulting in a 3.2% improvement.
+4.4. Ablation Studies
+Unless otherwise specified, we use GPT-3.5 as the default
+setting in the below experiments on EgoSchema subset [36].
+Effects of different components of DrVideo. We conduct
+experiments with different combinations of the individual
+components in DrVideo, including the retrieval module, the
+multi-stage agent interaction loop, and the CoT used in the
+answering module. The results are presented in Table 4.
+We can see that: (i) without the retrieval module and the
+agent loop, the performance of our DrVideo is similar to
+LLoVi [73]; (ii) By adding the retrieval module and then
+
+
+===== PAGE 7 =====
+VQA Caption Acc. (%)
+✓ ✓ 62.6
+× ✓ 60.4
+✓ × 61.8
+(a) Performance with different
+types of information
+Top-K Acc. (%)
+5 62.6
+10 61.4
+20 60.6
+(b) Performance with different Top-K
+frames
+Table 5. Ablation results with different settings on EgoSchema.
+1 2 3 4
+Number of Rounds
+55
+60
+65Accuracy (%)
+53.8
+58.6
+60.2 59.8
+64.7
+66.4 65.8
+64.2
+DrVideo
+VideoAgent
+Figure 3. Performance of different rounds with DrVideo and
+VideoAgent [61] on EgoSchema. To align with VideoAgent, GPT-
+4, i.e., gpt-4-turbo-1106-preview, is used as the LLM agents.
+the agent loop, the performance of DrVideo improves from
+57.4% to 60.6% and then to 62.6%. This demonstrates that
+the retrieval module can identify key frames via measuring
+semantic similarity, while the agent loop can locate addi-
+tional key frames through contextual inference; (iii) the ad-
+ditional CoT contributes to the accuracy improvement from
+62.2% to 62.6%, demonstrating its effectiveness.
+Effects of different types of augment information. To
+better enhance the required information for each potential
+key frame, we define two types of augment information,
+namely VQA (question-related information) and caption
+(general detailed information). Table 5a presents the per-
+formance of DrVideo with different types of information.
+We can see that when only one type of information (VQA
+or caption) is used for augmentation, the model’s perfor-
+mance declines. This suggests the necessity of adaptively
+augmenting different types of information for each poten-
+tial key frame.
+Effects of different initial top K key frames. By default,
+the number of the initial key frames is set as K = 5 . Intu-
+itively, more frames should lead to better performance at the
+cost of increasing the complexity. However, our ablation in
+Table 5b shows an opposite trend, i.e., more key frames re-
+sulting in worse performance. This suggests that enhancing
+more frames is not necessarily beneficial, as it can introduce
+a large amount of noisy and irrelevant information that in-
+terferes with the LLM’s judgment.
+Captioning Model Type Acc.(%)
+LaViLa [77] Clip-based 62.6
+LLaV A-NeXT [33] Frame-based 61.2
+BLIP-2 [29] Frame-based 59.6
+Table 6. Performance of different VLMs on EgoSchema.
+LLMs Type Size Acc.(%)
+Mistral-8x7B [25]Open-Source 8x7B 47.6
+DeepSeek [20] Proprietary N/A 61.2
+GPT-3.5 [40] Proprietary N/A 62.6
+GPT-4 [1] Proprietary N/A 66.4
+Table 7. Performance of different LLMs on EgoSchema.
+Effects of iterative rounds. We also examined the im-
+pact of the iterative rounds I on model performance. Fig.
+3 shows the performance of different iterative rounds with
+DrVideo and VideoAgent [61]. We have the following ob-
+servations. (i) DrVideo consistently outperforms VideoA-
+gent, reaching the peak performance at I = 2 , while
+VideoAgent peaks at I = 3 . This indicates that DrVideo
+can locate the information needed to answer questions in
+fewer interactions and with higher quality, underscoring the
+superiority of our document retrieval-based framework. (ii)
+When the number of interactions exceeds two, DrVideo’s
+performance declines. This is likely due to more noisy and
+irrelevant information being introduced into the LLM with
+the increase of the iterations. This further confirms that ex-
+cessive information is not necessarily beneficial.
+Effects of different foundation models. DrVideo incorpo-
+rates two types of foundational models — large language
+model (LLM), and visual language model (VLM), where
+VLM is used as the frame captioner while LLM is used
+as the planning agent, the interaction agent, and the an-
+swering agent. To assess the impact of the captions pro-
+duced by different VLMs, we examine three state-of-the-art
+VLMs: frame-based BLIP-2 [29], LLaV A-NeXT [33], and
+clip-based LaViLa [77], as presented in Table 6. We observe
+that LaViLa achieves the best performance, while BLIP-2
+is the worst. It indicates the superiority of the clip-based
+model which can capture motion information in videos and
+is more suited for video understanding.
+To evaluate the effectiveness of DrVideo with differ-
+ent LLMs, Table 7 shows the results of DrVideo using
+open-source LLM (Mistral-8x7B [25]) or Proprietary LLM
+(DeepSeek [20], GPT-3.5 [40], or GPT-4 [1]) as the plan-
+ning, interaction and answering agents. From the results,
+we can see that: (i) different LLMs in DrVideo exhibit
+significant performance gaps and the proprietary LLM sig-
+nificantly outperforms the open-source LLM, indicating
+DrVideo’s dependency on the choice of LLM; (ii) as the
+LLM’s capability increases, the performance of DrVideo
+
+
+===== PAGE 8 =====
+Updated Video Document
+Final Video Document
+Question: By analyzing c's activities in this video, determine their overall focus or intention, and describe the progression of tasks leading to its fulfillment.A. C's overall focus or intention in this video is to set up their work station and start working on their computer.B.The central objective in this video, c's overall focus or intention, is to engage in conversation with the person.C.C's overall focus or intention in this video is to eat the wrapper.D. C's overall focus or primary intention in this specific video content is to effectively play the guitarE.The primary objective and intention in this particular c's video is to demonstrate how to effectively clean the cloth.……Frame 1:#O A woman X holds the penFrame 2:#O person X checks a card.Frame 3:#O person A opens the cardFrame 88:#C C picks the laptopFrame 89:#C C presses the keyboardFrame 90:#C C touches the mouse…Document(Frames)RetrievalModule DocumentAugmentation
+Frame15:Ontheleftsideofthedesk,thereisapersonsittingandusingacomputerwithakeyboardandmouse….
+Frame86:Intheimage,thereisapersonsittingatadeskwithvariousitemsaround….…
+Initial Video Document
+Video-Document Conversion
+PlanningAgentOutput:TheprovidedinformationisinsufficienttoaccuratelydeterminetheoverallfocusorintentionofcharacterCanddescribetheprogressionoftasksleadingtoitsfulfillment.AdditionaldescriptionsofframesinvolvingcharacterCareneededtoprovideacomprehensiveanalysisInteractionAgentDocumentAugmentation
+Frame4:Apersonsittingatadeskwithacomputersetup.Thepersonappearstobeusingthecomputer,asindicatedbytheirhandonthemouse.….
+Frame19:apersonsittingatadeskwithacomputersetup,whichincludesamonitor,keyboard…
+… Updated Video Document
+PlanningAgent
+Output:TheprovidedinformationissufficienttodeterminetheoverallfocusandintentionofcharacterC。TheprogressionoftasksleadingtoitsfulfillmentinvolvesCengaginginvariousactivitiesrelatedtooperatingandsettingupelectronicdevices,suchasusingalaptop,checkingthecomputer,connectingcables,andhandlingelectronic.ThedescriptionsprovideacomprehensiveanalysisofC'sactionsandfocusinthevideo
+AnsweringModule"final_answer":"A","confidence":"3","explanation":"C'soverallfocusorintentioninthisvideoistosetuptheirworkstationandstartworkingontheircomputer,asevidencedbytheprogressionoftasksinvolvingusingthelaptop,checkingthecomputer,andoperatingthekeyboard.
+Frame46:ThepersonappearstobeengagedinsomeformofcraftorDIYproject,asevidencedbythepresenceofasmall….
+Frame14:Therearealsosomeelectronicdevicesandcablesvisible,suggestingaworkspaceorahome.….
+Figure 4. Case study on an instance from EgoSchema. DrVideo accurately identifies key frames and chooses the correct answer.
+improves, demonstrating the great potential of DrVideo. It’s
+worth noting that our main contribution is the introduction
+of a framework for translating the long video understanding
+into a document retrieval and understanding task to effec-
+tively leverage the power of large language models, rather
+than the employment of any specific models. Our DrVideo
+can be further improved by combining with better LLM and
+VLM models (e.g., tarsier [59]).
+Case study. Here we give a detailed example from
+EgoSchema [36] in Fig. 4 to qualitatively demonstrate the
+capability of our DrVideo. Specifically, the question is to
+determine the overall focus or intention and describe the
+progression of tasks leading to its fulfillment. DrVideo first
+converts the raw video into an initial video document, which
+is then processed by the frame retrieval module to obtain
+key frames (frames 15, 46, 61, 84, and 86) and is aug-
+mented with detailed key frame descriptions. The updated
+video document is then fed into the planning agent to as-
+sess if sufficient information is available for answering,i.e.,
+the provided information is sufficient to infer character C’s
+main focus or intent. This updated document, along with
+the rationale, is input to the interaction agent to identify the
+additional key frames (frames 4, 5, 6, 14, and 19 here). Af-
+ter further augmentation, the updated document is sent back
+to the planning agent, for which the agent confirms its suf-
+ficiency. Finally, the answering module takes in the final
+video document and predicts the correct answer.
+5. Conclusion
+We have proposed DrVideo, a document retrieval-based
+system for long video understanding. Different from previ-
+ous LLM-based methods, DrVideo proposes to adapt long-
+video understanding to long-document understanding and
+searches for missing information via document retrieval
+and multi-stage agent loop. Extensive comparative experi-
+ments and ablation studies on the three challenging datasets,
+i.e., EgoSchema, MovieChat-1K, and Video-MME, demon-
+strate the effectiveness of DrVideo. We believe our work
+
+
+===== PAGE 9 =====
+can serve as a strong baseline to stimulate further develop-
+ments on the topic of long video understanding.
+6. Limitation
+Although Drvideo achieves impressive results on different
+long video benchmarks, it has several limitations. (i) The
+longest video DrVideo can handle depends on the maximum
+token length of the LLM, which is the bottleneck for much
+longer videos than the existing benchmarks, e.g., 10 hours.
+(ii) It has space for further improvement on how to generate
+sufficient information while minimizing irrelevant informa-
+tion in the video document.
+
+
+===== PAGE 10 =====
+DrVideo: Document Retrieval Based Long Video Understanding
+Supplementary Material
+7. More Implementation Details
+Experiments Compute Resources. All experiments are
+conducted on single NVIDIA RTX 4090 GPU. The minimal
+GPU memory requirement is 24GB. We set the temperature
+to 0 for all experiments using GPT-3.5 [40], GPT-4 [1], and
+DeepSeek [20].
+Prompt Details. We provide detailed prompts for all
+agents (planning agent, interaction agent, and answering
+agent) in the EgoSchema benchmark [36]. Planing agent
+is to determine whether the video captions are sufficient
+for answering the question. Below is the planning agent
+prompt:
+User
+You are given some language descriptions of a first-
+person view video along with a question about the
+video.
+1.The video is 3 minutes long, containing a total of
+90 frames.
+2. Each sentence in these language descriptions rep-
+resents the text description for a single frame.
+3. The format of each sentence is frame id, descrip-
+tion. The frame id indicates the temporal position
+of the frame, ranging from 1 to 90.
+Here are the original descriptions of this video:
+Documents
+Here is the question: Question
+Here is the memory: Memory
+Your task is to determine whether these descriptions
+above can answer the question accurately, reason-
+ably, and without contradiction.
+If your answer is yes, please give me an reason-
+able explanation. the output will be as follows:
+{“confidence”: “1”, “explanation”: [“xxxx”]}
+If your answer is no, the confidence is 0, indicat-
+ing the provided information is insufficient. Please
+give me a reasonable explanation for what frame is
+missing. For each frame identified as potentially
+relevant, provide a concise description focusing on
+essential visual elements(e.g., objects, humans, in-
+teractions, actions, and scenes) in the explanation.
+The output will be as follows: {“confidence”: “0”,
+“explanation”: [“xxxx”]}
+You must not provide any other response or expla-
+nation.
+Assistant
+“confidence”: “0/1”, “explanation”: [“xxxx”]
+Interaction agent is used to find potential missing key
+frames with different types of information. The interaction
+agent prompt in the EgoSchema benchmark is shown as be-
+low:
+User
+You are given some language descriptions of a first-
+person view video along with a question about the
+video.
+1.The video is 3 minutes long, containing a total of
+90 frames.
+2. Each sentence in these language descriptions rep-
+resents the text description for a single frame.
+3. The format of each sentence is frame id, descrip-
+tion. The frame id indicates the temporal position
+of the frame, ranging from 1 to 90.
+Here are the original descriptions of this video:
+Documents
+Here are the memory: Memory
+To answer the following question: Question
+Theses descriptions are insufficient and cannot an-
+swer this question accurately, reasonably, and with-
+out contradiction.
+Your task is to determine which frame needs which
+type of information and can answer this question ac-
+curately, reasonably, and without contradiction.
+The two types of information are as follows:
+A: Given an image, get a detailed description of the
+image (image caption, just like what is shown in this
+image?)
+B: Given an image, get a response to the above
+question (visual question answering)
+Please note that frame selections range from 1 to
+90. These frames (type A) already have type A in-
+formation and these frames (type B) already have
+type B information, please note not to repeatedly
+select this type of information from these frames.
+Please note that the the key of frame only one num-
+ber. The output must be as follows: [“frame”:
+“1/2/3/.../90”, “type”: “A/B”]
+Assistant
+[“frame”: “1/2/3/.../90”, “type”: “A/B”]
+Finally, the answering agent is used to predict the answer
+once the video captions are sufficient. The answering agent
+is shown as below:
+
+
+===== PAGE 11 =====
+User
+You are individual C, with others represented as O.
+Your task is to answer a question related to this
+video, choosing the correct option out of five pos-
+sible answers. You are given some language de-
+scriptions of a first person view video along with
+a question about the video.
+1.The video is 3 minutes long, containing a total of
+90 frames.
+2. Each sentence in these language descriptions rep-
+resents the text description for a single frame.
+3. The format of each sentence is frame id, descrip-
+tion. The frame id indicates the temporal position
+of the frame, ranging from 1 to 90.
+Here are the descriptions of this video: Documents
+Please answer the following question: Question
+Here are the choices. A: option1 B: option2 C: op-
+tion3 D: option4 E: option5
+The question has 5 choices, labeled as A, B, C, D, E.
+Please think step by step and write the best answer
+index. Note your final answer must be one of the
+letters (A, B, C, D, or E), the confidence must be
+one of the letters (1, 2, 3), please provide a concise
+one-sentence explanation for your chosen answer.
+the output must be the following format. You must
+not provide any other response or explanation.
+{“final answer”: “xxx”, “confidence”: “xxx”,
+“explaination”: “xxx”}
+Assistant
+{“final answer”: “xxx”, “confidence”: “xxx”, “ex-
+plaination”: “xxx”}
+Details of LaViLa. For the experiments on EgoSchema
+[36], we utilize LaViLa [77] as the captioner, a CLIP-based
+captioning model. LaViLa processes input clips with a res-
+olution of 4 × 336 × 336 and is trained on the Ego4D dataset
+[18]. The original LaViLa training set contains 7,743 videos
+with 3.9 million video-text pairs, while the validation set in-
+cludes 828 videos with 1.3 million video-text pairs. Since
+the EgoSchema dataset is cropped from Ego4D and de-
+signed for zero-shot evaluation, using the original LaViLa
+model could lead to overlap with EgoSchema videos, result-
+ing in an unfair comparison. To address this, we use the re-
+trained LaViLa model which same as LLoVi [73] that do not
+have any overlap with EgoSchema videos to avoid unfair
+comparison with other methods. The checkpoints are avail-
+able at https://drive.google.com/file/d/
+1AZ5I4eTUAUBX31rL8jLB00vNrlFGWiv8/view.
+Details of LLaVA-NeXT. For the experiments on
+MovieChat-1K [49] and Video-MME [15], we utilize
+LLaV A-NeXT [33] as the captioner, which is a frame-based
+captioning model. LLaV A-NeXT used in our framework
+has 7B parameters and the checkpoints are available at
+https://huggingface.co/llava- hf/llava-
+v1.6-mistral-7b-hf . We also use the same LLaV A-
+NeXT model to augment key frames with different prompts
+in both datasets.
+VideoAgent Reproduce Details. To evaluate the perfor-
+mance of VideoAgent [61] on MovieChat-1K benchmark
+[49] and make a fair comparison, we select the LLaV A-
+NeXT model as the captioner and preprocess videos by
+simply sampling them at 0.5 FPS. GPT-4 [1], i.e., gpt-4-
+1106-preview, is used as the agent to predict answer, self
+reflect, and find missing information. The prompt for each
+agent is same as the original paper. The max interaction
+rounds is set to 3 and the initial sampled frames for whole
+video is set to 5, which is the default setting in the orig-
+inal paper. The EV A-CLIP-8B-plus model [51], a state-
+of-the-art CLIP model that includes a vision encoder with
+7.5 billion parameters and a text encoder with 0.7 bil-
+lion parameters, is used for frame retrieval to align with
+the original paper [61]. The above setting is used to the
+global mode and breakpoint mode to ensure reproducibility.
+The checkpoints of LLaV A-NeXT model are available at
+https://huggingface.co/llava- hf/llava-
+v1.6- mistral- 7b- hf. The website of GPT-4 API
+is available at https://openai.com/index/gpt-
+4-api-general-availability/ . The checkpoints
+of EV A-CLIP-8B-plus model are available at https://
+huggingface.co/BAAI/EVA-CLIP-8B-448 .
+To evaluate the performance of VideoAgent [61] on
+Video-MME benchmark [15] and make a fair comparison,
+we preprocess videos by simply sampling them at 0.2 FPS
+and DeepSeek, i.e., DeepSeek V2.5, is used as the agent
+to predict answer, self reflect, and find missing informa-
+tion. Except for those, the other settings are the same as
+the MovieChat-1K benchmark. The website of DeepSeek
+API is available at https://api-docs.deepseek.
+com/. Note that for the experiment with subtitles, we select
+the subtitles corresponding to the sampled frames to add to
+the LLM, rather than using all the subtitles. This is why the
+performance of VideoAgent is significantly lower than the
+other LLM-based methods under the w subs setting.
+LLoVi Reproduce Details. To evaluate the performance
+of LLoVi [73] on Video-MME benchmark and make a fair
+comparison, we select the same LLaV A-NeXT model [33]
+as the captioner and preprocess videos by simply sampling
+them at 0.2 FPS. DeepSeek [20], i.e., DeepSeek V2.5, is
+used as the agent to summary the sampled captions and
+predict the final answer. The summaries words are set to
+500 and the prompt of each prompt is same as the original
+paper [73]. The website of DeepSeek API is available at
+https://api-docs.deepseek.com/ . The check-
+points of LLaV A-NeXT model are available at https:
+
+
+===== PAGE 12 =====
+Sampling Rate Accuracy (%)
+1 FPS 61.6
+0.5 FPS 62.6
+0.25 FPS 58.8
+Table 8. Performance of different sampling rate on EgoSchema.
+//huggingface.co/llava- hf/llava- v1.6-
+mistral-7b-hf.
+Only Subs Reproduce Details. In Section 4.3 of our
+paper, we conduct an experiment where only the subtitle,
+question and options are input into the LLM (i.e., DeepSeek
+[20]) to predict the answer. Specifically, the subtitles used
+in the LLM are aligned with the sampled frames, while we
+preprocess videos by simply sampling them at 0.2 FPS. The
+prompt for the LLM is shown in below:
+User
+This video’s subtitles are listed below:
+subtitle 1
+subtitle 2
+...
+subtitle n
+Select the best answer to the following multiple-
+choice question based on the subtitles and summary.
+Respond with only the letter (A, B, C, or D) of the
+correct option.
+Question
+OptionA
+OptionB
+OptionC
+OptionD
+Assistant
+A/B/C/D
+where n represents the number of subtitles under the 0.2
+FPS sampling.
+8. More Ablation Studies
+In this paper, we choose LaViLa [77] as the captioning
+model to convert videos into documents. we preprocess
+videos by simply sampling them at 0.5 FPS for EgoSchema.
+To evaluate the impact of different sampling rates on the
+model’s performance. We conduct the experiments with
+different sampling rates (1 FPS, 0.5 FPS, and 0.25 FPS) to
+convert videos into documents on EgoSchema subset. Be-
+sides, we use GPT-3.5 [40] as the planning agent, interac-
+tion agent, and answering agent for the below comparisons.
+Algorithm 1: DrVideo
+Input: V , Q
+▶ Video-Document Conversion Module;
+Docinit ← getDoc(V, ϕvlm, P);
+Edoc ← getEmbedding(Docinit, ϕemb);
+▶ Document Retrieval Module;
+Initialize RT as Q;
+ERT ← getEmbedding(RT , ϕemb);
+topk doc ← Retrieval(ERT , Edoc, K);
+▶ Document Augmentation Module;
+Initialize AP;
+AD0 ← Augment(topk doc, Docinit, AP);
+H ← addToMemory(topk doc);
+▶ Multi-Stage Agent Interaction;
+Initialize i ← 0;
+while i ≤ I do
+Planning Agent:;
+S, R ← checkSufficient(ADi, Hi, Q);
+if S == 1 then
+break;
+else
+H ← addToMemory(H, R);
+Interaction Agent:;
+M ← FindMissInfo(ADi, H, Q);
+N, AP ← M ;
+H ← addToMemory(H, N);
+i ← i + 1;
+ADi ← Augment(N, ADi, AP);
+▶ Answering Module;
+P ← GetAnswer(ADi);
+return P ;
+Table 8 presents the results and we have the following
+observations: (i) When the sampling rate is set to 1 FPS,
+the performance is lower than the sampling rate is set to 0.5
+FPS. It indicates that a higher sampling frequency is not al-
+ways better, as higher frequencies introduce more redundant
+information. (ii) When the sampling rate is set to 0.25 FPS,
+the performance is also lower than the sampling rate is set to
+0.5 FPS. This suggests that a low sampling frequency leads
+to the loss of significant information, which in turn causes a
+decline in performance. (iii) When the sampling rate is set
+to 0.5 FPS, DrVideo achieves the best performance. This
+highlights the importance of selecting an appropriate sam-
+pling rate to reduce redundant information while retaining
+critical details for DrVideo. It also leaves room for future
+improvements by adaptively sampling the video based on
+the question.
+
+
+===== PAGE 13 =====
+Question:Howmanycolorsofglazeareusedinthevideo?A.FiveB.FourC.ThreeD.Two
+DrVideoFind missing information after1round
+{'final_answer': 'C', 'confidence': '2', 'explanation': 'The video mentions pink, green, and blue glazes, but does not mention any others.'}VideoAgent{'final_answer': ‘D', 'confidence': ‘3'}
+Find missing information after2round
+Figure 5. Case study on an instance from Video-MME. Long Case of DrVideo. This video contains 33 minutes.
+9. Detailed Algorithm
+In Algorithm 1, we present the algorithm behind DrVideo
+to give the reader a clearer understanding. The definition of
+the symbols has already been provided in the main text.
+10. More Case Studies
+Fig. 5 shows how DrVideo can accurately solve hour-long
+videos from the long split of Video-MME benchmark. The
+question is about figuring out the colors of glaze used in the
+video, which not only requires the model to have a com-
+prehensive understanding of the video but also a clear un-
+derstanding of its local details. DrVideo accurately identi-
+fies the necessary information and predicts the answer cor-
+rectly, outperforming state-of-the-art models like VideoA-
+gent. This highlight the potential of our document retrieval
+method in handle longer videos.
+Besides, we also provide a failure case to explore the lim-
+itations of our DrVideo as shown in Fig. 6. The question is
+determine the overarching theme of the video, considering
+the activities performed by both characters. DrVideo, af-
+ter undergoing key frame retrieval enhancement and multi-
+stage interaction loop continuation retrieval enhancement,
+evaluates whether the information collected so far can accu-
+rately answer the question. However, due to the inability of
+the VLM to accurately describe the video content, DrVideo
+makes incorrect judgments, ultimately leading to a wrong
+answer. This indicates that DrVideo heavily relies on the
+capabilities of both LLMs and VLMs. We believe DrVideo
+will be improved with the development of better LLMs and
+VLMs in the future.
+
+
+===== PAGE 14 =====
+Updated Video Document
+Final Video Document
+……Frame 1#O The man X holds a game board game with his left hand.Frame 2:#O person A takes a card from the tableFrame 3:#O person A puts the dice on the tableFrame 88: #O person X touches a diceFrame 89:#O a man X plays rummy gameFrame 90:#O A man X touches a card…Document(Frames)RetrievalModule DocumentAugmentation
+Frame15:Theimagedepictsadimlylitroomwithapersonsittingatatablewithalaptopandamouse….
+Frame70:Thereisapersonseatedatatable,engagedinanactivitythatappearstobe….…
+Initial Video Document
+Video-Document Conversion
+PlanningAgentOutput:Theprovidedinformationisinsufficienttoaccuratelydeterminetheoverarchingthemeofthevideo.Thedescriptionsfocusonspecificactionsandinteractions,butthereisalackofcohesiveinformationabouttheoverallthemeoractivitiesperformedbybothcharacters.Additionaldescriptionsrelatedtotheinteractions,activities,andtheenvironmentinthevideoareneededtoprovideanaccurateanswer
+InteractionAgentDocumentAugmentation
+Frame80:Theimageshowsadimlylitroomwithawarmyellowishglow.Theroomappearstobealivingroomorastudy,asthereisacouchinthebackground.….
+Frame90:whichappearstobesetupforaboardgameorasimilaractivity,asindicatedbythegameboardandpiecesonthe…
+… Updated Video Document
+PlanningAgentOutput:Theadditionalinformationprovidedinframe90givesaclearindicationthatthevideodepictsasceneofindividualsengaginginaboardgameorsimilaractivityinacozyindoorsetting.Thisalignswiththedescriptionsofvariousactionsrelatedtopickingcards,playingdice,andinteractingwithgamepieces,supportingtheoverarchingthemeofthevideobeingaboardgameorgamingactivity
+AnsweringModule{"final_answer":"A","confidence":"2","explanation":"Thevideodemonstratesindividualsengaginginbothsocialinteractionsandsolitaryactivities,highlightingtheimportanceoffindingaharmoniousbalancebetweenthetwo."}
+Frame32:Theroomhasacozyandsomewhatclutteredatmosphere,withvariousitemsscatteredaround,includingbook….
+Frame85:Theroomisdimlylit,withawarmyellowglowcomingfromalamponthewall.Thetablehasacheckers.….
+Question:Whatistheoverarchingthemeofthevideo,consideringtheactivitiesperformedbybothcharacters?A.Theoverarchingcentralthemepresentedinthevideoisthatindividualscanbebothsociableandindependentsimultaneously.thevisualcontentdemonstratesthatitisentirelypossibletobebothconnectedtoothersmeaningfullyandtosavorsolitarymoments,emphasizingthatitiscrucialtofindaharmoniousbalancebetweenthesetwoaspects.B.Theoverarchingthemeofthevideoisthatpeoplecanbebothengagedinchallengingactivitiesandenjoyingleisurelyactivitiesatthesametime.thevideoshowsthatitispossibletobebothproductiveandrelaxed,andthatitisimportanttofindabalancebetweenthetwo.C.Theprimary,overarchingthemepresentedinthevideoemphasizesthatindividualscantrulybebothcreativeandpracticalsimultaneously.theenlighteningvideodemonstratestherealisticpossibilityofbeingbothhighlyimaginativeandremarkablyefficient,whilestressingthesignificanceofdiscoveringanequilibriumbetweenthesetwoessentialaspects.D.Theoverarchingthemeofthevideoisthatpeoplecanbebothambitiousandhumble.thevideoshowsthatitispossibletobebothdrivenandmodest,andthatitisimportanttofindabalancebetweenthetwo.E.Theprimaryoverarchingthemepresentedinthevideoisthatindividualscansimultaneouslypossessandexhibitbothintelligenceandemotionalaspects.effectively,thevideodemonstratesthatthecoexistenceofrationalandintuitivequalitiesisfeasible,emphasizingthesignificanceofestablishingequilibriumbetweenthesetwocrucialelements..
+Figure 6. Case study on an instance from EgoSchema. Failure Case of DrVideo.
+
+
+===== PAGE 15 =====
+References
+[1] Josh Achiam, Steven Adler, Sandhini Agarwal, Lama Ah-
+mad, Ilge Akkaya, Florencia Leoni Aleman, Diogo Almeida,
+Janko Altenschmidt, Sam Altman, Shyamal Anadkat, et al.
+Gpt-4 technical report. arXiv preprint arXiv:2303.08774 ,
+2023. 2, 5, 6, 7, 1
+[2] Anthropic. Claude 3.5 Sonnet: Enhanced Conversational AI.
+https://www.anthropic.com/index/claude-
+3.5-sonnet/, 2024. 6
+[3] Jinze Bai, Shuai Bai, Shusheng Yang, Shijie Wang, Sinan
+Tan, Peng Wang, Junyang Lin, Chang Zhou, and Jingren
+Zhou. Qwen-vl: A versatile vision-language model for un-
+derstanding, localization, text reading, and beyond. arXiv
+preprint arXiv:2308.12966, 2023. 6
+[4] Aanisha Bhattacharya, Yaman K Singla, Balaji Krishna-
+murthy, Rajiv Ratn Shah, and Changyou Chen. A video
+is worth 4096 tokens: Verbalize story videos to understand
+them in zero shot. arXiv preprint arXiv:2305.09758, 2023. 3
+[5] Anthony Brohan, Noah Brown, Justice Carbajal, Yevgen
+Chebotar, Xi Chen, Krzysztof Choromanski, Tianli Ding,
+Danny Driess, Avinava Dubey, Chelsea Finn, et al. Rt-2:
+Vision-language-action models transfer web knowledge to
+robotic control. arXiv preprint arXiv:2307.15818, 2023. 3
+[6] Tom Brown, Benjamin Mann, Nick Ryder, Melanie Sub-
+biah, Jared D Kaplan, Prafulla Dhariwal, Arvind Neelakan-
+tan, Pranav Shyam, Girish Sastry, Amanda Askell, et al. Lan-
+guage models are few-shot learners. Adv. Neural Inform.
+Process. Syst., pages 1877–1901, 2020. 1
+[7] Jun Chen, Deyao Zhu, Kilichbek Haydarov, Xiang Li,
+and Mohamed Elhoseiny. Video chatcaptioner: Towards
+the enriched spatiotemporal descriptions. arXiv preprint
+arXiv:2304.04227, 2023. 3
+[8] Feng Cheng, Xizi Wang, Jie Lei, David Crandall, Mohit
+Bansal, and Gedas Bertasius. Vindlu: A recipe for effective
+video-and-language pretraining. In IEEE/CVF Conf. Com-
+put. Vis. Pattern Recog., pages 10739–10750, 2023. 1
+[9] Rohan Choudhury, Koichiro Niinuma, Kris M Kitani, and
+L´aszl´o A Jeni. Zero-shot video question answering with pro-
+cedural programs. arXiv preprint arXiv:2312.00937, 2023.
+5
+[10] Aakanksha Chowdhery, Sharan Narang, Jacob Devlin,
+Maarten Bosma, Gaurav Mishra, Adam Roberts, Paul
+Barham, Hyung Won Chung, Charles Sutton, Sebastian
+Gehrmann, et al. Palm: Scaling language modeling with
+pathways. arXiv preprint arXiv:2204.02311, 2022. 1
+[11] Jiwan Chung and Youngjae Yu. Long story short: a
+summarize-then-search method for long video question an-
+swering. In Brit. Mach. Vis. Conf., 2023. 3
+[12] Yiran Ding, Li Lyna Zhang, Chengruidong Zhang, Yuanyuan
+Xu, Ning Shang, Jiahang Xu, Fan Yang, and Mao Yang. Lon-
+grope: Extending llm context window beyond 2 million to-
+kens. arXiv preprint arXiv:2402.13753, 2024. 2
+[13] Danny Driess, Fei Xia, Mehdi SM Sajjadi, Corey Lynch,
+Aakanksha Chowdhery, Brian Ichter, Ayzaan Wahid,
+Jonathan Tompson, Quan Vuong, Tianhe Yu, et al. Palm-
+e: An embodied multimodal language model. arXiv preprint
+arXiv:2303.03378, 2023. 3
+[14] Yue Fan, Xiaojian Ma, Rujie Wu, Yuntao Du, Jiaqi Li,
+Zhi Gao, and Qing Li. Videoagent: A memory-augmented
+multimodal agent for video understanding. arXiv preprint
+arXiv:2403.11481, 2024. 2, 3, 5, 6
+[15] Chaoyou Fu, Yuhan Dai, Yondong Luo, Lei Li, Shuhuai Ren,
+Renrui Zhang, Zihan Wang, Chenyu Zhou, Yunhang Shen,
+Mengdan Zhang, et al. Video-mme: The first-ever compre-
+hensive evaluation benchmark of multi-modal llms in video
+analysis. arXiv preprint arXiv:2405.21075, 2024. 2, 3, 5, 6
+[16] Chaoyou Fu, Haojia Lin, Zuwei Long, Yunhang Shen, Meng
+Zhao, Yifan Zhang, Xiong Wang, Di Yin, Long Ma, Xiawu
+Zheng, et al. Vita: Towards open-source interactive omni
+multimodal llm. arXiv preprint arXiv:2408.05211, 2024. 6
+[17] Difei Gao, Lei Ji, Luowei Zhou, Kevin Qinghong Lin, Joya
+Chen, Zihan Fan, and Mike Zheng Shou. Assistgpt: A gen-
+eral multi-modal assistant that can plan, execute, inspect, and
+learn. arXiv preprint arXiv:2306.08640, 2023. 3
+[18] Kristen Grauman, Andrew Westbury, Eugene Byrne,
+Zachary Chavis, Antonino Furnari, Rohit Girdhar, Jackson
+Hamburger, Hao Jiang, Miao Liu, Xingyu Liu, et al. Ego4d:
+Around the world in 3,000 hours of egocentric video. In
+IEEE/CVF Conf. Comput. Vis. Pattern Recog., pages 18995–
+19012, 2022. 2
+[19] Albert Gu, Karan Goel, and Christopher R ´e. Efficiently
+modeling long sequences with structured state spaces. arXiv
+preprint arXiv:2111.00396, 2021. 3
+[20] Daya Guo, Qihao Zhu, Dejian Yang, Zhenda Xie, Kai Dong,
+Wentao Zhang, Guanting Chen, Xiao Bi, Yu Wu, YK Li,
+et al. Deepseek-coder: When the large language model meets
+programming–the rise of code intelligence. arXiv preprint
+arXiv:2401.14196, 2024. 5, 6, 7, 1, 2, 3
+[21] Wenyi Hong, Weihan Wang, Qingsong Lv, Jiazheng Xu,
+Wenmeng Yu, Junhui Ji, Yan Wang, Zihan Wang, Yuxiao
+Dong, Ming Ding, et al. Cogagent: A visual language model
+for gui agents. arXiv preprint arXiv:2312.08914, 2023. 3
+[22] Noureldien Hussein, Efstratios Gavves, and Arnold WM
+Smeulders. Videograph: Recognizing minutes-long human
+activities in videos. arXiv preprint arXiv:1905.05143, 2019.
+3
+[23] Md Mohaiminul Islam and Gedas Bertasius. Long movie clip
+classification with state-space video models. In Eur. Conf.
+Comput. Vis., pages 87–104, 2022. 3
+[24] Sullam Jeoung, Goeric Huybrechts, Bhavana Ganesh, Aram
+Galstyan, and Sravan Bodapati. Adaptive video under-
+standing agent: Enhancing efficiency with dynamic frame
+sampling and feedback-driven reasoning. arXiv preprint
+arXiv:2410.20252, 2024. 5
+[25] Albert Q Jiang, Alexandre Sablayrolles, Arthur Mensch,
+Chris Bamford, Devendra Singh Chaplot, Diego de las
+Casas, Florian Bressand, Gianna Lengyel, Guillaume Lam-
+ple, Lucile Saulnier, et al. Mistral 7b. arXiv preprint
+arXiv:2310.06825, 2023. 7
+[26] Wonkyun Kim, Changin Choi, Wonseok Lee, and Won-
+jong Rhee. An image grid can be worth a video: Zero-
+shot video question answering using a vlm. arXiv preprint
+arXiv:2403.18406, 2024. 1, 5, 6
+[27] Jie Lei, Linjie Li, Luowei Zhou, Zhe Gan, Tamara L Berg,
+Mohit Bansal, and Jingjing Liu. Less is more: Clipbert
+
+
+===== PAGE 16 =====
+for video-and-language learning via sparse sampling. In
+IEEE/CVF Conf. Comput. Vis. Pattern Recog., pages 7331–
+7341, 2021. 1
+[28] Bo Li, Yuanhan Zhang, Dong Guo, Renrui Zhang, Feng
+Li, Hao Zhang, Kaichen Zhang, Yanwei Li, Ziwei Liu, and
+Chunyuan Li. Llava-onevision: Easy visual task transfer.
+arXiv preprint arXiv:2408.03326, 2024. 6
+[29] Junnan Li, Dongxu Li, Silvio Savarese, and Steven Hoi.
+BLIP-2: bootstrapping language-image pre-training with
+frozen image encoders and large language models. In Proc.
+Int. Conf. Mach. Learn., 2023. 4, 7
+[30] KunChang Li, Yinan He, Yi Wang, Yizhuo Li, Wenhai
+Wang, Ping Luo, Yali Wang, Limin Wang, and Yu Qiao.
+Videochat: Chat-centric video understanding. arXiv preprint
+arXiv:2305.06355, 2023. 3, 5, 6
+[31] Bin Lin, Bin Zhu, Yang Ye, Munan Ning, Peng Jin, and
+Li Yuan. Video-llava: Learning united visual represen-
+tation by alignment before projection. arXiv preprint
+arXiv:2311.10122, 2023. 6
+[32] Kevin Lin, Faisal Ahmed, Linjie Li, Chung-Ching Lin,
+Ehsan Azarnasab, Zhengyuan Yang, Jianfeng Wang, Lin
+Liang, Zicheng Liu, Yumao Lu, et al. Mm-vid: Advanc-
+ing video understanding with gpt-4v (ision). arXiv preprint
+arXiv:2310.19773, 2023. 1, 3, 5
+[33] Haotian Liu, Chunyuan Li, Yuheng Li, Bo Li, Yuanhan
+Zhang, Sheng Shen, and Yong Jae Lee. Llava-next: Im-
+proved reasoning, ocr, and world knowledge. https:
+/ / llava - vl . github . io / blog / 2024 - 01 - 30 -
+llava-next/, 2024. 2, 4, 5, 6, 7
+[34] Ziyu Ma, Shutao Li, Bin Sun, Jianfei Cai, Zuxiang Long,
+and Fuyan Ma. Gerea: Question-aware prompt captions for
+knowledge-based visual question answering. arXiv preprint
+arXiv:2402.02503, 2024. 1
+[35] Muhammad Maaz, Hanoona Rasheed, Salman Khan, and Fa-
+had Shahbaz Khan. Video-chatgpt: Towards detailed video
+understanding via large vision and language models. arXiv
+preprint arXiv:2306.05424, 2023. 5
+[36] Karttikeya Mangalam, Raiymbek Akshulakov, and Jiten-
+dra Malik. Egoschema: A diagnostic benchmark for very
+long-form video language understanding. arXiv preprint
+arXiv:2308.09126, 2023. 2, 3, 5, 6, 8, 1
+[37] Juhong Min, Shyamal Buch, Arsha Nagrani, Minsu Cho, and
+Cordelia Schmid. Morevqa: Exploring modular reasoning
+models for video question answering. In IEEE/CVF Conf.
+Comput. Vis. Pattern Recog., pages 13235–13245, 2024. 2,
+5
+[38] Salman Khan Muhammad Maaz, Hanoona Rasheed and
+Fahad Khan. Video-chatgpt: Towards detailed video un-
+derstanding via large vision and language models. ArXiv
+2306.05424, 2023. 1, 5, 6
+[39] Eric Nguyen, Karan Goel, Albert Gu, Gordon Downs, Preey
+Shah, Tri Dao, Stephen Baccus, and Christopher R ´e. S4nd:
+Modeling images and videos as multidimensional signals
+with state spaces. Adv. Neural Inform. Process. Syst., pages
+2846–2861, 2022. 3
+[40] OpenAI. GPT3.5. https://platform.openai.com/
+docs/models/gpt-3-5, 2021. 1, 5, 7, 3
+[41] OpenAI. Introducing chatgpt. https://openai.com/
+blog/chatgpt, 2022. 1
+[42] OpenAI. GPT-4V(ision) System Card. https : / /
+openai . com / index / gpt - 4v - system - card/,
+2023. 2, 6
+[43] OpenAI. New embedding models and api updates.
+https://openai.com/index/new- embedding-
+models-and-api-updates/ , 2024. 4
+[44] OpenAI. GPT-4o Mini: Advancing Cost-Efficient
+Intelligence. https : / / openai . com / index /
+gpt - 4o - mini - advancing - cost - efficient -
+intelligence/, 2024. 2, 6
+[45] Long Ouyang, Jeffrey Wu, Xu Jiang, Diogo Almeida, Car-
+roll Wainwright, Pamela Mishkin, Chong Zhang, Sandhini
+Agarwal, Katarina Slama, Alex Ray, et al. Training language
+models to follow instructions with human feedback. Adv.
+Neural Inform. Process. Syst., pages 27730–27744, 2022. 1
+[46] Vincent Perot, Kai Kang, Florian Luisier, Guolong Su,
+Xiaoyu Sun, Ramya Sree Boppana, Zilong Wang, Zifeng
+Wang, Jiaqi Mu, Hao Zhang, et al. Lmdx: Language
+model-based document information extraction and localiza-
+tion. arXiv preprint arXiv:2309.10952, 2023. 2
+[47] Kanchana Ranasinghe, Xiang Li, Kumara Kahatapitiya,
+and Michael S Ryoo. Understanding long videos in
+one multimodal language model pass. arXiv preprint
+arXiv:2403.16998, 2024. 5
+[48] Teven Le Scao, Angela Fan, Christopher Akiki, Ellie
+Pavlick, Suzana Ili ´c, Daniel Hesslow, Roman Castagn ´e,
+Alexandra Sasha Luccioni, Franc ¸ois Yvon, Matthias Gall´e,
+et al. Bloom: A 176b-parameter open-access multilingual
+language model. arXiv preprint arXiv:2211.05100, 2022. 1
+[49] Enxin Song, Wenhao Chai, Guanhong Wang, Yucheng
+Zhang, Haoyang Zhou, Feiyang Wu, Xun Guo, Tian Ye, Yan
+Lu, Jenq-Neng Hwang, et al. Moviechat: From dense to-
+ken to sparse memory for long video understanding. arXiv
+preprint arXiv:2307.16449, 2023. 2, 3, 5, 6
+[50] Enxin Song, Wenhao Chai, Tian Ye, Jenq-Neng Hwang, Xi
+Li, and Gaoang Wang. Moviechat+: Question-aware sparse
+memory for long video question answering. arXiv preprint
+arXiv:2404.17176, 2024. 5
+[51] Quan Sun, Jinsheng Wang, Qiying Yu, Yufeng Cui, Fan
+Zhang, Xiaosong Zhang, and Xinlong Wang. Eva-clip-
+18b: Scaling clip to 18 billion parameters. arXiv preprint
+arXiv:2402.04252, 2024. 2
+[52] Yuchong Sun, Hongwei Xue, Ruihua Song, Bei Liu, Huan
+Yang, and Jianlong Fu. Long-form video-language pre-
+training with multimodal temporal contrastive learning. Adv.
+Neural Inform. Process. Syst., 35:38032–38045, 2022. 3
+[53] D ´ıdac Sur´ıs, Sachit Menon, and Carl V ondrick. Vipergpt: Vi-
+sual inference via python execution for reasoning. Int. Conf.
+Comput. Vis., pages 11888–11898, 2023. 1, 3
+[54] Gemini Team, Rohan Anil, Sebastian Borgeaud, Yonghui
+Wu, Jean-Baptiste Alayrac, Jiahui Yu, Radu Soricut, Johan
+Schalkwyk, Andrew M Dai, Anja Hauth, et al. Gemini: a
+family of highly capable multimodal models. arXiv preprint
+arXiv:2312.11805, 2023. 5
+[55] Gemini Team, Petko Georgiev, Ving Ian Lei, Ryan Burnell,
+Libin Bai, Anmol Gulati, Garrett Tanzer, Damien Vincent,
+
+
+===== PAGE 17 =====
+Zhufeng Pan, Shibo Wang, et al. Gemini 1.5: Unlocking
+multimodal understanding across millions of tokens of con-
+text. arXiv preprint arXiv:2403.05530, 2024. 2, 6
+[56] Hugo Touvron, Thibaut Lavril, Gautier Izacard, Xavier
+Martinet, Marie-Anne Lachaux, Timoth´ee Lacroix, Baptiste
+Rozi`ere, Naman Goyal, Eric Hambro, Faisal Azhar, et al.
+Llama: Open and efficient foundation language models.
+arXiv preprint arXiv:2302.13971, 2023. 1
+[57] Junke Wang, Dongdong Chen, Chong Luo, Xiyang Dai,
+Lu Yuan, Zuxuan Wu, and Yu-Gang Jiang. Chatvideo: A
+tracklet-centric multimodal and versatile video understand-
+ing system. arXiv preprint arXiv:2304.14407, 2023. 3
+[58] Jue Wang, Wentao Zhu, Pichao Wang, Xiang Yu, Linda
+Liu, Mohamed Omar, and Raffay Hamid. Selective struc-
+tured state-spaces for long-form video understanding. In
+IEEE/CVF Conf. Comput. Vis. Pattern Recog., pages 6387–
+6397, 2023. 3
+[59] Jiawei Wang, Liping Yuan, and Yuchen Zhang. Tarsier:
+Recipes for training and evaluating large video description
+models. arXiv preprint arXiv:2407.00634, 2024. 8
+[60] Shijie Wang, Qi Zhao, Minh Quan Do, Nakul Agar-
+wal, Kwonjoon Lee, and Chen Sun. Vamos: Versatile
+action models for video understanding. arXiv preprint
+arXiv:2311.13627, 2023. 5
+[61] Xiaohan Wang, Yuhui Zhang, Orr Zohar, and Serena
+Yeung-Levy. Videoagent: Long-form video understand-
+ing with large language model as agent. arXiv preprint
+arXiv:2403.10517, 2024. 1, 2, 3, 5, 6, 7
+[62] Yang Wang, Gedas Bertasius, Tae-Hyun Oh, Abhinav Gupta,
+Minh Hoai, and Lorenzo Torresani. Supervoxel attention
+graphs for long-range video modeling. In Proc. IEEE/CVF
+Winter Conf. Appl. Comput. Vis., pages 155–166, 2021. 3
+[63] Yi Wang, Yinan He, Yizhuo Li, Kunchang Li, Jiashuo Yu,
+Xin Ma, Xinhao Li, Guo Chen, Xinyuan Chen, Yaohui
+Wang, et al. Internvid: A large-scale video-text dataset for
+multimodal understanding and generation. arXiv preprint
+arXiv:2307.06942, 2023. 6
+[64] Zhenhailong Wang, Manling Li, Ruochen Xu, Luowei Zhou,
+Jie Lei, Xudong Lin, Shuohang Wang, Ziyi Yang, Chen-
+guang Zhu, Derek Hoiem, et al. Language models with im-
+age descriptors are strong few-shot video-language learners.
+Adv. Neural Inform. Process. Syst., pages 8483–8497, 2022.
+3
+[65] Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten
+Bosma, Fei Xia, Ed Chi, Quoc V Le, Denny Zhou, et al.
+Chain-of-thought prompting elicits reasoning in large lan-
+guage models. Adv. Neural Inform. Process. Syst. , pages
+24824–24837, 2022. 5
+[66] Chao-Yuan Wu, Yanghao Li, Karttikeya Mangalam, Haoqi
+Fan, Bo Xiong, Jitendra Malik, and Christoph Feichtenhofer.
+Memvit: Memory-augmented multiscale vision transformer
+for efficient long-term video recognition. InIEEE/CVF Conf.
+Comput. Vis. Pattern Recog., pages 13587–13597, 2022. 3
+[67] Lin Xu, Yilin Zhao, Daquan Zhou, Zhijie Lin, See Kiong Ng,
+and Jiashi Feng. Pllava: Parameter-free llava extension from
+images to videos for video dense captioning. arXiv preprint
+arXiv:2404.16994, 2024. 1
+[68] Antoine Yang, Antoine Miech, Josef Sivic, Ivan Laptev, and
+Cordelia Schmid. Just ask: Learning to answer questions
+from millions of narrated videos. In Int. Conf. Comput. Vis.,
+pages 1686–1697, 2021. 1
+[69] Antoine Yang, Antoine Miech, Josef Sivic, Ivan Laptev, and
+Cordelia Schmid. Zero-shot video question answering via
+frozen bidirectional language models. Adv. Neural Inform.
+Process. Syst., 35:124–141, 2022. 1
+[70] Xitong Yang, Fu-Jen Chu, Matt Feiszli, Raghav Goyal,
+Lorenzo Torresani, and Du Tran. Relational space-time
+query in long-form videos. In IEEE/CVF Conf. Comput. Vis.
+Pattern Recog., pages 6398–6408, 2023. 3
+[71] Zongxin Yang, Guikun Chen, Xiaodi Li, Wenguan Wang,
+and Yi Yang. Doraemongpt: Toward understanding dy-
+namic scenes with large language models. arXiv preprint
+arXiv:2401.08392, 2024. 3
+[72] Andy Zeng, Maria Attarian, Brian Ichter, Krzysztof Choro-
+manski, Adrian Wong, Stefan Welker, Federico Tombari,
+Aveek Purohit, Michael Ryoo, Vikas Sindhwani, Johnny
+Lee, Vincent Vanhoucke, and Pete Florence. Socratic mod-
+els: Composing zero-shot multimodal reasoning with lan-
+guage. arXiv preprint arXiv:2204.00598, 2022. 3
+[73] Ce Zhang, Taixi Lu, Md Mohaiminul Islam, Ziyang Wang,
+Shoubin Yu, Mohit Bansal, and Gedas Bertasius. A sim-
+ple llm framework for long-range video question-answering.
+arXiv preprint arXiv:2312.17235, 2023. 1, 2, 5, 6
+[74] Hang Zhang, Xin Li, and Lidong Bing. Video-llama: An
+instruction-tuned audio-visual language model for video un-
+derstanding. arXiv preprint arXiv:2306.02858, 2023. 5, 6
+[75] Peiyuan Zhang, Kaichen Zhang, Bo Li, Guangtao Zeng,
+Jingkang Yang, Yuanhan Zhang, Ziyue Wang, Haoran Tan,
+Chunyuan Li, and Ziwei Liu. Long context transfer from
+language to vision. arXiv preprint arXiv:2406.16852, 2024.
+6
+[76] Yuanhan Zhang, Bo Li, Haotian Liu, Yong Jae Lee, Liangke
+Gui, Di Fu, Jiashi Feng, Ziwei Liu, and Chunyuan Li.
+Llava-next: A strong zero-shot video understanding model.
+https : / / llava - vl . github . io / blog / 2024 -
+04-30-llava-next-video/ , 2024. 1
+[77] Yue Zhao, Ishan Misra, Philipp Kr ¨ahenb¨uhl, and Rohit Gird-
+har. Learning video representations from large language
+models. In IEEE/CVF Conf. Comput. Vis. Pattern Recog. ,
+pages 6586–6597, 2023. 1, 2, 4, 5, 7, 3
