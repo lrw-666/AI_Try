@@ -16,6 +16,34 @@ The user later enrolled in a part-time Computer Science master's program at a 21
 
 The user's advisor has suggested exploring research directions related to industrial video.
 
+## Advisor Research And Team Context
+
+The user's graduate advisor is Professor Yao Zhao at Beijing Jiaotong University. In future planning work, treat the advisor's research ecosystem as an important strategic resource rather than only a formal academic affiliation.
+
+Professor Zhao's current official research directions include digital media information processing and intelligent analysis, artificial intelligence, and generative AI safety. Current student recruitment and topic guidance are especially related to computer vision, AIGC forensics, AI video coding, and multimedia intelligent understanding.
+
+Professor Zhao also leads a broader digital media information processing research team. The team's platform and history should be considered when evaluating thesis topics or career positioning. Relevant team contexts include the Digital Media Information Processing innovation team, the Beijing Key Laboratory for Science-Fiction Audio-Visual Intelligent Processing, and the international joint laboratory around visual intelligence and cross-disciplinary innovation.
+
+The team's long-running technical foundations include:
+
+- Image and video coding, compression, and multimedia communication.
+- AI-assisted video coding, learned image compression, video feature compression, and compression for machine vision.
+- Digital watermarking, information hiding, steganography, steganalysis, reversible data hiding, and multimedia security.
+- Image and video forensics, source tracing, tamper detection, double JPEG compression detection, and AIGC-generated content detection.
+- Computer vision, video understanding, object detection, semantic segmentation, weakly supervised learning, zero-shot learning, and multimodal visual reasoning.
+- 360-degree vision, fisheye vision, video stitching, camera calibration, point cloud processing, 3D vision, and immersive scene generation.
+- Cross-media representation, multimodal retrieval, multi-view learning, graph learning, and multimedia intelligent analysis.
+
+Recent publication themes around Professor Zhao and the team suggest several planning signals:
+
+- AIGC forensics and Deepfake detection are becoming central safety-oriented directions.
+- AI video coding and learned compression are strong bridges between the user's current video engineering work and the advisor's academic strengths.
+- 360-degree, fisheye, 3D, point-cloud, and video stitching topics connect computer vision with XR, robotics, spatial computing, and intelligent transportation.
+- Multimodal video understanding, evidence localization, visual-language reasoning, and agent-based retrieval can connect the advisor's vision background with the user's interest in AI-native engineering.
+- Information hiding, watermarking, and media forensics provide a distinctive security angle that can differentiate the user's future work from generic computer vision application development.
+
+When giving future planning advice in this folder, consider whether a proposed direction can connect at least two of the following: the user's C++ video systems experience, the advisor's digital media and computer vision research ecosystem, AI-native agent workflows, and practical industrial video scenarios.
+
 ## Personality And Behavioral Patterns
 
 The user identifies as INTP. This should be treated as a useful self-description rather than a rigid label.
