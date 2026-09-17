@@ -1,184 +1,127 @@
 # Personal Planning Agent Context
 
-This folder is dedicated to the user's personal career planning, long-term development strategy, self-analysis, graduate study planning, research direction exploration, and periodic reflection.
+This folder is the active source of truth for the user's career positioning, graduate research direction, learning roadmap, and periodic reflection.
 
-All Markdown files in this folder should be written in English unless the user explicitly requests another language for a specific task. File and folder names should also use English by default.
+All Markdown files and file or folder names should be in English unless the user explicitly requests otherwise.
 
-## User Background Snapshot
+## User Background
 
 The user is a computer science professional who graduated three years ago.
 
-The user studied Computer Science as an undergraduate at an ordinary second-tier university in China. During university, the user developed a strong early interest in computer technology because of its logical rigor and practical power. A supportive mentor opened up broader areas of computing, including computer vision and robotics. The user participated in many competitions, achieved strong academic results, and won a national scholarship.
+The user studied Computer Science at an ordinary second-tier university in China. During university, a supportive mentor introduced broader areas such as computer vision and robotics. The user participated in competitions, achieved strong academic results, and received a national scholarship.
 
-After graduation, the user missed the main campus recruitment window and went to Shenzhen to seek more opportunities. The user joined a strong large-scale embedded systems company as an embedded software development engineer, working on FreeRTOS engine development. The company had mature processes and highly professional colleagues, which gave the user a solid early professional foundation. However, the work rhythm was slow, procedures were heavy, compensation was limited, and long-term development felt constrained.
+After graduation, the user worked in Shenzhen as an embedded software development engineer on FreeRTOS engine development. That company provided mature processes and a strong engineering environment, but the work rhythm, compensation, and long-term development felt constrained.
 
-The user later enrolled in a part-time Computer Science master's program at a 211 university. The user's advisor is an expert in computer vision. To balance work and study, the user moved to Beijing and took a C++ application development role involving front-end and back-end design for video plugins. This role has a faster development pace and less overtime, making weekend classes easier to manage. However, the team has weaker engineering discipline, unclear architecture, insufficient documentation, and less rigorous coding practices.
+The user later enrolled in a part-time Computer Science master's program at a 211 university. To balance work and study, the user moved to Beijing and took a C++ application-development role involving video plugins. This job provides practical engineering exposure and manageable overtime, although the team has weaker architecture, documentation, and coding discipline than the user's earlier employer.
 
-The user's advisor has suggested exploring research directions related to industrial video.
+## Advisor and Research Context
 
-## Advisor Research And Team Context
+The graduate advisor is Professor Yao Zhao at Beijing Jiaotong University. The advisor and broader research environment cover computer vision, digital media information processing, multimedia intelligent analysis, AI video technology, image and video coding, visual understanding, and related areas.
 
-The user's graduate advisor is Professor Yao Zhao at Beijing Jiaotong University. In future planning work, treat the advisor's research ecosystem as an important strategic resource rather than only a formal academic affiliation.
+After direct discussion with the advisor, the user's active research direction changed to industrial machine vision inspection. The expected problem class is visual detection of defects in electronic components, mechanical parts, assembled products, or other manufactured objects.
 
-Professor Zhao's current official research directions include digital media information processing and intelligent analysis, artificial intelligence, and generative AI safety. Current student recruitment and topic guidance are especially related to computer vision, AIGC forensics, AI video coding, and multimedia intelligent understanding.
+Treat advisor alignment as an important constraint. Do not infer a final thesis title, target product, defect type, dataset, model, or novelty claim until the user has gathered experimental evidence and discussed the narrower choice with the advisor.
 
-Professor Zhao also leads a broader digital media information processing research team. The team's platform and history should be considered when evaluating thesis topics or career positioning. Relevant team contexts include the Digital Media Information Processing innovation team, the Beijing Key Laboratory for Science-Fiction Audio-Visual Intelligent Processing, and the international joint laboratory around visual intelligence and cross-disciplinary innovation.
+## Personality and Motivation Patterns
 
-The team's long-running technical foundations include:
+The user identifies as INTP. Treat this as a useful self-description rather than a rigid label.
 
-- Image and video coding, compression, and multimedia communication.
-- AI-assisted video coding, learned image compression, video feature compression, and compression for machine vision.
-- Digital watermarking, information hiding, steganography, steganalysis, reversible data hiding, and multimedia security.
-- Image and video forensics, source tracing, tamper detection, double JPEG compression detection, and AIGC-generated content detection.
-- Computer vision, video understanding, object detection, semantic segmentation, weakly supervised learning, zero-shot learning, and multimodal visual reasoning.
-- 360-degree vision, fisheye vision, video stitching, camera calibration, point cloud processing, 3D vision, and immersive scene generation.
-- Cross-media representation, multimodal retrieval, multi-view learning, graph learning, and multimedia intelligent analysis.
+The user is curiosity-driven, systems-oriented, and attracted to technologies that reveal structure and mechanisms. The user performs well with mentorship, autonomy, concrete projects, visible progress, and technical exploration.
 
-Recent publication themes around Professor Zhao and the team suggest several planning signals:
+The user is less suited to long periods of repetitive, exam-oriented preparation without tangible output. Planning should therefore convert broad learning goals into small experiments, visual results, measurable comparisons, and periodic decisions.
 
-- AIGC forensics and Deepfake detection are becoming central safety-oriented directions.
-- AI video coding and learned compression are strong bridges between the user's current video engineering work and the advisor's academic strengths.
-- 360-degree, fisheye, 3D, point-cloud, and video stitching topics connect computer vision with XR, robotics, spatial computing, and intelligent transportation.
-- Multimodal video understanding, evidence localization, visual-language reasoning, and agent-based retrieval can connect the advisor's vision background with the user's interest in AI-native engineering.
-- Information hiding, watermarking, and media forensics provide a distinctive security angle that can differentiate the user's future work from generic computer vision application development.
+The user has strong engineering taste and notices architecture, documentation, code quality, testing, and process problems. This is a meaningful advantage for building reliable visual inspection systems after the algorithmic foundations are established.
 
-When giving future planning advice in this folder, consider whether a proposed direction can connect at least two of the following: the user's C++ video systems experience, the advisor's digital media and computer vision research ecosystem, AI-native agent workflows, and practical industrial video scenarios.
+## Durable Strengths
 
-## Personality And Behavioral Patterns
+- C++ application-development experience.
+- Embedded-system and FreeRTOS experience.
+- Exposure to video plugins and visual data paths.
+- Engineering discipline and system-level thinking.
+- Graduate access to computer-vision mentorship and research discussion.
+- Ability to turn an experiment into a structured, documented, and potentially deployable system.
 
-The user identifies as INTP. This should be treated as a useful self-description rather than a rigid label.
+## Current Constraints
 
-The user tends to be curiosity-driven, concept-oriented, and attracted to systems that reveal structure, logic, and hidden mechanisms. The user responds well to open exploration, technical breadth, real projects, and meaningful mentorship.
+- Available study time is approximately two hours per workday and six hours per weekend day.
+- Graduate research must remain realistic alongside full-time work and classes.
+- The user has limited hands-on experience with image-processing experiments, industrial imaging, dataset construction, model training, and formal evaluation.
+- Large-scale model training, large annotation projects, and expensive hardware-dependent topics should not be assumed by default.
+- The user needs visible progress and concrete artifacts to sustain motivation.
 
-The user performs well when the learning environment contains novelty, feedback, autonomy, and concrete creation. The user's university experience shows strong potential under supportive conditions: competition work, mentor guidance, practical technical exposure, and academic recognition.
+## Current Research Decision
 
-The user is less suited to long cycles of repetitive preparation, rote memorization, and high-stakes standardized exams. Motivation tends to decay when the task becomes repetitive, externally imposed, and disconnected from visible progress or personal meaning.
+As of 2026-09-15, the active direction is industrial machine vision inspection.
 
-The user appears to have stronger practical engineering sensitivity than exam endurance. The user notices process quality, code rigor, architecture clarity, documentation discipline, and team professionalism. This suggests that the user should not define ability only through mathematics, algorithms, or exam outcomes.
+The user views this change as a practical and beneficial reset. Although the direction may appear less fashionable than the previous Agent-centered exploration, it provides a grounded path from foundational algorithms to real visual problems. It can build durable computer-vision, experimental, and engineering ability that remains valuable for future career development.
 
-The user may underestimate personal strengths because recent transitions involved uncertainty, missed recruitment timing, exam setbacks, and imperfect job environments. Future planning should separate real skill limits from confidence damage caused by mismatched evaluation systems.
+The former Video Agent and long-video route is archived under `archive/2026-09-15-video-agent-route/`. Do not treat archived plans, schedules, thesis candidates, or literature priorities as current unless the user explicitly decides to revisit them.
 
-## Planning Principles
+## Research Planning Principles
 
-Career planning should be analyzed from the user's own perspective, not from a generic software engineer template.
+Future planning should follow these principles:
 
-The user should avoid paths that depend mainly on long-term rote exam preparation, abstract algorithmic research, or pure mathematical intensity unless there is a strong external reason and a clear support system.
+- Begin with image formation, lighting, optics, acquisition quality, and foundational image-processing algorithms.
+- Treat imaging design and data quality as part of the solution rather than assuming the model can repair poor evidence.
+- Build a simple and explainable baseline before introducing deep or complex models.
+- Select classification, detection, segmentation, anomaly detection, or classical methods according to the defect definition and labels.
+- Compare methods using a fixed protocol and task-appropriate metrics.
+- Record false positives, false negatives, qualitative failures, and operating conditions.
+- Prefer small reproducible experiments over broad reading without implementation.
+- Separate course completion from demonstrated ability.
+- Use C++ when performance, integration, or deployment makes it valuable; allow Python and OpenCV for fast early experiments.
+- Keep thesis scope narrow enough for a part-time master's student.
 
-The user should prioritize paths where C++, video systems, embedded systems, computer vision, industrial scenarios, and AI-enabled engineering can overlap.
+## Near-Term Priorities
 
-The user's part-time master's program should be used as a bridge, not merely a credential. Research topics should ideally connect the advisor's vision expertise, the user's video engineering work, and practical industrial problems.
+The current sequence is:
 
-The user should build a visible portfolio of applied work: paper notes, system design notes, video-processing experiments, industrial video prototypes, C++ engineering writeups, and small AI-assisted tools.
+1. Image representation and OpenCV foundations.
+2. Filtering, enhancement, thresholding, edges, morphology, contours, connected components, and geometry.
+3. Industrial lighting, optics, calibration, regions of interest, registration, template matching, and measurement.
+4. Dataset inspection, annotation, train-validation-test splits, and evaluation.
+5. Simple supervised classification, detection, or segmentation baselines.
+6. Industrial anomaly-detection baselines when defect labels are incomplete or open-set behavior matters.
+7. A narrow problem comparison that can support the next advisor discussion.
 
-Planning should balance three dimensions:
+Each phase should produce runnable code, saved intermediate images, metrics, a failure-case record, and a concise technical note.
 
-- Market value: whether the direction has durable demand in the AI era.
-- Personal fit: whether the work matches curiosity, autonomy, and engineering instincts.
-- Execution cost: whether the path is realistic alongside work and part-time graduate study.
+## Thesis Guidance
 
-## Updated Preference Signals
+A suitable thesis direction should connect:
 
-The user is especially interested in future-facing fields such as robotics, 3D vision, AR/VR, spatial computing, AI-native software, and agent development.
+- A concrete component or product inspection problem.
+- A visible and operationally meaningful defect definition.
+- Data that can be legally and practically accessed.
+- A credible classical or learning-based baseline.
+- A specific unresolved failure mode.
+- A controlled improvement and evaluation protocol.
+- An implementation scope that is realistic before graduation.
 
-The user has relatively low intrinsic interest in traditional monitoring, operations, and routine surveillance-style work, but may still consider such paths if they provide strong stability or compensation.
+Do not describe routine model replacement, API use, or hyperparameter tuning as novelty. Do not assume public benchmark gains transfer to a production line. Any engineering or research claim should be proportional to the actual data and experiments.
 
-The user is open to a major career transition, including AI product, technical product, public-sector, public-institution, or stable institutional paths, if the tradeoff is rational.
+## Career Positioning
 
-The user prefers Chengdu as a medium-high priority city after graduation. A Chengdu technical role around 20k RMB per month would be satisfying. A Chengdu public-sector or public-institution role around 10k RMB per month can be acceptable if the stability and quality of life are strong.
+The near-term professional direction is applied machine vision and industrial visual inspection engineering.
 
-The user can accept short-term overtime for real project needs, but dislikes chronic structural overtime caused by poor leadership, weak management, or company dysfunction.
+The long-term differentiator should combine computer-vision fundamentals with C++, systems engineering, performance awareness, and deployment ability. The user does not need to abandon earlier embedded or video experience; these should become implementation advantages after the visual algorithm foundation is strong enough.
 
-The user strongly dislikes strong-sales roles and should avoid career paths where sales pressure is the core daily responsibility.
+Career planning should balance:
 
-The user's available study capacity is approximately 2 hours per workday and 6 hours per weekend day under current conditions.
-
-## Suggested Long-Term Positioning
-
-The user should explore becoming an applied AI/video systems engineer rather than competing directly as a pure algorithm researcher or generic CRUD application developer.
-
-Promising positioning themes include:
-
-- Industrial video systems with AI-assisted analysis.
-- C++ video processing and real-time media infrastructure.
-- Computer vision application engineering for inspection, monitoring, robotics, or industrial automation.
-- Edge AI and embedded vision systems.
-- AI-assisted engineering tools for video workflows, plugin systems, testing, documentation, and data analysis.
-- AI agent development for workflow automation, research assistance, code/document analysis, and domain-specific engineering tools.
-
-## Current Main Planning Direction
-
-As of 2026-05-22, the user's most promising near-term planning thread is C++ video systems plus AI agent engineering.
-
-The key insight is that the user can avoid diving too deeply into the hardest XR or robotics technology stacks while still staying close to those future-facing fields. Video streams are a shared infrastructure layer for XR, robotics, spatial computing, digital twins, intelligent monitoring, and multimodal agent workflows.
-
-The user's current video-plugin work should be expanded from edge business logic toward video stream ingestion, push/pull streaming, frame extraction, event metadata, semantic indexing, multimodal retrieval, and agent-based workflow automation.
-
-The recommended thesis bridge is an applied research direction around long video stream semantic event indexing and agent-based retrieval/question answering. This can connect the advisor's computer vision background, the user's C++ video work, and the user's interest in AI-native agent development without requiring pure algorithm research or heavy mathematical novelty.
-
-## Recent Planning Decisions
-
-As of 2026-05-25, the planning focus has evolved from one fixed thesis title into a broader "video stream + agent" thesis and career topic space.
-
-The important conclusion is that the user should not lock onto a single title too early. The current best strategy is to explore several adjacent video stream + agent topics from June to August 2026, then choose the strongest one for the September 2026 thesis proposal.
-
-The field frontier should be understood in several layers:
-
-- Long video understanding: models and benchmarks are improving, but long context remains expensive and evidence localization is still difficult.
-- Video-RAG: recent work converts video into auxiliary text, events, documents, keyframes, or graph structures before retrieval and reasoning.
-- Multi-agent video understanding: agents are used for task decomposition, retrieval, evidence aggregation, reflection, and anomaly explanation.
-- Online or streaming video understanding: research is moving toward incremental memory, sliding-window reasoning, low-latency understanding, and proactive responses.
-- Video library question answering: systems are expanding from single-video QA toward multi-video retrieval, entity discovery, schema generation, and cross-video search.
-
-For the user's part-time master's background and limited learning time, the feasible research strategy is not to train a new video foundation model or reproduce large-scale benchmark results. The feasible strategy is to build a lightweight, reproducible, system-level method using existing models and tools.
-
-The recommended innovation level is system-method innovation rather than model-parameter innovation:
-
-- Design event schemas for video streams.
-- Combine temporal indexing, keyword retrieval, vector retrieval, and event-type filtering.
-- Build agent toolchains with explicit retrieval, evidence localization, verification, and reporting tools.
-- Return traceable evidence such as timestamps, keyframes, event clips, confidence notes, and source fields.
-- Evaluate with small but controlled datasets using Recall@K, temporal localization error, evidence hit rate, answer accuracy, latency, and cost.
-
-Five thesis topic candidates have been identified:
-
-- Topic A: Semantic event indexing and agent-based retrieval QA for long video streams.
-- Topic B: Incremental event memory and proactive summarization agents for real-time video streams.
-- Topic C: Multimodal entity/event graph construction and agent querying for video libraries.
-- Topic D: Frame-log joint diagnostic agents for video system engineering.
-- Topic E: Lightweight Video-RAG agent event explanation for a vertical scenario such as campus, meeting, teaching, robot first-person view, or equipment operation videos.
-
-The current recommendation is:
-
-- Primary candidate: Topic A, because it is the most balanced across thesis feasibility, job relevance, reproducibility, and limited training requirements.
-- Strong secondary candidate: Topic D, because it is closest to the user's current video-plugin work and can become a strong engineering portfolio project.
-- Frontier enhancement module: Topic B, because online/streaming video understanding is more forward-looking but should be implemented as a simplified low-frequency sampling and sliding-window memory module rather than a full streaming VLM.
-- Optional applied variant: Topic E, if the advisor prefers a clearer application scenario.
-- Lower priority for first proposal: Topic C, because it has strong innovation potential but higher data, schema, and evaluation cost.
-
-The June to September 2026 validation strategy should be:
-
-- June 2026: Build small prototypes for Topic A and Topic D. Topic A should include video input, frame extraction, auxiliary text/event generation, indexing, and simple QA. Topic D should sketch frame-log joint diagnosis using playback logs, push/pull stream state, and visual evidence.
-- July 2026: Read and summarize core papers such as DrVideo, Video-RAG, VideoRAG, VideoStir, LongVideoBench, Video-MME, HM-RAG, RAVEN, and online video understanding papers.
-- August 2026: Build a demonstrable system with video input, event extraction, indexing, agent tool calls, timestamp/keyframe evidence return, and basic evaluation.
-- September 2026: Propose Topic A as the main thesis direction, optionally adding Topic B or Topic D as a distinctive enhancement module.
-
-Important implementation boundaries:
-
-- Avoid training a new video large model.
-- Avoid large-scale dataset construction.
-- Avoid deep SLAM, 3D reconstruction, or robotics control as the thesis core.
-- Avoid making the thesis only a chatbot or shallow API wrapper.
-- Avoid traditional surveillance operations as the main narrative unless it is reframed as video stream intelligence, event indexing, or system diagnostics.
-
-The thesis should be framed as applied computer vision plus AI engineering, not merely software engineering. When discussing with the advisor, emphasize video understanding, temporal evidence localization, multimodal retrieval, event indexing, and evaluation metrics. Agent engineering should be presented as the orchestration layer that makes the vision system usable and explainable.
-
-## Discussion Style For Future Planning
-
-When analyzing problems in this folder, help the user:
-
-- Clarify the real constraint behind confusion.
-- Separate external pressure from personal preference.
-- Convert vague anxiety into concrete options and experiments.
-- Compare paths by fit, risk, opportunity, and execution cost.
-- Produce practical next actions rather than only abstract advice.
-- Preserve English written records while allowing Chinese discussion when useful.
+- Market value and the durability of the skill.
+- Personal fit with curiosity and engineering work.
+- Execution cost under work and graduate-study constraints.
+- Opportunity to create visible, credible portfolio evidence.
+- Preferred long-term location and quality of life, including continued interest in Chengdu.
+
+## Discussion Style
+
+When helping the user in this folder:
+
+- Clarify the concrete problem behind uncertainty.
+- Distinguish advisor requirements, personal preference, and market considerations.
+- Convert broad anxiety into experiments and decision criteria.
+- Explain algorithms from the user's current foundation without assuming research expertise.
+- Compare alternatives by evidence, cost, failure modes, and practical fit.
+- Recommend the smallest experiment that can resolve the next uncertainty.
+- Maintain English written records while allowing Chinese discussion when useful.

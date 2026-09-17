@@ -1,161 +1,62 @@
-# Current Positioning In The AI Era
+# Current Positioning in Industrial Machine Vision
 
-Date: 2026-05-22
+Date: 2026-09-15
 
-## Core Judgment
+## Current Decision
 
-The user should not define the current situation as "a weak programmer being threatened by AI." A more accurate framing is:
+After discussing the research direction with my graduate advisor, I will focus my current study and thesis exploration on industrial machine vision inspection. The practical problem is to identify defects in electronic components, mechanical parts, assembled products, or other manufactured objects through visual methods.
 
-The user is an early-career computer science professional with practical experience in embedded systems, C++ application development, video plugin engineering, and exposure to computer vision research. The user's most promising path is likely not pure algorithm research or generic application development, but applied AI/video systems engineering.
+This replaces the previous active route centered on long-video understanding and AI Agent workflows. Those materials have been archived as historical exploration and are no longer the basis of my current study plan.
 
-## Personal Pattern Summary
+## Why This Direction Fits
 
-The user is curiosity-driven and systems-oriented. The user is attracted to technical fields that reveal structure, logic, and real-world power, such as computer vision, robotics, embedded systems, and video systems.
+The new direction is more concrete and better aligned with my advisor's guidance. It allows me to start from foundational image-processing and computer-vision algorithms, build small experiments, observe visible results, and gradually understand how an industrial vision solution works from image acquisition to deployment.
 
-The user performs better in environments with mentorship, concrete projects, visible progress, and technical exploration. The user's undergraduate competition experience and national scholarship suggest that strong outcomes are possible when the environment matches the user's motivation structure.
+Although the direction may look less novel than an Agent-centered topic, it is a more reliable way to build real technical depth. A solid understanding of imaging, filtering, segmentation, feature extraction, detection, evaluation, and failure analysis will remain useful even as models and software frameworks change.
 
-The user struggles more with long, repetitive, exam-oriented preparation cycles. This should be treated as a planning constraint rather than a general lack of ability.
+This route also suits my motivation pattern. I learn more effectively through concrete systems, visible intermediate results, repeated experiments, and engineering feedback than through long periods of abstract preparation without tangible output.
 
-The user has strong engineering taste and can recognize process quality, code rigor, architecture problems, and documentation gaps. This is an important professional asset, especially in AI-era engineering where generated code increases the need for review, integration, system design, and quality control.
+## Transferable Strengths
 
-## Current Advantages
+- C++ application-development experience.
+- Earlier embedded-system and FreeRTOS engineering experience.
+- Current exposure to video plugins and image or video data pipelines.
+- Sensitivity to architecture, code quality, documentation, testing, and system reliability.
+- Graduate access to an advisor and research environment in computer vision and digital media.
+- Enough software-engineering experience to turn an algorithm experiment into a reproducible tool or deployable component.
 
-- C++ and embedded systems experience.
-- Exposure to FreeRTOS and lower-level engineering.
-- Current work experience in video plugin development.
-- Graduate connection to computer vision through the user's advisor.
-- Ability to compare mature engineering organizations with weaker engineering teams.
-- Lower overtime pressure in the current job, allowing room for graduate study and side exploration.
+These strengths do not replace vision fundamentals, but they can become a differentiator after I build sufficient algorithm and experimental ability.
 
-## Current Risks
+## Current Gaps
 
-- Being trapped in a mediocre engineering environment and absorbing weak standards.
-- Letting exam setbacks become a fixed self-evaluation.
-- Drifting between embedded, C++, video, and vision without forming a clear positioning.
-- Treating the master's degree only as a credential instead of using it to build a research and project bridge.
-- Competing directly in pure AI algorithm research without enough motivation for heavy math and formula-driven work.
+- Image formation, illumination, optics, lenses, sensors, exposure, and calibration.
+- Systematic practice with grayscale transforms, filtering, thresholding, edges, morphology, contours, connected components, and geometric measurement.
+- Dataset inspection, annotation, augmentation, leakage prevention, and train-validation-test design.
+- Practical training and evaluation of classification, detection, segmentation, and anomaly-detection models.
+- Industrial metrics such as false-positive rate, false-negative rate, missed-defect cost, inference latency, and robustness across batches and imaging conditions.
+- Experience converting failure cases into data, preprocessing, model, or imaging improvements.
 
-## AI-Era Role
+## Current Positioning
 
-The user's likely AI-era role is best described as an AI-enabled systems engineer who can connect real video systems, C++ engineering, industrial scenarios, and applied computer vision.
+My near-term positioning is a developing applied machine vision and industrial visual inspection engineer.
 
-This role is different from:
+The goal is not to compete immediately as a pure computer-vision researcher. The goal is to become someone who can understand an inspection problem, design the imaging and processing pipeline, establish classical and learning-based baselines, evaluate results honestly, analyze failures, and eventually deploy a reliable solution with strong engineering discipline.
 
-- A pure AI researcher, who focuses heavily on new models, theory, and mathematical novelty.
-- A generic application developer, whose work may be more directly commoditized by AI coding tools.
-- A low-level implementation-only programmer, whose value may shrink if not paired with system understanding.
+The long-term bridge is:
 
-The user's stronger position is to become someone who understands real systems, can integrate AI into engineering workflows, and can turn research or model capabilities into usable industrial video products.
+`Industrial problem -> imaging -> visual algorithm -> evaluation -> C++ or edge deployment`
 
-## Candidate Directions
+## Research Boundaries
 
-### Direction A: Industrial Video And Applied Computer Vision
+- Do not choose a model before defining the defect and available evidence.
+- Do not assume deep learning is always better than a classical vision pipeline.
+- Do not treat accuracy alone as proof of industrial usefulness.
+- Do not claim thesis novelty before establishing reproducible baselines and discussing the evidence with the advisor.
+- Do not return to the archived Video Agent route unless there is a new explicit decision to reopen it.
+- Do not expand into robotics, 3D vision, or multimodal systems until the core inspection workflow is understood.
 
-This direction connects the user's advisor, current video work, and market demand.
+## Near-Term Focus
 
-Possible topics:
+For the next three months, I will focus on image-processing foundations, OpenCV practice, industrial imaging concepts, one classical inspection baseline, one public industrial dataset, and one simple deep-learning baseline.
 
-- Defect detection and inspection in industrial video.
-- Video anomaly detection.
-- Multi-camera monitoring and event detection.
-- Visual quality control.
-- Dataset construction and evaluation pipelines for industrial scenes.
-
-Fit:
-
-- Strong connection to graduate study.
-- Good bridge between research and engineering.
-- Avoids becoming a pure algorithm researcher while still using AI.
-
-Risk:
-
-- Requires enough Python, model training, and evaluation literacy.
-- Needs access to realistic scenarios or datasets.
-
-### Direction B: C++ Video Systems And Real-Time Media Infrastructure
-
-This direction builds on the user's current C++ and video plugin work.
-
-Possible topics:
-
-- FFmpeg, GStreamer, WebRTC, codecs, streaming, synchronization, and plugin architecture.
-- Real-time video processing pipelines.
-- Performance optimization and cross-platform video components.
-- AI inference integration into video pipelines.
-
-Fit:
-
-- Strong engineering value.
-- Less dependent on advanced math.
-- AI can be used as an enhancement layer rather than the entire identity.
-
-Risk:
-
-- Needs deliberate study to avoid being limited to business-specific plugin work.
-
-### Direction C: Edge AI And Embedded Vision
-
-This direction combines the user's embedded background with the advisor's vision field.
-
-Possible topics:
-
-- Model deployment on edge devices.
-- ONNX Runtime, TensorRT, OpenVINO, RKNN, or similar deployment stacks.
-- Real-time inference under compute, memory, and latency constraints.
-- Embedded camera systems and industrial devices.
-
-Fit:
-
-- Strong differentiation from generic software developers.
-- Uses both past embedded experience and future AI relevance.
-
-Risk:
-
-- Hardware access and platform fragmentation may increase execution cost.
-
-### Direction D: AI-Assisted Engineering And Tooling For Video Workflows
-
-This direction uses AI as a productivity layer around the user's current work.
-
-Possible topics:
-
-- AI-assisted code review for C++ video projects.
-- Automatic documentation generation for poorly documented systems.
-- Test case generation and log analysis for video plugins.
-- Internal tools for video debugging, frame analysis, or pipeline visualization.
-
-Fit:
-
-- Practical and immediately useful.
-- Helps the user improve the current work environment instead of only enduring it.
-
-Risk:
-
-- May become too tool-oriented unless connected to a broader technical direction.
-
-## Near-Term Strategy
-
-The user should spend the next 3 to 6 months testing directions rather than making a permanent identity decision.
-
-Recommended approach:
-
-- Choose one main direction and one secondary direction.
-- Build small visible artifacts every month.
-- Turn graduate study, work problems, and side projects into one connected portfolio.
-- Use AI tools aggressively for learning, coding, paper reading, documentation, and experimentation.
-- Avoid measuring progress mainly by exam-style performance.
-
-## Recommended Initial Positioning
-
-Primary direction:
-
-Industrial video and applied computer vision.
-
-Secondary direction:
-
-C++ video systems and real-time media infrastructure.
-
-Bridge theme:
-
-AI-enabled industrial video systems.
-
+Progress will be measured by runnable code, visualized intermediate results, experiment records, metrics, and failure cases rather than by the number of courses or papers completed.
