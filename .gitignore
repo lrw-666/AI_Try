@@ -1,1 +1,8 @@
 .worktrees/
+
+# Keep dataset image archives local.
+/docs/dataset/MVTec AD/mvtec_anomaly_detection.tar.xz
+/docs/dataset/VisA/VisA_20220922.tar
+
+# Microsoft Office temporary lock files.
+~$*
