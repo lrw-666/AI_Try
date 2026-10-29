@@ -1,8 +1,19 @@
 # 工业电子元器件视觉缺陷检测：开题路线建议与学习计划
 
-更新日期：2026 年 10 月 28 日。开题答辩：2026 年 11 月 16—20 日；材料按 11 月 16 日提交、11 月 15 日前定稿安排。
+初稿：2026 年 10 月 28 日；更新：2026 年 10 月 29 日（Asia/Shanghai）。开题答辩：2026 年 11 月 16—20 日；材料按 11 月 16 日提交、11 月 15 日前定稿安排。
 
 本文结合项目文档、你在本次交流中的补充，以及论文原文、作者代码和官方资料编写。论文与代码链接已做资料核查；本轮没有安装训练环境、训练模型或验证论文成绩。下文的难度、学习顺序和工作量属于实施建议。
+
+## 0. 10 月 29 日接续更新：先读这里
+
+- **用户已选择以有监督缺陷分割为当前讨论主线。**异常检测保留为备选，不再从头进行四路线选型。
+- 最新阅读入口：[有监督分割阅读顺序与开题准备](./2026-10-29-supervised-segmentation-reading-and-proposal-plan.md)；跨设备入口：[对话接续摘要](./2026-10-29-conversation-handoff.md)。下方资源表是分类索引，实际阅读顺序以新文档为准。
+- U-Net 是参考基线，SegFormer-B0 是拟深入候选。两者分别使用相同原始训练图与人工掩码，独立训练；U-Net 不负责为 SegFormer 生成基础数据或标签。
+- 当前论文构想是“一个研究问题＋一个拟主模型＋参考基线”，而非两个独立模型课题。开题前优先一个可重跑的基线，第二模型有余力再接入。
+- SegFormer 是 **NeurIPS 2021** 的成熟方法，不称为 2026 年最新架构。新增 **DS²A-Former（TIM 2025）、SegMAN（CVPR 2025）**作为近年研究依据及后续比较候选；新增 2026 年 SegFormer 应用论文供选读。阅读不等于承诺全部实现。
+- 当前方案只具备资料层面的可行性依据，**尚未证明方法先进性**。需从真实失败中提出针对性改进，用原始主模型、相关近年方法、消融、跨类别与成本实验验证；换模型或普通迁移本身不自动成为创新。
+- “PCB／板上元件”和“使用缺陷掩码训练”分别涉及对象匹配与监督设定，并非有监督分割普遍要求必须使用 PCB。若严格限定单体零件，可继续做监督分割，但需另找匹配数据。未获知导师禁止使用缺陷标注，不应自行增加审批条件。
+- **本轮仍未训练模型，未得到指标或本机耗时。**最终对象、题目、主模型、改进点及学校具体要求尚未确认。
 
 ## 1. 先看结论：推荐怎样选
 
@@ -21,7 +32,7 @@
 
 这与最初只考虑异常检测的建议有所调整：你已经明确，学习通用技术和未来求职也是重要目标，而 VisA 确实提供允许使用缺陷训练的公开协议。没有必要为了遵循 normal-only 这一研究设定，放弃已有的像素标注。
 
-当前最需要导师确认的两个问题是：**对象能否包括 PCB 及板上元件；研究是否允许使用真实缺陷及其掩码训练。**这两个答案比先选哪个网络更影响最终方案。
+当前应与导师对齐：**对象能否包括 PCB 及板上元件，以及是否有只使用正常样本训练的任务要求。**若没有 normal-only 限制，使用训练集中的缺陷及人工掩码是正常的全监督方案选择；不需要因为“使用标注”额外假定存在审批要求。
 
 ## 2. 你的现状，以及本次如何使用项目资料
 
@@ -214,13 +225,16 @@ SegFormer 使用分层 Transformer 编码器和多尺度特征，以及较简单
 
 ## 8. 代表性论文与代码：按使用目的阅读
 
-下面是资源清单，不是开题前必须逐篇精读的任务。**首选路线先读 U-Net、SegFormer、VisA 协议与一篇工业分割工作；备选路线先读 PatchCore、Dinomaly 和数据协议。**
+下面是按用途分类的资源索引，不是阅读顺序或必须全部复现的任务。**最新顺序为 U-Net → VisA 指定部分 → PCB 焊接缺陷 → SegFormer → DS²A-Former → SegMAN → 2026 年 SegFormer 应用选读**，详见[阅读顺序与开题准备](./2026-10-29-supervised-segmentation-reading-and-proposal-plan.md)。异常路线资料仅保留为备选。
 
 | 用途 | 论文／发表 | 代码与阅读重点 |
 | --- | --- | --- |
 | 监督分割基础 | [U-Net: Convolutional Networks for Biomedical Image Segmentation，MICCAI 2015](https://arxiv.org/abs/1505.04597) | [原项目](https://lmb.informatik.uni-freiburg.de/people/ronneber/u-net/)、[现代 PyTorch 框架实现](https://github.com/qubvel-org/segmentation_models.pytorch)；学编码器、解码器、跳跃连接；原任务是医学图像，迁移工业数据需实验 |
-| **首选主模型** | [SegFormer: Simple and Efficient Design for Semantic Segmentation with Transformers，NeurIPS 2021](https://arxiv.org/abs/2105.15203) | [作者代码](https://github.com/NVlabs/SegFormer)、[HF 实现](https://huggingface.co/docs/transformers/model_doc/segformer)；先理解分层特征与 MLP 头，使用维护中的 Python 实现更方便起步 |
-| 工业监督分割依据 | [Segmentation-Based Deep-Learning Approach for Surface-Defect Detection，JIM，2019 在线发表](https://doi.org/10.1007/s10845-019-01476-x) | [作者代码](https://github.com/skokec/segdec-net-jim2019)；说明分割与缺陷判定的工业依据。原代码 Python 2.7／TensorFlow 1，适合读方法，当前不优先重建旧环境 |
+| **拟深入候选** | [SegFormer: Simple and Efficient Design for Semantic Segmentation with Transformers，NeurIPS 2021](https://arxiv.org/abs/2105.15203) | [作者代码](https://github.com/NVlabs/SegFormer)、[HF 实现](https://huggingface.co/docs/transformers/model_doc/segformer)；成熟研究载体，尚未锁定最终主模型，不称为当前最新方法 |
+| 电子场景直接案例 | [Soldering Defect Segmentation Method for PCB on Improved UNet，Applied Sciences 2024](https://www.mdpi.com/2076-3417/14/16/7370) | 看问题、改进、对照和消融如何对应；包含 U-Net 与 SegFormer 比较，不据成文顺序推定作者真实探索顺序 |
+| 近年工业分割 | [DS²A-Former: Battery Surface Defect Segmentation via Dual Stream Spatial Attention Transformer Network，TIM 2025，作者全文](https://piurilabs.di.unimi.it/Papers/tim25b.pdf) | [作者代码](https://github.com/yikuizhai/DS2A-Former)；理解跨尺度与门控空间注意力，数据需申请；不是 SegFormer 升级版，不要求开题前复现 |
+| 近年通用分割候选 | [SegMAN: Omni-scale Context Modeling with State Space Models and Local Attention for Semantic Segmentation，CVPR 2025](https://openaccess.thecvf.com/content/CVPR2025/html/Fu_SegMAN_Omni-scale_Context_Modeling_with_State_Space_Models_and_Local_CVPR_2025_paper.html) | [作者代码](https://github.com/yunxiangfu2001/SegMAN)；看全局／局部／多尺度与效率；原实验为通用场景，额外算子和依赖需评估 |
+| 工业监督分割依据 | [Segmentation-Based Deep-Learning Approach for Surface-Defect Detection，JIM 2020，2019 在线发表](https://doi.org/10.1007/s10845-019-01476-x) | [作者代码](https://github.com/skokec/segdec-net-jim2019)；分割与图像判别结合，不能将分类成绩当像素分割成绩。旧 TensorFlow 实现优先读设计 |
 | 工业监督分割补充 | [Mixed supervision for surface-defect detection: from weakly to fully supervised learning，Computers in Industry 2021](https://vicos.si/resources/mixed-segdec-net-comind2021/) | [作者 PyTorch 实现](https://github.com/vicoslab/mixed-segdec-net-comind2021)；学习标签使用、分割与图像判定；不要求把混合监督加入自己的论文 |
 | 数据与任务设定 | [SPot-the-Difference Self-Supervised Pre-training for Anomaly Detection and Segmentation，ECCV 2022](https://arxiv.org/abs/2207.14315) | [VisA 作者资源](https://github.com/amazon-science/spot-diff)；重点读数据、三种协议与指标，不把数据发布等同于全部训练代码发布 |
 | **异常检测起点** | [Towards Total Recall in Industrial Anomaly Detection，CVPR 2022](https://openaccess.thecvf.com/content/CVPR2022/html/Roth_Towards_Total_Recall_in_Industrial_Anomaly_Detection_CVPR_2022_paper.html) | [PatchCore 作者代码](https://github.com/amazon-science/patchcore-inspection)；学局部特征、coreset、记忆库与近邻分数 |
@@ -277,6 +291,7 @@ SegFormer 使用分层 Transformer 编码器和多尺度特征，以及较简单
 | S2 | 选定主模型＋一项改进 | 针对问题的改变是否有效 |
 | S3 | 去掉／替换改进中的关键设计 | 效果由哪部分带来，是否只是更多算力或更大分辨率 |
 | S4 | 第二类别／外部数据 | 改进是否只适用于一个类别 |
+| 后续补充 | 与任务相关的近年方法，候选如 SegMAN，具体待适配评估 | 相对较新方案是否仍有价值；不要求开题前同时跑完 |
 
 U-Net 与 SegFormer 的差异同时包括预训练、规模、编码器和解码器等。不能仅凭 S0／S1 把全部差异归因于注意力；要研究注意力机制本身，需进一步控制变量。
 
@@ -304,6 +319,8 @@ U-Net 与 SegFormer 的差异同时包括预训练、规模、编码器和解码
 若毕业前还有余力，可补一次小型框检测实践和一次 ONNX 推理体验。扩散、VLM 等兴趣内容按需加入学习笔记，不必都变成论文研究点。
 
 ## 11. 从现在到开题：约 45 小时的可执行安排
+
+**10 月 29 日更新：**本节保留初始倒排预算；最新滚动节点以[阅读与开题准备第 5 节](./2026-10-29-supervised-segmentation-reading-and-proposal-plan.md#5-开题准备范围与回家后的第一步)为准。优先一个基线，11 月 3 日争取闭环，11 月 5 日仍未闭环则压缩第二模型；不要把预算或计划记成已完成。
 
 按历史每周 22 小时和至少 20% 缓冲估算，11 月 15 日前安排约 40—50 小时主动工作较合理。下面的小时数是预算，GPU 自动运行另计，不代表已测工时。
 
