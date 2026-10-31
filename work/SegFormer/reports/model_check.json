@@ -1,0 +1,184 @@
+{
+  "schema": "segformer-lab/model-check/1",
+  "created_at": "2026-10-31 23:00:46 +0800",
+  "device": "NVIDIA GeForce RTX 4070 Laptop GPU",
+  "torch_version": "2.10.0+cu126",
+  "seed": 42,
+  "precision": "float32",
+  "amp_enabled": false,
+  "execution_order": [
+    "memory_batch1",
+    "memory_batch2",
+    "debug_batch2_forward_backward_step"
+  ],
+  "provenance": {
+    "source_sha256": "8e57fa70638ae7aad076ea9ad9603f4e4a87da54e09d2cb698ea26328beb8650",
+    "config_sha256": "9bdf8830e0632619cf4214c33a78fbd4a7fe288993f0043b070bdc6d50c73aa7",
+    "modeling_sha256": "318e0b0a5164eafe7c8393adf64caf1aaeea6e5895ab679ba0171c0fc57a59d3",
+    "model_check_sha256": "eec04e21011b244d0d44c99a8b801ed258390b770678a36338eda74661f106dc",
+    "snapshot_hashes_before": {
+      "config.json": "e2378ac7c7a6981d6bdd1d9ccf29b611264c382afce89c561f39c9291164ff91",
+      "preprocessor_config.json": "d96ab2cb112985c19d5ea32f1d1f2369104fc78b1379f5ce26e33ca8646202a7",
+      "pytorch_model.bin": "4af8348c2a802bf76115d34797ff5ce1d9f110bb8593c22d9b66d8bd7fa227fc",
+      "source.json": "8e57fa70638ae7aad076ea9ad9603f4e4a87da54e09d2cb698ea26328beb8650"
+    },
+    "snapshot_hashes_after": {
+      "config.json": "e2378ac7c7a6981d6bdd1d9ccf29b611264c382afce89c561f39c9291164ff91",
+      "preprocessor_config.json": "d96ab2cb112985c19d5ea32f1d1f2369104fc78b1379f5ce26e33ca8646202a7",
+      "pytorch_model.bin": "4af8348c2a802bf76115d34797ff5ce1d9f110bb8593c22d9b66d8bd7fa227fc",
+      "source.json": "8e57fa70638ae7aad076ea9ad9603f4e4a87da54e09d2cb698ea26328beb8650"
+    }
+  },
+  "forward": {
+    "input_shape": [
+      2,
+      3,
+      512,
+      512
+    ],
+    "label_shape": [
+      2,
+      512,
+      512
+    ],
+    "label_unique": [
+      0,
+      1,
+      255
+    ],
+    "logits_shape": [
+      2,
+      2,
+      128,
+      128
+    ],
+    "upsampled_shape": [
+      2,
+      2,
+      512,
+      512
+    ],
+    "output_stride": 4,
+    "ce_full_padded": 0.6495407223701477,
+    "ce_valid_region": 0.6495407223701477,
+    "ce_difference": 0.0,
+    "padding_rows": [
+      0,
+      61,
+      451,
+      512
+    ]
+  },
+  "backward": {
+    "scope": "one sampled parameter per encoder and decode head",
+    "gradients": [
+      {
+        "name": "segformer.encoder.patch_embeddings.0.proj.weight",
+        "exists": true,
+        "shape": [
+          32,
+          3,
+          7,
+          7
+        ],
+        "grad_norm": 0.11584833264350891,
+        "grad_max_abs": 0.012519188225269318,
+        "grad_finite": true,
+        "grad_nonzero": true,
+        "param_mean": 0.00017377881158608943,
+        "param_std": 0.04396090283989906
+      },
+      {
+        "name": "decode_head.linear_c.0.proj.weight",
+        "exists": true,
+        "shape": [
+          256,
+          32
+        ],
+        "grad_norm": 0.21285952627658844,
+        "grad_max_abs": 0.013742160983383656,
+        "grad_finite": true,
+        "grad_nonzero": true,
+        "param_mean": 0.0001301438023801893,
+        "param_std": 0.02000756375491619
+      }
+    ],
+    "loss_backward_finite": true
+  },
+  "debug_update": {
+    "optimizer": "AdamW(lr=1e-4, weight_decay=0.0), one step",
+    "parameters": [
+      {
+        "name": "segformer.encoder.patch_embeddings.0.proj.weight",
+        "max_abs_delta": 0.00010000169277191162,
+        "mean_abs_delta": 9.999550820793957e-05,
+        "changed": true
+      },
+      {
+        "name": "decode_head.linear_c.0.proj.weight",
+        "max_abs_delta": 0.00010000169277191162,
+        "mean_abs_delta": 9.999580652220175e-05,
+        "changed": true
+      }
+    ],
+    "scope": "one sampled parameter per encoder and decode head; in-memory only"
+  },
+  "memory": {
+    "batch1": {
+      "batch_size": 1,
+      "logits_shape": [
+        1,
+        2,
+        128,
+        128
+      ],
+      "loss": 0.6608553528785706,
+      "seconds": 0.6,
+      "peak_allocated_mib": 426.6,
+      "peak_reserved_mib": 504.0,
+      "device_total_mib": 8187.5,
+      "peak_fraction_percent": 6.16,
+      "precision": "float32",
+      "amp_enabled": false,
+      "scope": "model + inputs + CE forward/backward; no optimizer or optimizer states",
+      "loss_finite": true
+    },
+    "batch2": {
+      "batch_size": 2,
+      "logits_shape": [
+        2,
+        2,
+        128,
+        128
+      ],
+      "loss": 0.6419461965560913,
+      "seconds": 2.865,
+      "peak_allocated_mib": 846.8,
+      "peak_reserved_mib": 1008.0,
+      "device_total_mib": 8187.5,
+      "peak_fraction_percent": 12.31,
+      "precision": "float32",
+      "amp_enabled": false,
+      "scope": "model + inputs + CE forward/backward; no optimizer or optimizer states",
+      "loss_finite": true
+    }
+  },
+  "snapshot_integrity": {
+    "weights": "pytorch_model.bin",
+    "sha256_before": "4af8348c2a802bf76115d34797ff5ce1d9f110bb8593c22d9b66d8bd7fa227fc",
+    "sha256_after": "4af8348c2a802bf76115d34797ff5ce1d9f110bb8593c22d9b66d8bd7fa227fc",
+    "unchanged": true
+  },
+  "acceptance": {
+    "snapshot_files_unchanged": true,
+    "expected_shapes": true,
+    "label_semantics": true,
+    "ce_finite": true,
+    "padding_ce_equal": true,
+    "sampled_gradients_finite_nonzero": true,
+    "sampled_parameters_changed_finitely": true,
+    "loading_accepted": true,
+    "memory_probes_finite_expected_shapes": true
+  },
+  "ok": true
+}

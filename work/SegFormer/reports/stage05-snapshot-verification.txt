@@ -1,0 +1,11 @@
+SegFormer stage 5: model snapshot
+  model : nvidia/mit-b0
+  out   : E:\桌面\AI\segformer_resources\models\mit-b0
+  proxy : inherited process settings
+  mode  : verify-only
+  commit: 80983a413c30d36a39c20203974ae7807835e2b4
+    config.json                     70043 bytes  e2378ac7c7a6981d…
+    preprocessor_config.json          272 bytes  d96ab2cb112985c1…
+    pytorch_model.bin            14380029 bytes  4af8348c2a802bf7…
+  total : 14450344 bytes
+  RESULT: ok

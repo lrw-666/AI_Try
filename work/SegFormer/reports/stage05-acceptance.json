@@ -1,0 +1,195 @@
+{
+  "schema": "segformer-lab/stage05-acceptance/1",
+  "created_at": "2026-10-31T23:11:08.459183+08:00",
+  "git_base": "9f1d1506abc120bff16bf59390c69ea377d79df8",
+  "scope": "offline snapshot verification; pinned local loading; synthetic FP32 GPU forward/backward; in-memory debug update",
+  "unit_tests": {
+    "passed": 101,
+    "log": "reports/stage05-unit-tests.txt"
+  },
+  "snapshot": {
+    "model_id": "nvidia/mit-b0",
+    "revision": "80983a413c30d36a39c20203974ae7807835e2b4",
+    "source_sha256": "8e57fa70638ae7aad076ea9ad9603f4e4a87da54e09d2cb698ea26328beb8650",
+    "files": [
+      {
+        "path": "config.json",
+        "size_bytes": 70043,
+        "sha256": "e2378ac7c7a6981d6bdd1d9ccf29b611264c382afce89c561f39c9291164ff91"
+      },
+      {
+        "path": "preprocessor_config.json",
+        "size_bytes": 272,
+        "sha256": "d96ab2cb112985c19d5ea32f1d1f2369104fc78b1379f5ce26e33ca8646202a7"
+      },
+      {
+        "path": "pytorch_model.bin",
+        "size_bytes": 14380029,
+        "sha256": "4af8348c2a802bf76115d34797ff5ce1d9f110bb8593c22d9b66d8bd7fa227fc"
+      }
+    ],
+    "verified_against_portable_record": true,
+    "unchanged_after_debug": true
+  },
+  "loading_acceptance": {
+    "encoder_exact_fp32": true,
+    "loading_keys_expected": true,
+    "processor_flags": true,
+    "binary_classifier": true,
+    "all_parameters_trainable": true
+  },
+  "runtime_acceptance": {
+    "snapshot_files_unchanged": true,
+    "expected_shapes": true,
+    "label_semantics": true,
+    "ce_finite": true,
+    "padding_ce_equal": true,
+    "sampled_gradients_finite_nonzero": true,
+    "sampled_parameters_changed_finitely": true,
+    "loading_accepted": true,
+    "memory_probes_finite_expected_shapes": true
+  },
+  "encoder": {
+    "checkpoint_file": "pytorch_model.bin",
+    "checkpoint_tensor_count": 194,
+    "checkpoint_param_count": 3576392,
+    "model_encoder_tensor_count": 192,
+    "model_encoder_param_count": 3319392,
+    "matched_exact": 192,
+    "matched_allclose": 0,
+    "max_abs_diff": 0.0,
+    "shape_mismatch": [],
+    "model_encoder_tensors_without_checkpoint": [],
+    "checkpoint_tensors_not_used": [
+      "classifier.bias",
+      "classifier.weight"
+    ],
+    "checkpoint_tensors_not_used_count": 2,
+    "ok": true
+  },
+  "forward": {
+    "input_shape": [
+      2,
+      3,
+      512,
+      512
+    ],
+    "label_shape": [
+      2,
+      512,
+      512
+    ],
+    "label_unique": [
+      0,
+      1,
+      255
+    ],
+    "logits_shape": [
+      2,
+      2,
+      128,
+      128
+    ],
+    "upsampled_shape": [
+      2,
+      2,
+      512,
+      512
+    ],
+    "output_stride": 4,
+    "ce_full_padded": 0.6495407223701477,
+    "ce_valid_region": 0.6495407223701477,
+    "ce_difference": 0.0,
+    "padding_rows": [
+      0,
+      61,
+      451,
+      512
+    ]
+  },
+  "memory": {
+    "batch1": {
+      "batch_size": 1,
+      "logits_shape": [
+        1,
+        2,
+        128,
+        128
+      ],
+      "loss": 0.6608553528785706,
+      "seconds": 0.6,
+      "peak_allocated_mib": 426.6,
+      "peak_reserved_mib": 504.0,
+      "device_total_mib": 8187.5,
+      "peak_fraction_percent": 6.16,
+      "precision": "float32",
+      "amp_enabled": false,
+      "scope": "model + inputs + CE forward/backward; no optimizer or optimizer states",
+      "loss_finite": true
+    },
+    "batch2": {
+      "batch_size": 2,
+      "logits_shape": [
+        2,
+        2,
+        128,
+        128
+      ],
+      "loss": 0.6419461965560913,
+      "seconds": 2.865,
+      "peak_allocated_mib": 846.8,
+      "peak_reserved_mib": 1008.0,
+      "device_total_mib": 8187.5,
+      "peak_fraction_percent": 12.31,
+      "precision": "float32",
+      "amp_enabled": false,
+      "scope": "model + inputs + CE forward/backward; no optimizer or optimizer states",
+      "loss_finite": true
+    }
+  },
+  "seed": 42,
+  "batch_decision": {
+    "initial_batch_size": 2,
+    "gradient_accumulation_steps": 1,
+    "training_memory_validation_stage": 8,
+    "oom_fallback": "batch_size=1, accumulation=2; record new configuration; not fully equivalent to physical B2"
+  },
+  "data_identity": {
+    "protocol": "pcb1-highshot-v2-grouped",
+    "manifest_sha256": {
+      "train": "f1522eb9b474d0acc1d736a391002f5044153208fa10f51eea3dc7df729f65b0",
+      "val": "60a6c6cbf5ed7f5f9e57fb57bb096a5b57db677af5ee73f4fa140ddceaba6191",
+      "test": "4bdc594148f208c7067a66a8cb3b06fde53ebc1f4ab6fda84f08f80383061284"
+    },
+    "reviewed_groups_sha256": "220dae5831d2b72502ecd9832a60fd12d349f4b7bb873b5d78e25c657e533ad8",
+    "fixed_val_preview_sha256": "4f17789dfecc28023003092dddbe3c4683ac781cb469b483e4180c2ebb8f9718",
+    "unchanged_since_stage04": true
+  },
+  "code_sha256": {
+    "segformer_lab/download_model.py": "7859b282d709091bbcadcfa3c232a83e6d6c91a854e04459f75ffa420dc760b6",
+    "segformer_lab/modeling.py": "318e0b0a5164eafe7c8393adf64caf1aaeea6e5895ab679ba0171c0fc57a59d3",
+    "segformer_lab/model_check.py": "eec04e21011b244d0d44c99a8b801ed258390b770678a36338eda74661f106dc",
+    "tests/test_modeling.py": "dd23a1d1731e93bc9199da4a0d21f875a257960442222f537ecd31ab8b61e2dc",
+    "tests/test_download_model.py": "205e1ff98b270ba73a9b0c3cf5eeeb88b068684382a99c8205bdb21e5adbc588",
+    "tests/test_model_acceptance.py": "6d7b78c3f35e3dd705d2a4fb6aa4d419aa55e86bbbc8c6cd0c95ee3c027079fe"
+  },
+  "config_sha256": "9bdf8830e0632619cf4214c33a78fbd4a7fe288993f0043b070bdc6d50c73aa7",
+  "evidence_sha256": {
+    "reports/model_loading.json": "4e54af346545df9f619b3ae0d8122555b82bbe53e066fec6a764eb9377d057ab",
+    "reports/model_check.json": "dcf2b08e563b66aa627fc5124030c8288e19535b2f062107077d3ed8848fba87",
+    "reports/model_source.json": "8e57fa70638ae7aad076ea9ad9603f4e4a87da54e09d2cb698ea26328beb8650",
+    "reports/model_snapshot_check.json": "1b5a9f1412aae495261bef779afab3b2f63f6a761b719abf610e0b31f76f1a34",
+    "reports/model_download.json": "2579d7ca86a72238e30e002dbabfa95110854206ff2baeed94e607720a6dfa9a",
+    "reports/resolved_config.yaml": "fc399e38e4b3ec209302c942b5a8a0acb57f5587e0a6ed6f23286d735658a1c0",
+    "reports/stage05-unit-tests.txt": "1a9cdc3710bb3b24ae3966aacd3132fdb0427bba0a295851762c0632067580e2",
+    "reports/stage05-model-check.txt": "06074bb835e26fa8157ac43cec98e43f911ed7b82fe5c6f87dd3f8539a08d9bb",
+    "reports/stage05-snapshot-verification.txt": "3ba8ab3631811cfe88c7b69c162fff1b0ff42147a8f224943e5b8c4ed74c142d"
+  },
+  "limits": [
+    "No real PCB Dataset or model-quality metrics",
+    "No package install or new weight download during acceptance",
+    "Cross-machine download template not executed on a second machine; replay network paths tested offline",
+    "Sampled gradients/updates: one parameter per encoder and decode head",
+    "Torch allocator peaks are not a full training budget"
+  ]
+}

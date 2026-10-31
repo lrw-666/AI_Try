@@ -1,0 +1,36 @@
+{
+  "schema": "segformer-lab/model-source/1",
+  "model_id": "nvidia/mit-b0",
+  "requested_revision": "main",
+  "revision": "80983a413c30d36a39c20203974ae7807835e2b4",
+  "revision_last_modified": "2023-11-15T07:49:03+00:00",
+  "downloaded_at": "2026-10-31 22:40:11 +0800",
+  "local_dir": "E:\\桌面\\AI\\segformer_resources\\models\\mit-b0",
+  "allow_patterns": [
+    "config.json",
+    "preprocessor_config.json",
+    "pytorch_model.bin",
+    "model.safetensors"
+  ],
+  "huggingface_hub_version": "0.36.2",
+  "download_seconds": 96.96,
+  "files": [
+    {
+      "path": "config.json",
+      "size_bytes": 70043,
+      "sha256": "e2378ac7c7a6981d6bdd1d9ccf29b611264c382afce89c561f39c9291164ff91"
+    },
+    {
+      "path": "preprocessor_config.json",
+      "size_bytes": 272,
+      "sha256": "d96ab2cb112985c19d5ea32f1d1f2369104fc78b1379f5ce26e33ca8646202a7"
+    },
+    {
+      "path": "pytorch_model.bin",
+      "size_bytes": 14380029,
+      "sha256": "4af8348c2a802bf76115d34797ff5ce1d9f110bb8593c22d9b66d8bd7fa227fc"
+    }
+  ],
+  "weights": "pytorch_model.bin",
+  "total_bytes": 14450344
+}

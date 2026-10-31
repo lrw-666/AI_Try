@@ -1,0 +1,132 @@
+test_changed_group_source_is_rejected (tests.test_audit_groups.AuditGroupTests.test_changed_group_source_is_rejected) ... ok
+test_hash_consistent_cross_split_group_is_rejected (tests.test_audit_groups.AuditGroupTests.test_hash_consistent_cross_split_group_is_rejected) ... ok
+test_component_identity_is_not_truncated_to_uint8_or_confused_with_padding (tests.test_data_audit.ComponentRetentionTests.test_component_identity_is_not_truncated_to_uint8_or_confused_with_padding) ... ok
+test_count_decrease_can_be_a_merge_without_any_lost_component (tests.test_data_audit.ComponentRetentionTests.test_count_decrease_can_be_a_merge_without_any_lost_component) ... ok
+test_disappearance_can_be_hidden_by_another_component_splitting (tests.test_data_audit.ComponentRetentionTests.test_disappearance_can_be_hidden_by_another_component_splitting) ... ok
+test_diagonal_touch_is_not_connected (tests.test_data_audit.ComponentTests.test_diagonal_touch_is_not_connected) ... ok
+test_empty_mask (tests.test_data_audit.ComponentTests.test_empty_mask) ... ok
+test_single_blob (tests.test_data_audit.ComponentTests.test_single_blob) ... ok
+test_two_separated_blobs (tests.test_data_audit.ComponentTests.test_two_separated_blobs) ... ok
+test_u_shape_is_one_component (tests.test_data_audit.ComponentTests.test_u_shape_is_one_component) ... ok
+test_baseline_config_loads (tests.test_data_audit.ConfigTests.test_baseline_config_loads) ... ok
+test_missing_section_is_rejected (tests.test_data_audit.ConfigTests.test_missing_section_is_rejected) ... ok
+test_protocol_drift_is_rejected (tests.test_data_audit.ConfigTests.test_protocol_drift_is_rejected) ... ok
+test_different_images_differ (tests.test_data_audit.HashTests.test_different_images_differ) ... ok
+test_hamming_matrix_diagonal_is_zero (tests.test_data_audit.HashTests.test_hamming_matrix_diagonal_is_zero) ... ok
+test_hamming_matrix_matches_manual_popcount (tests.test_data_audit.HashTests.test_hamming_matrix_matches_manual_popcount) ... ok
+test_same_image_same_hash (tests.test_data_audit.HashTests.test_same_image_same_hash) ... ok
+test_binarize_merges_all_non_zero_ids (tests.test_data_audit.LabelTests.test_binarize_merges_all_non_zero_ids) ... ok
+test_letterbox_image_shape_and_pad_colour (tests.test_data_audit.LabelTests.test_letterbox_image_shape_and_pad_colour) ... ok
+test_letterbox_label_keeps_zero (tests.test_data_audit.LabelTests.test_letterbox_label_keeps_zero) ... ok
+test_letterbox_label_uses_255_for_padding (tests.test_data_audit.LabelTests.test_letterbox_label_uses_255_for_padding) ... ok
+test_padding_never_exceeds_canvas (tests.test_data_audit.LetterboxTests.test_padding_never_exceeds_canvas) ... ok
+test_pcb1_image (tests.test_data_audit.LetterboxTests.test_pcb1_image) ... ok
+test_portrait_image_pads_horizontally (tests.test_data_audit.LetterboxTests.test_portrait_image_pads_horizontally) ... ok
+test_square_image_has_no_padding (tests.test_data_audit.LetterboxTests.test_square_image_has_no_padding) ... ok
+test_even_indices_covers_both_ends (tests.test_data_audit.SelectionTests.test_even_indices_covers_both_ends) ... ok
+test_even_indices_is_unique_and_sorted (tests.test_data_audit.SelectionTests.test_even_indices_is_unique_and_sorted) ... ok
+test_even_indices_when_fewer_items_than_wanted (tests.test_data_audit.SelectionTests.test_even_indices_when_fewer_items_than_wanted) ... ok
+test_cli_never_logs_proxy_credentials (tests.test_download_model.DownloadTests.test_cli_never_logs_proxy_credentials) ... ok
+test_complete_snapshot_passes (tests.test_download_model.DownloadTests.test_complete_snapshot_passes) ... ok
+test_existing_identity_changes_and_corruption_fail_without_network_or_write (tests.test_download_model.DownloadTests.test_existing_identity_changes_and_corruption_fail_without_network_or_write) ... ok
+test_existing_manifest_cannot_be_reblessed_against_source_record (tests.test_download_model.DownloadTests.test_existing_manifest_cannot_be_reblessed_against_source_record) ... ok
+test_existing_snapshot_reused_without_network (tests.test_download_model.DownloadTests.test_existing_snapshot_reused_without_network) ... ok
+test_explicit_different_sha_cannot_hide_in_requested_revision (tests.test_download_model.DownloadTests.test_explicit_different_sha_cannot_hide_in_requested_revision) ... ok
+test_explicit_proxy_clears_all_proxy_and_matches_no_proxy (tests.test_download_model.DownloadTests.test_explicit_proxy_clears_all_proxy_and_matches_no_proxy) ... ok
+test_failed_hub_request_does_not_echo_proxy_credentials (tests.test_download_model.DownloadTests.test_failed_hub_request_does_not_echo_proxy_credentials) ... ok
+test_new_directory_defaults_to_pinned_commit (tests.test_download_model.DownloadTests.test_new_directory_defaults_to_pinned_commit) ... ok
+test_rejects_lfs_pointer_even_with_matching_hash (tests.test_download_model.DownloadTests.test_rejects_lfs_pointer_even_with_matching_hash) ... ok
+test_rejects_malformed_identity_and_manifest (tests.test_download_model.DownloadTests.test_rejects_malformed_identity_and_manifest) ... ok
+test_rejects_unrecorded_shadow_weights_and_other_files (tests.test_download_model.DownloadTests.test_rejects_unrecorded_shadow_weights_and_other_files) ... ok
+test_rejects_unsafe_paths_and_invalid_hashes (tests.test_download_model.DownloadTests.test_rejects_unsafe_paths_and_invalid_hashes) ... ok
+test_source_record_hash_mismatch_never_creates_source (tests.test_download_model.DownloadTests.test_source_record_hash_mismatch_never_creates_source) ... ok
+test_source_record_restores_exact_commit_and_hashes (tests.test_download_model.DownloadTests.test_source_record_restores_exact_commit_and_hashes) ... ok
+test_available_dependencies_and_project_prefix_pass (tests.test_env_check.EnvironmentAcceptanceTests.test_available_dependencies_and_project_prefix_pass) ... ok
+test_failed_required_cache_inventory_cannot_pass (tests.test_env_check.EnvironmentAcceptanceTests.test_failed_required_cache_inventory_cannot_pass) ... ok
+test_missing_required_package_cannot_pass (tests.test_env_check.EnvironmentAcceptanceTests.test_missing_required_package_cannot_pass) ... ok
+test_user_site_enabled_cannot_pass (tests.test_env_check.EnvironmentAcceptanceTests.test_user_site_enabled_cannot_pass) ... ok
+test_wrong_prefix_cannot_pass_even_with_no_external_site_packages (tests.test_env_check.EnvironmentAcceptanceTests.test_wrong_prefix_cannot_pass_even_with_no_external_site_packages) ... ok
+test_group_check_rejects_cross_split_or_missing_members (tests.test_group_split.ReviewedGroupSplitTests.test_group_check_rejects_cross_split_or_missing_members) ... ok
+test_group_members_stay_together_with_exact_quotas (tests.test_group_split.ReviewedGroupSplitTests.test_group_members_stay_together_with_exact_quotas) ... ok
+test_indivisible_groups_cannot_silently_change_validation_quota (tests.test_group_split.ReviewedGroupSplitTests.test_indivisible_groups_cannot_silently_change_validation_quota) ... ok
+test_invalid_or_ambiguous_group_members_are_rejected (tests.test_group_split.ReviewedGroupSplitTests.test_invalid_or_ambiguous_group_members_are_rejected) ... ok
+test_official_test_manifest_bytes_do_not_change (tests.test_group_split.ReviewedGroupSplitTests.test_official_test_manifest_bytes_do_not_change) ... ok
+test_row_and_group_order_do_not_change_assignment (tests.test_group_split.ReviewedGroupSplitTests.test_row_and_group_order_do_not_change_assignment) ... ok
+test_ungrouped_protocol_keeps_recorded_v1_csv_bytes (tests.test_group_split.ReviewedGroupSplitTests.test_ungrouped_protocol_keeps_recorded_v1_csv_bytes) ... ok
+test_256_label_uses_scaled_letterbox_and_has_defect (tests.test_model_acceptance.ModelAcceptanceTests.test_256_label_uses_scaled_letterbox_and_has_defect) ... ok
+test_input_size_override_cannot_bypass_fixed_config (tests.test_model_acceptance.ModelAcceptanceTests.test_input_size_override_cannot_bypass_fixed_config) ... ok
+test_load_rejects_missing_source_before_transformers (tests.test_model_acceptance.ModelAcceptanceTests.test_load_rejects_missing_source_before_transformers) ... ok
+test_load_rejects_nonbinary_head_or_wrong_processor (tests.test_model_acceptance.ModelAcceptanceTests.test_load_rejects_nonbinary_head_or_wrong_processor) ... ok
+test_load_rejects_wrong_pinned_identity_before_transformers (tests.test_model_acceptance.ModelAcceptanceTests.test_load_rejects_wrong_pinned_identity_before_transformers) ... ok
+test_loading_unknown_unexpected_is_rejected (tests.test_model_acceptance.ModelAcceptanceTests.test_loading_unknown_unexpected_is_rejected) ... ok
+test_manifest_hash_failure_is_rejected_before_processor (tests.test_model_acceptance.ModelAcceptanceTests.test_manifest_hash_failure_is_rejected_before_processor) ... ok
+test_rejects_changed_encoder_even_below_old_tolerance (tests.test_model_acceptance.ModelAcceptanceTests.test_rejects_changed_encoder_even_below_old_tolerance) ... ok
+test_runtime_gate_rejects_bad_shape_nonfinite_loss_and_missing_gradient (tests.test_model_acceptance.ModelAcceptanceTests.test_runtime_gate_rejects_bad_shape_nonfinite_loss_and_missing_gradient) ... ok
+test_unused_checkpoint_keys_are_complete_and_rejected (tests.test_model_acceptance.ModelAcceptanceTests.test_unused_checkpoint_keys_are_complete_and_rejected) ... ok
+test_binary_weights_are_not_flagged (tests.test_modeling.LfsPointerTests.test_binary_weights_are_not_flagged) ... ok
+test_pointer_is_detected (tests.test_modeling.LfsPointerTests.test_pointer_is_detected) ... ok
+test_head_only_missing_is_acceptable (tests.test_modeling.LoadingKeyTests.test_head_only_missing_is_acceptable) ... ok
+test_mismatched_encoder_key_is_not_acceptable (tests.test_modeling.LoadingKeyTests.test_mismatched_encoder_key_is_not_acceptable) ... ok
+test_missing_encoder_key_is_not_acceptable (tests.test_modeling.LoadingKeyTests.test_missing_encoder_key_is_not_acceptable) ... ok
+test_unexpected_keys_do_not_break_encoder (tests.test_modeling.LoadingKeyTests.test_unexpected_keys_do_not_break_encoder) ... ok
+test_hash_change_is_reported (tests.test_modeling.SnapshotVerificationTests.test_hash_change_is_reported) ... ok
+test_intact_snapshot_passes (tests.test_modeling.SnapshotVerificationTests.test_intact_snapshot_passes) ... ok
+test_missing_file_is_reported (tests.test_modeling.SnapshotVerificationTests.test_missing_file_is_reported) ... ok
+test_size_change_is_reported (tests.test_modeling.SnapshotVerificationTests.test_size_change_is_reported) ... ok
+test_batch_is_deterministic (tests.test_modeling.SyntheticBatchTests.test_batch_is_deterministic) ... ok
+test_padding_rows_are_255 (tests.test_modeling.SyntheticBatchTests.test_padding_rows_are_255) ... ok
+test_shapes_and_label_values (tests.test_modeling.SyntheticBatchTests.test_shapes_and_label_values) ... ok
+test_valid_region_has_no_ignore_value (tests.test_modeling.SyntheticBatchTests.test_valid_region_has_no_ignore_value) ... ok
+test_cli_rejects_different_protocol_before_accessing_sources (tests.test_prepare_data.PreparationWriteSafetyTests.test_cli_rejects_different_protocol_before_accessing_sources) ... usage: python.exe -m unittest [-h] --archive ARCHIVE --source-zip SOURCE_ZIP
+                              [--data-root DATA_ROOT] [--out OUT]
+                              [--category CATEGORY] [--seed SEED]
+                              [--val-normal VAL_NORMAL]
+                              [--val-anomaly VAL_ANOMALY]
+                              [--reviewed-groups REVIEWED_GROUPS]
+                              [--expect-csv-sha256 EXPECT_CSV_SHA256]
+                              [--force-overwrite] [--rewrite-extraction]
+                              [--skip-extraction]
+python.exe -m unittest: error: this entry point implements the fixed PCB1 protocol: category=pcb1, seed=42, val-normal=120, val-anomaly=12; use a separately reviewed protocol for alternatives
+usage: python.exe -m unittest [-h] --archive ARCHIVE --source-zip SOURCE_ZIP
+                              [--data-root DATA_ROOT] [--out OUT]
+                              [--category CATEGORY] [--seed SEED]
+                              [--val-normal VAL_NORMAL]
+                              [--val-anomaly VAL_ANOMALY]
+                              [--reviewed-groups REVIEWED_GROUPS]
+                              [--expect-csv-sha256 EXPECT_CSV_SHA256]
+                              [--force-overwrite] [--rewrite-extraction]
+                              [--skip-extraction]
+python.exe -m unittest: error: this entry point implements the fixed PCB1 protocol: category=pcb1, seed=42, val-normal=120, val-anomaly=12; use a separately reviewed protocol for alternatives
+ok
+test_conflicting_existing_manifest_is_preserved (tests.test_prepare_data.PreparationWriteSafetyTests.test_conflicting_existing_manifest_is_preserved) ... ok
+test_failed_audit_does_not_publish_or_replace_manifests (tests.test_prepare_data.PreparationWriteSafetyTests.test_failed_audit_does_not_publish_or_replace_manifests) ...   RESULT: FAILED - fixed manifests unchanged; see E:\桌面\AI\segformer_resources\tmp\segformer-write-safety-9xthyk1p\manifests\preparation-failure.json
+ok
+test_regular_archive_part_filename_is_not_used_as_scratch (tests.test_prepare_data.PreparationWriteSafetyTests.test_regular_archive_part_filename_is_not_used_as_scratch) ... ok
+test_rewrite_identical_does_not_authorize_different_content (tests.test_prepare_data.PreparationWriteSafetyTests.test_rewrite_identical_does_not_authorize_different_content) ... ok
+test_accepts_relative_member (tests.test_prepare_data.SafeMemberTargetTests.test_accepts_relative_member) ... ok
+test_rejects_absolute_path (tests.test_prepare_data.SafeMemberTargetTests.test_rejects_absolute_path) ... ok
+test_rejects_alternate_data_stream (tests.test_prepare_data.SafeMemberTargetTests.test_rejects_alternate_data_stream) ... ok
+test_rejects_backslash_traversal (tests.test_prepare_data.SafeMemberTargetTests.test_rejects_backslash_traversal) ... ok
+test_rejects_parent_traversal (tests.test_prepare_data.SafeMemberTargetTests.test_rejects_parent_traversal) ... ok
+test_rejects_windows_drive (tests.test_prepare_data.SafeMemberTargetTests.test_rejects_windows_drive) ... ok
+test_input_row_order_does_not_change_membership (tests.test_prepare_data.SplitTests.test_input_row_order_does_not_change_membership) ... ok
+test_is_deterministic (tests.test_prepare_data.SplitTests.test_is_deterministic) ... ok
+test_manifest_rows_are_sorted_and_mask_empty_for_normal (tests.test_prepare_data.SplitTests.test_manifest_rows_are_sorted_and_mask_empty_for_normal) ... ok
+test_matches_reference_permutation (tests.test_prepare_data.SplitTests.test_matches_reference_permutation)
+The documented algorithm must be reproduced exactly, not approximately. ... ok
+test_negative_quota_is_rejected (tests.test_prepare_data.SplitTests.test_negative_quota_is_rejected) ... ok
+test_quota_and_disjoint (tests.test_prepare_data.SplitTests.test_quota_and_disjoint) ... ok
+test_quota_exceeding_available_rows_fails (tests.test_prepare_data.SplitTests.test_quota_exceeding_available_rows_fails) ... ok
+test_duplicate_and_out_of_split_ids_fail (tests.test_preview_ids.FixedPreviewIdsTests.test_duplicate_and_out_of_split_ids_fail) ... ok
+test_existing_file_cannot_be_replaced (tests.test_preview_ids.FixedPreviewIdsTests.test_existing_file_cannot_be_replaced) ... ok
+test_existing_ids_are_reused_without_cli_counts (tests.test_preview_ids.FixedPreviewIdsTests.test_existing_ids_are_reused_without_cli_counts) ... ok
+test_explicit_count_conflict_fails_without_reselection (tests.test_preview_ids.FixedPreviewIdsTests.test_explicit_count_conflict_fails_without_reselection) ... ok
+
+----------------------------------------------------------------------
+Ran 101 tests in 0.763s
+
+OK
+  resolved nvidia/mit-b0@80983a413c30d36a39c20203974ae7807835e2b4 -> 80983a413c30d36a39c20203974ae7807835e2b4
+  resolved nvidia/mit-b0@80983a413c30d36a39c20203974ae7807835e2b4 -> 80983a413c30d36a39c20203974ae7807835e2b4
+  resolved nvidia/mit-b0@80983a413c30d36a39c20203974ae7807835e2b4 -> 80983a413c30d36a39c20203974ae7807835e2b4
+  resolved nvidia/mit-b0@80983a413c30d36a39c20203974ae7807835e2b4 -> 80983a413c30d36a39c20203974ae7807835e2b4

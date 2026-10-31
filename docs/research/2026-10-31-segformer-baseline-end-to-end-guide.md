@@ -399,7 +399,7 @@ Invoke-SegPython -m segformer_lab.preview_data --config 'configs\baseline.yaml' 
 
 让 `download_model.py` 使用 `huggingface_hub`：
 
-1. 查询 `nvidia/mit-b0` 当前提交 SHA，固定为这次实验的 revision。
+1. 本次实验已固定 `nvidia/mit-b0@80983a413c30d36a39c20203974ae7807835e2b4`，继续使用此 commit，不重新跟随 main。完整期望文件表保存在 `work/SegFormer/reports/model_source.json`。
 2. 用该 SHA 下载配置、processor 配置及 PyTorch 权重；不要只下载 README 或 Git LFS 指针。
 3. 存入 `E:\桌面\AI\segformer_resources\models\mit-b0`；保存 `source.json`，包含模型 ID、revision、下载时间与权重 SHA-256。
 4. 后续从本地目录以 `local_files_only=True` 加载，避免每次训练访问网络或悄悄更新权重。
@@ -407,8 +407,10 @@ Invoke-SegPython -m segformer_lab.preview_data --config 'configs\baseline.yaml' 
 模型下载使用官方 Hub 的快照接口即可；网络失败时记录具体错误，允许断点重试或在可联网机器下载完整快照后搬运。不要通过一个普通 Git clone 的小指针文件判断权重已取得。[Hub 下载说明](https://huggingface.co/docs/huggingface_hub/guides/download)
 
 ```powershell
-Invoke-SegPython -m segformer_lab.download_model --model-id 'nvidia/mit-b0' --out 'E:\桌面\AI\segformer_resources\models\mit-b0'
+Invoke-SegPython -m segformer_lab.download_model --model-id 'nvidia/mit-b0' --revision '80983a413c30d36a39c20203974ae7807835e2b4' --source-record 'reports\model_source.json' --out "$SegResource\models\mit-b0"
 ```
+
+本机联网下载若继承了失效代理，给该模块显式传入 `--proxy $SegProxy`（当前有效地址）；离线 `--verify-only` 和本地模型检查无需代理。既有快照校验失败时拒绝覆盖，不通过重写 source.json 绕过。换机恢复及第五阶段复测结果见[第五阶段验收报告](../../work/SegFormer/reports/2026-10-31-stage05-model-loading-and-check.md)。
 
 ### 7.2 加载逻辑示意
 
@@ -508,7 +510,7 @@ Windows 使用 `num_workers=0` 起步。若改为 2，Dataset、collate 函数�
 
 ```yaml
 experiment:
-  name: segformer_b0_pcb1_v1
+  name: segformer_b0_pcb1_v2_grouped
   seed: 42
   output_root: E:/桌面/AI/segformer_resources/runs
 data:

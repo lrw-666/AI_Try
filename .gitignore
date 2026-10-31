@@ -24,3 +24,4 @@ __pycache__/
 /work/SegFormer/**/*.pth
 /work/SegFormer/**/*.ckpt
 /work/SegFormer/**/*.safetensors
+/work/SegFormer/**/pytorch_model.bin

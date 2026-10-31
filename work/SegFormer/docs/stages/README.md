@@ -16,7 +16,7 @@
 | 02 | 独立 Conda 环境与 GPU 验证 | 已验证 | [02-environment-design-and-implementation.md](./02-environment-design-and-implementation.md) | `reports\environment.json`；`audit\after-*`；`requirements-lock.txt`；`audit\negative-control-env-check.json` |
 | 03 | 引入 PCB1、固定划分与标签规则 | 历史 v1 验收通过，当前划分由阶段 04 升为 v2 | [03-data-preparation-design-and-implementation.md](./03-data-preparation-design-and-implementation.md) | `manifests/archive/pcb1_v1`；第三阶段验收报告；原始数据未改 |
 | 04 | 数据审计与可视化 | 已通过验收，v2 分组清单已重出并验证 | [04-data-audit-design-and-implementation.md](./04-data-audit-design-and-implementation.md) | 当前 `manifests`；`reports/data_audit`；第四阶段验收报告；62 项回归；资源目录 18 张五联图 |
-| 05 | 预训练权重与模型搭建 | 未开始 | — | — |
+| 05 | 预训练权重与模型搭建 | 已通过独立验收 | [05-model-design-and-implementation.md](./05-model-design-and-implementation.md) | 快照 `models\mit-b0\source.json`；`reports\model_download.json`、`model_loading.json`、`model_check.json`；[模型加载与核验报告](../../reports/2026-10-31-stage05-model-loading-and-check.md)；`audit\stage05-*.log` |
 | 06 | Dataset、变换与配置 | 未开始 | — | — |
 | 07 | 损失与指标 | 未开始 | — | — |
 | 08 | 20 步冒烟检查 | 未开始 | — | — |
@@ -28,16 +28,17 @@
 
 ## 当前状态一句话
 
-PCB1 的完整解码、固定可视化和 v2 分组协议已通过验收；0042/0043 均在 train，官方 test 未变。512 下没有整张前景变空，但有 19 个微小原始连通域消失，已登记限制。**尚未下载预训练权重、未搭 Dataset、未训练，无性能指标**。
+PCB1 数据（v2 分组划分）与审计已通过验收；`nvidia/mit-b0` 已按 commit `80983a41…` 下载并逐键核验（编码器 192/192 张量数值完全一致），二类 SegFormer-B0 的人工张量前向/反向/一步更新与 batch 1·2 显存均已实测。**尚未实现 Dataset、未训练，无任何性能指标**。
 
-## 阶段 04 关键结论
+## 阶段 05 关键结论
 
-- 图像 1104/1104 完整解码，全部 `1404×1070`、`RGB`；掩码 100/100 完整解码，全部单通道 `L`、尺寸一致。
-- 掩码原始取值并集 `{0,1,2,3,4}`，共 9 种组合；最常见 `{0,2}`（46 张）。
-- 异常前景占比中位数：train 0.188%、val 0.316%、test 0.194%（最大 12.73%）。
-- 512 letterbox：`512×390`，上下各 61 px（23.83%）；前景比例保持率中位 99.94%，但 328 个原始 4 连通域中 19 个消失，涉及 12 张、总原面积 39 px。原图评价不能恢复训练时丢失的细节。
-- 精确重复 0 组；0042/0043 按高可信同实物风险组完整重出 v2，官方 test 字节不变；当前跨集候选 0 对。旧版资料保留，不能混用。
-- 固定预览：`runs\data_preview\{train,val}`，12 + 6 张五联图 + 2 张总览图；`manifests\val_preview_ids.txt` 固定了 3 正常 + 3 异常验证样例。
+- 快照：`nvidia/mit-b0@80983a413c30d36a39c20203974ae7807835e2b4`，3 文件 14 450 344 B，权重 `pytorch_model.bin` 14 380 029 B（SHA-256 `4af8348c…27fc`），非 LFS 指针。
+- 加载：总参数 3 714 658 全可训练；编码器 192/192 张量与检查点**数值完全相等**（max|diff| = 0.0）；检查点剩余的 2 个 `classifier.*` 是 ImageNet 分类头（257 000 参数）。
+- 键分类：missing 16（全部 `decode_head.*`）、unexpected 2、mismatched 0 → 编码器无缺失、无形状冲突；`ignore_mismatched_sizes=True` 本次并未起作用。
+- 前向：`[2,3,512,512]` → logits `[2,2,128,128]`（stride 4）→ 上采样 `[2,2,512,512]`；整幅 CE 与有效区 CE 差 0.0（≤1e-6；255 标签不直接参与归约）。
+- 反向与更新：编码器 `patch_embeddings.0.proj.weight` 梯度范数 0.115848、解码头 `linear_c.0.proj.weight` 0.212860，均非零有限；一步 AdamW 后两者 `max|Δ|`=1.0e-4。
+- 显存（先B1再B2、优化器创建前，FP32/AMP关闭）：504/1008 MiB reserved。接受batch2起步，阶段08再测真实训练。
+- 快照完整性：来源与全部文件先校验哈希，再做加载；调试更新前后全部快照文件及source SHA不变；旧1058MiB数据仅作为历史。
 
 ## 本轮验收
 
@@ -47,9 +48,11 @@ PCB1 的完整解码、固定可视化和 v2 分组协议已通过验收；0042/
 
 [第四阶段验收与完善记录](../../reports/2026-10-31-stage04-acceptance.md)：原 18 张预览逐看；新版 15 张字节未变、另 3 张重新查看；登记正常图 3 个疑点；加入逐原域追踪和分组校验；完整审计 13 项及项目回归 62 项通过。当前证据见 `reports/stage04-acceptance.json`。
 
+[第五阶段模型加载与核验报告](../../reports/2026-10-31-stage05-model-loading-and-check.md)：固定 commit 下载、逐键核对编码器、键分类、有效区 CE、梯度与一步更新、batch 1/2 显存、快照未被覆盖；当前项目回归101项、加载条件5项、运行条件9项通过；已归档小型model_source.json，按固定commit+全文件SHA换机恢复，真实快照留仓库外。
+
 ## 下一步
 
-步骤 5：取得固定 revision 的 `nvidia/mit-b0`，搭建二类 SegFormer-B0，核验预训练 encoder 真加载、分类／解码头初始化和实际梯度、参数变化。人工张量调试不覆盖原始快照；不开始正式训练。可复制指令见[第四阶段验收报告第 7 节](../../reports/2026-10-31-stage04-acceptance.md#7-下一步指令只执行阶段-05)。
+步骤6：实现PCB1 Dataset与DataLoader，复用当前v2、同一geometry与一次processor归一化；检查同步翻转、稳定ID/几何、标签0/1/255和真实B2 eval/no_grad前向。完整指令见[第五阶段验收报告第7节](../../reports/2026-10-31-stage05-model-loading-and-check.md#7-下一步只执行阶段-06)。
 
 ## 维护约定
 
