@@ -1,0 +1,1290 @@
+[
+  {
+    "image": "pcb1/Data/Images/Anomaly/004.JPG",
+    "split": "train",
+    "components_before": 2,
+    "components_after": 2,
+    "largest_component_before": 1109,
+    "largest_component_after": 145,
+    "retained_components": 2,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/005.JPG",
+    "split": "train",
+    "components_before": 2,
+    "components_after": 1,
+    "largest_component_before": 1682,
+    "largest_component_after": 367,
+    "retained_components": 2,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 1
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/006.JPG",
+    "split": "train",
+    "components_before": 2,
+    "components_after": 2,
+    "largest_component_before": 1512,
+    "largest_component_after": 204,
+    "retained_components": 2,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/007.JPG",
+    "split": "train",
+    "components_before": 2,
+    "components_after": 2,
+    "largest_component_before": 1395,
+    "largest_component_after": 187,
+    "retained_components": 2,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/009.JPG",
+    "split": "train",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 4769,
+    "largest_component_after": 630,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/011.JPG",
+    "split": "train",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 3890,
+    "largest_component_after": 520,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/018.JPG",
+    "split": "train",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 2331,
+    "largest_component_after": 313,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/020.JPG",
+    "split": "train",
+    "components_before": 6,
+    "components_after": 6,
+    "largest_component_before": 3404,
+    "largest_component_after": 447,
+    "retained_components": 6,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/021.JPG",
+    "split": "train",
+    "components_before": 3,
+    "components_after": 2,
+    "largest_component_before": 2556,
+    "largest_component_after": 341,
+    "retained_components": 2,
+    "lost_components": [
+      {
+        "component_id": 3,
+        "original_area": 1
+      }
+    ],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/023.JPG",
+    "split": "train",
+    "components_before": 2,
+    "components_after": 2,
+    "largest_component_before": 1518,
+    "largest_component_after": 198,
+    "retained_components": 2,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/024.JPG",
+    "split": "train",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 2485,
+    "largest_component_after": 335,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/025.JPG",
+    "split": "train",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 2146,
+    "largest_component_after": 290,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/030.JPG",
+    "split": "train",
+    "components_before": 2,
+    "components_after": 2,
+    "largest_component_before": 2661,
+    "largest_component_after": 354,
+    "retained_components": 2,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/031.JPG",
+    "split": "train",
+    "components_before": 9,
+    "components_after": 10,
+    "largest_component_before": 2022,
+    "largest_component_after": 269,
+    "retained_components": 9,
+    "lost_components": [],
+    "split_original_components": 2,
+    "merged_output_components": 2
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/036.JPG",
+    "split": "train",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 2981,
+    "largest_component_after": 392,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/037.JPG",
+    "split": "train",
+    "components_before": 7,
+    "components_after": 7,
+    "largest_component_before": 1017,
+    "largest_component_after": 134,
+    "retained_components": 7,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/038.JPG",
+    "split": "train",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 2517,
+    "largest_component_after": 331,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/039.JPG",
+    "split": "train",
+    "components_before": 14,
+    "components_after": 13,
+    "largest_component_before": 3021,
+    "largest_component_after": 406,
+    "retained_components": 14,
+    "lost_components": [],
+    "split_original_components": 1,
+    "merged_output_components": 2
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/041.JPG",
+    "split": "train",
+    "components_before": 2,
+    "components_after": 2,
+    "largest_component_before": 95837,
+    "largest_component_after": 12745,
+    "retained_components": 2,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/043.JPG",
+    "split": "train",
+    "components_before": 2,
+    "components_after": 2,
+    "largest_component_before": 95789,
+    "largest_component_after": 12718,
+    "retained_components": 2,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/044.JPG",
+    "split": "train",
+    "components_before": 2,
+    "components_after": 2,
+    "largest_component_before": 59579,
+    "largest_component_after": 7934,
+    "retained_components": 2,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/047.JPG",
+    "split": "train",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 2769,
+    "largest_component_after": 353,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/050.JPG",
+    "split": "train",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 95936,
+    "largest_component_after": 12747,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/052.JPG",
+    "split": "train",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 2384,
+    "largest_component_after": 300,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/053.JPG",
+    "split": "train",
+    "components_before": 7,
+    "components_after": 8,
+    "largest_component_before": 26060,
+    "largest_component_after": 3470,
+    "retained_components": 6,
+    "lost_components": [
+      {
+        "component_id": 4,
+        "original_area": 1
+      }
+    ],
+    "split_original_components": 1,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/058.JPG",
+    "split": "train",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 1805,
+    "largest_component_after": 238,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/061.JPG",
+    "split": "train",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 1621,
+    "largest_component_after": 217,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/064.JPG",
+    "split": "train",
+    "components_before": 5,
+    "components_after": 5,
+    "largest_component_before": 2076,
+    "largest_component_after": 275,
+    "retained_components": 5,
+    "lost_components": [],
+    "split_original_components": 1,
+    "merged_output_components": 1
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/065.JPG",
+    "split": "train",
+    "components_before": 3,
+    "components_after": 3,
+    "largest_component_before": 933,
+    "largest_component_after": 126,
+    "retained_components": 3,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/066.JPG",
+    "split": "train",
+    "components_before": 2,
+    "components_after": 2,
+    "largest_component_before": 1756,
+    "largest_component_after": 234,
+    "retained_components": 2,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/067.JPG",
+    "split": "train",
+    "components_before": 2,
+    "components_after": 2,
+    "largest_component_before": 1798,
+    "largest_component_after": 240,
+    "retained_components": 2,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/068.JPG",
+    "split": "train",
+    "components_before": 5,
+    "components_after": 5,
+    "largest_component_before": 1654,
+    "largest_component_after": 222,
+    "retained_components": 5,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/070.JPG",
+    "split": "train",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 2975,
+    "largest_component_after": 393,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/071.JPG",
+    "split": "train",
+    "components_before": 21,
+    "components_after": 20,
+    "largest_component_before": 6665,
+    "largest_component_after": 867,
+    "retained_components": 19,
+    "lost_components": [
+      {
+        "component_id": 12,
+        "original_area": 8
+      },
+      {
+        "component_id": 13,
+        "original_area": 2
+      }
+    ],
+    "split_original_components": 2,
+    "merged_output_components": 3
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/073.JPG",
+    "split": "train",
+    "components_before": 9,
+    "components_after": 7,
+    "largest_component_before": 2806,
+    "largest_component_after": 369,
+    "retained_components": 9,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 2
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/076.JPG",
+    "split": "train",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 1604,
+    "largest_component_after": 215,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/078.JPG",
+    "split": "train",
+    "components_before": 2,
+    "components_after": 2,
+    "largest_component_before": 1505,
+    "largest_component_after": 198,
+    "retained_components": 2,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/079.JPG",
+    "split": "train",
+    "components_before": 3,
+    "components_after": 2,
+    "largest_component_before": 1931,
+    "largest_component_after": 259,
+    "retained_components": 2,
+    "lost_components": [
+      {
+        "component_id": 3,
+        "original_area": 1
+      }
+    ],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/080.JPG",
+    "split": "train",
+    "components_before": 4,
+    "components_after": 3,
+    "largest_component_before": 1646,
+    "largest_component_after": 215,
+    "retained_components": 3,
+    "lost_components": [
+      {
+        "component_id": 4,
+        "original_area": 1
+      }
+    ],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/082.JPG",
+    "split": "train",
+    "components_before": 2,
+    "components_after": 2,
+    "largest_component_before": 1794,
+    "largest_component_after": 234,
+    "retained_components": 2,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/084.JPG",
+    "split": "train",
+    "components_before": 5,
+    "components_after": 9,
+    "largest_component_before": 1779,
+    "largest_component_after": 232,
+    "retained_components": 5,
+    "lost_components": [],
+    "split_original_components": 1,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/086.JPG",
+    "split": "train",
+    "components_before": 3,
+    "components_after": 5,
+    "largest_component_before": 3758,
+    "largest_component_after": 446,
+    "retained_components": 2,
+    "lost_components": [
+      {
+        "component_id": 3,
+        "original_area": 1
+      }
+    ],
+    "split_original_components": 1,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/088.JPG",
+    "split": "train",
+    "components_before": 8,
+    "components_after": 9,
+    "largest_component_before": 1567,
+    "largest_component_after": 204,
+    "retained_components": 6,
+    "lost_components": [
+      {
+        "component_id": 2,
+        "original_area": 1
+      },
+      {
+        "component_id": 3,
+        "original_area": 1
+      }
+    ],
+    "split_original_components": 3,
+    "merged_output_components": 1
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/091.JPG",
+    "split": "train",
+    "components_before": 5,
+    "components_after": 16,
+    "largest_component_before": 4866,
+    "largest_component_after": 598,
+    "retained_components": 5,
+    "lost_components": [],
+    "split_original_components": 2,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/094.JPG",
+    "split": "train",
+    "components_before": 6,
+    "components_after": 15,
+    "largest_component_before": 2043,
+    "largest_component_after": 232,
+    "retained_components": 6,
+    "lost_components": [],
+    "split_original_components": 4,
+    "merged_output_components": 2
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/095.JPG",
+    "split": "train",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 2106,
+    "largest_component_after": 283,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/096.JPG",
+    "split": "train",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 2655,
+    "largest_component_after": 352,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/099.JPG",
+    "split": "train",
+    "components_before": 2,
+    "components_after": 2,
+    "largest_component_before": 3271,
+    "largest_component_after": 430,
+    "retained_components": 2,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/010.JPG",
+    "split": "val",
+    "components_before": 3,
+    "components_after": 2,
+    "largest_component_before": 3402,
+    "largest_component_after": 454,
+    "retained_components": 2,
+    "lost_components": [
+      {
+        "component_id": 3,
+        "original_area": 1
+      }
+    ],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/016.JPG",
+    "split": "val",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 3542,
+    "largest_component_after": 465,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/019.JPG",
+    "split": "val",
+    "components_before": 5,
+    "components_after": 5,
+    "largest_component_before": 3042,
+    "largest_component_after": 407,
+    "retained_components": 5,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/033.JPG",
+    "split": "val",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 2393,
+    "largest_component_after": 317,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/042.JPG",
+    "split": "val",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 15523,
+    "largest_component_after": 2080,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/045.JPG",
+    "split": "val",
+    "components_before": 2,
+    "components_after": 2,
+    "largest_component_before": 59476,
+    "largest_component_after": 7904,
+    "retained_components": 2,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/046.JPG",
+    "split": "val",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 95116,
+    "largest_component_after": 12641,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/051.JPG",
+    "split": "val",
+    "components_before": 5,
+    "components_after": 5,
+    "largest_component_before": 2175,
+    "largest_component_after": 294,
+    "retained_components": 5,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/059.JPG",
+    "split": "val",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 79992,
+    "largest_component_after": 10631,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/081.JPG",
+    "split": "val",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 6373,
+    "largest_component_after": 843,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/087.JPG",
+    "split": "val",
+    "components_before": 6,
+    "components_after": 3,
+    "largest_component_before": 877,
+    "largest_component_after": 296,
+    "retained_components": 6,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 1
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/090.JPG",
+    "split": "val",
+    "components_before": 4,
+    "components_after": 3,
+    "largest_component_before": 3842,
+    "largest_component_after": 297,
+    "retained_components": 2,
+    "lost_components": [
+      {
+        "component_id": 2,
+        "original_area": 1
+      },
+      {
+        "component_id": 3,
+        "original_area": 1
+      }
+    ],
+    "split_original_components": 1,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/000.JPG",
+    "split": "test",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 1524,
+    "largest_component_after": 203,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/001.JPG",
+    "split": "test",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 1687,
+    "largest_component_after": 221,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/002.JPG",
+    "split": "test",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 1702,
+    "largest_component_after": 227,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/003.JPG",
+    "split": "test",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 1618,
+    "largest_component_after": 219,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/008.JPG",
+    "split": "test",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 3739,
+    "largest_component_after": 498,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/012.JPG",
+    "split": "test",
+    "components_before": 2,
+    "components_after": 2,
+    "largest_component_before": 1919,
+    "largest_component_after": 252,
+    "retained_components": 2,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/013.JPG",
+    "split": "test",
+    "components_before": 4,
+    "components_after": 4,
+    "largest_component_before": 1951,
+    "largest_component_after": 261,
+    "retained_components": 4,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/014.JPG",
+    "split": "test",
+    "components_before": 3,
+    "components_after": 3,
+    "largest_component_before": 1618,
+    "largest_component_after": 213,
+    "retained_components": 3,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/015.JPG",
+    "split": "test",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 2392,
+    "largest_component_after": 314,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/017.JPG",
+    "split": "test",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 2948,
+    "largest_component_after": 400,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/022.JPG",
+    "split": "test",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 3140,
+    "largest_component_after": 420,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/026.JPG",
+    "split": "test",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 2271,
+    "largest_component_after": 297,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/027.JPG",
+    "split": "test",
+    "components_before": 26,
+    "components_after": 28,
+    "largest_component_before": 2115,
+    "largest_component_after": 284,
+    "retained_components": 25,
+    "lost_components": [
+      {
+        "component_id": 11,
+        "original_area": 8
+      }
+    ],
+    "split_original_components": 5,
+    "merged_output_components": 3
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/028.JPG",
+    "split": "test",
+    "components_before": 2,
+    "components_after": 2,
+    "largest_component_before": 1518,
+    "largest_component_after": 203,
+    "retained_components": 2,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/029.JPG",
+    "split": "test",
+    "components_before": 2,
+    "components_after": 2,
+    "largest_component_before": 2569,
+    "largest_component_after": 339,
+    "retained_components": 2,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/032.JPG",
+    "split": "test",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 2908,
+    "largest_component_after": 386,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/034.JPG",
+    "split": "test",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 4049,
+    "largest_component_after": 540,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/035.JPG",
+    "split": "test",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 2451,
+    "largest_component_after": 329,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/040.JPG",
+    "split": "test",
+    "components_before": 6,
+    "components_after": 8,
+    "largest_component_before": 57992,
+    "largest_component_after": 7715,
+    "retained_components": 6,
+    "lost_components": [],
+    "split_original_components": 1,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/048.JPG",
+    "split": "test",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 1631,
+    "largest_component_after": 216,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/049.JPG",
+    "split": "test",
+    "components_before": 4,
+    "components_after": 4,
+    "largest_component_before": 2694,
+    "largest_component_after": 363,
+    "retained_components": 4,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/054.JPG",
+    "split": "test",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 59252,
+    "largest_component_after": 7875,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/055.JPG",
+    "split": "test",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 58847,
+    "largest_component_after": 7828,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/056.JPG",
+    "split": "test",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 29268,
+    "largest_component_after": 3883,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/057.JPG",
+    "split": "test",
+    "components_before": 2,
+    "components_after": 2,
+    "largest_component_before": 1806,
+    "largest_component_after": 229,
+    "retained_components": 2,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/060.JPG",
+    "split": "test",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 1395,
+    "largest_component_after": 182,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/062.JPG",
+    "split": "test",
+    "components_before": 8,
+    "components_after": 9,
+    "largest_component_before": 1642,
+    "largest_component_after": 223,
+    "retained_components": 8,
+    "lost_components": [],
+    "split_original_components": 1,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/063.JPG",
+    "split": "test",
+    "components_before": 2,
+    "components_after": 2,
+    "largest_component_before": 2620,
+    "largest_component_after": 350,
+    "retained_components": 2,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/069.JPG",
+    "split": "test",
+    "components_before": 3,
+    "components_after": 3,
+    "largest_component_before": 4373,
+    "largest_component_after": 578,
+    "retained_components": 3,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/072.JPG",
+    "split": "test",
+    "components_before": 2,
+    "components_after": 2,
+    "largest_component_before": 1136,
+    "largest_component_after": 150,
+    "retained_components": 2,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/074.JPG",
+    "split": "test",
+    "components_before": 6,
+    "components_after": 5,
+    "largest_component_before": 2438,
+    "largest_component_after": 320,
+    "retained_components": 6,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 1
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/075.JPG",
+    "split": "test",
+    "components_before": 4,
+    "components_after": 4,
+    "largest_component_before": 1323,
+    "largest_component_after": 172,
+    "retained_components": 4,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/077.JPG",
+    "split": "test",
+    "components_before": 1,
+    "components_after": 1,
+    "largest_component_before": 7762,
+    "largest_component_after": 1025,
+    "retained_components": 1,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/083.JPG",
+    "split": "test",
+    "components_before": 2,
+    "components_after": 2,
+    "largest_component_before": 1167,
+    "largest_component_after": 156,
+    "retained_components": 2,
+    "lost_components": [],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/085.JPG",
+    "split": "test",
+    "components_before": 2,
+    "components_after": 1,
+    "largest_component_before": 2281,
+    "largest_component_after": 298,
+    "retained_components": 1,
+    "lost_components": [
+      {
+        "component_id": 2,
+        "original_area": 1
+      }
+    ],
+    "split_original_components": 0,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/089.JPG",
+    "split": "test",
+    "components_before": 4,
+    "components_after": 6,
+    "largest_component_before": 4295,
+    "largest_component_after": 571,
+    "retained_components": 4,
+    "lost_components": [],
+    "split_original_components": 2,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/092.JPG",
+    "split": "test",
+    "components_before": 6,
+    "components_after": 28,
+    "largest_component_before": 4274,
+    "largest_component_after": 591,
+    "retained_components": 6,
+    "lost_components": [],
+    "split_original_components": 4,
+    "merged_output_components": 1
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/093.JPG",
+    "split": "test",
+    "components_before": 4,
+    "components_after": 19,
+    "largest_component_before": 1335,
+    "largest_component_after": 80,
+    "retained_components": 4,
+    "lost_components": [],
+    "split_original_components": 2,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/097.JPG",
+    "split": "test",
+    "components_before": 14,
+    "components_after": 14,
+    "largest_component_before": 1929,
+    "largest_component_after": 253,
+    "retained_components": 9,
+    "lost_components": [
+      {
+        "component_id": 3,
+        "original_area": 1
+      },
+      {
+        "component_id": 7,
+        "original_area": 2
+      },
+      {
+        "component_id": 9,
+        "original_area": 2
+      },
+      {
+        "component_id": 10,
+        "original_area": 2
+      },
+      {
+        "component_id": 12,
+        "original_area": 3
+      }
+    ],
+    "split_original_components": 2,
+    "merged_output_components": 0
+  },
+  {
+    "image": "pcb1/Data/Images/Anomaly/098.JPG",
+    "split": "test",
+    "components_before": 4,
+    "components_after": 6,
+    "largest_component_before": 2766,
+    "largest_component_after": 374,
+    "retained_components": 4,
+    "lost_components": [],
+    "split_original_components": 1,
+    "merged_output_components": 0
+  }
+]

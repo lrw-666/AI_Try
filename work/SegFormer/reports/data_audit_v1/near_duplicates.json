@@ -1,0 +1,18 @@
+[
+  {
+    "pair": "train-val",
+    "correlation": 0.994686,
+    "mean_abs_diff": 3.031,
+    "dhash_distance": 2,
+    "left": {
+      "split": "train",
+      "label": "normal",
+      "image": "pcb1/Data/Images/Normal/0042.JPG"
+    },
+    "right": {
+      "split": "val",
+      "label": "normal",
+      "image": "pcb1/Data/Images/Normal/0043.JPG"
+    }
+  }
+]

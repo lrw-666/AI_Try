@@ -1,0 +1,616 @@
+{
+  "schema": "segformer-lab/data-audit/2",
+  "package_version": "0.1.0",
+  "created_at": "2026-10-31 22:04:48 +0800",
+  "config": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\configs\\baseline.yaml",
+  "data_root": "E:\\桌面\\AI\\segformer_resources\\data\\visa",
+  "input_size": 512,
+  "ignore_index": 255,
+  "counts": {
+    "train": {
+      "normal": 482,
+      "anomaly": 48,
+      "total": 530
+    },
+    "val": {
+      "normal": 120,
+      "anomaly": 12,
+      "total": 132
+    },
+    "test": {
+      "normal": 402,
+      "anomaly": 40,
+      "total": 442
+    }
+  },
+  "manifest_check": {
+    "split_meta": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\split_meta.json",
+    "split_meta_sha256": "1edfb92c78af2400925765f96ed36f6c4193141666f022166466fab7f5aaf29e",
+    "manifests": {
+      "train": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\train.csv",
+        "sha256": "b26077266a59efdf45306bd9de0ce726aca52db4d7d50ea3ae284eaa92130d53",
+        "expected": "b26077266a59efdf45306bd9de0ce726aca52db4d7d50ea3ae284eaa92130d53",
+        "match": true,
+        "rows": 530
+      },
+      "val": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\val.csv",
+        "sha256": "7335d8c82b8997bffa06af59283f1ade7ac18949bfdec14973cd054f3161bb9c",
+        "expected": "7335d8c82b8997bffa06af59283f1ade7ac18949bfdec14973cd054f3161bb9c",
+        "match": true,
+        "rows": 132
+      },
+      "test": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\test.csv",
+        "sha256": "4bdc594148f208c7067a66a8cb3b06fde53ebc1f4ab6fda84f08f80383061284",
+        "expected": "4bdc594148f208c7067a66a8cb3b06fde53ebc1f4ab6fda84f08f80383061284",
+        "match": true,
+        "rows": 442
+      }
+    },
+    "ok": true,
+    "official_csv": {
+      "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\official_2cls_highshot.csv",
+      "sha256": "c3331eede15f2da8a75b380d4fbfb24f75ee036ec9a25147eca898da6e972f09",
+      "expected": "c3331eede15f2da8a75b380d4fbfb24f75ee036ec9a25147eca898da6e972f09",
+      "match": true
+    }
+  },
+  "decode": {
+    "images_total": 1104,
+    "images_ok": 1104,
+    "masks_total": 100,
+    "masks_ok": 100,
+    "failures": []
+  },
+  "image_sizes": {
+    "1404x1070": 1104
+  },
+  "image_modes": {
+    "RGB": 1104
+  },
+  "mask_modes": {
+    "L": 100
+  },
+  "mask_size_mismatch": [],
+  "mask_raw_value_sets": {
+    "{0,1}": 14,
+    "{0,1,2}": 1,
+    "{0,2}": 46,
+    "{0,2,3}": 5,
+    "{0,4}": 17,
+    "{0,2,3,4}": 1,
+    "{0,3}": 14,
+    "{0,2,4}": 1,
+    "{0,3,4}": 1
+  },
+  "mask_raw_value_union": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "anomaly_foreground_percent": {
+    "train": {
+      "count": 48,
+      "min": 0.07655,
+      "p10": 0.112629,
+      "median": 0.187648,
+      "mean": 0.993403,
+      "p90": 0.522339,
+      "max": 12.725857
+    },
+    "val": {
+      "count": 12,
+      "min": 0.154964,
+      "p10": 0.159291,
+      "median": 0.315787,
+      "mean": 1.89295,
+      "p90": 6.331443,
+      "max": 7.893602
+    },
+    "test": {
+      "count": 40,
+      "min": 0.090529,
+      "p10": 0.107703,
+      "median": 0.193939,
+      "mean": 0.568017,
+      "p90": 0.696208,
+      "max": 4.955601
+    }
+  },
+  "anomaly_foreground_percent_512": {
+    "train": {
+      "count": 48,
+      "min": 0.077624,
+      "p10": 0.112179,
+      "median": 0.1873,
+      "mean": 0.99264,
+      "p90": 0.517829,
+      "max": 12.714844
+    },
+    "val": {
+      "count": 12,
+      "min": 0.156751,
+      "p10": 0.158754,
+      "median": 0.315505,
+      "mean": 1.893404,
+      "p90": 6.330629,
+      "max": 7.894131
+    },
+    "test": {
+      "count": 40,
+      "min": 0.089643,
+      "p10": 0.108173,
+      "median": 0.196064,
+      "mean": 0.567959,
+      "p90": 0.683093,
+      "max": 4.961438
+    }
+  },
+  "empty_foreground": [],
+  "anomaly_without_mask": [],
+  "normal_with_mask_field": [],
+  "letterbox": {
+    "padding_fraction_percent": {
+      "count": 1104,
+      "min": 23.828125,
+      "p10": 23.828125,
+      "median": 23.828125,
+      "mean": 23.828125,
+      "p90": 23.828125,
+      "max": 23.828125
+    },
+    "example": {
+      "width": 1404,
+      "height": 1070,
+      "scale": 0.364672,
+      "new_w": 512,
+      "new_h": 390,
+      "pad_left": 0,
+      "pad_top": 61,
+      "pad_right": 0,
+      "pad_bottom": 61
+    }
+  },
+  "transform_512": {
+    "foreground_lost_images": 0,
+    "foreground_lost_examples": [],
+    "component_tracking_method": "Original 4-connected regions receive int32 ids and are sampled with the same Pillow NEAREST resize as the binary label, excluding padding. Retained means at least one sampled output pixel keeps the original id. Split/merge counts come from original-id/output-component overlaps, not net component counts. Every output foreground pixel inherits an original id; count increases are not newly created defect instances.",
+    "component_count_decreased_images": 12,
+    "component_count_increased_images": 14,
+    "component_count_unchanged_images": 74,
+    "component_count_decrease_examples": [
+      {
+        "image": "pcb1/Data/Images/Anomaly/005.JPG",
+        "split": "train",
+        "components_before": 2,
+        "components_after": 1,
+        "largest_component_before": 1682,
+        "largest_component_after": 367,
+        "retained_components": 2,
+        "lost_components": [],
+        "split_original_components": 0,
+        "merged_output_components": 1
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/021.JPG",
+        "split": "train",
+        "components_before": 3,
+        "components_after": 2,
+        "largest_component_before": 2556,
+        "largest_component_after": 341,
+        "retained_components": 2,
+        "lost_components": [
+          {
+            "component_id": 3,
+            "original_area": 1
+          }
+        ],
+        "split_original_components": 0,
+        "merged_output_components": 0
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/039.JPG",
+        "split": "train",
+        "components_before": 14,
+        "components_after": 13,
+        "largest_component_before": 3021,
+        "largest_component_after": 406,
+        "retained_components": 14,
+        "lost_components": [],
+        "split_original_components": 1,
+        "merged_output_components": 2
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/071.JPG",
+        "split": "train",
+        "components_before": 21,
+        "components_after": 20,
+        "largest_component_before": 6665,
+        "largest_component_after": 867,
+        "retained_components": 19,
+        "lost_components": [
+          {
+            "component_id": 12,
+            "original_area": 8
+          },
+          {
+            "component_id": 13,
+            "original_area": 2
+          }
+        ],
+        "split_original_components": 2,
+        "merged_output_components": 3
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/073.JPG",
+        "split": "train",
+        "components_before": 9,
+        "components_after": 7,
+        "largest_component_before": 2806,
+        "largest_component_after": 369,
+        "retained_components": 9,
+        "lost_components": [],
+        "split_original_components": 0,
+        "merged_output_components": 2
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/079.JPG",
+        "split": "train",
+        "components_before": 3,
+        "components_after": 2,
+        "largest_component_before": 1931,
+        "largest_component_after": 259,
+        "retained_components": 2,
+        "lost_components": [
+          {
+            "component_id": 3,
+            "original_area": 1
+          }
+        ],
+        "split_original_components": 0,
+        "merged_output_components": 0
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/080.JPG",
+        "split": "train",
+        "components_before": 4,
+        "components_after": 3,
+        "largest_component_before": 1646,
+        "largest_component_after": 215,
+        "retained_components": 3,
+        "lost_components": [
+          {
+            "component_id": 4,
+            "original_area": 1
+          }
+        ],
+        "split_original_components": 0,
+        "merged_output_components": 0
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/010.JPG",
+        "split": "val",
+        "components_before": 3,
+        "components_after": 2,
+        "largest_component_before": 3402,
+        "largest_component_after": 454,
+        "retained_components": 2,
+        "lost_components": [
+          {
+            "component_id": 3,
+            "original_area": 1
+          }
+        ],
+        "split_original_components": 0,
+        "merged_output_components": 0
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/087.JPG",
+        "split": "val",
+        "components_before": 6,
+        "components_after": 3,
+        "largest_component_before": 877,
+        "largest_component_after": 296,
+        "retained_components": 6,
+        "lost_components": [],
+        "split_original_components": 0,
+        "merged_output_components": 1
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/090.JPG",
+        "split": "val",
+        "components_before": 4,
+        "components_after": 3,
+        "largest_component_before": 3842,
+        "largest_component_after": 297,
+        "retained_components": 2,
+        "lost_components": [
+          {
+            "component_id": 2,
+            "original_area": 1
+          },
+          {
+            "component_id": 3,
+            "original_area": 1
+          }
+        ],
+        "split_original_components": 1,
+        "merged_output_components": 0
+      }
+    ],
+    "original_components_total": 328,
+    "original_components_retained": 309,
+    "original_components_lost": 19,
+    "images_with_lost_original_components": 12,
+    "lost_original_component_examples": [
+      {
+        "image": "pcb1/Data/Images/Anomaly/021.JPG",
+        "split": "train",
+        "components_before": 3,
+        "components_after": 2,
+        "largest_component_before": 2556,
+        "largest_component_after": 341,
+        "retained_components": 2,
+        "lost_components": [
+          {
+            "component_id": 3,
+            "original_area": 1
+          }
+        ],
+        "split_original_components": 0,
+        "merged_output_components": 0
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/053.JPG",
+        "split": "train",
+        "components_before": 7,
+        "components_after": 8,
+        "largest_component_before": 26060,
+        "largest_component_after": 3470,
+        "retained_components": 6,
+        "lost_components": [
+          {
+            "component_id": 4,
+            "original_area": 1
+          }
+        ],
+        "split_original_components": 1,
+        "merged_output_components": 0
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/071.JPG",
+        "split": "train",
+        "components_before": 21,
+        "components_after": 20,
+        "largest_component_before": 6665,
+        "largest_component_after": 867,
+        "retained_components": 19,
+        "lost_components": [
+          {
+            "component_id": 12,
+            "original_area": 8
+          },
+          {
+            "component_id": 13,
+            "original_area": 2
+          }
+        ],
+        "split_original_components": 2,
+        "merged_output_components": 3
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/079.JPG",
+        "split": "train",
+        "components_before": 3,
+        "components_after": 2,
+        "largest_component_before": 1931,
+        "largest_component_after": 259,
+        "retained_components": 2,
+        "lost_components": [
+          {
+            "component_id": 3,
+            "original_area": 1
+          }
+        ],
+        "split_original_components": 0,
+        "merged_output_components": 0
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/080.JPG",
+        "split": "train",
+        "components_before": 4,
+        "components_after": 3,
+        "largest_component_before": 1646,
+        "largest_component_after": 215,
+        "retained_components": 3,
+        "lost_components": [
+          {
+            "component_id": 4,
+            "original_area": 1
+          }
+        ],
+        "split_original_components": 0,
+        "merged_output_components": 0
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/086.JPG",
+        "split": "train",
+        "components_before": 3,
+        "components_after": 5,
+        "largest_component_before": 3758,
+        "largest_component_after": 446,
+        "retained_components": 2,
+        "lost_components": [
+          {
+            "component_id": 3,
+            "original_area": 1
+          }
+        ],
+        "split_original_components": 1,
+        "merged_output_components": 0
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/088.JPG",
+        "split": "train",
+        "components_before": 8,
+        "components_after": 9,
+        "largest_component_before": 1567,
+        "largest_component_after": 204,
+        "retained_components": 6,
+        "lost_components": [
+          {
+            "component_id": 2,
+            "original_area": 1
+          },
+          {
+            "component_id": 3,
+            "original_area": 1
+          }
+        ],
+        "split_original_components": 3,
+        "merged_output_components": 1
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/010.JPG",
+        "split": "val",
+        "components_before": 3,
+        "components_after": 2,
+        "largest_component_before": 3402,
+        "largest_component_after": 454,
+        "retained_components": 2,
+        "lost_components": [
+          {
+            "component_id": 3,
+            "original_area": 1
+          }
+        ],
+        "split_original_components": 0,
+        "merged_output_components": 0
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/090.JPG",
+        "split": "val",
+        "components_before": 4,
+        "components_after": 3,
+        "largest_component_before": 3842,
+        "largest_component_after": 297,
+        "retained_components": 2,
+        "lost_components": [
+          {
+            "component_id": 2,
+            "original_area": 1
+          },
+          {
+            "component_id": 3,
+            "original_area": 1
+          }
+        ],
+        "split_original_components": 1,
+        "merged_output_components": 0
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/027.JPG",
+        "split": "test",
+        "components_before": 26,
+        "components_after": 28,
+        "largest_component_before": 2115,
+        "largest_component_after": 284,
+        "retained_components": 25,
+        "lost_components": [
+          {
+            "component_id": 11,
+            "original_area": 8
+          }
+        ],
+        "split_original_components": 5,
+        "merged_output_components": 3
+      }
+    ],
+    "split_original_components": 37,
+    "merged_output_components": 20,
+    "area_ratio_percent": {
+      "count": 100,
+      "min": 94.67396,
+      "p10": 98.558275,
+      "median": 99.93862,
+      "mean": 99.871666,
+      "p90": 101.403005,
+      "max": 104.26173
+    }
+  },
+  "duplicates": {
+    "exact_groups": 0,
+    "exact_cross_split_groups": 0,
+    "exact_group_examples": []
+  },
+  "near_duplicates": {
+    "method": "every cross-split pair compared on a 64x64 grayscale thumbnail: Pearson correlation >= 0.985 and mean absolute difference <= 6.0; dHash distance is reported per candidate as supporting evidence",
+    "pairs_compared": 362564,
+    "correlation_stats_sampled_every_37th": {
+      "count": 9800,
+      "min": 0.198113,
+      "p10": 0.330609,
+      "median": 0.553366,
+      "mean": 0.574333,
+      "p90": 0.873449,
+      "max": 0.969638
+    },
+    "dhash_distance_histogram_le8": {
+      "0": 16,
+      "1": 148,
+      "2": 812,
+      "3": 2544,
+      "4": 6179,
+      "5": 12097,
+      "6": 18347,
+      "7": 24104,
+      "8": 26971
+    },
+    "candidate_pairs": 1,
+    "by_pair": {
+      "train-val": 1
+    },
+    "closest": [
+      {
+        "pair": "train-val",
+        "correlation": 0.994686,
+        "mean_abs_diff": 3.031,
+        "dhash_distance": 2,
+        "left": {
+          "split": "train",
+          "label": "normal",
+          "image": "pcb1/Data/Images/Normal/0042.JPG"
+        },
+        "right": {
+          "split": "val",
+          "label": "normal",
+          "image": "pcb1/Data/Images/Normal/0043.JPG"
+        }
+      }
+    ],
+    "note": "review leads only; the split is never changed automatically"
+  },
+  "normal_zero_mask_rows": 1004,
+  "normal_label_failures": [],
+  "anomaly_rows": 100,
+  "checks": {
+    "manifests_match_split_meta": true,
+    "all_images_decoded": true,
+    "single_image_size": true,
+    "images_rgb": true,
+    "masks_single_channel_L": true,
+    "mask_sizes_match": true,
+    "all_anomalies_have_mask": true,
+    "no_empty_foreground": true,
+    "normals_have_no_mask_field": true,
+    "normal_512_labels_zero_inside_ignore_outside": true,
+    "foreground_survives_512": true,
+    "counts_match_protocol": true
+  },
+  "ok": true,
+  "elapsed_seconds": 19.26
+}

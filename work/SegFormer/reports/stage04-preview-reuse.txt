@@ -1,0 +1,13 @@
+  selection : fixed ids from E:\桌面\AI\AI_Try\work\SegFormer\manifests\val_preview_ids.txt
+SegFormer stage 4: preview (val)
+  config : E:\桌面\AI\AI_Try\work\SegFormer\configs\baseline.yaml
+  output : E:\桌面\AI\segformer_resources\runs\data_preview\val
+  samples: 6
+  rendered val_normal_0011_panel.png fg=0 (0.000%)
+  rendered val_normal_0455_panel.png fg=0 (0.000%)
+  rendered val_normal_0983_panel.png fg=0 (0.000%)
+  rendered val_anomaly_087_panel.png fg=2328 (0.155%)
+  rendered val_anomaly_010_panel.png fg=5153 (0.343%)
+  rendered val_anomaly_045_panel.png fg=118584 (7.894%)
+  contact sheet: E:\桌面\AI\segformer_resources\runs\data_preview\val\val_contact_sheet.png
+  RESULT: ok (7.49 s)

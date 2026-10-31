@@ -308,11 +308,13 @@ Invoke-SegPip freeze | Set-Content -LiteralPath 'requirements-lock.txt' -Encodin
 
 ### 5.2 固定验证集划法
 
-为避免“20%”的不同舍入实现带来跨端差异，明确配额：
+**2026-10-31 第四阶段验收更新：当前采用 v2 分组协议。**Normal/0042 与 0043 存在高可信同实物／固定场景近重复风险，已作为不可分组重出完整清单，两张都在 train。原 v1 文件级随机划分保留在 `work/SegFormer/manifests/archive/pcb1_v1`；当前实验以 `manifests/split_meta.json` 及三份 CSV 哈希为准。详见[第四阶段验收](../../work/SegFormer/reports/2026-10-31-stage04-acceptance.md)。
 
-- 按 `normal`、`anomaly` 两组分别对官方训练路径排序。
-- 使用一个 `numpy.random.default_rng(42)`，依次对 normal、anomaly 组生成排列。
-- 正常组取前 120 张、异常组取前 12 张作为验证；余下作为训练。
+为避免“20%”的不同舍入实现带来跨端差异，配额保持不变，当前规则为：
+
+- 只在官方 train 内按 `manifests/reviewed_groups.json` 建立不可分组，其余图片为单例；每组必须同类。
+- 按组内最小路径排序；使用一个 `numpy.random.default_rng(42)`，先排列 normal 组，再排列 anomaly 组。
+- 顺序选取能放进剩余验证配额的整组，精确填满正常 120 张、异常 12 张；若凑不齐就失败，不能拆组；余下作为训练。
 - 保存清单后按 `image` 排序，文件编码 UTF-8；记录算法、配额、随机种子和 NumPy 版本。
 - 正式运行以**保存的清单及其 SHA-256**为准，不能每轮重新随机切分。
 
@@ -339,7 +341,7 @@ pcb1,train,anomaly,pcb1/Data/Images/Anomaly/053.JPG,pcb1/Data/Masks/Anomaly/053.
 Agent 实现模块后，从 `$SegProject` 执行：
 
 ```powershell
-Invoke-SegPython -m segformer_lab.prepare_data --archive '..\..\docs\dataset\VisA\VisA_20220922.tar' --source-zip '..\..\docs\dataset\VisA\spot-diff-main.zip' --data-root 'E:\桌面\AI\segformer_resources\data\visa' --category pcb1 --seed 42 --val-normal 120 --val-anomaly 12 --out 'manifests'
+Invoke-SegPython -m segformer_lab.prepare_data --archive '..\..\docs\dataset\VisA\VisA_20220922.tar' --source-zip '..\..\docs\dataset\VisA\spot-diff-main.zip' --data-root 'E:\桌面\AI\segformer_resources\data\visa' --category pcb1 --seed 42 --val-normal 120 --val-anomaly 12 --reviewed-groups 'manifests\reviewed_groups.json' --out 'manifests'
 ```
 
 **本步验收：** 三份计数与上表一致；集合两两无交集；官方测试路径集合完全相等；异常图均有可读取的掩码；正常图可构造零掩码；官方 CSV 校验值与本指南一致，或已说明版本变化；重复执行不会重划分。

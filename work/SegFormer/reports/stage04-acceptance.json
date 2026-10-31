@@ -1,0 +1,644 @@
+{
+  "schema": "segformer-lab/stage04-acceptance/1",
+  "created_at": "2026-10-31T22:24:15.023127+08:00",
+  "git_base": "0c43a14db7328916cbf913f53c7734c8abdde024",
+  "scope": "data audit, reviewed grouped split, visualization; no model download or training",
+  "protocol": {
+    "name": "pcb1-highshot",
+    "version": 2,
+    "grouped": true
+  },
+  "manifest_sha256": {
+    "train": "f1522eb9b474d0acc1d736a391002f5044153208fa10f51eea3dc7df729f65b0",
+    "val": "60a6c6cbf5ed7f5f9e57fb57bb096a5b57db677af5ee73f4fa140ddceaba6191",
+    "test": "4bdc594148f208c7067a66a8cb3b06fde53ebc1f4ab6fda84f08f80383061284"
+  },
+  "split_meta_sha256": "7c53a669aabebcbb72cc137f84e7d00ec615e53813396b36e7f3557d6c9d0b49",
+  "group_source": {
+    "path": "reviewed_groups.json",
+    "sha256": "220dae5831d2b72502ecd9832a60fd12d349f4b7bb873b5d78e25c657e533ad8",
+    "size_bytes": 690,
+    "schema": "segformer-lab/reviewed-groups/1"
+  },
+  "reviewed_group_check": {
+    "applicable": true,
+    "ok": true,
+    "groups_checked": 1,
+    "cross_split_groups": [],
+    "missing_members": [],
+    "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\reviewed_groups.json",
+    "sha256": "220dae5831d2b72502ecd9832a60fd12d349f4b7bb873b5d78e25c657e533ad8",
+    "expected_sha256": "220dae5831d2b72502ecd9832a60fd12d349f4b7bb873b5d78e25c657e533ad8",
+    "source_match": true
+  },
+  "normal_images_changed_split": 162,
+  "official_test_bytes_unchanged": true,
+  "unit_tests": {
+    "passed": 62,
+    "log": "reports/stage04-unit-tests.txt"
+  },
+  "audit_checks": {
+    "manifests_match_split_meta": true,
+    "reviewed_groups_stay_in_one_split": true,
+    "all_images_decoded": true,
+    "single_image_size": true,
+    "images_rgb": true,
+    "masks_single_channel_L": true,
+    "mask_sizes_match": true,
+    "all_anomalies_have_mask": true,
+    "no_empty_foreground": true,
+    "normals_have_no_mask_field": true,
+    "normal_512_labels_zero_inside_ignore_outside": true,
+    "foreground_survives_512": true,
+    "counts_match_protocol": true
+  },
+  "transform_512": {
+    "foreground_lost_images": 0,
+    "foreground_lost_examples": [],
+    "component_tracking_method": "Original 4-connected regions receive int32 ids and are sampled with the same Pillow NEAREST resize as the binary label, excluding padding. Retained means at least one sampled output pixel keeps the original id. Split/merge counts come from original-id/output-component overlaps, not net component counts. Every output foreground pixel inherits an original id; count increases are not newly created defect instances.",
+    "component_count_decreased_images": 12,
+    "component_count_increased_images": 14,
+    "component_count_unchanged_images": 74,
+    "component_count_decrease_examples": [
+      {
+        "image": "pcb1/Data/Images/Anomaly/005.JPG",
+        "split": "train",
+        "components_before": 2,
+        "components_after": 1,
+        "largest_component_before": 1682,
+        "largest_component_after": 367,
+        "retained_components": 2,
+        "lost_components": [],
+        "split_original_components": 0,
+        "merged_output_components": 1
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/021.JPG",
+        "split": "train",
+        "components_before": 3,
+        "components_after": 2,
+        "largest_component_before": 2556,
+        "largest_component_after": 341,
+        "retained_components": 2,
+        "lost_components": [
+          {
+            "component_id": 3,
+            "original_area": 1
+          }
+        ],
+        "split_original_components": 0,
+        "merged_output_components": 0
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/039.JPG",
+        "split": "train",
+        "components_before": 14,
+        "components_after": 13,
+        "largest_component_before": 3021,
+        "largest_component_after": 406,
+        "retained_components": 14,
+        "lost_components": [],
+        "split_original_components": 1,
+        "merged_output_components": 2
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/071.JPG",
+        "split": "train",
+        "components_before": 21,
+        "components_after": 20,
+        "largest_component_before": 6665,
+        "largest_component_after": 867,
+        "retained_components": 19,
+        "lost_components": [
+          {
+            "component_id": 12,
+            "original_area": 8
+          },
+          {
+            "component_id": 13,
+            "original_area": 2
+          }
+        ],
+        "split_original_components": 2,
+        "merged_output_components": 3
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/073.JPG",
+        "split": "train",
+        "components_before": 9,
+        "components_after": 7,
+        "largest_component_before": 2806,
+        "largest_component_after": 369,
+        "retained_components": 9,
+        "lost_components": [],
+        "split_original_components": 0,
+        "merged_output_components": 2
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/079.JPG",
+        "split": "train",
+        "components_before": 3,
+        "components_after": 2,
+        "largest_component_before": 1931,
+        "largest_component_after": 259,
+        "retained_components": 2,
+        "lost_components": [
+          {
+            "component_id": 3,
+            "original_area": 1
+          }
+        ],
+        "split_original_components": 0,
+        "merged_output_components": 0
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/080.JPG",
+        "split": "train",
+        "components_before": 4,
+        "components_after": 3,
+        "largest_component_before": 1646,
+        "largest_component_after": 215,
+        "retained_components": 3,
+        "lost_components": [
+          {
+            "component_id": 4,
+            "original_area": 1
+          }
+        ],
+        "split_original_components": 0,
+        "merged_output_components": 0
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/010.JPG",
+        "split": "val",
+        "components_before": 3,
+        "components_after": 2,
+        "largest_component_before": 3402,
+        "largest_component_after": 454,
+        "retained_components": 2,
+        "lost_components": [
+          {
+            "component_id": 3,
+            "original_area": 1
+          }
+        ],
+        "split_original_components": 0,
+        "merged_output_components": 0
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/087.JPG",
+        "split": "val",
+        "components_before": 6,
+        "components_after": 3,
+        "largest_component_before": 877,
+        "largest_component_after": 296,
+        "retained_components": 6,
+        "lost_components": [],
+        "split_original_components": 0,
+        "merged_output_components": 1
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/090.JPG",
+        "split": "val",
+        "components_before": 4,
+        "components_after": 3,
+        "largest_component_before": 3842,
+        "largest_component_after": 297,
+        "retained_components": 2,
+        "lost_components": [
+          {
+            "component_id": 2,
+            "original_area": 1
+          },
+          {
+            "component_id": 3,
+            "original_area": 1
+          }
+        ],
+        "split_original_components": 1,
+        "merged_output_components": 0
+      }
+    ],
+    "original_components_total": 328,
+    "original_components_retained": 309,
+    "original_components_lost": 19,
+    "images_with_lost_original_components": 12,
+    "lost_original_component_examples": [
+      {
+        "image": "pcb1/Data/Images/Anomaly/021.JPG",
+        "split": "train",
+        "components_before": 3,
+        "components_after": 2,
+        "largest_component_before": 2556,
+        "largest_component_after": 341,
+        "retained_components": 2,
+        "lost_components": [
+          {
+            "component_id": 3,
+            "original_area": 1
+          }
+        ],
+        "split_original_components": 0,
+        "merged_output_components": 0
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/053.JPG",
+        "split": "train",
+        "components_before": 7,
+        "components_after": 8,
+        "largest_component_before": 26060,
+        "largest_component_after": 3470,
+        "retained_components": 6,
+        "lost_components": [
+          {
+            "component_id": 4,
+            "original_area": 1
+          }
+        ],
+        "split_original_components": 1,
+        "merged_output_components": 0
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/071.JPG",
+        "split": "train",
+        "components_before": 21,
+        "components_after": 20,
+        "largest_component_before": 6665,
+        "largest_component_after": 867,
+        "retained_components": 19,
+        "lost_components": [
+          {
+            "component_id": 12,
+            "original_area": 8
+          },
+          {
+            "component_id": 13,
+            "original_area": 2
+          }
+        ],
+        "split_original_components": 2,
+        "merged_output_components": 3
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/079.JPG",
+        "split": "train",
+        "components_before": 3,
+        "components_after": 2,
+        "largest_component_before": 1931,
+        "largest_component_after": 259,
+        "retained_components": 2,
+        "lost_components": [
+          {
+            "component_id": 3,
+            "original_area": 1
+          }
+        ],
+        "split_original_components": 0,
+        "merged_output_components": 0
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/080.JPG",
+        "split": "train",
+        "components_before": 4,
+        "components_after": 3,
+        "largest_component_before": 1646,
+        "largest_component_after": 215,
+        "retained_components": 3,
+        "lost_components": [
+          {
+            "component_id": 4,
+            "original_area": 1
+          }
+        ],
+        "split_original_components": 0,
+        "merged_output_components": 0
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/086.JPG",
+        "split": "train",
+        "components_before": 3,
+        "components_after": 5,
+        "largest_component_before": 3758,
+        "largest_component_after": 446,
+        "retained_components": 2,
+        "lost_components": [
+          {
+            "component_id": 3,
+            "original_area": 1
+          }
+        ],
+        "split_original_components": 1,
+        "merged_output_components": 0
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/088.JPG",
+        "split": "train",
+        "components_before": 8,
+        "components_after": 9,
+        "largest_component_before": 1567,
+        "largest_component_after": 204,
+        "retained_components": 6,
+        "lost_components": [
+          {
+            "component_id": 2,
+            "original_area": 1
+          },
+          {
+            "component_id": 3,
+            "original_area": 1
+          }
+        ],
+        "split_original_components": 3,
+        "merged_output_components": 1
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/010.JPG",
+        "split": "val",
+        "components_before": 3,
+        "components_after": 2,
+        "largest_component_before": 3402,
+        "largest_component_after": 454,
+        "retained_components": 2,
+        "lost_components": [
+          {
+            "component_id": 3,
+            "original_area": 1
+          }
+        ],
+        "split_original_components": 0,
+        "merged_output_components": 0
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/090.JPG",
+        "split": "val",
+        "components_before": 4,
+        "components_after": 3,
+        "largest_component_before": 3842,
+        "largest_component_after": 297,
+        "retained_components": 2,
+        "lost_components": [
+          {
+            "component_id": 2,
+            "original_area": 1
+          },
+          {
+            "component_id": 3,
+            "original_area": 1
+          }
+        ],
+        "split_original_components": 1,
+        "merged_output_components": 0
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/027.JPG",
+        "split": "test",
+        "components_before": 26,
+        "components_after": 28,
+        "largest_component_before": 2115,
+        "largest_component_after": 284,
+        "retained_components": 25,
+        "lost_components": [
+          {
+            "component_id": 11,
+            "original_area": 8
+          }
+        ],
+        "split_original_components": 5,
+        "merged_output_components": 3
+      }
+    ],
+    "split_original_components": 37,
+    "merged_output_components": 20,
+    "area_ratio_percent": {
+      "count": 100,
+      "min": 94.67396,
+      "p10": 98.558275,
+      "median": 99.93862,
+      "mean": 99.871666,
+      "p90": 101.403005,
+      "max": 104.26173
+    }
+  },
+  "visual_review": {
+    "original_v1_panels_inspected": 18,
+    "v2_identical_panels": 15,
+    "v2_new_panels_inspected": 3,
+    "panels": [
+      {
+        "image": "pcb1/Data/Images/Normal/0000.JPG",
+        "split": "train",
+        "label": "normal",
+        "panel": "E:\\桌面\\AI\\segformer_resources\\runs\\data_preview\\train\\train_normal_0000_panel.png",
+        "sha256": "3028afcebbb321f8b09ac9600a57c32fd5406da6ea5a43307d02cf4a4e517e51",
+        "review": "v1 visually inspected; identical bytes reused",
+        "byte_identical_to_reviewed_v1": true,
+        "no_observed_global_misalignment": true
+      },
+      {
+        "image": "pcb1/Data/Images/Normal/0196.JPG",
+        "split": "train",
+        "label": "normal",
+        "panel": "E:\\桌面\\AI\\segformer_resources\\runs\\data_preview\\train\\train_normal_0196_panel.png",
+        "sha256": "656dc690bc654b878a84c9b50b3f7b90473a2c5eafdaa5cc3ef8f5da672cca3f",
+        "review": "v1 visually inspected; identical bytes reused",
+        "byte_identical_to_reviewed_v1": true,
+        "no_observed_global_misalignment": true
+      },
+      {
+        "image": "pcb1/Data/Images/Normal/0405.JPG",
+        "split": "train",
+        "label": "normal",
+        "panel": "E:\\桌面\\AI\\segformer_resources\\runs\\data_preview\\train\\train_normal_0405_panel.png",
+        "sha256": "42e64cb7be16f96dd9c87fef6837a479d04918f2ec729824b44679d9b58457e9",
+        "review": "new v2 panel visually inspected",
+        "byte_identical_to_reviewed_v1": false,
+        "no_observed_global_misalignment": true
+      },
+      {
+        "image": "pcb1/Data/Images/Normal/0628.JPG",
+        "split": "train",
+        "label": "normal",
+        "panel": "E:\\桌面\\AI\\segformer_resources\\runs\\data_preview\\train\\train_normal_0628_panel.png",
+        "sha256": "c33682c28bad08e5073dd72de50646014689c25397509d7da9237ec571c2ffc2",
+        "review": "v1 visually inspected; identical bytes reused",
+        "byte_identical_to_reviewed_v1": true,
+        "no_observed_global_misalignment": true
+      },
+      {
+        "image": "pcb1/Data/Images/Normal/0820.JPG",
+        "split": "train",
+        "label": "normal",
+        "panel": "E:\\桌面\\AI\\segformer_resources\\runs\\data_preview\\train\\train_normal_0820_panel.png",
+        "sha256": "7806f436471d236744795ff3b6f068c27ee4b56686acca65f95d69833bb27e70",
+        "review": "new v2 panel visually inspected",
+        "byte_identical_to_reviewed_v1": false,
+        "no_observed_global_misalignment": true
+      },
+      {
+        "image": "pcb1/Data/Images/Normal/1003.JPG",
+        "split": "train",
+        "label": "normal",
+        "panel": "E:\\桌面\\AI\\segformer_resources\\runs\\data_preview\\train\\train_normal_1003_panel.png",
+        "sha256": "d8c8b5d721d23bf6e619fa6bc655faf95aa0dd109b7778f72befa21e2e2eaa1c",
+        "review": "v1 visually inspected; identical bytes reused",
+        "byte_identical_to_reviewed_v1": true,
+        "no_observed_global_misalignment": true
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/065.JPG",
+        "split": "train",
+        "label": "anomaly",
+        "panel": "E:\\桌面\\AI\\segformer_resources\\runs\\data_preview\\train\\train_anomaly_065_panel.png",
+        "sha256": "08952e89620e3355c82671ecf85f9c37f59800be32a27804c1a1491b50840370",
+        "review": "v1 visually inspected; identical bytes reused",
+        "byte_identical_to_reviewed_v1": true,
+        "no_observed_global_misalignment": true
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/025.JPG",
+        "split": "train",
+        "label": "anomaly",
+        "panel": "E:\\桌面\\AI\\segformer_resources\\runs\\data_preview\\train\\train_anomaly_025_panel.png",
+        "sha256": "c745eae819ba30c6e1d720ff72d93d478aea50470692869b1bc3f8f549bed88b",
+        "review": "v1 visually inspected; identical bytes reused",
+        "byte_identical_to_reviewed_v1": true,
+        "no_observed_global_misalignment": true
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/080.JPG",
+        "split": "train",
+        "label": "anomaly",
+        "panel": "E:\\桌面\\AI\\segformer_resources\\runs\\data_preview\\train\\train_anomaly_080_panel.png",
+        "sha256": "7e15802c6a924d0a2635e6952166daaa67d38a4672fed84abbc58e765c58c69f",
+        "review": "v1 visually inspected; identical bytes reused",
+        "byte_identical_to_reviewed_v1": true,
+        "no_observed_global_misalignment": true
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/064.JPG",
+        "split": "train",
+        "label": "anomaly",
+        "panel": "E:\\桌面\\AI\\segformer_resources\\runs\\data_preview\\train\\train_anomaly_064_panel.png",
+        "sha256": "178c48ef7b181f8517ed42c3338b37b9c04e0b0c052a22405fb4a657c79ee548",
+        "review": "v1 visually inspected; identical bytes reused",
+        "byte_identical_to_reviewed_v1": true,
+        "no_observed_global_misalignment": true
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/086.JPG",
+        "split": "train",
+        "label": "anomaly",
+        "panel": "E:\\桌面\\AI\\segformer_resources\\runs\\data_preview\\train\\train_anomaly_086_panel.png",
+        "sha256": "b45d01371aed372b6f1347c50d24b863bb20af6ad7a8b9e690157cb00f85ef32",
+        "review": "v1 visually inspected; identical bytes reused",
+        "byte_identical_to_reviewed_v1": true,
+        "no_observed_global_misalignment": true
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/043.JPG",
+        "split": "train",
+        "label": "anomaly",
+        "panel": "E:\\桌面\\AI\\segformer_resources\\runs\\data_preview\\train\\train_anomaly_043_panel.png",
+        "sha256": "97430811abf05f816c2855fd00c3ea76c525229e0ec77d5340358502fbb63c51",
+        "review": "v1 visually inspected; identical bytes reused",
+        "byte_identical_to_reviewed_v1": true,
+        "no_observed_global_misalignment": true
+      },
+      {
+        "image": "pcb1/Data/Images/Normal/0011.JPG",
+        "split": "val",
+        "label": "normal",
+        "panel": "E:\\桌面\\AI\\segformer_resources\\runs\\data_preview\\val\\val_normal_0011_panel.png",
+        "sha256": "e6b962ea818001f35d3b40e72d7ae3124a4bf610781d481854e4fe1c9e2f1de3",
+        "review": "v1 visually inspected; identical bytes reused",
+        "byte_identical_to_reviewed_v1": true,
+        "no_observed_global_misalignment": true
+      },
+      {
+        "image": "pcb1/Data/Images/Normal/0455.JPG",
+        "split": "val",
+        "label": "normal",
+        "panel": "E:\\桌面\\AI\\segformer_resources\\runs\\data_preview\\val\\val_normal_0455_panel.png",
+        "sha256": "c48cbbb9d853ead1d8334745b9d7c5cf7427c1eb0577d559eb896bbedb4aec6d",
+        "review": "new v2 panel visually inspected",
+        "byte_identical_to_reviewed_v1": false,
+        "no_observed_global_misalignment": true
+      },
+      {
+        "image": "pcb1/Data/Images/Normal/0983.JPG",
+        "split": "val",
+        "label": "normal",
+        "panel": "E:\\桌面\\AI\\segformer_resources\\runs\\data_preview\\val\\val_normal_0983_panel.png",
+        "sha256": "9fe69cecbd6efc3b2602bc407bdfd375ee588a4a09b1a965be84ddae5da70767",
+        "review": "v1 visually inspected; identical bytes reused",
+        "byte_identical_to_reviewed_v1": true,
+        "no_observed_global_misalignment": true
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/087.JPG",
+        "split": "val",
+        "label": "anomaly",
+        "panel": "E:\\桌面\\AI\\segformer_resources\\runs\\data_preview\\val\\val_anomaly_087_panel.png",
+        "sha256": "35ea8cdec49f1eac826b3a4ad0ffef849ba3ea5dd24f37fa5d4642e77f18e4b4",
+        "review": "v1 visually inspected; identical bytes reused",
+        "byte_identical_to_reviewed_v1": true,
+        "no_observed_global_misalignment": true
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/010.JPG",
+        "split": "val",
+        "label": "anomaly",
+        "panel": "E:\\桌面\\AI\\segformer_resources\\runs\\data_preview\\val\\val_anomaly_010_panel.png",
+        "sha256": "deaf235f90c05b5651b92c0bd9ece24d6616f1c463a41bb0b8bc2cf2c2fe1e66",
+        "review": "v1 visually inspected; identical bytes reused",
+        "byte_identical_to_reviewed_v1": true,
+        "no_observed_global_misalignment": true
+      },
+      {
+        "image": "pcb1/Data/Images/Anomaly/045.JPG",
+        "split": "val",
+        "label": "anomaly",
+        "panel": "E:\\桌面\\AI\\segformer_resources\\runs\\data_preview\\val\\val_anomaly_045_panel.png",
+        "sha256": "55564cccf5d25631daac4df282c4b64a7cc55ecdc259cd9b2df1962e200fb022",
+        "review": "v1 visually inspected; identical bytes reused",
+        "byte_identical_to_reviewed_v1": true,
+        "no_observed_global_misalignment": true
+      }
+    ]
+  },
+  "normal_annotation_candidates": [
+    {
+      "id": "N01",
+      "image": "pcb1/Data/Images/Normal/0196.JPG",
+      "status": "unconfirmed; keep official normal"
+    },
+    {
+      "id": "N02",
+      "image": "pcb1/Data/Images/Normal/0819.JPG",
+      "status": "unconfirmed; keep official normal"
+    },
+    {
+      "id": "N03",
+      "image": "pcb1/Data/Images/Normal/0983.JPG",
+      "status": "unconfirmed; keep official normal"
+    }
+  ],
+  "code_sha256": {
+    "segformer_lab/config.py": "b2c981faca6b2222b83ea876c8b3f1cd854ee210f42cd588dce41f20caaaa391",
+    "segformer_lab/geometry.py": "b9e9d823ba91706bea650ccf578fb71f960840c3f8097f7c8687a5850ab4aacb",
+    "segformer_lab/audit_data.py": "9ba6cfab71b899fe5cf12fbffd27d567494aae7d05abd0e3eaa09b186ba3fd7d",
+    "segformer_lab/preview_data.py": "aecececda8e6a50bfb8c3e67763f464fef9c34b489112f04ed6575c0f2b06681",
+    "segformer_lab/prepare_data.py": "d98bf2ee7f5a00b3f4aa957c1f10e9e63147ca5fef0f192ece67fc11d271884c",
+    "configs/baseline.yaml": "9bdf8830e0632619cf4214c33a78fbd4a7fe288993f0043b070bdc6d50c73aa7",
+    "tests/test_data_audit.py": "99c31b7def1dcd2ad6ec2111c55630f00e9fec86a137b1ff320422e3f25fa011",
+    "tests/test_group_split.py": "6c46d822d61050b23f6dea1f577c29b116af18184b2f82b8a70d615958cc580b",
+    "tests/test_audit_groups.py": "81ff621ca20ac2ada93e86319f7ea5c8e73ba5a00e78dde0402f5dad9acecdcb",
+    "tests/test_preview_ids.py": "33ecf90b4b3c9e3633fd1ac74ff7f88c84e4e83a32cbf715a379a625fb4b0b3f"
+  },
+  "fixed_val_ids_sha256": "4f17789dfecc28023003092dddbe3c4683ac781cb469b483e4180c2ebb8f9718",
+  "selected_figures_sha256": {
+    "stage04-0042-0043-background.png": "9ba4f6f35bc9c01c86d8288d1ed66b7b4b1f43e1b40eeda36e376874a2f373ff",
+    "stage04-0042-0043-header.png": "8eb943eceb0e16f2786236b847b0e42934697af3dd021f3f57fddae02cdcb8de",
+    "stage04-0042-0043-mesh.png": "3de99c83e2c9871cd871d9313f9df54e7c1aba6ca2d2628a2acaad056f6adad5"
+  }
+}

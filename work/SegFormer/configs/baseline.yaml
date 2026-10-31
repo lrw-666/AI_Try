@@ -1,0 +1,66 @@
+# SegFormer-B0 / PCB1 baseline configuration.
+#
+# Relative paths are resolved against the experiment project root
+# (E:\桌面\AI\AI_Try\work\SegFormer), never against the shell working directory.
+# The resolved absolute form used by a run is written to reports/resolved_config.yaml.
+#
+# Values marked "fixed protocol" come from the end-to-end guide and from
+# manifests/split_meta.json; changing them changes the experiment identity.
+
+experiment:
+  name: segformer_b0_pcb1_v2_grouped
+  seed: 42
+  output_root: E:/桌面/AI/segformer_resources/runs
+
+data:
+  root: E:/桌面/AI/segformer_resources/data/visa
+  category: pcb1
+  train_manifest: manifests/train.csv
+  val_manifest: manifests/val.csv
+  test_manifest: manifests/test.csv
+  split_meta: manifests/split_meta.json  # reviewed same-object risk group, protocol v2
+  train_ids_file: null
+  input_size: 512            # fixed protocol
+  resize_mode: letterbox     # keep aspect ratio, then centre pad
+  image_pad_rgb: [124, 116, 104]
+  ignore_index: 255          # padding must never be counted as background
+  horizontal_flip_p: 0.5     # training only; never applied in audit/preview
+  workers: 0                 # Windows first run
+
+model:
+  pretrained_dir: E:/桌面/AI/segformer_resources/models/mit-b0
+  num_labels: 2              # background + defect
+  id2label: {0: background, 1: defect}
+  label2id: {background: 0, defect: 1}
+  train_encoder: true
+
+train:
+  epochs: 50
+  max_steps: null
+  batch_size: 2
+  gradient_accumulation_steps: 1
+  amp: true
+  learning_rate: 0.00006
+  min_learning_rate: 0.000001
+  weight_decay: 0.01
+  warmup_ratio: 0.05
+  grad_clip_norm: 1.0
+  validate_every_epochs: 1
+  early_stopping: false
+
+loss:
+  ce_weight: 1.0
+  foreground_dice_weight: 0.5
+  dice_epsilon: 0.000001
+
+eval:
+  batch_size: 1
+  threshold: 0.5
+  metric_space: original
+  postprocess: none
+  selection_metric: foreground_iou_global
+
+logging:
+  tensorboard: true
+  log_every_micro_steps: 20
+  fixed_preview_manifest: manifests/val_preview_ids.txt

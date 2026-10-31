@@ -53,6 +53,7 @@ from PIL import Image
 from . import __version__, paths
 
 SCHEMA = "segformer-lab/split-meta/1"
+GROUP_SCHEMA = "segformer-lab/reviewed-groups/1"
 COLUMNS = ("object", "split", "label", "image", "mask")
 OFFICIAL_CSV_MEMBER = "spot-diff-main/split_csv/2cls_highshot.csv"
 # Recorded in the end-to-end guide after reading the local ZIP on 2026-10-31.
@@ -312,14 +313,10 @@ def _sort_key(row: OfficialRow) -> str:
     return row.image
 
 
-def build_split(
-    rows: list[OfficialRow],
-    category: str,
-    seed: int,
-    val_normal: int,
-    val_anomaly: int,
-) -> tuple[dict[str, list[OfficialRow]], dict[str, Any]]:
-    """Split official train rows into train/val; keep official test as-is."""
+def _split_inputs(
+    rows: list[OfficialRow], category: str, val_normal: int, val_anomaly: int,
+) -> tuple[list[OfficialRow], list[OfficialRow]]:
+    """Validate inputs without drawing randomness for either split version."""
     category_rows = [row for row in rows if row.object == category]
     if not category_rows:
         raise SystemExit(f"no rows for object == {category!r}")
@@ -334,16 +331,29 @@ def build_split(
     official_train = [row for row in category_rows if row.split == "train"]
     official_test = [row for row in category_rows if row.split == "test"]
 
-    train_normal = sorted([r for r in official_train if r.label == "normal"], key=_sort_key)
-    train_anomaly = sorted([r for r in official_train if r.label == "anomaly"], key=_sort_key)
-
+    normal_count = sum(r.label == "normal" for r in official_train)
+    anomaly_count = sum(r.label == "anomaly" for r in official_train)
     if val_normal < 0 or val_anomaly < 0:
         raise SystemExit("validation quotas must be non-negative")
-    if val_normal > len(train_normal) or val_anomaly > len(train_anomaly):
+    if val_normal > normal_count or val_anomaly > anomaly_count:
         raise SystemExit(
-            f"quota exceeds available rows: normal {val_normal}/{len(train_normal)}, "
-            f"anomaly {val_anomaly}/{len(train_anomaly)}"
+            f"quota exceeds available rows: normal {val_normal}/{normal_count}, "
+            f"anomaly {val_anomaly}/{anomaly_count}"
         )
+    return official_train, official_test
+
+
+def build_split(
+    rows: list[OfficialRow],
+    category: str,
+    seed: int,
+    val_normal: int,
+    val_anomaly: int,
+) -> tuple[dict[str, list[OfficialRow]], dict[str, Any]]:
+    """Split official train rows into train/val; keep official test as-is."""
+    official_train, official_test = _split_inputs(rows, category, val_normal, val_anomaly)
+    train_normal = sorted([r for r in official_train if r.label == "normal"], key=_sort_key)
+    train_anomaly = sorted([r for r in official_train if r.label == "anomaly"], key=_sort_key)
 
     rng = np.random.default_rng(seed)
     # Order matters: normal first, then anomaly, from the same generator.
@@ -373,6 +383,125 @@ def build_split(
             "official test rows are copied unchanged"
         ),
         "quota": {"val_normal": val_normal, "val_anomaly": val_anomaly},
+    }
+    return derived, algorithm
+
+
+def _validate_groups(groups: Any, rows: list[OfficialRow], category: str) -> list[dict[str, Any]]:
+    if not isinstance(groups, list):
+        raise SystemExit("reviewed groups must be a JSON list")
+    category_rows = [row for row in rows if row.object == category]
+    by_image = {row.image: row for row in category_rows}
+    if len(by_image) != len(category_rows):
+        raise SystemExit("official category rows contain duplicate image paths")
+    seen_members: set[str] = set()
+    seen_ids: set[str] = set()
+    validated = []
+    for group in groups:
+        if not isinstance(group, dict):
+            raise SystemExit("each reviewed group must be a JSON object")
+        group_id = group.get("id")
+        label = group.get("label")
+        members = group.get("members")
+        if not isinstance(group_id, str) or not group_id.strip() or group_id in seen_ids:
+            raise SystemExit(f"reviewed group id must be non-empty and unique: {group_id!r}")
+        if label not in ("normal", "anomaly"):
+            raise SystemExit(f"unexpected reviewed group label: {label!r}")
+        if not isinstance(members, list) or len(members) < 2 or not all(isinstance(m, str) for m in members):
+            raise SystemExit(f"group {group_id!r} needs at least two image-path strings")
+        if len(set(members)) != len(members) or seen_members.intersection(members):
+            raise SystemExit(f"reviewed group members must be unique within and across groups: {group_id!r}")
+        for member in members:
+            row = by_image.get(member)
+            if row is None:
+                raise SystemExit(f"unknown reviewed group member for {category}: {member}")
+            if row.split != "train":
+                raise SystemExit(f"reviewed groups may contain only official-training images: {member}")
+            if row.label != label:
+                raise SystemExit(f"reviewed group members must all have label {label!r}: {member}")
+        seen_ids.add(group_id)
+        seen_members.update(members)
+        validated.append({**group, "members": sorted(members)})
+    return sorted(validated, key=lambda group: group["members"][0])
+
+
+def read_groups(path: Path, official_rows: list[OfficialRow], category: str = "pcb1") -> list[dict[str, Any]]:
+    """Read reviewed same-object risk groups; reject test/unknown/mixed members."""
+    try:
+        document = json.loads(Path(path).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise SystemExit(f"cannot read reviewed groups {path}: {exc}") from exc
+    if not isinstance(document, dict) or document.get("schema") != GROUP_SCHEMA:
+        raise SystemExit(f"reviewed groups must use schema {GROUP_SCHEMA!r}")
+    return _validate_groups(document.get("groups"), official_rows, category)
+
+
+def check_group_splits(derived: dict[str, list[OfficialRow]], groups: list[dict[str, Any]]) -> dict[str, Any]:
+    """Check saved memberships, independently of the assignment algorithm."""
+    locations: dict[str, set[str]] = {}
+    for split, members in derived.items():
+        for row in members:
+            locations.setdefault(row.image, set()).add(split)
+    missing = []
+    crossed = []
+    for group in groups:
+        splits: set[str] = set()
+        for member in group["members"]:
+            if member not in locations:
+                missing.append({"group_id": group["id"], "image": member})
+            splits.update(locations.get(member, set()))
+        if len(splits) > 1:
+            crossed.append({"group_id": group["id"], "splits": sorted(splits), "members": group["members"]})
+    return {"groups_checked": len(groups), "cross_split_groups": crossed,
+            "missing_members": missing, "ok": not crossed and not missing}
+
+
+def build_group_split(
+    rows: list[OfficialRow], category: str, seed: int, val_normal: int, val_anomaly: int,
+    groups: list[dict[str, Any]],
+) -> tuple[dict[str, list[OfficialRow]], dict[str, Any]]:
+    """V2: permute indivisible groups, then greedily fill the exact val quotas.
+
+    Ungrouped images are singleton groups. Groups are sorted by their minimum
+    image path; one RNG permutes normal groups first, then anomaly groups.
+    A group is taken only if it fits the remaining quota. Failure to reach the
+    exact quota aborts; no member is peeled off and no test image is moved.
+    """
+    official_train, official_test = _split_inputs(rows, category, val_normal, val_anomaly)
+    validated = _validate_groups(groups, rows, category)
+    by_image = {row.image: row for row in official_train}
+    grouped_images = {member for group in validated for member in group["members"]}
+    rng = np.random.default_rng(seed)
+    val_rows: list[OfficialRow] = []
+    for label, quota in (("normal", val_normal), ("anomaly", val_anomaly)):
+        buckets = [[by_image[member] for member in group["members"]]
+                   for group in validated if group["label"] == label]
+        buckets += [[row] for row in official_train if row.label == label and row.image not in grouped_images]
+        buckets.sort(key=lambda bucket: min(row.image for row in bucket))
+        remaining = quota
+        for index in rng.permutation(len(buckets)):
+            bucket = buckets[index]
+            if len(bucket) <= remaining:
+                val_rows.extend(bucket)
+                remaining -= len(bucket)
+        if remaining:
+            raise SystemExit(f"indivisible reviewed groups cannot fill exact validation quota for {label}: "
+                             f"requested {quota}, short by {remaining}")
+    val_images = {row.image for row in val_rows}
+    derived = {"train": sorted([r for r in official_train if r.image not in val_images], key=_sort_key),
+               "val": sorted(val_rows, key=_sort_key), "test": sorted(official_test, key=_sort_key)}
+    algorithm = {
+        "protocol": {"name": "pcb1-highshot", "version": 2, "grouped": True},
+        "seed": seed, "numpy_version": np.__version__, "generator": "numpy.random.default_rng(seed)",
+        "procedure": (
+            "official train only; reviewed same-label groups are indivisible and all other images "
+            "are singleton groups; sort groups by minimum image path; one default_rng(seed) "
+            "permutes normal groups first, then anomaly groups; greedily take a group if it fits "
+            "the remaining exact per-label validation quota; fail if a quota cannot be filled; "
+            "remaining official train rows stay train; official test rows are copied unchanged"
+        ),
+        "quota": {"val_normal": val_normal, "val_anomaly": val_anomaly},
+        "reviewed_group_count": len(validated),
     }
     return derived, algorithm
 
@@ -519,6 +648,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--val-normal", type=int, default=120)
     parser.add_argument("--val-anomaly", type=int, default=12)
+    parser.add_argument("--reviewed-groups", default="", help="explicit reviewed group JSON opts into the version-2 grouped split")
     parser.add_argument("--expect-csv-sha256", default=EXPECTED_CSV_SHA256)
     parser.add_argument("--force-overwrite", action="store_true", help="overwrite files that differ from the archive")
     parser.add_argument(
@@ -552,6 +682,14 @@ def main(argv: list[str] | None = None) -> int:
     category_rows = [row for row in official_rows if row.object == args.category]
     print(f"  official CSV: rows={len(official_rows)} sha256={csv_sha}")
     print(f"  category {args.category}: rows={len(category_rows)}")
+    group_path = paths.resolve(args.reviewed_groups) if args.reviewed_groups else None
+    reviewed_groups = read_groups(group_path, official_rows, args.category) if group_path else []
+    group_source = None
+    if group_path:
+        group_sha, group_size = sha256_file(group_path)
+        recorded_group_path = group_path.relative_to(out_dir) if group_path.is_relative_to(out_dir) else group_path
+        group_source = {"path": recorded_group_path.as_posix(), "sha256": group_sha, "size_bytes": group_size,
+                        "schema": GROUP_SCHEMA}
 
     out_dir.mkdir(parents=True, exist_ok=True)
     official_copy = out_dir / "official_2cls_highshot.csv"
@@ -623,7 +761,11 @@ def main(argv: list[str] | None = None) -> int:
         extraction["manifest_path"] = str(extraction_path)
 
     # 3) split.
-    derived, algorithm = build_split(category_rows, args.category, args.seed, args.val_normal, args.val_anomaly)
+    if group_path:
+        derived, algorithm = build_group_split(category_rows, args.category, args.seed, args.val_normal,
+                                               args.val_anomaly, reviewed_groups)
+    else:
+        derived, algorithm = build_split(category_rows, args.category, args.seed, args.val_normal, args.val_anomaly)
 
     # 4) audit before writing, so a failed check is visible in the report too.
     #    Expected counts are derived from the official CSV, so a different
@@ -650,6 +792,10 @@ def main(argv: list[str] | None = None) -> int:
                  "total": test_normal_total + test_anomaly_total},
     }
     checks = audit(derived, official_rows, args.category, data_root, expected_counts)
+    group_check = check_group_splits(derived, reviewed_groups)
+    if group_path:
+        checks["reviewed_groups_stay_in_one_split"] = group_check["ok"]
+        checks["ok"] = checks["ok"] and group_check["ok"]
 
     # The documented protocol for pcb1: 530 / 132 / 442.
     protocol_expected = {"train": 530, "val": 132, "test": 442}
@@ -678,7 +824,7 @@ def main(argv: list[str] | None = None) -> int:
     official_copy_sha, official_copy_size = sha256_file(official_copy)
 
     meta = {
-        "schema": SCHEMA,
+        "schema": "segformer-lab/split-meta/2" if group_path else SCHEMA,
         "package_version": __version__,
         "created_at": time.strftime("%Y-%m-%d %H:%M:%S %z"),
         "category": args.category,
@@ -714,6 +860,10 @@ def main(argv: list[str] | None = None) -> int:
         "protocol_counts": protocol_check,
         "elapsed_seconds": None,
     }
+    if group_path:
+        meta["protocol"] = algorithm["protocol"]
+        meta["sources"]["reviewed_groups"] = group_source
+        meta["reviewed_group_check"] = group_check
     meta["elapsed_seconds"] = round(time.perf_counter() - started, 2)
     meta_path = out_dir / "split_meta.json"
     _atomic_write_bytes(meta_path, json.dumps(meta, indent=2, ensure_ascii=False).encode("utf-8"))

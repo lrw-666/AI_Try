@@ -14,8 +14,8 @@
 | --- | --- | --- | --- | --- |
 | 01 | 工作区准备与启动入口 | 已验证 | [01-workspace-design-and-implementation.md](./01-workspace-design-and-implementation.md) | `segformer_resources\audit\before-*`；三个脚本的实测输出 |
 | 02 | 独立 Conda 环境与 GPU 验证 | 已验证 | [02-environment-design-and-implementation.md](./02-environment-design-and-implementation.md) | `reports\environment.json`；`audit\after-*`；`requirements-lock.txt`；`audit\negative-control-env-check.json` |
-| 03 | 引入 PCB1、固定划分与标签规则 | 已通过本轮独立验收 | [03-data-preparation-design-and-implementation.md](./03-data-preparation-design-and-implementation.md) | `manifests\{train,val,test}.csv` 与 `split_meta.json`；`segformer_resources\data\visa\extraction_manifest.json`；`audit\stage03-*.log`、`audit\stage03-verification.txt`；本轮修复后的复核待完成 |
-| 04 | 数据审计与可视化 | 未开始 | — | — |
+| 03 | 引入 PCB1、固定划分与标签规则 | 历史 v1 验收通过，当前划分由阶段 04 升为 v2 | [03-data-preparation-design-and-implementation.md](./03-data-preparation-design-and-implementation.md) | `manifests/archive/pcb1_v1`；第三阶段验收报告；原始数据未改 |
+| 04 | 数据审计与可视化 | 已通过验收，v2 分组清单已重出并验证 | [04-data-audit-design-and-implementation.md](./04-data-audit-design-and-implementation.md) | 当前 `manifests`；`reports/data_audit`；第四阶段验收报告；62 项回归；资源目录 18 张五联图 |
 | 05 | 预训练权重与模型搭建 | 未开始 | — | — |
 | 06 | Dataset、变换与配置 | 未开始 | — | — |
 | 07 | 损失与指标 | 未开始 | — | — |
@@ -28,26 +28,28 @@
 
 ## 当前状态一句话
 
-PCB1 数据已导入并固定划分（train 530 / val 132 / test 442），三集合互斥、测试集与官方一致，1104 张图与 100 张掩码的文件头可解析、尺寸可读取，清单哈希已记录；**阶段 03 本轮验收与完善进行中，阶段 04 尚未开始，完整解码与像素级审计待做，未下载预训练权重，未训练**。
+PCB1 的完整解码、固定可视化和 v2 分组协议已通过验收；0042/0043 均在 train，官方 test 未变。512 下没有整张前景变空，但有 19 个微小原始连通域消失，已登记限制。**尚未下载预训练权重、未搭 Dataset、未训练，无性能指标**。
 
-## 阶段 03 关键结论
+## 阶段 04 关键结论
 
-- 官方 CSV 校验值一致（`c3331eed…2f09`），官方 pcb1 为 train 662（602 正常 / 60 异常）、test 442（402 / 40）。
-- 派生清单 530 / 132 / 442；`train∩val`、`train∩test`、`val∩test` 均为 0；test 与官方 test 的行内容集合一致。
-- 1104 张图的文件头均可解析、尺寸均为 `1404×1070`；100 张掩码文件头可解析、模式为单通道、尺寸与图像一致。少量掩码像素抽查得到 `{0,1}`、`{0,2}`（多类 ID，训练时按「非零→1」转换）；全量完整解码与取值统计留阶段 04。
-- 重复运行：`files=0 / verified=1205`，三份 CSV 的 SHA-256 不变；原 TAR/ZIP 未被修改。
+- 图像 1104/1104 完整解码，全部 `1404×1070`、`RGB`；掩码 100/100 完整解码，全部单通道 `L`、尺寸一致。
+- 掩码原始取值并集 `{0,1,2,3,4}`，共 9 种组合；最常见 `{0,2}`（46 张）。
+- 异常前景占比中位数：train 0.188%、val 0.316%、test 0.194%（最大 12.73%）。
+- 512 letterbox：`512×390`，上下各 61 px（23.83%）；前景比例保持率中位 99.94%，但 328 个原始 4 连通域中 19 个消失，涉及 12 张、总原面积 39 px。原图评价不能恢复训练时丢失的细节。
+- 精确重复 0 组；0042/0043 按高可信同实物风险组完整重出 v2，官方 test 字节不变；当前跨集候选 0 对。旧版资料保留，不能混用。
+- 固定预览：`runs\data_preview\{train,val}`，12 + 6 张五联图 + 2 张总览图；`manifests\val_preview_ids.txt` 固定了 3 正常 + 3 异常验证样例。
 
 ## 本轮验收
 
-[阶段01—02验收与完善记录](../../reports/2026-10-31-stage01-02-acceptance.md)：修复跨PowerShell的空变量删除、资源根传递与恢复问题，收紧环境检查器，补充完整可移植依赖。修正后真实CUDA/随机SegFormer前后向通过，缓存越界0。
+[阶段01—02验收与完善记录](../../reports/2026-10-31-stage01-02-acceptance.md)：修复跨 PowerShell 的空变量删除、资源根传递与恢复问题，收紧环境检查器，补充完整可移植依赖。修正后真实 CUDA／随机 SegFormer 前后向通过，缓存越界 0。
 
-阶段 03 本轮验收正在修复提取临时文件、协议参数与清单发布保护，并复核原始数据和划分身份；最终验收结论待修复后的回归与真实数据检查完成。阶段 04 保持未开始。
+[第三阶段验收与完善记录](../../reports/2026-10-31-stage03-acceptance.md)：独立复算划分，核对 1205 个文件与归档成员哈希，修复写入/协议保护后全套 23 项测试通过。
 
-[第三阶段验收与完善记录](../../reports/2026-10-31-stage03-acceptance.md)：独立复算划分，核对1205个文件与归档成员哈希，修复写入/协议保护后全套23项测试通过。阶段04仍未开始。
+[第四阶段验收与完善记录](../../reports/2026-10-31-stage04-acceptance.md)：原 18 张预览逐看；新版 15 张字节未变、另 3 张重新查看；登记正常图 3 个疑点；加入逐原域追踪和分组校验；完整审计 13 项及项目回归 62 项通过。当前证据见 `reports/stage04-acceptance.json`。
 
 ## 下一步
 
-步骤 4：数据审计与可视化。读取三份清单，做图像解码审计（坏图、重复/近重复）、掩码取值分布统计、512 最近邻缩放后的前景保留率，并生成原图+掩码叠加图供人工检查；仍不训练、不下载权重。
+步骤 5：取得固定 revision 的 `nvidia/mit-b0`，搭建二类 SegFormer-B0，核验预训练 encoder 真加载、分类／解码头初始化和实际梯度、参数变化。人工张量调试不覆盖原始快照；不开始正式训练。可复制指令见[第四阶段验收报告第 7 节](../../reports/2026-10-31-stage04-acceptance.md#7-下一步指令只执行阶段-05)。
 
 ## 维护约定
 

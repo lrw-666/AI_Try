@@ -1,0 +1,172 @@
+{
+  "schema": "segformer-lab/split-meta/1",
+  "package_version": "0.1.0",
+  "created_at": "2026-10-31 17:14:36 +0800",
+  "category": "pcb1",
+  "algorithm": {
+    "seed": 42,
+    "numpy_version": "2.5.4",
+    "generator": "numpy.random.default_rng(seed)",
+    "procedure": "official train rows grouped by label; each group sorted by image path; one default_rng(seed) draws permutation(group_normal) first, then permutation(group_anomaly); the first val_normal / val_anomaly indices become validation rows; remaining official train rows stay train; official test rows are copied unchanged",
+    "quota": {
+      "val_normal": 120,
+      "val_anomaly": 12
+    }
+  },
+  "counts": {
+    "train": {
+      "normal": 482,
+      "anomaly": 48,
+      "total": 530
+    },
+    "val": {
+      "normal": 120,
+      "anomaly": 12,
+      "total": 132
+    },
+    "test": {
+      "normal": 402,
+      "anomaly": 40,
+      "total": 442
+    }
+  },
+  "sources": {
+    "archive": {
+      "path": "E:\\桌面\\AI\\AI_Try\\docs\\dataset\\VisA\\VisA_20220922.tar",
+      "size_bytes": 1929840640,
+      "sha256": "2eb8690c803ab37de0324772964100169ec8ba1fa3f7e94291c9ca673f40f362"
+    },
+    "source_zip": {
+      "path": "E:\\桌面\\AI\\AI_Try\\docs\\dataset\\VisA\\spot-diff-main.zip",
+      "size_bytes": 2518966,
+      "sha256": "22155105f72985b3bfa1295c24f0ed565977d3a77cf83a15e42f12d84ebc7738"
+    },
+    "official_csv": {
+      "member": "spot-diff-main/split_csv/2cls_highshot.csv",
+      "copy": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\official_2cls_highshot.csv",
+      "size_bytes": 658163,
+      "sha256": "c3331eede15f2da8a75b380d4fbfb24f75ee036ec9a25147eca898da6e972f09"
+    }
+  },
+  "extraction": {
+    "skipped": false,
+    "data_root": "E:\\桌面\\AI\\segformer_resources\\data\\visa",
+    "manifest": "E:\\桌面\\AI\\segformer_resources\\data\\visa\\extraction_manifest.json",
+    "manifest_sha256": "f31d0bc39de18b4b5528fba28c5c6d0b20a0c9ae2b077f5a6edc9abfade144e0",
+    "files_written": 0,
+    "files_verified_existing": 1205,
+    "bytes_written": 0,
+    "extraction_baseline": {
+      "generated_at": "2026-10-31 16:52:56 +0800",
+      "files_written": 1205,
+      "bytes_written": 296989825,
+      "elapsed_seconds": 16.96
+    }
+  },
+  "manifests": {
+    "train": {
+      "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\train.csv",
+      "sha256": "b26077266a59efdf45306bd9de0ce726aca52db4d7d50ea3ae284eaa92130d53",
+      "size_bytes": 29126,
+      "rows": 530
+    },
+    "val": {
+      "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\val.csv",
+      "sha256": "7335d8c82b8997bffa06af59283f1ade7ac18949bfdec14973cd054f3161bb9c",
+      "size_bytes": 7014,
+      "rows": 132
+    },
+    "test": {
+      "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\test.csv",
+      "sha256": "4bdc594148f208c7067a66a8cb3b06fde53ebc1f4ab6fda84f08f80383061284",
+      "size_bytes": 23852,
+      "rows": 442
+    }
+  },
+  "checks": {
+    "counts": {
+      "train": {
+        "normal": 482,
+        "anomaly": 48,
+        "total": 530
+      },
+      "val": {
+        "normal": 120,
+        "anomaly": 12,
+        "total": 132
+      },
+      "test": {
+        "normal": 402,
+        "anomaly": 40,
+        "total": 442
+      }
+    },
+    "counts_match_expected": true,
+    "pairwise_image_overlap": {
+      "train&val": 0,
+      "train&test": 0,
+      "val&test": 0
+    },
+    "pairwise_disjoint": true,
+    "test_equals_official_test_set": true,
+    "test_missing_vs_official": 0,
+    "test_extra_vs_official": 0,
+    "duplicate_image_paths": 0,
+    "duplicate_mask_paths": 0,
+    "images_checked": 1104,
+    "images_missing": [],
+    "images_missing_count": 0,
+    "images_unreadable": [],
+    "images_unreadable_count": 0,
+    "image_size_distribution": {
+      "1404x1070": 1104
+    },
+    "anomaly_rows": 100,
+    "anomaly_masks_checked": 100,
+    "mask_missing": [],
+    "mask_missing_count": 0,
+    "mask_unreadable": [],
+    "mask_unreadable_count": 0,
+    "mask_size_mismatch": [],
+    "mask_size_mismatch_count": 0,
+    "mask_modes": {
+      "L": 100
+    },
+    "normal_rows": 1004,
+    "normal_rows_with_mask_field": 0,
+    "normal_rows_zero_mask_constructible": true,
+    "ok": true
+  },
+  "protocol_counts": {
+    "expected": {
+      "train": 530,
+      "val": 132,
+      "test": 442
+    },
+    "actual": {
+      "train": 530,
+      "val": 132,
+      "test": 442
+    },
+    "match": true,
+    "expected_by_label": {
+      "train": {
+        "normal": 482,
+        "anomaly": 48,
+        "total": 530
+      },
+      "val": {
+        "normal": 120,
+        "anomaly": 12,
+        "total": 132
+      },
+      "test": {
+        "normal": 402,
+        "anomaly": 40,
+        "total": 442
+      }
+    },
+    "note": "fixed protocol numbers for pcb1 high-shot with val 120 normal + 12 anomaly"
+  },
+  "elapsed_seconds": 3.3
+}

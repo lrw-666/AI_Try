@@ -41,3 +41,11 @@ Unless the user explicitly requests otherwise, all future folders and files shou
 Help the user understand and solve problems from the user's own perspective, including background, temperament, constraints, motivations, and long-term goals.
 
 Prefer concrete experiments and visible outputs over abstract plans. Separate confirmed evidence from assumptions, and do not claim research novelty or industrial applicability without appropriate evaluation.
+
+## Document and Git Storage
+
+The Git repository is `AI_Try`. Keep project source, research and design Markdown, stage learning documents, configurations, split manifests, and small portable acceptance summaries inside this repository. Do not keep the only copy of a working document in a sibling resource, output, or temporary directory.
+
+For SegFormer, `../segformer_resources` is the local runtime area for the Conda environment, extracted datasets, downloaded models, caches, temporary files, and bulk run output. Keep those large or machine-specific resources out of Git. Preserve small reproducible summaries, inventories, and selected learning figures under `work/SegFormer/reports` when useful.
+
+Do not relocate an existing Conda prefix or runtime directory merely to place it under the repository. Treat a resource migration as separate work that requires updating paths and verifying the environment. Repository folder placement and Git tracking are separate decisions; inspect the staged file list and sizes before each requested push.

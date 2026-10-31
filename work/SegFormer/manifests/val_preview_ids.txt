@@ -1,0 +1,9 @@
+# Fixed preview samples for the SegFormer PCB1 baseline.
+# split=val normal=3 anomaly=3
+# Deterministic selection; do not edit after the first preview run.
+pcb1/Data/Images/Normal/0011.JPG
+pcb1/Data/Images/Normal/0455.JPG
+pcb1/Data/Images/Normal/0983.JPG
+pcb1/Data/Images/Anomaly/087.JPG
+pcb1/Data/Images/Anomaly/010.JPG
+pcb1/Data/Images/Anomaly/045.JPG

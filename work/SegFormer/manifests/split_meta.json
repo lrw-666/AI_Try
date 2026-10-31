@@ -1,17 +1,23 @@
 {
-  "schema": "segformer-lab/split-meta/1",
+  "schema": "segformer-lab/split-meta/2",
   "package_version": "0.1.0",
-  "created_at": "2026-10-31 17:14:36 +0800",
+  "created_at": "2026-10-31 22:09:49 +0800",
   "category": "pcb1",
   "algorithm": {
+    "protocol": {
+      "name": "pcb1-highshot",
+      "version": 2,
+      "grouped": true
+    },
     "seed": 42,
     "numpy_version": "2.5.4",
     "generator": "numpy.random.default_rng(seed)",
-    "procedure": "official train rows grouped by label; each group sorted by image path; one default_rng(seed) draws permutation(group_normal) first, then permutation(group_anomaly); the first val_normal / val_anomaly indices become validation rows; remaining official train rows stay train; official test rows are copied unchanged",
+    "procedure": "official train only; reviewed same-label groups are indivisible and all other images are singleton groups; sort groups by minimum image path; one default_rng(seed) permutes normal groups first, then anomaly groups; greedily take a group if it fits the remaining exact per-label validation quota; fail if a quota cannot be filled; remaining official train rows stay train; official test rows are copied unchanged",
     "quota": {
       "val_normal": 120,
       "val_anomaly": 12
-    }
+    },
+    "reviewed_group_count": 1
   },
   "counts": {
     "train": {
@@ -46,13 +52,19 @@
       "copy": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\official_2cls_highshot.csv",
       "size_bytes": 658163,
       "sha256": "c3331eede15f2da8a75b380d4fbfb24f75ee036ec9a25147eca898da6e972f09"
+    },
+    "reviewed_groups": {
+      "path": "reviewed_groups.json",
+      "sha256": "220dae5831d2b72502ecd9832a60fd12d349f4b7bb873b5d78e25c657e533ad8",
+      "size_bytes": 690,
+      "schema": "segformer-lab/reviewed-groups/1"
     }
   },
   "extraction": {
     "skipped": false,
     "data_root": "E:\\桌面\\AI\\segformer_resources\\data\\visa",
     "manifest": "E:\\桌面\\AI\\segformer_resources\\data\\visa\\extraction_manifest.json",
-    "manifest_sha256": "f31d0bc39de18b4b5528fba28c5c6d0b20a0c9ae2b077f5a6edc9abfade144e0",
+    "manifest_sha256": "c6a0950ce9db9b476be1e482121fcbf7baf34c15db69e0e7981daf81f5015b7c",
     "files_written": 0,
     "files_verified_existing": 1205,
     "bytes_written": 0,
@@ -66,13 +78,13 @@
   "manifests": {
     "train": {
       "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\train.csv",
-      "sha256": "b26077266a59efdf45306bd9de0ce726aca52db4d7d50ea3ae284eaa92130d53",
+      "sha256": "f1522eb9b474d0acc1d736a391002f5044153208fa10f51eea3dc7df729f65b0",
       "size_bytes": 29126,
       "rows": 530
     },
     "val": {
       "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\val.csv",
-      "sha256": "7335d8c82b8997bffa06af59283f1ade7ac18949bfdec14973cd054f3161bb9c",
+      "sha256": "60a6c6cbf5ed7f5f9e57fb57bb096a5b57db677af5ee73f4fa140ddceaba6191",
       "size_bytes": 7014,
       "rows": 132
     },
@@ -135,7 +147,8 @@
     "normal_rows": 1004,
     "normal_rows_with_mask_field": 0,
     "normal_rows_zero_mask_constructible": true,
-    "ok": true
+    "ok": true,
+    "reviewed_groups_stay_in_one_split": true
   },
   "protocol_counts": {
     "expected": {
@@ -168,5 +181,16 @@
     },
     "note": "fixed protocol numbers for pcb1 high-shot with val 120 normal + 12 anomaly"
   },
-  "elapsed_seconds": 3.3
+  "elapsed_seconds": 5.13,
+  "protocol": {
+    "name": "pcb1-highshot",
+    "version": 2,
+    "grouped": true
+  },
+  "reviewed_group_check": {
+    "groups_checked": 1,
+    "cross_split_groups": [],
+    "missing_members": [],
+    "ok": true
+  }
 }

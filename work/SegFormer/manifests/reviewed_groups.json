@@ -1,0 +1,17 @@
+{
+  "schema": "segformer-lab/reviewed-groups/1",
+  "reviewed_at": "2026-10-31",
+  "decision_scope": "Only official-training images may be grouped. The official test split stays unchanged.",
+  "groups": [
+    {
+      "id": "pcb1-normal-0042-0043",
+      "label": "normal",
+      "members": [
+        "pcb1/Data/Images/Normal/0042.JPG",
+        "pcb1/Data/Images/Normal/0043.JPG"
+      ],
+      "reason": "Stage 04 visual review found matching fine details around solder, mesh and fibers. This is a credible same-object or repeated-capture risk, not proven provenance; conservatively keep both images in one derived train/validation split.",
+      "decision": "indivisible_group"
+    }
+  ]
+}
