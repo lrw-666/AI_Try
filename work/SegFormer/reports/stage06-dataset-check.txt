@@ -1,0 +1,58 @@
+E:\桌面\AI\segformer_resources\env\Lib\site-packages\transformers\image_processing_base.py:417: UserWarning: The following named arguments are not valid for `SegformerImageProcessor.__init__` and were ignored: 'feature_extractor_type', 'reduce_labels'
+  image_processor = cls(**image_processor_dict)
+Some weights of SegformerForSemanticSegmentation were not initialized from the model checkpoint at E:\桌面\AI\segformer_resources\models\mit-b0 and are newly initialized: ['decode_head.batch_norm.bias', 'decode_head.batch_norm.num_batches_tracked', 'decode_head.batch_norm.running_mean', 'decode_head.batch_norm.running_var', 'decode_head.batch_norm.weight', 'decode_head.classifier.bias', 'decode_head.classifier.weight', 'decode_head.linear_c.0.proj.bias', 'decode_head.linear_c.0.proj.weight', 'decode_head.linear_c.1.proj.bias', 'decode_head.linear_c.1.proj.weight', 'decode_head.linear_c.2.proj.bias', 'decode_head.linear_c.2.proj.weight', 'decode_head.linear_c.3.proj.bias', 'decode_head.linear_c.3.proj.weight', 'decode_head.linear_fuse.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+SegFormer stage 6: dataset check
+  config : E:\桌面\AI\AI_Try\work\SegFormer\configs\baseline.yaml
+  data   : E:\桌面\AI\segformer_resources\data\visa
+  figures: E:\桌面\AI\segformer_resources\runs\dataset_check
+  manifests verified: True (train f1522eb9b474…)
+  sizes  : train 530 val 132 test 442
+  Dataset processor factory misses: 1
+  eval forward : logits [2, 2, 128, 128] finite=True
+  figure       : train_normal_0000.png
+  figure       : train_anomaly_004.png
+  figure       : train_anomaly_forced_flip_004.png
+
+  PASS — manifests_match_split_meta
+  PASS — pixel_values_dtype_float32
+  PASS — pixel_values_finite
+  PASS — pixel_values_shape_b3_512
+  PASS — labels_dtype_int64
+  PASS — labels_shape_b_512
+  PASS — labels_subset_0_1_255
+  PASS — padding_rows_all_255
+  PASS — valid_area_512x390
+  PASS — valid_has_no_ignore
+  PASS — geometry_all_exact
+  PASS — all_padding_exact
+  PASS — all_valid_binary
+  PASS — repeat_read_identical
+  PASS — flip_label_aligned
+  PASS — flip_image_aligned
+  PASS — flip_tensor_aligned
+  PASS — flip_flags_correct
+  PASS — flip_original_mask_aligned
+  PASS — val_random_rejected
+  PASS — evaluation_augmentation_rejected
+  PASS — normalization_matches_formula
+  PASS — normal_valid_all_zero
+  PASS — normal_padding_all_255
+  PASS — anomaly_valid_nonempty
+  PASS — original_mask_is_list
+  PASS — original_mask_original_size
+  PASS — original_mask_binary
+  PASS — original_mask_uint8
+  PASS — metadata_is_list
+  PASS — getitem_cpu_tensor
+  PASS — getitem_no_cuda
+  PASS — getitem_no_model_load
+  PASS — processor_built_once
+  PASS — eval_forward_shape
+  PASS — eval_forward_finite
+  PASS — eval_forward_eval_no_grad
+  PASS — val_batch_contract
+  PASS — diagnostic_sample_contracts
+  report       : E:\桌面\AI\AI_Try\work\SegFormer\reports\dataset_check.json
+  elapsed      : 13.17 s
+  RESULT: ok

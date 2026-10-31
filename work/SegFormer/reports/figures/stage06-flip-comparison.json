@@ -1,0 +1,22 @@
+{
+  "source_figures": [
+    {
+      "path": "E:\\桌面\\AI\\segformer_resources\\runs\\dataset_check\\train_anomaly_004.png",
+      "sha256": "f64ca52c2d23c923690feefa85c81ee00eb8ae888ae8baff38c98b2c84196048"
+    },
+    {
+      "path": "E:\\桌面\\AI\\segformer_resources\\runs\\dataset_check\\train_anomaly_forced_flip_004.png",
+      "sha256": "b28c7c56681c46b8baaa2359e1fd6e84b571c47610f7469fb94364b03f359b8e"
+    }
+  ],
+  "crop_box": [
+    1890,
+    90,
+    2360,
+    535
+  ],
+  "title_strip_height": 30,
+  "operation": "crop final overlay panel from each diagnostic PNG and concatenate; no resize or image retouching",
+  "output": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\reports\\figures\\stage06-flip-comparison.png",
+  "output_sha256": "28e2292bcfb9296dc37da4531674fda0b98ec3aaf1be9071321b09d825573c51"
+}

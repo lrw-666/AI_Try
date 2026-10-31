@@ -458,6 +458,8 @@ model, loading_info = SegformerForSemanticSegmentation.from_pretrained(
 
 ## 8. 步骤 6：实现 Dataset、变换和配置
 
+2026-10-31 实现验收更新：当前 Dataset 已通过39项数据契约与134项项目回归，详情见[第六阶段验收](../../work/SegFormer/reports/2026-10-31-stage06-acceptance.md)。`original_mask`保留原分辨率，train方向随增强，val/test则固定文件方向；训练器每轮需要调用`dataset.set_epoch(epoch)`，DataLoader不会自动更新。继续使用workers=0，多worker尚未验证。`--skip-model`成功只代表数据诊断，不代表完整阶段通过。
+
 ### 8.1 统一 512×512 处理
 
 主方案采用 **保持长宽比缩放 + 居中填充（letterbox）**，降低非等比例拉伸带来的几何变化。对宽 1404、高 1070 的本地 PCB1：
@@ -483,7 +485,7 @@ binary_mask = (raw_mask > 0).astype("uint8")
 - 几何变换由 Dataset 完成；processor 设置 `do_resize=False`，避免再次缩放。
 - Dataset 把 uint8 RGB 图交给 processor，保留其一次 `do_rescale=True` 和 `do_normalize=True`；不要提前除以 255 后又让 processor 再除一次。
 - 明确 `do_reduce_labels=False`，保留背景标签 0；标签不交给默认 ADE20K 减一流程。
-- 训练时对原图与原二值掩码同步水平翻转，再 letterbox；验证/测试不做随机变换。
+- 训练时对原图与原二值掩码同步水平翻转，再 letterbox；验证/测试固定不增强（none），random/force都拒绝；force只供train诊断。
 - mask 的几何变换必须与图像使用同一随机决策，但采用不同插值规则。
 
 首轮不用随机裁块，便于保持完整板面与原图评价。若以后研究局部裁块，先锁定原图划分，并为回拼、边界与采样重新制定独立配置。

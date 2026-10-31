@@ -3,8 +3,8 @@
 本目录是 VisA PCB1 high-shot 协议下 SegFormer-B0 单基线实验的工程根目录：代码、配置、清单、阶段文档。
 环境、缓存、数据、模型与运行产物**不在本目录**，统一放在仓库外的 `E:\桌面\AI\segformer_resources`。
 
-- 当前进度：**步骤 1—4 已通过验收（数据为 v2 分组协议）；步骤 5（预训练快照与二类 SegFormer 加载/前后向核验）已通过验收**；未实现 Dataset、未训练。
-- 验收记录：[阶段01—02验收与完善](./reports/2026-10-31-stage01-02-acceptance.md)、[第三阶段验收](./reports/2026-10-31-stage03-acceptance.md)、[第四阶段验收](./reports/2026-10-31-stage04-acceptance.md)、[第五阶段模型加载与核验](./reports/2026-10-31-stage05-model-loading-and-check.md)
+- 当前进度：**步骤 1—5 已通过验收（数据为 v2 分组协议，模型快照固定 commit）；步骤 6（Dataset/同步增广/DataLoader）已通过验收**；未实现损失、指标与训练器。
+- 验收记录：[阶段01—02验收与完善](./reports/2026-10-31-stage01-02-acceptance.md)、[第三阶段验收](./reports/2026-10-31-stage03-acceptance.md)、[第四阶段验收](./reports/2026-10-31-stage04-acceptance.md)、[第五阶段模型加载与核验](./reports/2026-10-31-stage05-model-loading-and-check.md)、[第六阶段验收](./reports/2026-10-31-stage06-acceptance.md)
 - 阶段索引：[docs/stages/README.md](./docs/stages/README.md)
 - 主指南：`../../docs/research/2026-10-31-segformer-baseline-end-to-end-guide.md`
 - 环境隔离规范：`../../docs/research/2026-10-31-segformer-environment-isolation-and-stage-docs.md`
@@ -63,12 +63,15 @@ work\SegFormer\                       仓库内（Git）
 ├─ segformer_lab\download_model.py    固定 revision 下载与快照校验
 ├─ segformer_lab\modeling.py          二类 SegFormer 加载与编码器逐键核对
 ├─ segformer_lab\model_check.py       人工张量前向/反向/一步更新/显存
+├─ segformer_lab\data.py              Dataset、同步翻转、collate、DataLoader
+├─ segformer_lab\dataset_check.py     39 项数据契约检查 + 五联图
 ├─ configs\baseline.yaml              实验配置（512 letterbox、ignore 255、二类）
 ├─ manifests\                         官方 CSV 副本 + train/val/test 清单 + split_meta.json + reviewed_groups.json + val_preview_ids.txt
-├─ tests\                             环境、分组划分、几何/审计/冻结预览/模型键分类的单元测试（101 项）
+├─ tests\                             环境、分组划分、几何/审计/冻结预览/模型/数据集的单元测试（134 项）
 ├─ reports\environment.json           最新环境报告
 ├─ reports\data_audit\                审计摘要、逐图统计、重复与近重复候选
 ├─ reports\model_*.json               快照下载、加载与运行时核验记录
+├─ reports\dataset_check.json         Dataset 契约检查结果
 ├─ requirements-lock.txt              pip freeze 原始结果
 ├─ requirements-cu126.txt             仅两个CUDA包的辅助配方与来源记录
 ├─ requirements-runtime.txt           完整44项可移植版本约束（已核对本机版本）
@@ -83,6 +86,7 @@ E:\桌面\AI\segformer_resources\       仓库外（不进 Git）
 ├─ data\visa\                         已提取的 PCB1（pcb1\Data\{Images,Masks} + extraction_manifest.json）
 ├─ models\mit-b0\                     已下载的 MiT-B0 快照（3 文件 + source.json，14.45 MB）
 ├─ runs\data_preview\                 阶段 04 的 18 张五联图 + 总览图 + near_dup 对比
+├─ runs\dataset_check\                阶段 06 的 9 张五联图（原图/GT/512 输入/512 标签/叠加）
 ├─ runs\                              其余训练 / 评估 / 预测产物
 └─ audit\                             快照、日志、比对材料、独立校验脚本
 ```
@@ -133,7 +137,8 @@ E:\桌面\AI\segformer_resources\       仓库外（不进 Git）
 | 03 PCB1 数据准备与固定划分 | 已通过独立验收 | [03-data-preparation-design-and-implementation.md](./docs/stages/03-data-preparation-design-and-implementation.md) |
 | 04 数据审计与可视化 | 已通过验收（v2 分组） | [04-data-audit-design-and-implementation.md](./docs/stages/04-data-audit-design-and-implementation.md) |
 | 05 预训练权重与模型搭建 | 已验证 | [05-model-design-and-implementation.md](./docs/stages/05-model-design-and-implementation.md) |
-| 06—13 | 未开始 | 见 [阶段索引](./docs/stages/README.md) |
+| 06 Dataset、同步增广与 DataLoader | 已验证 | [06-dataset-design-and-implementation.md](./docs/stages/06-dataset-design-and-implementation.md) |
+| 07—13 | 未开始 | 见 [阶段索引](./docs/stages/README.md) |
 
 ## 5.1 数据现状（2026-10-31）
 
@@ -169,6 +174,16 @@ E:\桌面\AI\segformer_resources\       仓库外（不进 Git）
 - 反向与一步更新：编码器与解码头梯度均非零有限，AdamW 一步后两者 `max|Δ|`=1.0e-4；快照 SHA-256 前后一致，未被覆盖。
 - 显存（隔离 FP32 前反向，AMP 关闭，probe 在创建优化器前）：B1 504 MiB、B2 1008 MiB reserved。接受 batch=2、累积=1起步，训练预算由阶段 08 的 20 步实测。
 
+## 5.4 Dataset 数据契约（阶段 06）
+
+- 入口：`segformer_lab\data.py` 的 `PCB1Dataset` / `collate_pcb1` / `build_dataloader`；`python -m segformer_lab.dataset_check` 一条命令自检 39 项。
+- 单样本：`pixel_values float32[3,512,512]`（processor 一次 rescale+normalize，`do_resize=False`、`do_reduce_labels=False`）、`labels int64[512,512]`（0/1/255）、`image_id`（清单相对路径）、`geometry`、`flipped`、`original_mask uint8[1070,1404]`。
+- B2：`pixel_values [2,3,512,512]`、`labels [2,512,512]`；有效区 `[2,390,512]`，上下各 61 行全 255（124 928 个 255 像素）。
+- 语义：正常图原尺寸构造零掩码 → 有效区全 0；异常掩码 `>0→1` 在 padding **之前**完成；`original_mask` 由 collate 保留为 list，不堆叠；train时为增强后方向的原尺寸GT，val/test无增强时对应文件原图。B2数组payload为3,004,560B，可在训练时关闭保留。
+- 增强：训练只用同步水平翻转（`flip="random"`，按 `(seed, epoch, index)` 确定性决策；`flip="force"` 供验收）；val/test 仅允许 none，random/force 都拒绝；每轮由调用方 set_epoch(epoch)。
+- 实测证据：强制翻转后标签 `fliplr` 完全相等、图像 uint8 差 0；归一化与 `(x/255−mean)/std` 差 **0.0**；`__getitem__` 输出在 CPU 且源码不含 CUDA/模型加载；真实 B2 eval+no_grad 前向得 `[2,2,128,128]`。
+- 证据与小图：`reports\dataset_check.json`（仓库）；`segformer_resources\runs\dataset_check\`（3张train+6张固定val五联图）。
+
 ## 6. 常见操作
 
 ```powershell
@@ -196,6 +211,10 @@ Invoke-SegPython -m segformer_lab.download_model --out "$SegResource\models\mit-
 # 加载核验 + 人工张量前向/反向/一步更新 + batch 显存
 Invoke-SegPython -m segformer_lab.model_check --config 'configs\baseline.yaml' `
   --loading-report 'reports\model_loading.json' --check-report 'reports\model_check.json'
+
+# Dataset 契约自检（39 项 + 9 张图 + JSON）
+Invoke-SegPython -m segformer_lab.dataset_check --config 'configs\baseline.yaml' `
+  --report 'reports\dataset_check.json' --batch-size 2 --seed 42
 
 # 数据准备：重新生成三份清单（已存在且内容相同的图不会被覆盖）
 Invoke-SegPython -m segformer_lab.prepare_data `
@@ -236,10 +255,18 @@ Invoke-SegPip list
 
 [第四阶段验收与完善](./reports/2026-10-31-stage04-acceptance.md)已记录用户五项检查、逐图结论、正常图疑点、v2 协议、真实损失统计和可复制的阶段 05 指令。完整数据审计 13 项通过，项目回归 62 项通过；数据、环境和批量预览不进 Git。当前尚无训练性能指标。
 
-以上为第四阶段结束时的依赖；第五阶段现已通过，当前下一步是阶段 06。继续使用 v2 清单与同一几何实现。
+以上是历史阶段依赖；当前阶段06已经验收，下一步为阶段07。继续使用v2清单与同一几何实现。
 
 ## 第五阶段验收与下一步
 
 [第五阶段验收报告](./reports/2026-10-31-stage05-model-loading-and-check.md)记录了来源/既有快照保护、加载门槛、显存测量顺序和代理日志的修复。重新执行：101 项回归、5 项加载及9项运行验收通过；encoder 192/192精确相等，快照全部文件及source未变。旧1058MiB记录只供追溯，当前隔离B2 reserved为1008MiB。
 
-下一步只执行阶段06：PCB1 Dataset、同步水平翻转、一次processor归一化、可追溯ID/几何、DataLoader及真实B2的eval/no_grad前向。完整可复制指令在验收报告第7节。来源记录进入Git，14.45MB权重快照留资源目录，跨机按固定commit与完整文件hash恢复。
+以上为阶段05结束时的指令，阶段06现已验收。来源记录进入Git，权重留资源目录，跨机按固定commit与完整文件hash恢复。
+
+## 第六阶段验收与下一步
+
+[第六阶段验收报告](./reports/2026-10-31-stage06-acceptance.md)：134项回归、39项数据契约通过；原图/增强GT坐标展示、skip-model状态、训练子集配置、seed/epoch与processor验证均已完善。9张PNG逐看，真实正常0011+异常087的B2 eval/no_grad前向为[2,2,128,128]，没有训练性能结论。
+
+继续使用batch2、workers0、按(seed,epoch,index)翻转；原尺寸GT保持list，每轮调用set_epoch。仅数据诊断的exit0不代表全阶段通过，需scope=full_stage且full_stage_verified=true。当前代码/源文件/图哈希在dataset_check.json与stage06-acceptance.json，整批图留资源目录。
+
+下一步只做阶段07的精确定义损失、原图logits恢复与累计指标，用人工数组和几何夹具验证。完整Agent指令见第六阶段验收报告第7节；暂不编写训练器或20步smoke。

@@ -11,3 +11,7 @@
 | background | `(860, 0, 1250, 300)` |
 
 用 Pillow 的 `Image.crop(box)` 分别裁切两图，再水平拼接即可复现。源图 SHA 在 `reports/data_audit/per_image.csv`，本目录 PNG 的 SHA 在 `reports/stage04-acceptance.json`。
+
+## 第六阶段翻转对照
+
+`stage06-flip-comparison.png` 保存 Anomaly/004 未翻转与强制水平翻转的最后一列叠加图，并含原尺寸局部放大。只从当前诊断 PNG 裁切并排，没有缩放或修图；来源、裁切坐标与哈希见同名 JSON。整批9张图留在资源目录，见[第六阶段验收](../2026-10-31-stage06-acceptance.md)。

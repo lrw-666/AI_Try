@@ -1,0 +1,346 @@
+{
+  "schema": "segformer-lab/dataset-check/1",
+  "created_at": "2026-10-31 23:21:54 +0800",
+  "config": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\configs\\baseline.yaml",
+  "batch_size": 2,
+  "seed": 42,
+  "workers": 0,
+  "identity": {
+    "manifests": {
+      "train": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\train.csv",
+        "sha256": "f1522eb9b474d0acc1d736a391002f5044153208fa10f51eea3dc7df729f65b0",
+        "expected": "f1522eb9b474d0acc1d736a391002f5044153208fa10f51eea3dc7df729f65b0",
+        "match": true,
+        "rows": 530
+      },
+      "val": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\val.csv",
+        "sha256": "60a6c6cbf5ed7f5f9e57fb57bb096a5b57db677af5ee73f4fa140ddceaba6191",
+        "expected": "60a6c6cbf5ed7f5f9e57fb57bb096a5b57db677af5ee73f4fa140ddceaba6191",
+        "match": true,
+        "rows": 132
+      },
+      "test": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\test.csv",
+        "sha256": "4bdc594148f208c7067a66a8cb3b06fde53ebc1f4ab6fda84f08f80383061284",
+        "expected": "4bdc594148f208c7067a66a8cb3b06fde53ebc1f4ab6fda84f08f80383061284",
+        "match": true,
+        "rows": 442
+      }
+    },
+    "ok": true
+  },
+  "dataset_sizes": {
+    "train": 530,
+    "val": 132,
+    "test": 442
+  },
+  "pixel_values": {
+    "dtype": "torch.float32",
+    "shape": [
+      2,
+      3,
+      512,
+      512
+    ],
+    "device": "cpu",
+    "finite": true,
+    "min": -1.9637812376022339,
+    "max": 2.640000104904175,
+    "mean": 0.05273669585585594,
+    "std": 0.7299960255622864
+  },
+  "labels": {
+    "dtype": "torch.int64",
+    "shape": [
+      2,
+      512,
+      512
+    ],
+    "unique": [
+      0,
+      1,
+      255
+    ],
+    "unique_subset_0_1_255": true,
+    "padding_rows": [
+      61,
+      451
+    ],
+    "padding_rows_all_255": true,
+    "padding_pixel_count": 124928,
+    "valid_shape": [
+      2,
+      390,
+      512
+    ],
+    "valid_values": [
+      0,
+      1
+    ],
+    "valid_contains_no_ignore": true
+  },
+  "geometry_first_sample": {
+    "orig_w": 1404,
+    "orig_h": 1070,
+    "input_size": 512,
+    "scale": 0.3646723646723647,
+    "new_w": 512,
+    "new_h": 390,
+    "pad_left": 0,
+    "pad_top": 61,
+    "pad_right": 0,
+    "pad_bottom": 61,
+    "valid_area": 199680,
+    "padding_rows": [
+      61,
+      451
+    ],
+    "ignore_index": 255
+  },
+  "repeat_read": {
+    "pixel_values_equal": true,
+    "labels_equal": true,
+    "original_mask_equal": true,
+    "loader_pass_equal": true
+  },
+  "flip": {
+    "plain_flipped_flag": false,
+    "force_flipped_flag": true,
+    "label_flip_equal": true,
+    "image_uint8_max_abs_diff": 0,
+    "image_flip_max_abs_diff": 0.0,
+    "original_mask_flip_equal": true,
+    "val_random_rejected": true
+  },
+  "normalization": {
+    "max_abs_diff": 0.0,
+    "image_mean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "image_std": [
+      0.229,
+      0.224,
+      0.225
+    ],
+    "rescale_factor": 0.00392156862745098,
+    "do_resize": false,
+    "do_reduce_labels": false
+  },
+  "label_semantics": {
+    "normal_image_id": "pcb1/Data/Images/Normal/0011.JPG",
+    "normal_valid_all_zero": true,
+    "normal_padding_all_255": true,
+    "anomaly_image_id": "pcb1/Data/Images/Anomaly/010.JPG",
+    "anomaly_valid_foreground_px": 687,
+    "anomaly_valid_nonempty": true,
+    "anomaly_raw_ids_before_merge": [
+      0,
+      1
+    ]
+  },
+  "original_mask": {
+    "type": "list",
+    "count": 2,
+    "shapes": [
+      [
+        1070,
+        1404
+      ],
+      [
+        1070,
+        1404
+      ]
+    ],
+    "dtypes": [
+      "uint8"
+    ],
+    "values": [
+      0,
+      1
+    ],
+    "geometry_is_list": true,
+    "image_id_is_list": true,
+    "flipped_is_list": true
+  },
+  "isolation": {
+    "getitem_device": "cpu",
+    "getitem_mentions_cuda": false,
+    "getitem_mentions_model": false,
+    "processor_in_getitem": true,
+    "processor_builds": 1
+  },
+  "eval_forward": {
+    "mode": "model.eval() + torch.no_grad()",
+    "optimizer": null,
+    "batch_size": 2,
+    "pixel_values_shape": [
+      2,
+      3,
+      512,
+      512
+    ],
+    "labels_shape": [
+      2,
+      512,
+      512
+    ],
+    "label_unique": [
+      0,
+      1,
+      255
+    ],
+    "logits_shape": [
+      2,
+      2,
+      128,
+      128
+    ],
+    "logits_dtype": "torch.float32",
+    "logits_finite": true,
+    "device": "NVIDIA GeForce RTX 4070 Laptop GPU"
+  },
+  "figures": [
+    {
+      "image_id": "pcb1/Data/Images/Normal/0000.JPG",
+      "label": "normal",
+      "flipped": false,
+      "geometry": {
+        "orig_w": 1404,
+        "orig_h": 1070,
+        "input_size": 512,
+        "scale": 0.3646723646723647,
+        "new_w": 512,
+        "new_h": 390,
+        "pad_left": 0,
+        "pad_top": 61,
+        "pad_right": 0,
+        "pad_bottom": 61,
+        "valid_area": 199680,
+        "padding_rows": [
+          61,
+          451
+        ],
+        "ignore_index": 255
+      },
+      "pixel_values_shape": [
+        3,
+        512,
+        512
+      ],
+      "pixel_values_dtype": "torch.float32",
+      "label_unique": [
+        0,
+        255
+      ],
+      "foreground_px_512": 0,
+      "figure": "E:\\桌面\\AI\\segformer_resources\\runs\\dataset_check\\train_normal_0000.png"
+    },
+    {
+      "image_id": "pcb1/Data/Images/Anomaly/004.JPG",
+      "label": "anomaly",
+      "flipped": false,
+      "geometry": {
+        "orig_w": 1404,
+        "orig_h": 1070,
+        "input_size": 512,
+        "scale": 0.3646723646723647,
+        "new_w": 512,
+        "new_h": 390,
+        "pad_left": 0,
+        "pad_top": 61,
+        "pad_right": 0,
+        "pad_bottom": 61,
+        "valid_area": 199680,
+        "padding_rows": [
+          61,
+          451
+        ],
+        "ignore_index": 255
+      },
+      "pixel_values_shape": [
+        3,
+        512,
+        512
+      ],
+      "pixel_values_dtype": "torch.float32",
+      "label_unique": [
+        0,
+        1,
+        255
+      ],
+      "foreground_px_512": 290,
+      "figure": "E:\\桌面\\AI\\segformer_resources\\runs\\dataset_check\\train_anomaly_004.png"
+    },
+    {
+      "image_id": "pcb1/Data/Images/Anomaly/004.JPG",
+      "label": "anomaly",
+      "flipped": true,
+      "geometry": {
+        "orig_w": 1404,
+        "orig_h": 1070,
+        "input_size": 512,
+        "scale": 0.3646723646723647,
+        "new_w": 512,
+        "new_h": 390,
+        "pad_left": 0,
+        "pad_top": 61,
+        "pad_right": 0,
+        "pad_bottom": 61,
+        "valid_area": 199680,
+        "padding_rows": [
+          61,
+          451
+        ],
+        "ignore_index": 255
+      },
+      "pixel_values_shape": [
+        3,
+        512,
+        512
+      ],
+      "pixel_values_dtype": "torch.float32",
+      "label_unique": [
+        0,
+        1,
+        255
+      ],
+      "foreground_px_512": 290,
+      "figure": "E:\\桌面\\AI\\segformer_resources\\runs\\dataset_check\\train_anomaly_forced_flip_004.png"
+    }
+  ],
+  "checks": {
+    "manifests_match_split_meta": true,
+    "pixel_values_dtype_float32": true,
+    "pixel_values_shape_b3_512": true,
+    "labels_dtype_int64": true,
+    "labels_shape_b_512": true,
+    "labels_subset_0_1_255": true,
+    "padding_rows_all_255": true,
+    "valid_area_512x390": true,
+    "valid_has_no_ignore": true,
+    "repeat_read_identical": true,
+    "flip_label_aligned": true,
+    "flip_image_aligned": true,
+    "flip_original_mask_aligned": true,
+    "val_random_rejected": true,
+    "normalization_matches_formula": true,
+    "normal_valid_all_zero": true,
+    "normal_padding_all_255": true,
+    "anomaly_valid_nonempty": true,
+    "original_mask_is_list": true,
+    "original_mask_original_size": true,
+    "original_mask_binary": true,
+    "getitem_cpu_tensor": true,
+    "getitem_no_cuda": true,
+    "getitem_no_model_load": true,
+    "processor_built_once": true,
+    "eval_forward_shape": true,
+    "eval_forward_finite": true
+  },
+  "ok": true,
+  "elapsed_seconds": 7.03
+}

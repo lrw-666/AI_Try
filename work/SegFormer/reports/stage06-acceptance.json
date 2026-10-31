@@ -1,0 +1,263 @@
+{
+  "schema": "segformer-lab/stage06-acceptance/1",
+  "created_at": "2026-10-31T23:55:01.319826+08:00",
+  "git_base": "1fe3a69f7654855ea1ea915e666265f6a5d9d9bc",
+  "scope": "dataset transformations, CPU collation and real B2 GPU eval/no_grad; no optimizer or quality metrics",
+  "unit_tests": {
+    "passed": 134,
+    "log": "reports/stage06-unit-tests.txt"
+  },
+  "dataset_contract_checks": {
+    "manifests_match_split_meta": true,
+    "pixel_values_dtype_float32": true,
+    "pixel_values_finite": true,
+    "pixel_values_shape_b3_512": true,
+    "labels_dtype_int64": true,
+    "labels_shape_b_512": true,
+    "labels_subset_0_1_255": true,
+    "padding_rows_all_255": true,
+    "valid_area_512x390": true,
+    "valid_has_no_ignore": true,
+    "geometry_all_exact": true,
+    "all_padding_exact": true,
+    "all_valid_binary": true,
+    "repeat_read_identical": true,
+    "flip_label_aligned": true,
+    "flip_image_aligned": true,
+    "flip_tensor_aligned": true,
+    "flip_flags_correct": true,
+    "flip_original_mask_aligned": true,
+    "val_random_rejected": true,
+    "evaluation_augmentation_rejected": true,
+    "normalization_matches_formula": true,
+    "normal_valid_all_zero": true,
+    "normal_padding_all_255": true,
+    "anomaly_valid_nonempty": true,
+    "original_mask_is_list": true,
+    "original_mask_original_size": true,
+    "original_mask_binary": true,
+    "original_mask_uint8": true,
+    "metadata_is_list": true,
+    "getitem_cpu_tensor": true,
+    "getitem_no_cuda": true,
+    "getitem_no_model_load": true,
+    "processor_built_once": true,
+    "eval_forward_shape": true,
+    "eval_forward_finite": true,
+    "eval_forward_eval_no_grad": true,
+    "val_batch_contract": true,
+    "diagnostic_sample_contracts": true
+  },
+  "full_stage_verified": true,
+  "flip": {
+    "plain_flipped_flag": false,
+    "force_flipped_flag": true,
+    "label_flip_equal": true,
+    "image_uint8_max_abs_diff": 0,
+    "image_flip_max_abs_diff": 0.0,
+    "original_mask_flip_equal": true,
+    "val_random_rejected": true,
+    "uint8_threshold_lsb": 1,
+    "tensor_threshold": 0.01750800280112045,
+    "label_comparison": "exact pixel equality",
+    "sample_image_id": "pcb1/Data/Images/Anomaly/004.JPG",
+    "sample_mask_id": "pcb1/Data/Masks/Anomaly/004.png",
+    "val_force_rejected": true,
+    "test_random_rejected": true,
+    "test_force_rejected": true
+  },
+  "normalization": {
+    "max_abs_diff": 0.0,
+    "image_mean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "image_std": [
+      0.229,
+      0.224,
+      0.225
+    ],
+    "rescale_factor": 0.00392156862745098,
+    "do_resize": false,
+    "do_reduce_labels": false
+  },
+  "real_eval_forward": {
+    "status": "executed",
+    "mode": "model.eval() + torch.no_grad()",
+    "optimizer": null,
+    "batch_size": 2,
+    "pixel_values_shape": [
+      2,
+      3,
+      512,
+      512
+    ],
+    "labels_shape": [
+      2,
+      512,
+      512
+    ],
+    "label_unique": [
+      0,
+      1,
+      255
+    ],
+    "logits_shape": [
+      2,
+      2,
+      128,
+      128
+    ],
+    "logits_dtype": "torch.float32",
+    "logits_finite": true,
+    "device": "NVIDIA GeForce RTX 4070 Laptop GPU",
+    "image_ids": [
+      "pcb1/Data/Images/Normal/0011.JPG",
+      "pcb1/Data/Images/Anomaly/087.JPG"
+    ],
+    "model_training": false,
+    "logits_requires_grad": false
+  },
+  "original_mask": {
+    "type": "list[uint8 array]",
+    "payload_bytes_B2": 3004560,
+    "coordinate_space": "augmented direction at original resolution; val/test use source direction",
+    "decision": "keep by default; train may disable retention; evaluation needs original GT"
+  },
+  "augmentation": {
+    "decision": "seed+epoch+dataset-index; retain current policy",
+    "call_requirement": "dataset.set_epoch(epoch) before each epoch iterator",
+    "workers_verified": [
+      0
+    ]
+  },
+  "data_identity": {
+    "manifest_sha256": {
+      "train": "f1522eb9b474d0acc1d736a391002f5044153208fa10f51eea3dc7df729f65b0",
+      "val": "60a6c6cbf5ed7f5f9e57fb57bb096a5b57db677af5ee73f4fa140ddceaba6191",
+      "test": "4bdc594148f208c7067a66a8cb3b06fde53ebc1f4ab6fda84f08f80383061284"
+    },
+    "reviewed_groups_sha256": "220dae5831d2b72502ecd9832a60fd12d349f4b7bb873b5d78e25c657e533ad8",
+    "fixed_val_preview_sha256": "4f17789dfecc28023003092dddbe3c4683ac781cb469b483e4180c2ebb8f9718",
+    "unchanged_since_stage05": true
+  },
+  "snapshot_identity": {
+    "model_id": "nvidia/mit-b0",
+    "revision": "80983a413c30d36a39c20203974ae7807835e2b4",
+    "source_sha256": "8e57fa70638ae7aad076ea9ad9603f4e4a87da54e09d2cb698ea26328beb8650",
+    "files": [
+      {
+        "path": "config.json",
+        "size_bytes": 70043,
+        "sha256": "e2378ac7c7a6981d6bdd1d9ccf29b611264c382afce89c561f39c9291164ff91"
+      },
+      {
+        "path": "preprocessor_config.json",
+        "size_bytes": 272,
+        "sha256": "d96ab2cb112985c19d5ea32f1d1f2369104fc78b1379f5ce26e33ca8646202a7"
+      },
+      {
+        "path": "pytorch_model.bin",
+        "size_bytes": 14380029,
+        "sha256": "4af8348c2a802bf76115d34797ff5ce1d9f110bb8593c22d9b66d8bd7fa227fc"
+      }
+    ],
+    "unchanged": true
+  },
+  "source_provenance_verified_files": 49,
+  "visual_review": [
+    {
+      "image_id": "pcb1/Data/Images/Normal/0000.JPG",
+      "mask_id": "",
+      "path": "E:\\桌面\\AI\\segformer_resources\\runs\\dataset_check\\train_normal_0000.png",
+      "sha256": "8cedac7ba4c1d93f2857962023d13ac5d55a4c2033a9ea57e193be4a157c11ae",
+      "viewed": true,
+      "finding": "normal zero GT; source orientation retained; padding grey"
+    },
+    {
+      "image_id": "pcb1/Data/Images/Anomaly/004.JPG",
+      "mask_id": "pcb1/Data/Masks/Anomaly/004.png",
+      "path": "E:\\桌面\\AI\\segformer_resources\\runs\\dataset_check\\train_anomaly_004.png",
+      "sha256": "f64ca52c2d23c923690feefa85c81ee00eb8ae888ae8baff38c98b2c84196048",
+      "viewed": true,
+      "finding": "left bent pins covered by GT and overlay; zoom reviewed"
+    },
+    {
+      "image_id": "pcb1/Data/Images/Anomaly/004.JPG",
+      "mask_id": "pcb1/Data/Masks/Anomaly/004.png",
+      "path": "E:\\桌面\\AI\\segformer_resources\\runs\\dataset_check\\train_anomaly_forced_flip_004.png",
+      "sha256": "b28c7c56681c46b8baaa2359e1fd6e84b571c47610f7469fb94364b03f359b8e",
+      "viewed": true,
+      "finding": "source columns stay unaugmented; augmented right-side pins and red GT align"
+    },
+    {
+      "image_id": "pcb1/Data/Images/Normal/0011.JPG",
+      "mask_id": "",
+      "path": "E:\\桌面\\AI\\segformer_resources\\runs\\dataset_check\\val_normal_0011.png",
+      "sha256": "2d91925651c9a3a6881ae47271fdd072fd9652300e4de422a0fc79d22cf7d188",
+      "viewed": true,
+      "finding": "normal zero GT; no augmentation"
+    },
+    {
+      "image_id": "pcb1/Data/Images/Normal/0455.JPG",
+      "mask_id": "",
+      "path": "E:\\桌面\\AI\\segformer_resources\\runs\\dataset_check\\val_normal_0455.png",
+      "sha256": "4fae0dddfa662f4a6018ffa98dec1c157aabe0d4e72c76ee8021cd247bd483db",
+      "viewed": true,
+      "finding": "normal zero GT; no augmentation"
+    },
+    {
+      "image_id": "pcb1/Data/Images/Normal/0983.JPG",
+      "mask_id": "",
+      "path": "E:\\桌面\\AI\\segformer_resources\\runs\\dataset_check\\val_normal_0983.png",
+      "sha256": "ea5dfcd83895e8503fdf5e382db573bd3bc0e371214046d54253829088dbce89",
+      "viewed": true,
+      "finding": "normal zero GT; stage04 mesh annotation uncertainty retained"
+    },
+    {
+      "image_id": "pcb1/Data/Images/Anomaly/087.JPG",
+      "mask_id": "pcb1/Data/Masks/Anomaly/087.png",
+      "path": "E:\\桌面\\AI\\segformer_resources\\runs\\dataset_check\\val_anomaly_087.png",
+      "sha256": "c88b56745f619740e26498a1d09a94e45a243e5cbddc8499ae1c6a7c847a01ef",
+      "viewed": true,
+      "finding": "oblique surface scratches align with red GT"
+    },
+    {
+      "image_id": "pcb1/Data/Images/Anomaly/010.JPG",
+      "mask_id": "pcb1/Data/Masks/Anomaly/010.png",
+      "path": "E:\\桌面\\AI\\segformer_resources\\runs\\dataset_check\\val_anomaly_010.png",
+      "sha256": "201847cf560ae07f9fc63f40a2296c2eeb87076a719fb6c3cb18dda93cf0ff23",
+      "viewed": true,
+      "finding": "bent/crossed pins align with red GT"
+    },
+    {
+      "image_id": "pcb1/Data/Images/Anomaly/045.JPG",
+      "mask_id": "pcb1/Data/Masks/Anomaly/045.png",
+      "path": "E:\\桌面\\AI\\segformer_resources\\runs\\dataset_check\\val_anomaly_045.png",
+      "sha256": "c3042bd9ad344557b5261b582e1db845616f43d4a87ab607fb999d8038442486",
+      "viewed": true,
+      "finding": "two inner round regions align with GT"
+    }
+  ],
+  "code_sha256": {
+    "segformer_lab/data.py": "3eb2117997db7cee7fa720b74f8b5b7df85793f4a65cebdd851943c3025ab9ce",
+    "segformer_lab/dataset_check.py": "cf38ac70fe70b99323f17dff282136081cbe316bdd61f75e272707a12ea8436d",
+    "tests/test_dataset.py": "0307a808b67577ad4a7ca3bd3ce6f63ae3e3d66477156f701fed75c7571288fd",
+    "tests/test_dataset_check.py": "a6ba7eec71da2ae34cf187fc43367060afb8e5f07f7cc951b26cbcac7daf0cf8"
+  },
+  "config_sha256": "9bdf8830e0632619cf4214c33a78fbd4a7fe288993f0043b070bdc6d50c73aa7",
+  "evidence_sha256": {
+    "reports/dataset_check.json": "cef6018a1e11d8c77fe370bb84b4f90eb491df53eecf5fa96f2ce2ea25ad920b",
+    "reports/stage06-dataset-check.txt": "231fe5db4f7c192a2d1726b8fabbe30284e0eb94aaf4acba09292bf3c6678162",
+    "reports/stage06-unit-tests.txt": "0da33db8d6bafa34a0d6451369364944cc44e0a632336889aa25cc181eab30c2",
+    "reports/figures/stage06-flip-comparison.png": "28e2292bcfb9296dc37da4531674fda0b98ec3aaf1be9071321b09d825573c51",
+    "reports/figures/stage06-flip-comparison.json": "957d23fa84c7bdab3650027f7279e4e81ffdb9d55232b7102bec83ed0c315850"
+  },
+  "limits": [
+    "Only selected images were read; no new full 1104-image decode pass",
+    "No test image inference or quality metrics",
+    "num_workers>0 and training throughput unverified",
+    "Skipped model mode is data diagnostics, not stage acceptance"
+  ]
+}
