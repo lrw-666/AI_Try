@@ -1,0 +1,31 @@
+{
+  "status": "pass",
+  "official_csv_matches_zip": true,
+  "original_images": 1104,
+  "anomaly_masks": 100,
+  "archive_members_verified": 1205,
+  "verified_bytes": 296989825,
+  "disjoint_original_image_splits": true,
+  "validation_rederived_independently": true,
+  "official_test_rows_unchanged": true,
+  "counts": {
+    "train": {
+      "anomaly": 48,
+      "normal": 482
+    },
+    "val": {
+      "anomaly": 12,
+      "normal": 120
+    },
+    "test": {
+      "anomaly": 40,
+      "normal": 402
+    }
+  },
+  "manifest_sha256": {
+    "train": "b26077266a59efdf45306bd9de0ce726aca52db4d7d50ea3ae284eaa92130d53",
+    "val": "7335d8c82b8997bffa06af59283f1ade7ac18949bfdec14973cd054f3161bb9c",
+    "test": "4bdc594148f208c7067a66a8cb3b06fde53ebc1f4ab6fda84f08f80383061284"
+  },
+  "scope": "headers and file identities only; full image decode and mask-pixel audit remain stage04"
+}

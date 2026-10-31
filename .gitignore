@@ -6,3 +6,21 @@
 
 # Microsoft Office temporary lock files.
 ~$*
+
+# Python bytecode and local caches.
+__pycache__/
+*.pyc
+
+# SegFormer runtime resources stay local; commit code, manifests and summaries.
+/work/SegFormer/data/
+/work/SegFormer/datasets/
+/work/SegFormer/models/
+/work/SegFormer/runs/
+/work/SegFormer/cache/
+/work/SegFormer/env/
+/work/SegFormer/.venv/
+/work/SegFormer/**/*.whl
+/work/SegFormer/**/*.pt
+/work/SegFormer/**/*.pth
+/work/SegFormer/**/*.ckpt
+/work/SegFormer/**/*.safetensors

@@ -1,0 +1,186 @@
+{
+  "schema": "segformer-lab/env-check/1",
+  "package_version": "0.1.0",
+  "generated_at": "2026-10-31 14:09:16 +0800",
+  "project_root": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer",
+  "resource_root": "E:\\桌面\\AI\\segformer_resources",
+  "python": {
+    "executable": "E:\\桌面\\AI\\segformer_resources\\env\\python.exe",
+    "version": "3.12.16 | packaged by Anaconda, Inc. | (main, Oct 26 2026, 20:13:05) [MSC v.1942 64 bit (AMD64)]",
+    "version_info": [
+      3,
+      12,
+      16
+    ],
+    "prefix": "E:\\桌面\\AI\\segformer_resources\\env",
+    "base_prefix": "E:\\桌面\\AI\\segformer_resources\\env",
+    "note": "Conda prefix: base_prefix equals prefix by design; check package locations instead",
+    "site_packages_writable": true
+  },
+  "site": {
+    "ENABLE_USER_SITE": false,
+    "suspect_sys_path": []
+  },
+  "platform": {
+    "system": "Windows",
+    "release": "11",
+    "version": "10.0.26200",
+    "machine": "AMD64",
+    "processor": "AMD64 Family 25 Model 97 Stepping 2, AuthenticAMD",
+    "python_compiler": "MSC v.1942 64 bit (AMD64)"
+  },
+  "hardware": {
+    "cpu_logical": 32,
+    "ram_total_gib": 15.22,
+    "ram_available_gib": 3.13
+  },
+  "disk": {
+    "project_root": {
+      "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer",
+      "total_gib": 500.0,
+      "free_gib": 152.21
+    },
+    "resource_root": {
+      "path": "E:\\桌面\\AI\\segformer_resources",
+      "total_gib": 500.0,
+      "free_gib": 152.21
+    }
+  },
+  "caches": {
+    "SEGFORMER_RESOURCE": "E:\\桌面\\AI\\segformer_resources",
+    "PYTHONNOUSERSITE": "1",
+    "PYTHONPYCACHEPREFIX": "E:\\桌面\\AI\\segformer_resources\\cache\\pycache",
+    "PYTHONUTF8": "1",
+    "PIP_CONFIG_FILE": "nul",
+    "PIP_CACHE_DIR": "E:\\桌面\\AI\\segformer_resources\\cache\\pip",
+    "CONDA_PKGS_DIRS": "E:\\桌面\\AI\\segformer_resources\\cache\\conda_pkgs",
+    "CONDA_ENVS_PATH": "E:\\桌面\\AI\\segformer_resources\\cache\\conda_envs",
+    "CONDA_REGISTER_ENVS": "false",
+    "CONDA_NUMBER_CHANNEL_NOTICES": "0",
+    "CONDARC": "E:\\桌面\\AI\\segformer_resources\\config\\condarc.yml",
+    "HF_HOME": "E:\\桌面\\AI\\segformer_resources\\cache\\huggingface",
+    "HF_HUB_CACHE": "E:\\桌面\\AI\\segformer_resources\\cache\\huggingface\\hub",
+    "TORCH_HOME": "E:\\桌面\\AI\\segformer_resources\\cache\\torch",
+    "TORCH_EXTENSIONS_DIR": "E:\\桌面\\AI\\segformer_resources\\cache\\torch_extensions",
+    "CUDA_CACHE_PATH": "E:\\桌面\\AI\\segformer_resources\\cache\\cuda",
+    "XDG_CACHE_HOME": "E:\\桌面\\AI\\segformer_resources\\cache\\xdg",
+    "MPLCONFIGDIR": "E:\\桌面\\AI\\segformer_resources\\cache\\matplotlib",
+    "TEMP": "E:\\桌面\\AI\\segformer_resources\\tmp",
+    "TMP": "E:\\桌面\\AI\\segformer_resources\\tmp",
+    "TMPDIR": "E:\\桌面\\AI\\segformer_resources\\tmp"
+  },
+  "effective_paths": {
+    "temp_dir": "E:\\桌面\\AI\\segformer_resources\\tmp",
+    "torch_hub_dir": "E:\\桌面\\AI\\segformer_resources\\cache\\torch\\hub",
+    "matplotlib_cache_dir": "E:\\桌面\\AI\\segformer_resources\\cache\\matplotlib",
+    "hf_home": "E:\\桌面\\AI\\segformer_resources\\cache\\huggingface",
+    "hf_hub_cache": "E:\\桌面\\AI\\segformer_resources\\cache\\huggingface\\hub",
+    "transformers_cache_constant": "E:\\桌面\\AI\\segformer_resources\\cache\\huggingface\\hub",
+    "outside_resource_root": []
+  },
+  "packages": {
+    "torch": {
+      "version": "2.10.0+cu126",
+      "file": "E:\\桌面\\AI\\segformer_resources\\env\\Lib\\site-packages\\torch\\__init__.py",
+      "cuda_build": "12.6",
+      "cudnn_version": 91002,
+      "is_available": true,
+      "hip_build": null,
+      "threads": 16
+    },
+    "torchvision": {
+      "version": "0.25.0+cu126",
+      "file": "E:\\桌面\\AI\\segformer_resources\\env\\Lib\\site-packages\\torchvision\\__init__.py"
+    },
+    "transformers": {
+      "version": "4.57.6",
+      "file": "E:\\桌面\\AI\\segformer_resources\\env\\Lib\\site-packages\\transformers\\__init__.py"
+    },
+    "numpy": {
+      "version": "2.5.4",
+      "file": "E:\\桌面\\AI\\segformer_resources\\env\\Lib\\site-packages\\numpy\\__init__.py"
+    },
+    "PIL": {
+      "version": "12.3.0",
+      "file": "E:\\桌面\\AI\\segformer_resources\\env\\Lib\\site-packages\\PIL\\__init__.py"
+    },
+    "matplotlib": {
+      "version": "3.11.2",
+      "file": "E:\\桌面\\AI\\segformer_resources\\env\\Lib\\site-packages\\matplotlib\\__init__.py"
+    },
+    "yaml": {
+      "version": "6.0.3",
+      "file": "E:\\桌面\\AI\\segformer_resources\\env\\Lib\\site-packages\\yaml\\__init__.py"
+    },
+    "huggingface_hub": {
+      "version": "0.36.2",
+      "file": "E:\\桌面\\AI\\segformer_resources\\env\\Lib\\site-packages\\huggingface_hub\\__init__.py"
+    },
+    "tensorboard": {
+      "version": "2.21.0",
+      "file": "E:\\桌面\\AI\\segformer_resources\\env\\Lib\\site-packages\\tensorboard\\__init__.py"
+    }
+  },
+  "gpu": {
+    "available": true,
+    "device_count": 1,
+    "current_device": 0,
+    "devices": [
+      {
+        "index": 0,
+        "name": "NVIDIA GeForce RTX 4070 Laptop GPU",
+        "capability": "8.9",
+        "total_memory_mib": 8188,
+        "multi_processor_count": 36
+      }
+    ]
+  },
+  "import_isolation": {
+    "sys_prefix": "E:\\桌面\\AI\\segformer_resources\\env",
+    "packages_checked": 9,
+    "outside_prefix": [],
+    "ok": true
+  },
+  "cuda_probe": {
+    "ok": true,
+    "loss": 505.4765930175781,
+    "grad_finite": true,
+    "device_name": "NVIDIA GeForce RTX 4070 Laptop GPU",
+    "elapsed_ms": 294.2
+  },
+  "segformer_probe": {
+    "ok": true,
+    "note": "randomly initialised SegformerConfig; weights are NOT pretrained",
+    "input_shape": [
+      2,
+      3,
+      512,
+      512
+    ],
+    "logits_shape": [
+      2,
+      2,
+      128,
+      128
+    ],
+    "upsampled_shape": [
+      2,
+      2,
+      512,
+      512
+    ],
+    "output_stride": 4,
+    "loss_ce": 0.782416820526123,
+    "total_params": 3714658,
+    "trainable_params": 3714658,
+    "encoder_grad_norm": 0.145013,
+    "head_grad_norm": 0.015297,
+    "encoder_updated": true,
+    "head_updated": true,
+    "elapsed_ms": 2126.4,
+    "peak_allocated_mib": 848.1,
+    "peak_reserved_mib": 1014.0
+  },
+  "errors": [],
+  "status": "ok"
+}

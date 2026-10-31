@@ -1,0 +1,25 @@
+# Portable recipe for the CUDA part of the SegFormer environment.
+#
+# requirements-lock.txt is the verbatim `pip freeze` of the working
+# environment. Because torch/torchvision were installed from local wheel files,
+# that file records them as file:// URLs and cannot be replayed as-is on another
+# machine. requirements-runtime.txt pins the COMPLETE runtime stack. This file
+# only installs the two CUDA packages, not the full SegFormer environment:
+#
+#   Invoke-SegPip install --no-user -r requirements-runtime.txt --index-url https://pypi.org/simple
+#
+# Wheel identities verified on 2026-10-31 against the official index hashes:
+#   torch-2.10.0+cu126-cp312-cp312-win_amd64.whl
+#     sha256 95d8409b8a15191de4c2958e86ca47f3ea8f9739b994ee4ca0e7586f37336413
+#     size   2589881452 bytes
+#   torchvision-0.25.0+cu126-cp312-cp312-win_amd64.whl
+#     sha256 57a8a103814c344d91c32425ba38a53daac4bf4aab074aaaea7b6bab4c22fb7b
+#
+# The explicit +cu126 pins and official CUDA index select the intended build.
+# An unqualified release-version pin alone does not document the CUDA build.
+# Verify torch.version.cuda and an actual CUDA operation after rebuilding.
+
+--extra-index-url https://download.pytorch.org/whl/cu126
+
+torch==2.10.0+cu126
+torchvision==0.25.0+cu126

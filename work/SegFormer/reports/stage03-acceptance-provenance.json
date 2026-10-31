@@ -1,0 +1,16 @@
+{
+  "generated_at": "2026-10-31T17:18:49.548055+08:00",
+  "python_tests_passed": 23,
+  "runtime_context_checks_passed": 20,
+  "manifest_sha256": {
+    "train": "b26077266a59efdf45306bd9de0ce726aca52db4d7d50ea3ae284eaa92130d53",
+    "val": "7335d8c82b8997bffa06af59283f1ade7ac18949bfdec14973cd054f3161bb9c",
+    "test": "4bdc594148f208c7067a66a8cb3b06fde53ebc1f4ab6fda84f08f80383061284"
+  },
+  "source_sha256": {
+    "segformer_lab/prepare_data.py": "82c2f911ab6eab43cb2d814c574e1b73b2939950a62689c019793c193b1f84ef",
+    "tests/test_prepare_data.py": "bf03d70211880cd38d814187ea6d92c2ac2185bcfa32f5d63ff58da2a98d5d80",
+    "scripts/enter_project.ps1": "19d5ef5924568181669f03049bf0d8b2204036db19ee3ad78adaa5e3490b92d8"
+  },
+  "scope": "stage03 acceptance; no model training or complete pixel decode"
+}
