@@ -1,0 +1,2799 @@
+{
+  "schema": "segformer-lab/stage08-09-evidence-audit/1",
+  "checked_at": "2026-11-01T11:52:02+08:00",
+  "read_only_no_training": true,
+  "execution": {
+    "interpreter": "E:\\Anaconda\\python.exe",
+    "python": "3.12.7",
+    "method": "Python standard library only: json/csv/hashlib/subprocess/git read operations; write only this new audit JSON.",
+    "imported_torch": false,
+    "started_gpu_process": false,
+    "started_training_or_inference": false,
+    "test_image_or_mask_access": false,
+    "test_manifest_access": "Read CSV membership and SHA-256 only.",
+    "raw_runs_modified": false,
+    "sole_written_path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\reports\\stage08-09-evidence-audit.json"
+  },
+  "scope_limits": [
+    "Recomputed published scores from stored per-image confusion counts; did not rerun pixels/logits/model.",
+    "Source image/mask files were hashed, not decoded; historical foreground counts were checked against stored evaluation counts.",
+    "No overall stage acceptance or claim of complete historical-source reconstruction is implied by artifact integrity."
+  ],
+  "subset_identity": {
+    "ids_file": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\overfit_train_ids.txt",
+    "ids": [
+      "pcb1/Data/Images/Normal/0025.JPG",
+      "pcb1/Data/Images/Normal/0121.JPG",
+      "pcb1/Data/Images/Normal/0708.JPG",
+      "pcb1/Data/Images/Normal/0812.JPG",
+      "pcb1/Data/Images/Anomaly/065.JPG",
+      "pcb1/Data/Images/Anomaly/038.JPG",
+      "pcb1/Data/Images/Anomaly/031.JPG",
+      "pcb1/Data/Images/Anomaly/043.JPG"
+    ],
+    "ids_count": 8,
+    "unique_ids_count": 8,
+    "train_only": true,
+    "ids_absent_from_val_and_test": true,
+    "composition_from_actual_train_csv": {
+      "normal": 4,
+      "anomaly": 4
+    },
+    "report_ids_match_actual_file": true,
+    "raw_runs_use_identical_ids": true,
+    "raw_runs_ids_sha256_match": true,
+    "source_files_checked": 12,
+    "source_file_checks": [
+      {
+        "image_id": "pcb1/Data/Images/Normal/0025.JPG",
+        "label": "normal",
+        "in_train": true,
+        "manifest_label_matches": true,
+        "manifest_mask_matches": true,
+        "recorded_original_foreground_pixels": 0,
+        "recorded_foreground_pixels_512": 0,
+        "file_checks": [
+          {
+            "path": "E:\\桌面\\AI\\segformer_resources\\data\\visa\\pcb1\\Data\\Images\\Normal\\0025.JPG",
+            "exists": true,
+            "expected_sha256": "25c9bc9462d449af13185e803391b2786f9efa96b04d345d6c56eb93bb85ba9c",
+            "actual_sha256": "25c9bc9462d449af13185e803391b2786f9efa96b04d345d6c56eb93bb85ba9c",
+            "sha256_matches": true,
+            "expected_bytes": 268816,
+            "actual_bytes": 268816,
+            "bytes_match": true
+          }
+        ]
+      },
+      {
+        "image_id": "pcb1/Data/Images/Normal/0121.JPG",
+        "label": "normal",
+        "in_train": true,
+        "manifest_label_matches": true,
+        "manifest_mask_matches": true,
+        "recorded_original_foreground_pixels": 0,
+        "recorded_foreground_pixels_512": 0,
+        "file_checks": [
+          {
+            "path": "E:\\桌面\\AI\\segformer_resources\\data\\visa\\pcb1\\Data\\Images\\Normal\\0121.JPG",
+            "exists": true,
+            "expected_sha256": "b9b53563336be662d67b8d0e3464a7d55035eff93e868fd5e1197d2ad19b4643",
+            "actual_sha256": "b9b53563336be662d67b8d0e3464a7d55035eff93e868fd5e1197d2ad19b4643",
+            "sha256_matches": true,
+            "expected_bytes": 277745,
+            "actual_bytes": 277745,
+            "bytes_match": true
+          }
+        ]
+      },
+      {
+        "image_id": "pcb1/Data/Images/Normal/0708.JPG",
+        "label": "normal",
+        "in_train": true,
+        "manifest_label_matches": true,
+        "manifest_mask_matches": true,
+        "recorded_original_foreground_pixels": 0,
+        "recorded_foreground_pixels_512": 0,
+        "file_checks": [
+          {
+            "path": "E:\\桌面\\AI\\segformer_resources\\data\\visa\\pcb1\\Data\\Images\\Normal\\0708.JPG",
+            "exists": true,
+            "expected_sha256": "559938fad8969af8d06b81ce791241a2f28eb9a2bcb9e7e6d4634a95630c6eda",
+            "actual_sha256": "559938fad8969af8d06b81ce791241a2f28eb9a2bcb9e7e6d4634a95630c6eda",
+            "sha256_matches": true,
+            "expected_bytes": 287240,
+            "actual_bytes": 287240,
+            "bytes_match": true
+          }
+        ]
+      },
+      {
+        "image_id": "pcb1/Data/Images/Normal/0812.JPG",
+        "label": "normal",
+        "in_train": true,
+        "manifest_label_matches": true,
+        "manifest_mask_matches": true,
+        "recorded_original_foreground_pixels": 0,
+        "recorded_foreground_pixels_512": 0,
+        "file_checks": [
+          {
+            "path": "E:\\桌面\\AI\\segformer_resources\\data\\visa\\pcb1\\Data\\Images\\Normal\\0812.JPG",
+            "exists": true,
+            "expected_sha256": "8b9edac84d36aa5fc829cc7f48d6ebcc1d775c631b7d42b28a090a5f6159cff3",
+            "actual_sha256": "8b9edac84d36aa5fc829cc7f48d6ebcc1d775c631b7d42b28a090a5f6159cff3",
+            "sha256_matches": true,
+            "expected_bytes": 278271,
+            "actual_bytes": 278271,
+            "bytes_match": true
+          }
+        ]
+      },
+      {
+        "image_id": "pcb1/Data/Images/Anomaly/065.JPG",
+        "label": "anomaly",
+        "in_train": true,
+        "manifest_label_matches": true,
+        "manifest_mask_matches": true,
+        "recorded_original_foreground_pixels": 1150,
+        "recorded_foreground_pixels_512": 155,
+        "file_checks": [
+          {
+            "path": "E:\\桌面\\AI\\segformer_resources\\data\\visa\\pcb1\\Data\\Images\\Anomaly\\065.JPG",
+            "exists": true,
+            "expected_sha256": "34e36bacabeda8ad3877a7ef206eb9370e6c4e0594e1ee8f9c2803cf93b46988",
+            "actual_sha256": "34e36bacabeda8ad3877a7ef206eb9370e6c4e0594e1ee8f9c2803cf93b46988",
+            "sha256_matches": true,
+            "expected_bytes": 257072,
+            "actual_bytes": 257072,
+            "bytes_match": true
+          },
+          {
+            "path": "E:\\桌面\\AI\\segformer_resources\\data\\visa\\pcb1\\Data\\Masks\\Anomaly\\065.png",
+            "exists": true,
+            "expected_sha256": "1a98a1141391d98d00e728798b5203dfc1cfd458a1bf341f560a9786f4987f26",
+            "actual_sha256": "1a98a1141391d98d00e728798b5203dfc1cfd458a1bf341f560a9786f4987f26",
+            "sha256_matches": true,
+            "expected_bytes": 1880,
+            "actual_bytes": 1880,
+            "bytes_match": true
+          }
+        ]
+      },
+      {
+        "image_id": "pcb1/Data/Images/Anomaly/038.JPG",
+        "label": "anomaly",
+        "in_train": true,
+        "manifest_label_matches": true,
+        "manifest_mask_matches": true,
+        "recorded_original_foreground_pixels": 2517,
+        "recorded_foreground_pixels_512": 331,
+        "file_checks": [
+          {
+            "path": "E:\\桌面\\AI\\segformer_resources\\data\\visa\\pcb1\\Data\\Images\\Anomaly\\038.JPG",
+            "exists": true,
+            "expected_sha256": "20971e8c3bf13131530013ec3d7662c05f26a960ea0eb72d7cb67858cd53a9c2",
+            "actual_sha256": "20971e8c3bf13131530013ec3d7662c05f26a960ea0eb72d7cb67858cd53a9c2",
+            "sha256_matches": true,
+            "expected_bytes": 281860,
+            "actual_bytes": 281860,
+            "bytes_match": true
+          },
+          {
+            "path": "E:\\桌面\\AI\\segformer_resources\\data\\visa\\pcb1\\Data\\Masks\\Anomaly\\038.png",
+            "exists": true,
+            "expected_sha256": "1af853acf319b7d463412760dd8421f64db5e3d4de7117a8648656c41172892e",
+            "actual_sha256": "1af853acf319b7d463412760dd8421f64db5e3d4de7117a8648656c41172892e",
+            "sha256_matches": true,
+            "expected_bytes": 2011,
+            "actual_bytes": 2011,
+            "bytes_match": true
+          }
+        ]
+      },
+      {
+        "image_id": "pcb1/Data/Images/Anomaly/031.JPG",
+        "label": "anomaly",
+        "in_train": true,
+        "manifest_label_matches": true,
+        "manifest_mask_matches": true,
+        "recorded_original_foreground_pixels": 3409,
+        "recorded_foreground_pixels_512": 443,
+        "file_checks": [
+          {
+            "path": "E:\\桌面\\AI\\segformer_resources\\data\\visa\\pcb1\\Data\\Images\\Anomaly\\031.JPG",
+            "exists": true,
+            "expected_sha256": "cc498f351029d1e891091b69f1163532bdd149a486a5a975778f5b2337543782",
+            "actual_sha256": "cc498f351029d1e891091b69f1163532bdd149a486a5a975778f5b2337543782",
+            "sha256_matches": true,
+            "expected_bytes": 259461,
+            "actual_bytes": 259461,
+            "bytes_match": true
+          },
+          {
+            "path": "E:\\桌面\\AI\\segformer_resources\\data\\visa\\pcb1\\Data\\Masks\\Anomaly\\031.png",
+            "exists": true,
+            "expected_sha256": "342af623a38500b01cfbbd626d52a0794516a51dd0400dbbeda34f2a2508f113",
+            "actual_sha256": "342af623a38500b01cfbbd626d52a0794516a51dd0400dbbeda34f2a2508f113",
+            "sha256_matches": true,
+            "expected_bytes": 2537,
+            "actual_bytes": 2537,
+            "bytes_match": true
+          }
+        ]
+      },
+      {
+        "image_id": "pcb1/Data/Images/Anomaly/043.JPG",
+        "label": "anomaly",
+        "in_train": true,
+        "manifest_label_matches": true,
+        "manifest_mask_matches": true,
+        "recorded_original_foreground_pixels": 191178,
+        "recorded_foreground_pixels_512": 25389,
+        "file_checks": [
+          {
+            "path": "E:\\桌面\\AI\\segformer_resources\\data\\visa\\pcb1\\Data\\Images\\Anomaly\\043.JPG",
+            "exists": true,
+            "expected_sha256": "dbc6b10eaacb7be78fd1ba20e5dc821297e3280be0b67d62ab0e95bdb307f877",
+            "actual_sha256": "dbc6b10eaacb7be78fd1ba20e5dc821297e3280be0b67d62ab0e95bdb307f877",
+            "sha256_matches": true,
+            "expected_bytes": 220506,
+            "actual_bytes": 220506,
+            "bytes_match": true
+          },
+          {
+            "path": "E:\\桌面\\AI\\segformer_resources\\data\\visa\\pcb1\\Data\\Masks\\Anomaly\\043.png",
+            "exists": true,
+            "expected_sha256": "b430c544895df14bab7b3e7d15f39ee078f3ba8f0cfa63b0def15654ae64464b",
+            "actual_sha256": "b430c544895df14bab7b3e7d15f39ee078f3ba8f0cfa63b0def15654ae64464b",
+            "sha256_matches": true,
+            "expected_bytes": 4717,
+            "actual_bytes": 4717,
+            "bytes_match": true
+          }
+        ]
+      }
+    ],
+    "all_12_source_hashes_match": true,
+    "note": "Read source image/mask bytes for SHA-256 only. No image decoding, torch import, training, inference, or test-image/mask access was performed. Pixel foreground counts are historical fields, cross-checked with evaluation counts, not independently decoded here."
+  },
+  "manifest_snapshot_and_metadata_anchors": [
+    {
+      "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\overfit_train_ids.txt",
+      "exists": true,
+      "expected_sha256": "2ac81b816dde9888d7483a3af0b9ffa85ae17cd242242542c1ff3f88d1cec6e9",
+      "actual_sha256": "2ac81b816dde9888d7483a3af0b9ffa85ae17cd242242542c1ff3f88d1cec6e9",
+      "sha256_matches": true,
+      "expected_bytes": null,
+      "actual_bytes": 272,
+      "bytes_match": null
+    },
+    {
+      "path": "E:\\桌面\\AI\\segformer_resources\\models\\mit-b0\\source.json",
+      "exists": true,
+      "expected_sha256": "8e57fa70638ae7aad076ea9ad9603f4e4a87da54e09d2cb698ea26328beb8650",
+      "actual_sha256": "8e57fa70638ae7aad076ea9ad9603f4e4a87da54e09d2cb698ea26328beb8650",
+      "sha256_matches": true,
+      "expected_bytes": null,
+      "actual_bytes": 1126,
+      "bytes_match": null
+    },
+    {
+      "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\train.csv",
+      "exists": true,
+      "expected_sha256": "f1522eb9b474d0acc1d736a391002f5044153208fa10f51eea3dc7df729f65b0",
+      "actual_sha256": "f1522eb9b474d0acc1d736a391002f5044153208fa10f51eea3dc7df729f65b0",
+      "sha256_matches": true,
+      "expected_bytes": null,
+      "actual_bytes": 29126,
+      "bytes_match": null,
+      "rows": 530,
+      "expected_rows": 530,
+      "row_count_matches": true
+    },
+    {
+      "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\val.csv",
+      "exists": true,
+      "expected_sha256": "60a6c6cbf5ed7f5f9e57fb57bb096a5b57db677af5ee73f4fa140ddceaba6191",
+      "actual_sha256": "60a6c6cbf5ed7f5f9e57fb57bb096a5b57db677af5ee73f4fa140ddceaba6191",
+      "sha256_matches": true,
+      "expected_bytes": null,
+      "actual_bytes": 7014,
+      "bytes_match": null,
+      "rows": 132,
+      "expected_rows": 132,
+      "row_count_matches": true
+    },
+    {
+      "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\test.csv",
+      "exists": true,
+      "expected_sha256": "4bdc594148f208c7067a66a8cb3b06fde53ebc1f4ab6fda84f08f80383061284",
+      "actual_sha256": "4bdc594148f208c7067a66a8cb3b06fde53ebc1f4ab6fda84f08f80383061284",
+      "sha256_matches": true,
+      "expected_bytes": null,
+      "actual_bytes": 23852,
+      "bytes_match": null,
+      "rows": 442,
+      "expected_rows": 442,
+      "row_count_matches": true
+    },
+    {
+      "path": "E:\\桌面\\AI\\segformer_resources\\models\\mit-b0\\config.json",
+      "exists": true,
+      "expected_sha256": "e2378ac7c7a6981d6bdd1d9ccf29b611264c382afce89c561f39c9291164ff91",
+      "actual_sha256": "e2378ac7c7a6981d6bdd1d9ccf29b611264c382afce89c561f39c9291164ff91",
+      "sha256_matches": true,
+      "expected_bytes": 70043,
+      "actual_bytes": 70043,
+      "bytes_match": true
+    },
+    {
+      "path": "E:\\桌面\\AI\\segformer_resources\\models\\mit-b0\\preprocessor_config.json",
+      "exists": true,
+      "expected_sha256": "d96ab2cb112985c19d5ea32f1d1f2369104fc78b1379f5ce26e33ca8646202a7",
+      "actual_sha256": "d96ab2cb112985c19d5ea32f1d1f2369104fc78b1379f5ce26e33ca8646202a7",
+      "sha256_matches": true,
+      "expected_bytes": 272,
+      "actual_bytes": 272,
+      "bytes_match": true
+    },
+    {
+      "path": "E:\\桌面\\AI\\segformer_resources\\models\\mit-b0\\pytorch_model.bin",
+      "exists": true,
+      "expected_sha256": "4af8348c2a802bf76115d34797ff5ce1d9f110bb8593c22d9b66d8bd7fa227fc",
+      "actual_sha256": "4af8348c2a802bf76115d34797ff5ce1d9f110bb8593c22d9b66d8bd7fa227fc",
+      "sha256_matches": true,
+      "expected_bytes": 14380029,
+      "actual_bytes": 14380029,
+      "bytes_match": true
+    },
+    {
+      "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\configs\\smoke.yaml",
+      "exists": true,
+      "expected_sha256": "c7587dce3445803c0a4479fcd4158b9e433f61679d317a403c04aca92f87475e",
+      "actual_sha256": "c7587dce3445803c0a4479fcd4158b9e433f61679d317a403c04aca92f87475e",
+      "sha256_matches": true,
+      "expected_bytes": null,
+      "actual_bytes": 2349,
+      "bytes_match": null,
+      "run": "smoke_001",
+      "anchor_role": "config"
+    },
+    {
+      "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\overfit_train_ids.txt",
+      "exists": true,
+      "expected_sha256": "2ac81b816dde9888d7483a3af0b9ffa85ae17cd242242542c1ff3f88d1cec6e9",
+      "actual_sha256": "2ac81b816dde9888d7483a3af0b9ffa85ae17cd242242542c1ff3f88d1cec6e9",
+      "sha256_matches": true,
+      "expected_bytes": null,
+      "actual_bytes": 272,
+      "bytes_match": null,
+      "run": "smoke_001",
+      "anchor_role": "ids"
+    },
+    {
+      "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\split_meta.json",
+      "exists": true,
+      "expected_sha256": "7c53a669aabebcbb72cc137f84e7d00ec615e53813396b36e7f3557d6c9d0b49",
+      "actual_sha256": "7c53a669aabebcbb72cc137f84e7d00ec615e53813396b36e7f3557d6c9d0b49",
+      "sha256_matches": true,
+      "expected_bytes": null,
+      "actual_bytes": 5581,
+      "bytes_match": null,
+      "run": "smoke_001",
+      "anchor_role": "split_meta"
+    },
+    {
+      "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\val_preview_ids.txt",
+      "exists": true,
+      "expected_sha256": "4f17789dfecc28023003092dddbe3c4683ac781cb469b483e4180c2ebb8f9718",
+      "actual_sha256": "4f17789dfecc28023003092dddbe3c4683ac781cb469b483e4180c2ebb8f9718",
+      "sha256_matches": true,
+      "expected_bytes": null,
+      "actual_bytes": 363,
+      "bytes_match": null,
+      "run": "smoke_001",
+      "anchor_role": "preview_ids"
+    },
+    {
+      "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\configs\\smoke.yaml",
+      "exists": true,
+      "expected_sha256": "c7587dce3445803c0a4479fcd4158b9e433f61679d317a403c04aca92f87475e",
+      "actual_sha256": "c7587dce3445803c0a4479fcd4158b9e433f61679d317a403c04aca92f87475e",
+      "sha256_matches": true,
+      "expected_bytes": null,
+      "actual_bytes": 2349,
+      "bytes_match": null,
+      "run": "smoke_002_stage09_regression",
+      "anchor_role": "config"
+    },
+    {
+      "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\overfit_train_ids.txt",
+      "exists": true,
+      "expected_sha256": "2ac81b816dde9888d7483a3af0b9ffa85ae17cd242242542c1ff3f88d1cec6e9",
+      "actual_sha256": "2ac81b816dde9888d7483a3af0b9ffa85ae17cd242242542c1ff3f88d1cec6e9",
+      "sha256_matches": true,
+      "expected_bytes": null,
+      "actual_bytes": 272,
+      "bytes_match": null,
+      "run": "smoke_002_stage09_regression",
+      "anchor_role": "ids"
+    },
+    {
+      "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\split_meta.json",
+      "exists": true,
+      "expected_sha256": "7c53a669aabebcbb72cc137f84e7d00ec615e53813396b36e7f3557d6c9d0b49",
+      "actual_sha256": "7c53a669aabebcbb72cc137f84e7d00ec615e53813396b36e7f3557d6c9d0b49",
+      "sha256_matches": true,
+      "expected_bytes": null,
+      "actual_bytes": 5581,
+      "bytes_match": null,
+      "run": "smoke_002_stage09_regression",
+      "anchor_role": "split_meta"
+    },
+    {
+      "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\val_preview_ids.txt",
+      "exists": true,
+      "expected_sha256": "4f17789dfecc28023003092dddbe3c4683ac781cb469b483e4180c2ebb8f9718",
+      "actual_sha256": "4f17789dfecc28023003092dddbe3c4683ac781cb469b483e4180c2ebb8f9718",
+      "sha256_matches": true,
+      "expected_bytes": null,
+      "actual_bytes": 363,
+      "bytes_match": null,
+      "run": "smoke_002_stage09_regression",
+      "anchor_role": "preview_ids"
+    },
+    {
+      "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\configs\\overfit.yaml",
+      "exists": true,
+      "expected_sha256": "f1f1259f4a4c9e89ad28214685fa12e0bc95d0626ee102112be7c9531b17de3b",
+      "actual_sha256": "f1f1259f4a4c9e89ad28214685fa12e0bc95d0626ee102112be7c9531b17de3b",
+      "sha256_matches": true,
+      "expected_bytes": null,
+      "actual_bytes": 2307,
+      "bytes_match": null,
+      "run": "overfit_002",
+      "anchor_role": "config"
+    },
+    {
+      "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\overfit_train_ids.txt",
+      "exists": true,
+      "expected_sha256": "2ac81b816dde9888d7483a3af0b9ffa85ae17cd242242542c1ff3f88d1cec6e9",
+      "actual_sha256": "2ac81b816dde9888d7483a3af0b9ffa85ae17cd242242542c1ff3f88d1cec6e9",
+      "sha256_matches": true,
+      "expected_bytes": null,
+      "actual_bytes": 272,
+      "bytes_match": null,
+      "run": "overfit_002",
+      "anchor_role": "ids"
+    },
+    {
+      "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\split_meta.json",
+      "exists": true,
+      "expected_sha256": "7c53a669aabebcbb72cc137f84e7d00ec615e53813396b36e7f3557d6c9d0b49",
+      "actual_sha256": "7c53a669aabebcbb72cc137f84e7d00ec615e53813396b36e7f3557d6c9d0b49",
+      "sha256_matches": true,
+      "expected_bytes": null,
+      "actual_bytes": 5581,
+      "bytes_match": null,
+      "run": "overfit_002",
+      "anchor_role": "split_meta"
+    },
+    {
+      "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\val_preview_ids.txt",
+      "exists": true,
+      "expected_sha256": "4f17789dfecc28023003092dddbe3c4683ac781cb469b483e4180c2ebb8f9718",
+      "actual_sha256": "4f17789dfecc28023003092dddbe3c4683ac781cb469b483e4180c2ebb8f9718",
+      "sha256_matches": true,
+      "expected_bytes": null,
+      "actual_bytes": 363,
+      "bytes_match": null,
+      "run": "overfit_002",
+      "anchor_role": "preview_ids"
+    }
+  ],
+  "snapshot_revision": {
+    "actual": "80983a413c30d36a39c20203974ae7807835e2b4",
+    "expected": "80983a413c30d36a39c20203974ae7807835e2b4",
+    "matches": true
+  },
+  "raw_artifact_manifests": [
+    {
+      "run": "smoke_001",
+      "manifest_path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_001\\artifact_manifest.json",
+      "manifest_sha256": "c40e584b006c5b9e2ec6a41fae2d8cf1ab28c9d7560b55a11403889ac279c31b",
+      "entries_checked": 13,
+      "file_checks": [
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_001\\checkpoints\\model_state.pt",
+          "exists": true,
+          "expected_sha256": "2b66a9d211f1423f41bf56c2210f5c143ba3aa08492aa74341bf197a943ea727",
+          "actual_sha256": "2b66a9d211f1423f41bf56c2210f5c143ba3aa08492aa74341bf197a943ea727",
+          "sha256_matches": true,
+          "expected_bytes": 14927903,
+          "actual_bytes": 14927903,
+          "bytes_match": true,
+          "relative_path": "checkpoints/model_state.pt"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_001\\checkpoints\\training_state.pt",
+          "exists": true,
+          "expected_sha256": "4b363bf91be84e37cc1a1ac4d68f1d794a303e8c3ec4323b6877f799c48bf715",
+          "actual_sha256": "4b363bf91be84e37cc1a1ac4d68f1d794a303e8c3ec4323b6877f799c48bf715",
+          "sha256_matches": true,
+          "expected_bytes": 44819537,
+          "actual_bytes": 44819537,
+          "bytes_match": true,
+          "relative_path": "checkpoints/training_state.pt"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_001\\eval_smoke\\anomaly_010.png",
+          "exists": true,
+          "expected_sha256": "9716b26dd5d01e19a7cb8195e271edfa00211e1eabc3ba1838c9951be1b51f0c",
+          "actual_sha256": "9716b26dd5d01e19a7cb8195e271edfa00211e1eabc3ba1838c9951be1b51f0c",
+          "sha256_matches": true,
+          "expected_bytes": 139824,
+          "actual_bytes": 139824,
+          "bytes_match": true,
+          "relative_path": "eval_smoke/anomaly_010.png"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_001\\eval_smoke\\anomaly_045.png",
+          "exists": true,
+          "expected_sha256": "dc99a7845578db0287ba1236ad6c6b2ee1ec857ee65a4e052add1939ca31b6d4",
+          "actual_sha256": "dc99a7845578db0287ba1236ad6c6b2ee1ec857ee65a4e052add1939ca31b6d4",
+          "sha256_matches": true,
+          "expected_bytes": 137216,
+          "actual_bytes": 137216,
+          "bytes_match": true,
+          "relative_path": "eval_smoke/anomaly_045.png"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_001\\eval_smoke\\anomaly_087.png",
+          "exists": true,
+          "expected_sha256": "4d1c12fa696732798caf2172e5d3920ff49583bc3106a31e0e276082af8d3e0b",
+          "actual_sha256": "4d1c12fa696732798caf2172e5d3920ff49583bc3106a31e0e276082af8d3e0b",
+          "sha256_matches": true,
+          "expected_bytes": 143425,
+          "actual_bytes": 143425,
+          "bytes_match": true,
+          "relative_path": "eval_smoke/anomaly_087.png"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_001\\eval_smoke\\normal_0011.png",
+          "exists": true,
+          "expected_sha256": "4ff2c38e0b27ec69526feb850899771f04c1ac68395adf915fc4ace1aa68e246",
+          "actual_sha256": "4ff2c38e0b27ec69526feb850899771f04c1ac68395adf915fc4ace1aa68e246",
+          "sha256_matches": true,
+          "expected_bytes": 144244,
+          "actual_bytes": 144244,
+          "bytes_match": true,
+          "relative_path": "eval_smoke/normal_0011.png"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_001\\eval_smoke\\normal_0455.png",
+          "exists": true,
+          "expected_sha256": "a04f06bc502d2ebac20be3d1908fce8c4586943e8bf37a91ab5a00f5471d51d0",
+          "actual_sha256": "a04f06bc502d2ebac20be3d1908fce8c4586943e8bf37a91ab5a00f5471d51d0",
+          "sha256_matches": true,
+          "expected_bytes": 144941,
+          "actual_bytes": 144941,
+          "bytes_match": true,
+          "relative_path": "eval_smoke/normal_0455.png"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_001\\eval_smoke\\normal_0983.png",
+          "exists": true,
+          "expected_sha256": "92ff182cc3ad1c1fa90d8c92feb67da6595f4efd7767b3261e71088d29a03c0d",
+          "actual_sha256": "92ff182cc3ad1c1fa90d8c92feb67da6595f4efd7767b3261e71088d29a03c0d",
+          "sha256_matches": true,
+          "expected_bytes": 139182,
+          "actual_bytes": 139182,
+          "bytes_match": true,
+          "relative_path": "eval_smoke/normal_0983.png"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_001\\model_config.json",
+          "exists": true,
+          "expected_sha256": "a2648c94cd17508f41b3fbf7451a2815ef2443192ed3c2388fb33288d4fd1bac",
+          "actual_sha256": "a2648c94cd17508f41b3fbf7451a2815ef2443192ed3c2388fb33288d4fd1bac",
+          "sha256_matches": true,
+          "expected_bytes": 2601,
+          "actual_bytes": 2601,
+          "bytes_match": true,
+          "relative_path": "model_config.json"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_001\\pre_save_probabilities.npz",
+          "exists": true,
+          "expected_sha256": "56d7f3050b2754466d981a2bd8cfcf5270fa33e5ceefbb60de2f0a9466faf4d9",
+          "actual_sha256": "56d7f3050b2754466d981a2bd8cfcf5270fa33e5ceefbb60de2f0a9466faf4d9",
+          "sha256_matches": true,
+          "expected_bytes": 29337425,
+          "actual_bytes": 29337425,
+          "bytes_match": true,
+          "relative_path": "pre_save_probabilities.npz"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_001\\processor\\preprocessor_config.json",
+          "exists": true,
+          "expected_sha256": "7854b1307bdd3737b1106ad604bbd8f90308cfce8d46609e6d5d88a1face9f58",
+          "actual_sha256": "7854b1307bdd3737b1106ad604bbd8f90308cfce8d46609e6d5d88a1face9f58",
+          "sha256_matches": true,
+          "expected_bytes": 396,
+          "actual_bytes": 396,
+          "bytes_match": true,
+          "relative_path": "processor/preprocessor_config.json"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_001\\run_extra.json",
+          "exists": true,
+          "expected_sha256": "35c76399f76d708897c56c302daed5b1613d3442db455456c25b3b80635ad94e",
+          "actual_sha256": "35c76399f76d708897c56c302daed5b1613d3442db455456c25b3b80635ad94e",
+          "sha256_matches": true,
+          "expected_bytes": 48,
+          "actual_bytes": 48,
+          "bytes_match": true,
+          "relative_path": "run_extra.json"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_001\\updates.jsonl",
+          "exists": true,
+          "expected_sha256": "9ccec668bae20c20616cbc8c902d6f440388c8fd2d5c67b5650ed94c2d74bbbc",
+          "actual_sha256": "9ccec668bae20c20616cbc8c902d6f440388c8fd2d5c67b5650ed94c2d74bbbc",
+          "sha256_matches": true,
+          "expected_bytes": 6885,
+          "actual_bytes": 6885,
+          "bytes_match": true,
+          "relative_path": "updates.jsonl"
+        }
+      ],
+      "all_bytes_and_sha256_match": true,
+      "step_identity": {
+        "successful_updates": {
+          "manifest": 20,
+          "summary": 20,
+          "matches": true
+        },
+        "attempts": {
+          "manifest": 20,
+          "summary": 20,
+          "matches": true
+        },
+        "skipped": {
+          "manifest": 0,
+          "summary": 0,
+          "matches": true
+        }
+      },
+      "model_state_sha256_anchor": "2b66a9d211f1423f41bf56c2210f5c143ba3aa08492aa74341bf197a943ea727"
+    },
+    {
+      "run": "smoke_002_stage09_regression",
+      "manifest_path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_002_stage09_regression\\artifact_manifest.json",
+      "manifest_sha256": "796e1faae45d79cd80a3e97ff4ed915e840296f2a8ceee251195a1aea19690b1",
+      "entries_checked": 13,
+      "file_checks": [
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_002_stage09_regression\\checkpoints\\model_state.pt",
+          "exists": true,
+          "expected_sha256": "e57087e07f5eea093a7ac1f333fe3503578ee0b357c295b3dd6dde70d5a6a8fe",
+          "actual_sha256": "e57087e07f5eea093a7ac1f333fe3503578ee0b357c295b3dd6dde70d5a6a8fe",
+          "sha256_matches": true,
+          "expected_bytes": 14927903,
+          "actual_bytes": 14927903,
+          "bytes_match": true,
+          "relative_path": "checkpoints/model_state.pt"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_002_stage09_regression\\checkpoints\\training_state.pt",
+          "exists": true,
+          "expected_sha256": "b09d1d833a60e188853ed1b46e0b0f6ee7691c5820fce599a1ffeb816c21ed9a",
+          "actual_sha256": "b09d1d833a60e188853ed1b46e0b0f6ee7691c5820fce599a1ffeb816c21ed9a",
+          "sha256_matches": true,
+          "expected_bytes": 44819537,
+          "actual_bytes": 44819537,
+          "bytes_match": true,
+          "relative_path": "checkpoints/training_state.pt"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_002_stage09_regression\\eval_smoke\\anomaly_010.png",
+          "exists": true,
+          "expected_sha256": "9716b26dd5d01e19a7cb8195e271edfa00211e1eabc3ba1838c9951be1b51f0c",
+          "actual_sha256": "9716b26dd5d01e19a7cb8195e271edfa00211e1eabc3ba1838c9951be1b51f0c",
+          "sha256_matches": true,
+          "expected_bytes": 139824,
+          "actual_bytes": 139824,
+          "bytes_match": true,
+          "relative_path": "eval_smoke/anomaly_010.png"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_002_stage09_regression\\eval_smoke\\anomaly_045.png",
+          "exists": true,
+          "expected_sha256": "dc99a7845578db0287ba1236ad6c6b2ee1ec857ee65a4e052add1939ca31b6d4",
+          "actual_sha256": "dc99a7845578db0287ba1236ad6c6b2ee1ec857ee65a4e052add1939ca31b6d4",
+          "sha256_matches": true,
+          "expected_bytes": 137216,
+          "actual_bytes": 137216,
+          "bytes_match": true,
+          "relative_path": "eval_smoke/anomaly_045.png"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_002_stage09_regression\\eval_smoke\\anomaly_087.png",
+          "exists": true,
+          "expected_sha256": "4d1c12fa696732798caf2172e5d3920ff49583bc3106a31e0e276082af8d3e0b",
+          "actual_sha256": "4d1c12fa696732798caf2172e5d3920ff49583bc3106a31e0e276082af8d3e0b",
+          "sha256_matches": true,
+          "expected_bytes": 143425,
+          "actual_bytes": 143425,
+          "bytes_match": true,
+          "relative_path": "eval_smoke/anomaly_087.png"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_002_stage09_regression\\eval_smoke\\normal_0011.png",
+          "exists": true,
+          "expected_sha256": "4ff2c38e0b27ec69526feb850899771f04c1ac68395adf915fc4ace1aa68e246",
+          "actual_sha256": "4ff2c38e0b27ec69526feb850899771f04c1ac68395adf915fc4ace1aa68e246",
+          "sha256_matches": true,
+          "expected_bytes": 144244,
+          "actual_bytes": 144244,
+          "bytes_match": true,
+          "relative_path": "eval_smoke/normal_0011.png"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_002_stage09_regression\\eval_smoke\\normal_0455.png",
+          "exists": true,
+          "expected_sha256": "a04f06bc502d2ebac20be3d1908fce8c4586943e8bf37a91ab5a00f5471d51d0",
+          "actual_sha256": "a04f06bc502d2ebac20be3d1908fce8c4586943e8bf37a91ab5a00f5471d51d0",
+          "sha256_matches": true,
+          "expected_bytes": 144941,
+          "actual_bytes": 144941,
+          "bytes_match": true,
+          "relative_path": "eval_smoke/normal_0455.png"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_002_stage09_regression\\eval_smoke\\normal_0983.png",
+          "exists": true,
+          "expected_sha256": "4e8dd6d0e17c434f746e2541623e1d5ff37a00faaba4d9db93a76c1f0da6bf9a",
+          "actual_sha256": "4e8dd6d0e17c434f746e2541623e1d5ff37a00faaba4d9db93a76c1f0da6bf9a",
+          "sha256_matches": true,
+          "expected_bytes": 139182,
+          "actual_bytes": 139182,
+          "bytes_match": true,
+          "relative_path": "eval_smoke/normal_0983.png"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_002_stage09_regression\\model_config.json",
+          "exists": true,
+          "expected_sha256": "a2648c94cd17508f41b3fbf7451a2815ef2443192ed3c2388fb33288d4fd1bac",
+          "actual_sha256": "a2648c94cd17508f41b3fbf7451a2815ef2443192ed3c2388fb33288d4fd1bac",
+          "sha256_matches": true,
+          "expected_bytes": 2601,
+          "actual_bytes": 2601,
+          "bytes_match": true,
+          "relative_path": "model_config.json"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_002_stage09_regression\\pre_save_probabilities.npz",
+          "exists": true,
+          "expected_sha256": "f6ebc350e176645e556008a608b37023999e937e574def62131c5476ffcfc875",
+          "actual_sha256": "f6ebc350e176645e556008a608b37023999e937e574def62131c5476ffcfc875",
+          "sha256_matches": true,
+          "expected_bytes": 29337406,
+          "actual_bytes": 29337406,
+          "bytes_match": true,
+          "relative_path": "pre_save_probabilities.npz"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_002_stage09_regression\\processor\\preprocessor_config.json",
+          "exists": true,
+          "expected_sha256": "7854b1307bdd3737b1106ad604bbd8f90308cfce8d46609e6d5d88a1face9f58",
+          "actual_sha256": "7854b1307bdd3737b1106ad604bbd8f90308cfce8d46609e6d5d88a1face9f58",
+          "sha256_matches": true,
+          "expected_bytes": 396,
+          "actual_bytes": 396,
+          "bytes_match": true,
+          "relative_path": "processor/preprocessor_config.json"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_002_stage09_regression\\run_extra.json",
+          "exists": true,
+          "expected_sha256": "35c76399f76d708897c56c302daed5b1613d3442db455456c25b3b80635ad94e",
+          "actual_sha256": "35c76399f76d708897c56c302daed5b1613d3442db455456c25b3b80635ad94e",
+          "sha256_matches": true,
+          "expected_bytes": 48,
+          "actual_bytes": 48,
+          "bytes_match": true,
+          "relative_path": "run_extra.json"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_002_stage09_regression\\updates.jsonl",
+          "exists": true,
+          "expected_sha256": "720832e3d6454725f6caf1c04f737b1d0001f2c5f743f7898c807bd2b38a5e78",
+          "actual_sha256": "720832e3d6454725f6caf1c04f737b1d0001f2c5f743f7898c807bd2b38a5e78",
+          "sha256_matches": true,
+          "expected_bytes": 7304,
+          "actual_bytes": 7304,
+          "bytes_match": true,
+          "relative_path": "updates.jsonl"
+        }
+      ],
+      "all_bytes_and_sha256_match": true,
+      "step_identity": {
+        "successful_updates": {
+          "manifest": 20,
+          "summary": 20,
+          "matches": true
+        },
+        "attempts": {
+          "manifest": 20,
+          "summary": 20,
+          "matches": true
+        },
+        "skipped": {
+          "manifest": 0,
+          "summary": 0,
+          "matches": true
+        }
+      },
+      "model_state_sha256_anchor": "e57087e07f5eea093a7ac1f333fe3503578ee0b357c295b3dd6dde70d5a6a8fe"
+    },
+    {
+      "run": "overfit_002",
+      "manifest_path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\artifact_manifest.json",
+      "manifest_sha256": "7bc51c863a6e6d6f0337efb5ab5eb24ea5ee0dce68716da675903d0e7a83cf44",
+      "entries_checked": 21,
+      "file_checks": [
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\checkpoints\\model_state.pt",
+          "exists": true,
+          "expected_sha256": "92097db6d3d451c226954a2ee44436eb486641303d205b909fa03da8cc6500fa",
+          "actual_sha256": "92097db6d3d451c226954a2ee44436eb486641303d205b909fa03da8cc6500fa",
+          "sha256_matches": true,
+          "expected_bytes": 14927903,
+          "actual_bytes": 14927903,
+          "bytes_match": true,
+          "relative_path": "checkpoints/model_state.pt"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\checkpoints\\training_state.pt",
+          "exists": true,
+          "expected_sha256": "62c70f7113c0347a04d026379d853b1d1e0a64dff77d0e96a1072152a4681337",
+          "actual_sha256": "62c70f7113c0347a04d026379d853b1d1e0a64dff77d0e96a1072152a4681337",
+          "sha256_matches": true,
+          "expected_bytes": 44819537,
+          "actual_bytes": 44819537,
+          "bytes_match": true,
+          "relative_path": "checkpoints/training_state.pt"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\sheet_update_000.png",
+          "exists": true,
+          "expected_sha256": "3676e4c7d0163a2cc3533a425172566831fa14b0c3da273d8a36001ad78d8b3c",
+          "actual_sha256": "3676e4c7d0163a2cc3533a425172566831fa14b0c3da273d8a36001ad78d8b3c",
+          "sha256_matches": true,
+          "expected_bytes": 889120,
+          "actual_bytes": 889120,
+          "bytes_match": true,
+          "relative_path": "eval/sheet_update_000.png"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\sheet_update_050.png",
+          "exists": true,
+          "expected_sha256": "4689c521feefb0fe3a41989633c340b06b316af54edfc5d10acdac56466bc54e",
+          "actual_sha256": "4689c521feefb0fe3a41989633c340b06b316af54edfc5d10acdac56466bc54e",
+          "sha256_matches": true,
+          "expected_bytes": 853964,
+          "actual_bytes": 853964,
+          "bytes_match": true,
+          "relative_path": "eval/sheet_update_050.png"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\sheet_update_100.png",
+          "exists": true,
+          "expected_sha256": "273f8b50befe3ac5a05f8b1f85580f1eb089abbfcb17d2f53f9ea77186addb61",
+          "actual_sha256": "273f8b50befe3ac5a05f8b1f85580f1eb089abbfcb17d2f53f9ea77186addb61",
+          "sha256_matches": true,
+          "expected_bytes": 854575,
+          "actual_bytes": 854575,
+          "bytes_match": true,
+          "relative_path": "eval/sheet_update_100.png"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\sheet_update_150.png",
+          "exists": true,
+          "expected_sha256": "00608ed8775b694846515631e9eef2395743c97c1a571c387036a536540df869",
+          "actual_sha256": "00608ed8775b694846515631e9eef2395743c97c1a571c387036a536540df869",
+          "sha256_matches": true,
+          "expected_bytes": 854124,
+          "actual_bytes": 854124,
+          "bytes_match": true,
+          "relative_path": "eval/sheet_update_150.png"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\sheet_update_200.png",
+          "exists": true,
+          "expected_sha256": "a25d2cd1d4734c475814154be6de3294ed451a3734d3a1789f22ce897b826da9",
+          "actual_sha256": "a25d2cd1d4734c475814154be6de3294ed451a3734d3a1789f22ce897b826da9",
+          "sha256_matches": true,
+          "expected_bytes": 854092,
+          "actual_bytes": 854092,
+          "bytes_match": true,
+          "relative_path": "eval/sheet_update_200.png"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\update_000.json",
+          "exists": true,
+          "expected_sha256": "2e8553dc63984fc54e4a363265ac1cd6f3833e0d37a6d1996c60d8909166b5fb",
+          "actual_sha256": "2e8553dc63984fc54e4a363265ac1cd6f3833e0d37a6d1996c60d8909166b5fb",
+          "sha256_matches": true,
+          "expected_bytes": 8039,
+          "actual_bytes": 8039,
+          "bytes_match": true,
+          "relative_path": "eval/update_000.json"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\update_050.json",
+          "exists": true,
+          "expected_sha256": "cb7c75635a6872e9be0f39c17aaf15b5fb3ebcc11727efd039989aca0ecbef41",
+          "actual_sha256": "cb7c75635a6872e9be0f39c17aaf15b5fb3ebcc11727efd039989aca0ecbef41",
+          "sha256_matches": true,
+          "expected_bytes": 7621,
+          "actual_bytes": 7621,
+          "bytes_match": true,
+          "relative_path": "eval/update_050.json"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\update_100.json",
+          "exists": true,
+          "expected_sha256": "021f719bdc7df3d17a3e00041039a516f40eb90120c9c22ce08f681c127c3e8d",
+          "actual_sha256": "021f719bdc7df3d17a3e00041039a516f40eb90120c9c22ce08f681c127c3e8d",
+          "sha256_matches": true,
+          "expected_bytes": 7636,
+          "actual_bytes": 7636,
+          "bytes_match": true,
+          "relative_path": "eval/update_100.json"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\update_150.json",
+          "exists": true,
+          "expected_sha256": "28958bd926d70daeaea5e6d9859d7892b972d8fc5d449c5fe82f8364ee322e34",
+          "actual_sha256": "28958bd926d70daeaea5e6d9859d7892b972d8fc5d449c5fe82f8364ee322e34",
+          "sha256_matches": true,
+          "expected_bytes": 7752,
+          "actual_bytes": 7752,
+          "bytes_match": true,
+          "relative_path": "eval/update_150.json"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\update_200.json",
+          "exists": true,
+          "expected_sha256": "04491bb3c2522b059e0bcd3ae7396b0e6b5fede53ff8bebdeb0b06321c3a9774",
+          "actual_sha256": "04491bb3c2522b059e0bcd3ae7396b0e6b5fede53ff8bebdeb0b06321c3a9774",
+          "sha256_matches": true,
+          "expected_bytes": 7838,
+          "actual_bytes": 7838,
+          "bytes_match": true,
+          "relative_path": "eval/update_200.json"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\zoom_smallest_update_000.png",
+          "exists": true,
+          "expected_sha256": "3b4c5f44f190cc6f75f0da498889dffa2b9ec3be8917f6d3eceb52f5fe53b7c2",
+          "actual_sha256": "3b4c5f44f190cc6f75f0da498889dffa2b9ec3be8917f6d3eceb52f5fe53b7c2",
+          "sha256_matches": true,
+          "expected_bytes": 248176,
+          "actual_bytes": 248176,
+          "bytes_match": true,
+          "relative_path": "eval/zoom_smallest_update_000.png"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\zoom_smallest_update_050.png",
+          "exists": true,
+          "expected_sha256": "e1ee7b6b8e72aa8879eb9358be756f60cd7fe7c372afab18764a6a0e23e785b0",
+          "actual_sha256": "e1ee7b6b8e72aa8879eb9358be756f60cd7fe7c372afab18764a6a0e23e785b0",
+          "sha256_matches": true,
+          "expected_bytes": 251293,
+          "actual_bytes": 251293,
+          "bytes_match": true,
+          "relative_path": "eval/zoom_smallest_update_050.png"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\zoom_smallest_update_100.png",
+          "exists": true,
+          "expected_sha256": "3ba8c8d1758973155c34d4770d4b3c7d6149e10dbf82d1d32e946cd415c8f9f2",
+          "actual_sha256": "3ba8c8d1758973155c34d4770d4b3c7d6149e10dbf82d1d32e946cd415c8f9f2",
+          "sha256_matches": true,
+          "expected_bytes": 249858,
+          "actual_bytes": 249858,
+          "bytes_match": true,
+          "relative_path": "eval/zoom_smallest_update_100.png"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\zoom_smallest_update_150.png",
+          "exists": true,
+          "expected_sha256": "b1e0c7ede972af25a4fdf3bfc0c6027d38d6204585e25ab4cd6155eb9010ea40",
+          "actual_sha256": "b1e0c7ede972af25a4fdf3bfc0c6027d38d6204585e25ab4cd6155eb9010ea40",
+          "sha256_matches": true,
+          "expected_bytes": 222053,
+          "actual_bytes": 222053,
+          "bytes_match": true,
+          "relative_path": "eval/zoom_smallest_update_150.png"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\zoom_smallest_update_200.png",
+          "exists": true,
+          "expected_sha256": "11d7990eaaf98fb6a24981d3232dd7aed88cae2efbdcbb3336acd44ca8da7b70",
+          "actual_sha256": "11d7990eaaf98fb6a24981d3232dd7aed88cae2efbdcbb3336acd44ca8da7b70",
+          "sha256_matches": true,
+          "expected_bytes": 215066,
+          "actual_bytes": 215066,
+          "bytes_match": true,
+          "relative_path": "eval/zoom_smallest_update_200.png"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\model_config.json",
+          "exists": true,
+          "expected_sha256": "a2648c94cd17508f41b3fbf7451a2815ef2443192ed3c2388fb33288d4fd1bac",
+          "actual_sha256": "a2648c94cd17508f41b3fbf7451a2815ef2443192ed3c2388fb33288d4fd1bac",
+          "sha256_matches": true,
+          "expected_bytes": 2601,
+          "actual_bytes": 2601,
+          "bytes_match": true,
+          "relative_path": "model_config.json"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\processor\\preprocessor_config.json",
+          "exists": true,
+          "expected_sha256": "7854b1307bdd3737b1106ad604bbd8f90308cfce8d46609e6d5d88a1face9f58",
+          "actual_sha256": "7854b1307bdd3737b1106ad604bbd8f90308cfce8d46609e6d5d88a1face9f58",
+          "sha256_matches": true,
+          "expected_bytes": 396,
+          "actual_bytes": 396,
+          "bytes_match": true,
+          "relative_path": "processor/preprocessor_config.json"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\run_extra.json",
+          "exists": true,
+          "expected_sha256": "4cfdeb1373503297ce7a54d628e1527df723433240eacf42992f35e2337f9bce",
+          "actual_sha256": "4cfdeb1373503297ce7a54d628e1527df723433240eacf42992f35e2337f9bce",
+          "sha256_matches": true,
+          "expected_bytes": 48,
+          "actual_bytes": 48,
+          "bytes_match": true,
+          "relative_path": "run_extra.json"
+        },
+        {
+          "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\updates.jsonl",
+          "exists": true,
+          "expected_sha256": "178702dcf546c13a6bdbeacfb0ed3e16b9731f5caae271f3ec51dcb26130fa8a",
+          "actual_sha256": "178702dcf546c13a6bdbeacfb0ed3e16b9731f5caae271f3ec51dcb26130fa8a",
+          "sha256_matches": true,
+          "expected_bytes": 73988,
+          "actual_bytes": 73988,
+          "bytes_match": true,
+          "relative_path": "updates.jsonl"
+        }
+      ],
+      "all_bytes_and_sha256_match": true,
+      "step_identity": {
+        "successful_updates": {
+          "manifest": 200,
+          "summary": 200,
+          "matches": true
+        },
+        "attempts": {
+          "manifest": 201,
+          "summary": 201,
+          "matches": true
+        },
+        "skipped": {
+          "manifest": 1,
+          "summary": 1,
+          "matches": true
+        }
+      },
+      "model_state_sha256_anchor": "92097db6d3d451c226954a2ee44436eb486641303d205b909fa03da8cc6500fa"
+    }
+  ],
+  "evaluation_recomputation": [
+    {
+      "update": 0,
+      "raw_path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\update_000.json",
+      "raw_sha256": "2e8553dc63984fc54e4a363265ac1cd6f3833e0d37a6d1996c60d8909166b5fb",
+      "image_count": 8,
+      "recomputed_confusion": {
+        "tp": 17853,
+        "fp": 1965699,
+        "fn": 180401,
+        "tn": 9854287,
+        "pixels": 12018240
+      },
+      "confusion_matches_recorded": true,
+      "recomputed_global": {
+        "foreground_iou": 0.008250179185961987,
+        "foreground_dice": 0.016365341373156,
+        "precision": 0.009000520278772626,
+        "recall": 0.09005114650902378
+      },
+      "global_matches_recorded": true,
+      "recomputed_anomaly_macro": {
+        "iou": {
+          "mean": 0.01441448302924186,
+          "defined_images": 4
+        },
+        "dice": {
+          "mean": 0.028262989065498297,
+          "defined_images": 4
+        },
+        "precision": {
+          "mean": 0.016894749725853062,
+          "defined_images": 4
+        },
+        "recall": {
+          "mean": 0.7640928872569019,
+          "defined_images": 4
+        }
+      },
+      "anomaly_macro_matches_recorded": true,
+      "recomputed_normal_fp": {
+        "pixels": 873511,
+        "total_pixels": 6009120,
+        "ratio": 0.1453642130628112
+      },
+      "normal_fp_matches_recorded": true,
+      "recomputed_curve_point": {
+        "update": 0,
+        "global_iou": 0.0082501792,
+        "global_dice": 0.0163653414,
+        "tp": 17853,
+        "fp": 1965699,
+        "fn": 180401,
+        "anomaly_macro_iou": 0.014414483,
+        "normal_fp_ratio": 0.1453642130628112
+      },
+      "matches_raw_curve": true,
+      "matches_repository_summary_curve": true,
+      "b1_ieee_fp32_recorded": true,
+      "per_image": [
+        {
+          "image_id": "pcb1/Data/Images/Normal/0025.JPG",
+          "label": "normal",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 0,
+            "fp": 152385,
+            "fn": 0,
+            "tn": 1349895
+          },
+          "recomputed_iou": 0.0,
+          "recomputed_dice": 0.0,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0121.JPG",
+          "label": "normal",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 0,
+            "fp": 319655,
+            "fn": 0,
+            "tn": 1182625
+          },
+          "recomputed_iou": 0.0,
+          "recomputed_dice": 0.0,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0708.JPG",
+          "label": "normal",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 0,
+            "fp": 242134,
+            "fn": 0,
+            "tn": 1260146
+          },
+          "recomputed_iou": 0.0,
+          "recomputed_dice": 0.0,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0812.JPG",
+          "label": "normal",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 0,
+            "fp": 159337,
+            "fn": 0,
+            "tn": 1342943
+          },
+          "recomputed_iou": 0.0,
+          "recomputed_dice": 0.0,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Anomaly/065.JPG",
+          "label": "anomaly",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 1150,
+            "fp": 255382,
+            "fn": 0,
+            "tn": 1245748
+          },
+          "recomputed_iou": 0.004482871532596323,
+          "recomputed_dice": 0.008925730163534899,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Anomaly/038.JPG",
+          "label": "anomaly",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 2517,
+            "fp": 360033,
+            "fn": 0,
+            "tn": 1139730
+          },
+          "recomputed_iou": 0.006942490690939181,
+          "recomputed_dice": 0.01378924964458579,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Anomaly/031.JPG",
+          "label": "anomaly",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 3409,
+            "fp": 125975,
+            "fn": 0,
+            "tn": 1372896
+          },
+          "recomputed_iou": 0.02634792555493724,
+          "recomputed_dice": 0.051343067782187314,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Anomaly/043.JPG",
+          "label": "anomaly",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 10777,
+            "fp": 350798,
+            "fn": 180401,
+            "tn": 960304
+          },
+          "recomputed_iou": 0.019884644338494694,
+          "recomputed_dice": 0.03899390867168518,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        }
+      ]
+    },
+    {
+      "update": 50,
+      "raw_path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\update_050.json",
+      "raw_sha256": "cb7c75635a6872e9be0f39c17aaf15b5fb3ebcc11727efd039989aca0ecbef41",
+      "image_count": 8,
+      "recomputed_confusion": {
+        "tp": 190930,
+        "fp": 10387,
+        "fn": 7324,
+        "tn": 11809599,
+        "pixels": 12018240
+      },
+      "confusion_matches_recorded": true,
+      "recomputed_global": {
+        "foreground_iou": 0.9151125617687799,
+        "foreground_dice": 0.9556749613960973,
+        "precision": 0.948404754690364,
+        "recall": 0.9630574919043248
+      },
+      "global_matches_recorded": true,
+      "recomputed_anomaly_macro": {
+        "iou": {
+          "mean": 0.25927907159860186,
+          "defined_images": 4
+        },
+        "dice": {
+          "mean": 0.2847198958872985,
+          "defined_images": 4
+        },
+        "precision": {
+          "mean": 0.8166737008596308,
+          "defined_images": 2
+        },
+        "recall": {
+          "mean": 0.2729406119937538,
+          "defined_images": 4
+        }
+      },
+      "anomaly_macro_matches_recorded": true,
+      "recomputed_normal_fp": {
+        "pixels": 0,
+        "total_pixels": 6009120,
+        "ratio": 0.0
+      },
+      "normal_fp_matches_recorded": true,
+      "recomputed_curve_point": {
+        "update": 50,
+        "global_iou": 0.9151125618,
+        "global_dice": 0.9556749614,
+        "tp": 190930,
+        "fp": 10387,
+        "fn": 7324,
+        "anomaly_macro_iou": 0.2592790716,
+        "normal_fp_ratio": 0.0
+      },
+      "matches_raw_curve": true,
+      "matches_repository_summary_curve": true,
+      "b1_ieee_fp32_recorded": true,
+      "per_image": [
+        {
+          "image_id": "pcb1/Data/Images/Normal/0025.JPG",
+          "label": "normal",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "tn": 1502280
+          },
+          "recomputed_iou": null,
+          "recomputed_dice": null,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0121.JPG",
+          "label": "normal",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "tn": 1502280
+          },
+          "recomputed_iou": null,
+          "recomputed_dice": null,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0708.JPG",
+          "label": "normal",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "tn": 1502280
+          },
+          "recomputed_iou": null,
+          "recomputed_dice": null,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0812.JPG",
+          "label": "normal",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "tn": 1502280
+          },
+          "recomputed_iou": null,
+          "recomputed_dice": null,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Anomaly/065.JPG",
+          "label": "anomaly",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 1150,
+            "tn": 1501130
+          },
+          "recomputed_iou": 0.0,
+          "recomputed_dice": 0.0,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Anomaly/038.JPG",
+          "label": "anomaly",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 2517,
+            "tn": 1499763
+          },
+          "recomputed_iou": 0.0,
+          "recomputed_dice": 0.0,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Anomaly/031.JPG",
+          "label": "anomaly",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 323,
+            "fp": 149,
+            "fn": 3086,
+            "tn": 1498722
+          },
+          "recomputed_iou": 0.09078133783024171,
+          "recomputed_dice": 0.16645194537490338,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Anomaly/043.JPG",
+          "label": "anomaly",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 190607,
+            "fp": 10238,
+            "fn": 571,
+            "tn": 1300864
+          },
+          "recomputed_iou": 0.9463349485641657,
+          "recomputed_dice": 0.9724276381742908,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        }
+      ]
+    },
+    {
+      "update": 100,
+      "raw_path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\update_100.json",
+      "raw_sha256": "021f719bdc7df3d17a3e00041039a516f40eb90120c9c22ce08f681c127c3e8d",
+      "image_count": 8,
+      "recomputed_confusion": {
+        "tp": 197706,
+        "fp": 38195,
+        "fn": 548,
+        "tn": 11781791,
+        "pixels": 12018240
+      },
+      "confusion_matches_recorded": true,
+      "recomputed_global": {
+        "foreground_iou": 0.8361464840198097,
+        "foreground_dice": 0.9107622853589156,
+        "precision": 0.8380888593096256,
+        "recall": 0.997235869137571
+      },
+      "global_matches_recorded": true,
+      "recomputed_anomaly_macro": {
+        "iou": {
+          "mean": 0.4189200570032783,
+          "defined_images": 4
+        },
+        "dice": {
+          "mean": 0.5421890077588426,
+          "defined_images": 4
+        },
+        "precision": {
+          "mean": 0.42248049293675993,
+          "defined_images": 4
+        },
+        "recall": {
+          "mean": 0.9526094504741481,
+          "defined_images": 4
+        }
+      },
+      "anomaly_macro_matches_recorded": true,
+      "recomputed_normal_fp": {
+        "pixels": 0,
+        "total_pixels": 6009120,
+        "ratio": 0.0
+      },
+      "normal_fp_matches_recorded": true,
+      "recomputed_curve_point": {
+        "update": 100,
+        "global_iou": 0.836146484,
+        "global_dice": 0.9107622854,
+        "tp": 197706,
+        "fp": 38195,
+        "fn": 548,
+        "anomaly_macro_iou": 0.418920057,
+        "normal_fp_ratio": 0.0
+      },
+      "matches_raw_curve": true,
+      "matches_repository_summary_curve": true,
+      "b1_ieee_fp32_recorded": true,
+      "per_image": [
+        {
+          "image_id": "pcb1/Data/Images/Normal/0025.JPG",
+          "label": "normal",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "tn": 1502280
+          },
+          "recomputed_iou": null,
+          "recomputed_dice": null,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0121.JPG",
+          "label": "normal",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "tn": 1502280
+          },
+          "recomputed_iou": null,
+          "recomputed_dice": null,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0708.JPG",
+          "label": "normal",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "tn": 1502280
+          },
+          "recomputed_iou": null,
+          "recomputed_dice": null,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0812.JPG",
+          "label": "normal",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "tn": 1502280
+          },
+          "recomputed_iou": null,
+          "recomputed_dice": null,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Anomaly/065.JPG",
+          "label": "anomaly",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 1087,
+            "fp": 4774,
+            "fn": 63,
+            "tn": 1496356
+          },
+          "recomputed_iou": 0.18349088453747467,
+          "recomputed_dice": 0.3100841534731137,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Anomaly/038.JPG",
+          "label": "anomaly",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 2517,
+            "fp": 5447,
+            "fn": 0,
+            "tn": 1494316
+          },
+          "recomputed_iou": 0.3160472124560522,
+          "recomputed_dice": 0.48029768151893903,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Anomaly/031.JPG",
+          "label": "anomaly",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 2950,
+            "fp": 7376,
+            "fn": 459,
+            "tn": 1491495
+          },
+          "recomputed_iou": 0.27352804821511356,
+          "recomputed_dice": 0.4295595194757918,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Anomaly/043.JPG",
+          "label": "anomaly",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 191152,
+            "fp": 20598,
+            "fn": 26,
+            "tn": 1290504
+          },
+          "recomputed_iou": 0.9026140828044726,
+          "recomputed_dice": 0.9488146765675257,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        }
+      ]
+    },
+    {
+      "update": 150,
+      "raw_path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\update_150.json",
+      "raw_sha256": "28958bd926d70daeaea5e6d9859d7892b972d8fc5d449c5fe82f8364ee322e34",
+      "image_count": 8,
+      "recomputed_confusion": {
+        "tp": 197897,
+        "fp": 17715,
+        "fn": 357,
+        "tn": 11802271,
+        "pixels": 12018240
+      },
+      "confusion_matches_recorded": true,
+      "recomputed_global": {
+        "foreground_iou": 0.916321323893707,
+        "foreground_dice": 0.9563336925478295,
+        "precision": 0.9178385247574347,
+        "recall": 0.9981992797118847
+      },
+      "global_matches_recorded": true,
+      "recomputed_anomaly_macro": {
+        "iou": {
+          "mean": 0.5944910648709206,
+          "defined_images": 4
+        },
+        "dice": {
+          "mean": 0.725265281269245,
+          "defined_images": 4
+        },
+        "precision": {
+          "mean": 0.6016679945918194,
+          "defined_images": 4
+        },
+        "recall": {
+          "mean": 0.965518261250816,
+          "defined_images": 4
+        }
+      },
+      "anomaly_macro_matches_recorded": true,
+      "recomputed_normal_fp": {
+        "pixels": 16,
+        "total_pixels": 6009120,
+        "ratio": 2.6626194850493917e-06
+      },
+      "normal_fp_matches_recorded": true,
+      "recomputed_curve_point": {
+        "update": 150,
+        "global_iou": 0.9163213239,
+        "global_dice": 0.9563336925,
+        "tp": 197897,
+        "fp": 17715,
+        "fn": 357,
+        "anomaly_macro_iou": 0.5944910649,
+        "normal_fp_ratio": 2.6626194850493917e-06
+      },
+      "matches_raw_curve": true,
+      "matches_repository_summary_curve": true,
+      "b1_ieee_fp32_recorded": true,
+      "per_image": [
+        {
+          "image_id": "pcb1/Data/Images/Normal/0025.JPG",
+          "label": "normal",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "tn": 1502280
+          },
+          "recomputed_iou": null,
+          "recomputed_dice": null,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0121.JPG",
+          "label": "normal",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "tn": 1502280
+          },
+          "recomputed_iou": null,
+          "recomputed_dice": null,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0708.JPG",
+          "label": "normal",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "tn": 1502280
+          },
+          "recomputed_iou": null,
+          "recomputed_dice": null,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0812.JPG",
+          "label": "normal",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 0,
+            "fp": 16,
+            "fn": 0,
+            "tn": 1502264
+          },
+          "recomputed_iou": 0.0,
+          "recomputed_dice": 0.0,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Anomaly/065.JPG",
+          "label": "anomaly",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 1094,
+            "fp": 1454,
+            "fn": 56,
+            "tn": 1499676
+          },
+          "recomputed_iou": 0.4201228878648233,
+          "recomputed_dice": 0.5916711736073553,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Anomaly/038.JPG",
+          "label": "anomaly",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 2508,
+            "fp": 1823,
+            "fn": 9,
+            "tn": 1497940
+          },
+          "recomputed_iou": 0.5778801843317972,
+          "recomputed_dice": 0.7324766355140186,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Anomaly/031.JPG",
+          "label": "anomaly",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 3117,
+            "fp": 3796,
+            "fn": 292,
+            "tn": 1495075
+          },
+          "recomputed_iou": 0.43261623872310895,
+          "recomputed_dice": 0.6039527223406317,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Anomaly/043.JPG",
+          "label": "anomaly",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 191178,
+            "fp": 10626,
+            "fn": 0,
+            "tn": 1300476
+          },
+          "recomputed_iou": 0.9473449485639531,
+          "recomputed_dice": 0.9729605936149748,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        }
+      ]
+    },
+    {
+      "update": 200,
+      "raw_path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\update_200.json",
+      "raw_sha256": "04491bb3c2522b059e0bcd3ae7396b0e6b5fede53ff8bebdeb0b06321c3a9774",
+      "image_count": 8,
+      "recomputed_confusion": {
+        "tp": 197188,
+        "fp": 10254,
+        "fn": 1066,
+        "tn": 11809732,
+        "pixels": 12018240
+      },
+      "confusion_matches_recorded": true,
+      "recomputed_global": {
+        "foreground_iou": 0.9457095171408292,
+        "foreground_dice": 0.9720973339643477,
+        "precision": 0.9505693157605499,
+        "recall": 0.9946230593077567
+      },
+      "global_matches_recorded": true,
+      "recomputed_anomaly_macro": {
+        "iou": {
+          "mean": 0.7607445311591814,
+          "defined_images": 4
+        },
+        "dice": {
+          "mean": 0.856201987784375,
+          "defined_images": 4
+        },
+        "precision": {
+          "mean": 0.8638009323380407,
+          "defined_images": 4
+        },
+        "recall": {
+          "mean": 0.8713738057076126,
+          "defined_images": 4
+        }
+      },
+      "anomaly_macro_matches_recorded": true,
+      "recomputed_normal_fp": {
+        "pixels": 85,
+        "total_pixels": 6009120,
+        "ratio": 1.4145166014324892e-05
+      },
+      "normal_fp_matches_recorded": true,
+      "recomputed_curve_point": {
+        "update": 200,
+        "global_iou": 0.9457095171,
+        "global_dice": 0.972097334,
+        "tp": 197188,
+        "fp": 10254,
+        "fn": 1066,
+        "anomaly_macro_iou": 0.7607445312,
+        "normal_fp_ratio": 1.4145166014324892e-05
+      },
+      "matches_raw_curve": true,
+      "matches_repository_summary_curve": true,
+      "b1_ieee_fp32_recorded": true,
+      "per_image": [
+        {
+          "image_id": "pcb1/Data/Images/Normal/0025.JPG",
+          "label": "normal",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "tn": 1502280
+          },
+          "recomputed_iou": null,
+          "recomputed_dice": null,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0121.JPG",
+          "label": "normal",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "tn": 1502280
+          },
+          "recomputed_iou": null,
+          "recomputed_dice": null,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0708.JPG",
+          "label": "normal",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 0,
+            "fp": 12,
+            "fn": 0,
+            "tn": 1502268
+          },
+          "recomputed_iou": 0.0,
+          "recomputed_dice": 0.0,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0812.JPG",
+          "label": "normal",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 0,
+            "fp": 73,
+            "fn": 0,
+            "tn": 1502207
+          },
+          "recomputed_iou": 0.0,
+          "recomputed_dice": 0.0,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Anomaly/065.JPG",
+          "label": "anomaly",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 809,
+            "fp": 17,
+            "fn": 341,
+            "tn": 1501113
+          },
+          "recomputed_iou": 0.6932305055698372,
+          "recomputed_dice": 0.8188259109311741,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Anomaly/038.JPG",
+          "label": "anomaly",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 2283,
+            "fp": 254,
+            "fn": 234,
+            "tn": 1499509
+          },
+          "recomputed_iou": 0.8238902923132443,
+          "recomputed_dice": 0.9034428175702414,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Anomaly/031.JPG",
+          "label": "anomaly",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 2984,
+            "fp": 1858,
+            "fn": 425,
+            "tn": 1497013
+          },
+          "recomputed_iou": 0.5665464211125878,
+          "recomputed_dice": 0.7233062659071627,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        },
+        {
+          "image_id": "pcb1/Data/Images/Anomaly/043.JPG",
+          "label": "anomaly",
+          "historical_split_field": "val",
+          "actual_train_manifest_membership": true,
+          "counts": {
+            "tp": 191112,
+            "fp": 8040,
+            "fn": 66,
+            "tn": 1303062
+          },
+          "recomputed_iou": 0.9593109056410565,
+          "recomputed_dice": 0.9792329567289216,
+          "iou_matches_recorded": true,
+          "dice_matches_recorded": true,
+          "counts_sum_to_total_pixels": true,
+          "gt_foreground_matches_counts": true,
+          "predicted_foreground_matches_counts": true,
+          "pixels_match_source_dimensions": true
+        }
+      ]
+    }
+  ],
+  "update_logs": [
+    {
+      "run": "smoke_001",
+      "path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_001\\updates.jsonl",
+      "sha256": "9ccec668bae20c20616cbc8c902d6f440388c8fd2d5c67b5650ed94c2d74bbbc",
+      "record_count": 20,
+      "attempts_sequence_complete": true,
+      "successful_records": 20,
+      "skipped_records": 0,
+      "success_indices_complete": true,
+      "counts_match_summary": true,
+      "actual_batch_ids": [
+        "0025.JPG",
+        "0121.JPG",
+        "031.JPG",
+        "038.JPG",
+        "043.JPG",
+        "065.JPG",
+        "0708.JPG",
+        "0812.JPG"
+      ],
+      "batch_ids_match_frozen_subset_basenames": true,
+      "all_logged_loss_terms_finite": true,
+      "learning_rates": [
+        6e-05
+      ],
+      "last_record": {
+        "event": "update",
+        "attempt": 20,
+        "success_index": 20,
+        "ce": 0.2182098,
+        "dice": 0.751073,
+        "total": 0.5937463,
+        "valid_pixels": 399360,
+        "ignored_pixels": 124928,
+        "positive_images": 2,
+        "lr": 6e-05,
+        "grad_norm": 4.589028,
+        "scale_before": 65536.0,
+        "scale_after": 65536.0,
+        "skipped": false,
+        "step_ms": 60.61,
+        "batch_ids": [
+          "031.JPG",
+          "043.JPG"
+        ]
+      },
+      "skip_events": [],
+      "evidence_limit": "Scale reduction and unchanged success index establish the logged GradScaler skip branch; no before/after parameter or optimizer-step snapshot was saved specifically at the skipped attempt."
+    },
+    {
+      "run": "smoke_002_stage09_regression",
+      "path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_002_stage09_regression\\updates.jsonl",
+      "sha256": "720832e3d6454725f6caf1c04f737b1d0001f2c5f743f7898c807bd2b38a5e78",
+      "record_count": 20,
+      "attempts_sequence_complete": true,
+      "successful_records": 20,
+      "skipped_records": 0,
+      "success_indices_complete": true,
+      "counts_match_summary": true,
+      "actual_batch_ids": [
+        "0025.JPG",
+        "0121.JPG",
+        "031.JPG",
+        "038.JPG",
+        "043.JPG",
+        "065.JPG",
+        "0708.JPG",
+        "0812.JPG"
+      ],
+      "batch_ids_match_frozen_subset_basenames": true,
+      "all_logged_loss_terms_finite": true,
+      "learning_rates": [
+        6e-05
+      ],
+      "last_record": {
+        "event": "update",
+        "attempt": 20,
+        "success_index": 20,
+        "ce": 0.21826643,
+        "dice": 0.75125349,
+        "total": 0.59389317,
+        "valid_pixels": 399360,
+        "ignored_pixels": 124928,
+        "positive_images": 2,
+        "lr": 6e-05,
+        "grad_norm": 4.572661,
+        "scale_before": 65536.0,
+        "scale_after": 65536.0,
+        "skipped": false,
+        "skip_reason": null,
+        "step_ms": 56.66,
+        "batch_ids": [
+          "031.JPG",
+          "043.JPG"
+        ]
+      },
+      "skip_events": [],
+      "evidence_limit": "Scale reduction and unchanged success index establish the logged GradScaler skip branch; no before/after parameter or optimizer-step snapshot was saved specifically at the skipped attempt."
+    },
+    {
+      "run": "overfit_002",
+      "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\updates.jsonl",
+      "sha256": "178702dcf546c13a6bdbeacfb0ed3e16b9731f5caae271f3ec51dcb26130fa8a",
+      "record_count": 201,
+      "attempts_sequence_complete": true,
+      "successful_records": 200,
+      "skipped_records": 1,
+      "success_indices_complete": true,
+      "counts_match_summary": true,
+      "actual_batch_ids": [
+        "0025.JPG",
+        "0121.JPG",
+        "031.JPG",
+        "038.JPG",
+        "043.JPG",
+        "065.JPG",
+        "0708.JPG",
+        "0812.JPG"
+      ],
+      "batch_ids_match_frozen_subset_basenames": true,
+      "all_logged_loss_terms_finite": true,
+      "learning_rates": [
+        0.0001
+      ],
+      "last_record": {
+        "event": "update",
+        "attempt": 201,
+        "success_index": 200,
+        "ce": 0.00933534,
+        "dice": 0.03639686,
+        "total": 0.02753377,
+        "valid_pixels": 399360,
+        "ignored_pixels": 124928,
+        "positive_images": 1,
+        "lr": 0.0001,
+        "grad_norm": 0.254367,
+        "scale_before": 32768.0,
+        "scale_after": 32768.0,
+        "skipped": false,
+        "skip_reason": null,
+        "step_ms": 58.13,
+        "batch_ids": [
+          "0025.JPG",
+          "043.JPG"
+        ]
+      },
+      "skip_events": [
+        {
+          "record_line": 76,
+          "event": {
+            "event": "skipped",
+            "attempt": 76,
+            "success_index": null,
+            "ce": 0.05783103,
+            "dice": 0.17254782,
+            "total": 0.14410494,
+            "valid_pixels": 399360,
+            "ignored_pixels": 124928,
+            "positive_images": 1,
+            "lr": 0.0001,
+            "grad_norm": null,
+            "scale_before": 65536.0,
+            "scale_after": 32768.0,
+            "skipped": true,
+            "skip_reason": "nonfinite_grad",
+            "step_ms": 54.93,
+            "batch_ids": [
+              "043.JPG",
+              "0812.JPG"
+            ]
+          },
+          "loss_terms_finite": true,
+          "scale_halved": true,
+          "not_counted_as_success": true,
+          "next_attempt": {
+            "event": "update",
+            "attempt": 77,
+            "success_index": 76,
+            "ce": 0.04838099,
+            "dice": 0.0,
+            "total": 0.04838099,
+            "valid_pixels": 399360,
+            "ignored_pixels": 124928,
+            "positive_images": 0,
+            "lr": 0.0001,
+            "grad_norm": 0.518548,
+            "scale_before": 32768.0,
+            "scale_after": 32768.0,
+            "skipped": false,
+            "skip_reason": null,
+            "step_ms": 56.42,
+            "batch_ids": [
+              "0812.JPG",
+              "0121.JPG"
+            ]
+          },
+          "next_attempt_resumes_success_count": true
+        }
+      ],
+      "evidence_limit": "Scale reduction and unchanged success index establish the logged GradScaler skip branch; no before/after parameter or optimizer-step snapshot was saved specifically at the skipped attempt."
+    }
+  ],
+  "attempt_budget": {
+    "cap_optimizer_update_attempts": 500,
+    "recorded_run_attempts": 201,
+    "aborted_runs": [
+      {
+        "run": "archive/overfit_001_attempt1_crash_inf_grad_76",
+        "updates_path": "E:\\桌面\\AI\\segformer_resources\\runs\\archive\\overfit_001_attempt1_crash_inf_grad_76\\updates.jsonl",
+        "updates_sha256": "6106113efb284938997a90b191e2e82e6de2fbe626acb95f47db7d7fdce134be",
+        "record_count": 75,
+        "last_logged_attempt": 75,
+        "successful_updates_logged": 75,
+        "failure_note_path": "E:\\桌面\\AI\\segformer_resources\\runs\\archive\\overfit_001_attempt1_crash_inf_grad_76\\ABORTED.md",
+        "failure_note_sha256": "244b991e5c707758c8ad4bcacac4593b3418bdde002e03012fc120dc2bd625c8",
+        "failure_note_mentions_attempt_76": true,
+        "inferred_executed_attempts_including_crash": 76,
+        "inference_basis": "75 completed update records plus failure-note attempt 76; only the third run has a captured Python traceback, so first two failure identities rely on retained notes and matching failure pattern."
+      },
+      {
+        "run": "archive/overfit_001_attempt2_crash_inf_grad_76",
+        "updates_path": "E:\\桌面\\AI\\segformer_resources\\runs\\archive\\overfit_001_attempt2_crash_inf_grad_76\\updates.jsonl",
+        "updates_sha256": "afc13f9bd68ceb13ce0e726091ae6720a7075ae03194e7e2093476a927437c9c",
+        "record_count": 75,
+        "last_logged_attempt": 75,
+        "successful_updates_logged": 75,
+        "failure_note_path": "E:\\桌面\\AI\\segformer_resources\\runs\\archive\\overfit_001_attempt2_crash_inf_grad_76\\ABORTED.md",
+        "failure_note_sha256": "c826d7c64e3d99057d594a6264b24fb381644cbc53c56a55214efbb9ecc5c055",
+        "failure_note_mentions_attempt_76": true,
+        "inferred_executed_attempts_including_crash": 76,
+        "inference_basis": "75 completed update records plus failure-note attempt 76; only the third run has a captured Python traceback, so first two failure identities rely on retained notes and matching failure pattern."
+      },
+      {
+        "run": "overfit_001",
+        "updates_path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_001\\updates.jsonl",
+        "updates_sha256": "3f763b210626d0b845022821556638de06e4bd1a84f56f483cabf7ce3463862f",
+        "record_count": 75,
+        "last_logged_attempt": 75,
+        "successful_updates_logged": 75,
+        "failure_note_path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_001\\CRASHED.md",
+        "failure_note_sha256": "efd64a785e4ab1d3bc17b8a25622d746f673363a5d72068473473209fe94d514",
+        "failure_note_mentions_attempt_76": true,
+        "inferred_executed_attempts_including_crash": 76,
+        "inference_basis": "75 completed update records plus failure-note attempt 76; only the third run has a captured Python traceback, so first two failure identities rely on retained notes and matching failure pattern."
+      }
+    ],
+    "aborted_attempts_including_unlogged_crashes": 228,
+    "recomputed_total": 429,
+    "within_cap": true,
+    "remaining_attempts": 71,
+    "observed_repository_summary_budget": {
+      "cap": 500,
+      "consumed_by_recorded_run": 201,
+      "consumed_by_diagnostic_attempts": 225,
+      "total": 426,
+      "note": "the three aborted attempts are infrastructure/numerics aborts, not no-learning reruns"
+    },
+    "third_crash_traceback": {
+      "path": "E:\\桌面\\AI\\segformer_resources\\audit\\stage09-overfit_001.stderr.log",
+      "sha256": "5301a40c27c649d613d29210e366bfebccc44207453b9ee28dbc6fe25b95b442",
+      "contains_runtime_error_attempt_76_inf": true
+    },
+    "smoke_regression_scope": "The separate 20-attempt smoke regression is not part of the stage-09 overfit attempt cap. Even a conservative inclusive count would be 449, below 500.",
+    "historical_correction": "The old 426 total counted only 75 logged attempts per aborted run. Attempt 76 also executed before raising, so 3*76+201=429."
+  },
+  "smoke_reload_evidence": {
+    "path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_001\\reload_check.json",
+    "sha256": "fe67d2d08875482ffc5906d7175b33924d39a6bc65b22a712fe59c824b40146c",
+    "strict_loaded": true,
+    "missing_keys": [],
+    "unexpected_keys": [],
+    "comparison": {
+      "max_abs_probability_diff": 0.0,
+      "xor_pixels_total": 0,
+      "total_pixels": 9013680,
+      "tolerance_atol": 1e-05,
+      "within_tolerance": true,
+      "confusion_identical": true,
+      "global_metrics_identical": true,
+      "per_image": [
+        {
+          "image_id": "pcb1/Data/Images/Normal/0011.JPG",
+          "max_abs_probability_diff": 0.0,
+          "xor_pixels": 0,
+          "total_pixels": 1502280
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0455.JPG",
+          "max_abs_probability_diff": 0.0,
+          "xor_pixels": 0,
+          "total_pixels": 1502280
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0983.JPG",
+          "max_abs_probability_diff": 0.0,
+          "xor_pixels": 0,
+          "total_pixels": 1502280
+        },
+        {
+          "image_id": "pcb1/Data/Images/Anomaly/087.JPG",
+          "max_abs_probability_diff": 0.0,
+          "xor_pixels": 0,
+          "total_pixels": 1502280
+        },
+        {
+          "image_id": "pcb1/Data/Images/Anomaly/010.JPG",
+          "max_abs_probability_diff": 0.0,
+          "xor_pixels": 0,
+          "total_pixels": 1502280
+        },
+        {
+          "image_id": "pcb1/Data/Images/Anomaly/045.JPG",
+          "max_abs_probability_diff": 0.0,
+          "xor_pixels": 0,
+          "total_pixels": 1502280
+        }
+      ]
+    },
+    "matches_gate_probability_diff": true,
+    "evidence_limit": "Existing independent-process reload report was inspected; this audit did not start another reload process."
+  },
+  "source_identity": {
+    "observed_head_at_audit": "eb7c3ec9f2532cef49f292bf26759d1d2087bc24",
+    "recorded_head": "eb7c3ec9f2532cef49f292bf26759d1d2087bc24",
+    "recorded_dirty_state": "M work/SegFormer/segformer_lab/training.py\n?? work/SegFormer/reports/2026-11-01-stage09-handoff.md",
+    "recorded_overfit_training_py_sha256": "4fd511a867dc01fbe7b16103230d9a780175d310ab61691db123ce5bc0938663",
+    "reconstructed_train_py_sha256_from_recorded_head": "658b8ed4db98fac06028f349bbefe89fd28598e888ec7bec8ca8ef0689e124ad",
+    "source_snapshot_checks": [
+      {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\reports\\stage08_09_evidence\\recorded_source\\training.py.txt",
+        "exists": true,
+        "expected_sha256": "4fd511a867dc01fbe7b16103230d9a780175d310ab61691db123ce5bc0938663",
+        "actual_sha256": "4fd511a867dc01fbe7b16103230d9a780175d310ab61691db123ce5bc0938663",
+        "sha256_matches": true,
+        "expected_bytes": null,
+        "actual_bytes": 24478,
+        "bytes_match": null
+      },
+      {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\reports\\stage08_09_evidence\\recorded_source\\train.py.txt",
+        "exists": true,
+        "expected_sha256": "658b8ed4db98fac06028f349bbefe89fd28598e888ec7bec8ca8ef0689e124ad",
+        "actual_sha256": "658b8ed4db98fac06028f349bbefe89fd28598e888ec7bec8ca8ef0689e124ad",
+        "sha256_matches": true,
+        "expected_bytes": null,
+        "actual_bytes": 17422,
+        "bytes_match": null
+      }
+    ],
+    "raw_code_lists": {
+      "smoke_001": {
+        "segformer_lab/training.py": "47551c0ab91f2ea750e2c79ab2a844cec67ef601c6436f2fc0e7ae39b3e9e35e",
+        "segformer_lab/smoke.py": "9c45c1dcc69b7cc77a6cff858fdfca93f9196b1cc4db1260a7f3562df427484d",
+        "segformer_lab/losses.py": "e7195880bd49a8f03a9fbb39e9069c1f071010c8f7f96ba2bfac80d3d0ba0327",
+        "segformer_lab/metrics.py": "7d9625fa29eb94221787c80f7bc47dc429958d588207692f2c0ea1a12ecb5787",
+        "segformer_lab/evaluation.py": "0c30890eb5252d603de73bc792a6ef348fa77c2cf91c5f1b98a7167492787e53",
+        "segformer_lab/data.py": "3eb2117997db7cee7fa720b74f8b5b7df85793f4a65cebdd851943c3025ab9ce",
+        "segformer_lab/modeling.py": "318e0b0a5164eafe7c8393adf64caf1aaeea6e5895ab679ba0171c0fc57a59d3",
+        "configs/smoke.yaml": "c7587dce3445803c0a4479fcd4158b9e433f61679d317a403c04aca92f87475e"
+      },
+      "smoke_002_stage09_regression": {
+        "segformer_lab/training.py": "4fd511a867dc01fbe7b16103230d9a780175d310ab61691db123ce5bc0938663",
+        "segformer_lab/smoke.py": "9c45c1dcc69b7cc77a6cff858fdfca93f9196b1cc4db1260a7f3562df427484d",
+        "segformer_lab/losses.py": "e7195880bd49a8f03a9fbb39e9069c1f071010c8f7f96ba2bfac80d3d0ba0327",
+        "segformer_lab/metrics.py": "7d9625fa29eb94221787c80f7bc47dc429958d588207692f2c0ea1a12ecb5787",
+        "segformer_lab/evaluation.py": "0c30890eb5252d603de73bc792a6ef348fa77c2cf91c5f1b98a7167492787e53",
+        "segformer_lab/data.py": "3eb2117997db7cee7fa720b74f8b5b7df85793f4a65cebdd851943c3025ab9ce",
+        "segformer_lab/modeling.py": "318e0b0a5164eafe7c8393adf64caf1aaeea6e5895ab679ba0171c0fc57a59d3",
+        "configs/smoke.yaml": "c7587dce3445803c0a4479fcd4158b9e433f61679d317a403c04aca92f87475e"
+      },
+      "overfit_002": {
+        "segformer_lab/training.py": "4fd511a867dc01fbe7b16103230d9a780175d310ab61691db123ce5bc0938663",
+        "segformer_lab/smoke.py": "9c45c1dcc69b7cc77a6cff858fdfca93f9196b1cc4db1260a7f3562df427484d",
+        "segformer_lab/losses.py": "e7195880bd49a8f03a9fbb39e9069c1f071010c8f7f96ba2bfac80d3d0ba0327",
+        "segformer_lab/metrics.py": "7d9625fa29eb94221787c80f7bc47dc429958d588207692f2c0ea1a12ecb5787",
+        "segformer_lab/evaluation.py": "0c30890eb5252d603de73bc792a6ef348fa77c2cf91c5f1b98a7167492787e53",
+        "segformer_lab/data.py": "3eb2117997db7cee7fa720b74f8b5b7df85793f4a65cebdd851943c3025ab9ce",
+        "segformer_lab/modeling.py": "318e0b0a5164eafe7c8393adf64caf1aaeea6e5895ab679ba0171c0fc57a59d3",
+        "configs/smoke.yaml": "c7587dce3445803c0a4479fcd4158b9e433f61679d317a403c04aca92f87475e"
+      }
+    },
+    "warning": "No claim is made that all historical executed source files are exactly reconstructed."
+  },
+  "portable_raw_evidence_copies": {
+    "file_count": 19,
+    "all_byte_identical": true,
+    "files": [
+      {
+        "relative_path": "smoke_001\\artifact_manifest.json",
+        "copy_path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\reports\\stage08_09_evidence\\smoke_001\\artifact_manifest.json",
+        "raw_path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_001\\artifact_manifest.json",
+        "copy_sha256": "c40e584b006c5b9e2ec6a41fae2d8cf1ab28c9d7560b55a11403889ac279c31b",
+        "raw_sha256": "c40e584b006c5b9e2ec6a41fae2d8cf1ab28c9d7560b55a11403889ac279c31b",
+        "byte_identical_to_raw": true
+      },
+      {
+        "relative_path": "smoke_001\\reload_check.json",
+        "copy_path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\reports\\stage08_09_evidence\\smoke_001\\reload_check.json",
+        "raw_path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_001\\reload_check.json",
+        "copy_sha256": "fe67d2d08875482ffc5906d7175b33924d39a6bc65b22a712fe59c824b40146c",
+        "raw_sha256": "fe67d2d08875482ffc5906d7175b33924d39a6bc65b22a712fe59c824b40146c",
+        "byte_identical_to_raw": true
+      },
+      {
+        "relative_path": "smoke_001\\resolved_config.yaml",
+        "copy_path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\reports\\stage08_09_evidence\\smoke_001\\resolved_config.yaml",
+        "raw_path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_001\\resolved_config.yaml",
+        "copy_sha256": "e4644fa37011a33d89a7d340499ea64845bc36e77765308101bc6e0b43576ded",
+        "raw_sha256": "e4644fa37011a33d89a7d340499ea64845bc36e77765308101bc6e0b43576ded",
+        "byte_identical_to_raw": true
+      },
+      {
+        "relative_path": "smoke_001\\summary.json",
+        "copy_path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\reports\\stage08_09_evidence\\smoke_001\\summary.json",
+        "raw_path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_001\\summary.json",
+        "copy_sha256": "f21dda5a7c963248bdfdc12a791036723dd8abc4e5cc1df2d1ca42d0db64bdf0",
+        "raw_sha256": "f21dda5a7c963248bdfdc12a791036723dd8abc4e5cc1df2d1ca42d0db64bdf0",
+        "byte_identical_to_raw": true
+      },
+      {
+        "relative_path": "smoke_001\\updates.jsonl",
+        "copy_path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\reports\\stage08_09_evidence\\smoke_001\\updates.jsonl",
+        "raw_path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_001\\updates.jsonl",
+        "copy_sha256": "9ccec668bae20c20616cbc8c902d6f440388c8fd2d5c67b5650ed94c2d74bbbc",
+        "raw_sha256": "9ccec668bae20c20616cbc8c902d6f440388c8fd2d5c67b5650ed94c2d74bbbc",
+        "byte_identical_to_raw": true
+      },
+      {
+        "relative_path": "smoke_002_stage09_regression\\artifact_manifest.json",
+        "copy_path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\reports\\stage08_09_evidence\\smoke_002_stage09_regression\\artifact_manifest.json",
+        "raw_path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_002_stage09_regression\\artifact_manifest.json",
+        "copy_sha256": "796e1faae45d79cd80a3e97ff4ed915e840296f2a8ceee251195a1aea19690b1",
+        "raw_sha256": "796e1faae45d79cd80a3e97ff4ed915e840296f2a8ceee251195a1aea19690b1",
+        "byte_identical_to_raw": true
+      },
+      {
+        "relative_path": "smoke_002_stage09_regression\\resolved_config.yaml",
+        "copy_path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\reports\\stage08_09_evidence\\smoke_002_stage09_regression\\resolved_config.yaml",
+        "raw_path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_002_stage09_regression\\resolved_config.yaml",
+        "copy_sha256": "e4644fa37011a33d89a7d340499ea64845bc36e77765308101bc6e0b43576ded",
+        "raw_sha256": "e4644fa37011a33d89a7d340499ea64845bc36e77765308101bc6e0b43576ded",
+        "byte_identical_to_raw": true
+      },
+      {
+        "relative_path": "smoke_002_stage09_regression\\summary.json",
+        "copy_path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\reports\\stage08_09_evidence\\smoke_002_stage09_regression\\summary.json",
+        "raw_path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_002_stage09_regression\\summary.json",
+        "copy_sha256": "f053273e63680747417e0d854f2751bbddb525c2b06b0b92c13fb0eee2685dde",
+        "raw_sha256": "f053273e63680747417e0d854f2751bbddb525c2b06b0b92c13fb0eee2685dde",
+        "byte_identical_to_raw": true
+      },
+      {
+        "relative_path": "smoke_002_stage09_regression\\updates.jsonl",
+        "copy_path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\reports\\stage08_09_evidence\\smoke_002_stage09_regression\\updates.jsonl",
+        "raw_path": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_002_stage09_regression\\updates.jsonl",
+        "copy_sha256": "720832e3d6454725f6caf1c04f737b1d0001f2c5f743f7898c807bd2b38a5e78",
+        "raw_sha256": "720832e3d6454725f6caf1c04f737b1d0001f2c5f743f7898c807bd2b38a5e78",
+        "byte_identical_to_raw": true
+      },
+      {
+        "relative_path": "overfit_002\\artifact_manifest.json",
+        "copy_path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\reports\\stage08_09_evidence\\overfit_002\\artifact_manifest.json",
+        "raw_path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\artifact_manifest.json",
+        "copy_sha256": "7bc51c863a6e6d6f0337efb5ab5eb24ea5ee0dce68716da675903d0e7a83cf44",
+        "raw_sha256": "7bc51c863a6e6d6f0337efb5ab5eb24ea5ee0dce68716da675903d0e7a83cf44",
+        "byte_identical_to_raw": true
+      },
+      {
+        "relative_path": "overfit_002\\eval\\update_000.json",
+        "copy_path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\reports\\stage08_09_evidence\\overfit_002\\eval\\update_000.json",
+        "raw_path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\update_000.json",
+        "copy_sha256": "2e8553dc63984fc54e4a363265ac1cd6f3833e0d37a6d1996c60d8909166b5fb",
+        "raw_sha256": "2e8553dc63984fc54e4a363265ac1cd6f3833e0d37a6d1996c60d8909166b5fb",
+        "byte_identical_to_raw": true
+      },
+      {
+        "relative_path": "overfit_002\\eval\\update_050.json",
+        "copy_path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\reports\\stage08_09_evidence\\overfit_002\\eval\\update_050.json",
+        "raw_path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\update_050.json",
+        "copy_sha256": "cb7c75635a6872e9be0f39c17aaf15b5fb3ebcc11727efd039989aca0ecbef41",
+        "raw_sha256": "cb7c75635a6872e9be0f39c17aaf15b5fb3ebcc11727efd039989aca0ecbef41",
+        "byte_identical_to_raw": true
+      },
+      {
+        "relative_path": "overfit_002\\eval\\update_100.json",
+        "copy_path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\reports\\stage08_09_evidence\\overfit_002\\eval\\update_100.json",
+        "raw_path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\update_100.json",
+        "copy_sha256": "021f719bdc7df3d17a3e00041039a516f40eb90120c9c22ce08f681c127c3e8d",
+        "raw_sha256": "021f719bdc7df3d17a3e00041039a516f40eb90120c9c22ce08f681c127c3e8d",
+        "byte_identical_to_raw": true
+      },
+      {
+        "relative_path": "overfit_002\\eval\\update_150.json",
+        "copy_path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\reports\\stage08_09_evidence\\overfit_002\\eval\\update_150.json",
+        "raw_path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\update_150.json",
+        "copy_sha256": "28958bd926d70daeaea5e6d9859d7892b972d8fc5d449c5fe82f8364ee322e34",
+        "raw_sha256": "28958bd926d70daeaea5e6d9859d7892b972d8fc5d449c5fe82f8364ee322e34",
+        "byte_identical_to_raw": true
+      },
+      {
+        "relative_path": "overfit_002\\eval\\update_200.json",
+        "copy_path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\reports\\stage08_09_evidence\\overfit_002\\eval\\update_200.json",
+        "raw_path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\update_200.json",
+        "copy_sha256": "04491bb3c2522b059e0bcd3ae7396b0e6b5fede53ff8bebdeb0b06321c3a9774",
+        "raw_sha256": "04491bb3c2522b059e0bcd3ae7396b0e6b5fede53ff8bebdeb0b06321c3a9774",
+        "byte_identical_to_raw": true
+      },
+      {
+        "relative_path": "overfit_002\\evaluation_curve.json",
+        "copy_path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\reports\\stage08_09_evidence\\overfit_002\\evaluation_curve.json",
+        "raw_path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\evaluation_curve.json",
+        "copy_sha256": "47c49c87ce67523cb55ecb3535b35dc2fefa1843d2bd1d0ba38033b26c6b5ca1",
+        "raw_sha256": "47c49c87ce67523cb55ecb3535b35dc2fefa1843d2bd1d0ba38033b26c6b5ca1",
+        "byte_identical_to_raw": true
+      },
+      {
+        "relative_path": "overfit_002\\resolved_config.yaml",
+        "copy_path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\reports\\stage08_09_evidence\\overfit_002\\resolved_config.yaml",
+        "raw_path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\resolved_config.yaml",
+        "copy_sha256": "468433ffdfd10c3e88ebb20ab105bbeecaf198f4f906a3ef27ddde8cc265033b",
+        "raw_sha256": "468433ffdfd10c3e88ebb20ab105bbeecaf198f4f906a3ef27ddde8cc265033b",
+        "byte_identical_to_raw": true
+      },
+      {
+        "relative_path": "overfit_002\\summary.json",
+        "copy_path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\reports\\stage08_09_evidence\\overfit_002\\summary.json",
+        "raw_path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\summary.json",
+        "copy_sha256": "9839d4a3067263a795d2e0e5c9ee5f99edf5218b657fce4e959ed751575c7bdc",
+        "raw_sha256": "9839d4a3067263a795d2e0e5c9ee5f99edf5218b657fce4e959ed751575c7bdc",
+        "byte_identical_to_raw": true
+      },
+      {
+        "relative_path": "overfit_002\\updates.jsonl",
+        "copy_path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\reports\\stage08_09_evidence\\overfit_002\\updates.jsonl",
+        "raw_path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\updates.jsonl",
+        "copy_sha256": "178702dcf546c13a6bdbeacfb0ed3e16b9731f5caae271f3ec51dcb26130fa8a",
+        "raw_sha256": "178702dcf546c13a6bdbeacfb0ed3e16b9731f5caae271f3ec51dcb26130fa8a",
+        "byte_identical_to_raw": true
+      }
+    ]
+  },
+  "metric_interpretation": {
+    "all_metrics_scope": "same eight training images; not baseline/generalisation/test performance",
+    "large_anomaly_043_gt_share": 0.9643084124406065,
+    "final_global_iou": 0.9457095171,
+    "final_anomaly_macro_iou": 0.7607445312,
+    "final_global_iou_excluding_043": 0.6540365984930032,
+    "normal_fp_pixels_update_0": 873511,
+    "normal_fp_pixels_update_200": 85,
+    "historical_document_error": "1,965,699 is update-0 FP over all eight images, not normal-image FP. Normal-image FP is 873,511."
+  },
+  "verified_checks": {
+    "all_raw_artifact_bytes_and_sha256": true,
+    "all_anchor_sha256": true,
+    "all_twelve_source_hashes": true,
+    "all_five_metric_points_recompute": true,
+    "all_update_log_counts": true,
+    "recorded_source_snapshots_match_claimed_identities": true,
+    "portable_small_evidence_byte_identity": true,
+    "stage09_budget_429_within_500": true
+  },
+  "warnings": [
+    {
+      "code": "historical_eval_split_metadata",
+      "severity": "metadata_error",
+      "files": [
+        "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\update_000.json",
+        "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\update_050.json",
+        "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\update_100.json",
+        "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\update_150.json",
+        "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\update_200.json"
+      ],
+      "observed": "All 40 per_image.split fields say val; all 8 unique image_id values are proven members of the frozen train manifest. Raw JSON was preserved unchanged.",
+      "effect": "Scores are train-subset scores; split metadata must not be interpreted as validation-set evaluation."
+    },
+    {
+      "code": "smoke_original_training_source_unrecovered",
+      "severity": "provenance_gap",
+      "recorded_in": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_001\\summary.json",
+      "recorded_training_py_sha256": "47551c0ab91f2ea750e2c79ab2a844cec67ef601c6436f2fc0e7ae39b3e9e35e",
+      "stage08_commit_training_py_sha256": "458be4824c5ad083492af7dc93e85eedd55140b1a8f58fd8fc7a68ff02fca38e",
+      "exact_match": false,
+      "effect": "Original smoke numerical artifacts and reload evidence remain verifiable, but the exact training.py bytes executed by smoke_001 are not recovered in the inspected source snapshots. The stage08 Git blob must not be presented as an exact match."
+    },
+    {
+      "code": "overfit_provenance_omits_entrypoint_hash",
+      "severity": "provenance_gap",
+      "observed": "Raw overfit_002 provenance.code reused the smoke file list and omitted train.py. The recorded Git status lists only training.py modified; train.py was clean at recorded HEAD.",
+      "reconstructed_train_py_sha256": "658b8ed4db98fac06028f349bbefe89fd28598e888ec7bec8ca8ef0689e124ad",
+      "reconstruction_basis": "Unchanged train.py at eb7c3ec plus saved Git blob bytes; this is a reconstructed source identity, not a directly recorded run-time train.py hash."
+    }
+  ]
+}

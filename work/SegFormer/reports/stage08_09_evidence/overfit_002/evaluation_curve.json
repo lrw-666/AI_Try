@@ -1,0 +1,78 @@
+{
+  "not_a_baseline": true,
+  "scope": "train-subset (the same 8 training images)",
+  "threshold": 0.5,
+  "points": [
+    {
+      "update": 0,
+      "global_iou": 0.0082501792,
+      "global_dice": 0.0163653414,
+      "tp": 17853,
+      "fp": 1965699,
+      "fn": 180401,
+      "anomaly_macro_iou": 0.014414483,
+      "normal_fp_ratio": 0.1453642130628112
+    },
+    {
+      "update": 50,
+      "global_iou": 0.9151125618,
+      "global_dice": 0.9556749614,
+      "tp": 190930,
+      "fp": 10387,
+      "fn": 7324,
+      "anomaly_macro_iou": 0.2592790716,
+      "normal_fp_ratio": 0.0
+    },
+    {
+      "update": 100,
+      "global_iou": 0.836146484,
+      "global_dice": 0.9107622854,
+      "tp": 197706,
+      "fp": 38195,
+      "fn": 548,
+      "anomaly_macro_iou": 0.418920057,
+      "normal_fp_ratio": 0.0
+    },
+    {
+      "update": 150,
+      "global_iou": 0.9163213239,
+      "global_dice": 0.9563336925,
+      "tp": 197897,
+      "fp": 17715,
+      "fn": 357,
+      "anomaly_macro_iou": 0.5944910649,
+      "normal_fp_ratio": 2.6626194850493917e-06
+    },
+    {
+      "update": 200,
+      "global_iou": 0.9457095171,
+      "global_dice": 0.972097334,
+      "tp": 197188,
+      "fp": 10254,
+      "fn": 1066,
+      "anomaly_macro_iou": 0.7607445312,
+      "normal_fp_ratio": 1.4145166014324892e-05
+    }
+  ],
+  "verdicts": {
+    "100": {
+      "iou": 0.83614648,
+      "baseline_iou": 0.00825018,
+      "iou_gain": 0.8278963,
+      "true_positive_pixels": 197706,
+      "anomaly_macro_iou": 0.418920057,
+      "min_iou_gain": 0.02,
+      "learning": true
+    },
+    "200": {
+      "iou": 0.94570952,
+      "baseline_iou": 0.00825018,
+      "iou_gain": 0.93745934,
+      "true_positive_pixels": 197188,
+      "anomaly_macro_iou": 0.7607445312,
+      "min_iou_gain": 0.02,
+      "learning": true
+    }
+  },
+  "baseline_update": 0
+}

@@ -1,0 +1,61 @@
+{
+  "run_dir": "E:\\\u684c\u9762\\AI\\segformer_resources\\runs\\smoke_003_stage09_acceptance",
+  "successful_updates": 20,
+  "attempts": 20,
+  "skipped": 0,
+  "files": {
+    "checkpoints/model_state.pt": {
+      "bytes": 14927903,
+      "sha256": "aa423c9e0834896078270bdd01ea3657831f99de17a074db39f99a6f2cbe1bda"
+    },
+    "checkpoints/training_state.pt": {
+      "bytes": 44819537,
+      "sha256": "0f84ad504201732af54638fafe6a88bb54e15a8d8f7a84ac98b4542c115f322c"
+    },
+    "eval_smoke/anomaly_010.png": {
+      "bytes": 139824,
+      "sha256": "9716b26dd5d01e19a7cb8195e271edfa00211e1eabc3ba1838c9951be1b51f0c"
+    },
+    "eval_smoke/anomaly_045.png": {
+      "bytes": 137216,
+      "sha256": "dc99a7845578db0287ba1236ad6c6b2ee1ec857ee65a4e052add1939ca31b6d4"
+    },
+    "eval_smoke/anomaly_087.png": {
+      "bytes": 143425,
+      "sha256": "4d1c12fa696732798caf2172e5d3920ff49583bc3106a31e0e276082af8d3e0b"
+    },
+    "eval_smoke/normal_0011.png": {
+      "bytes": 144244,
+      "sha256": "4ff2c38e0b27ec69526feb850899771f04c1ac68395adf915fc4ace1aa68e246"
+    },
+    "eval_smoke/normal_0455.png": {
+      "bytes": 144941,
+      "sha256": "a04f06bc502d2ebac20be3d1908fce8c4586943e8bf37a91ab5a00f5471d51d0"
+    },
+    "eval_smoke/normal_0983.png": {
+      "bytes": 139182,
+      "sha256": "4e8dd6d0e17c434f746e2541623e1d5ff37a00faaba4d9db93a76c1f0da6bf9a"
+    },
+    "model_config.json": {
+      "bytes": 2601,
+      "sha256": "a2648c94cd17508f41b3fbf7451a2815ef2443192ed3c2388fb33288d4fd1bac"
+    },
+    "pre_save_probabilities.npz": {
+      "bytes": 29336372,
+      "sha256": "72be03a1f783f2e7830632c502f81b87eb03d623c44146003142c5c430820a21"
+    },
+    "processor/preprocessor_config.json": {
+      "bytes": 396,
+      "sha256": "7854b1307bdd3737b1106ad604bbd8f90308cfce8d46609e6d5d88a1face9f58"
+    },
+    "run_extra.json": {
+      "bytes": 48,
+      "sha256": "35c76399f76d708897c56c302daed5b1613d3442db455456c25b3b80635ad94e"
+    },
+    "updates.jsonl": {
+      "bytes": 9285,
+      "sha256": "bde1bbf4253c4d6520378e388d6264745e235bc271be0df433cd17adcbb135a6"
+    }
+  },
+  "model_state_sha256": "aa423c9e0834896078270bdd01ea3657831f99de17a074db39f99a6f2cbe1bda"
+}

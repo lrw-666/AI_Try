@@ -1,0 +1,551 @@
+{
+  "schema": "segformer-lab/smoke/1",
+  "stage": "08",
+  "not_a_baseline": true,
+  "statement": "20-update AMP plumbing test with a randomly initialised decode head; the scores below only prove the path works",
+  "elapsed_seconds": 15.57,
+  "config": {
+    "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\configs\\smoke.yaml",
+    "sha256": "c7587dce3445803c0a4479fcd4158b9e433f61679d317a403c04aca92f87475e"
+  },
+  "seed": {
+    "seed": 42,
+    "python_random": true,
+    "numpy": true,
+    "torch": true,
+    "cuda_all_devices": true,
+    "cudnn_deterministic": true,
+    "cudnn_benchmark": false,
+    "note": "deterministic cudnn reduces, but does not guarantee, bitwise reproducibility across batch shapes or library versions"
+  },
+  "device": "cuda",
+  "train_subset": {
+    "ids_file": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\overfit_train_ids.txt",
+    "ids_sha256": "2ac81b816dde9888d7483a3af0b9ffa85ae17cd242242542c1ff3f88d1cec6e9",
+    "images": [
+      "pcb1/Data/Images/Normal/0025.JPG",
+      "pcb1/Data/Images/Normal/0121.JPG",
+      "pcb1/Data/Images/Normal/0708.JPG",
+      "pcb1/Data/Images/Normal/0812.JPG",
+      "pcb1/Data/Images/Anomaly/065.JPG",
+      "pcb1/Data/Images/Anomaly/038.JPG",
+      "pcb1/Data/Images/Anomaly/031.JPG",
+      "pcb1/Data/Images/Anomaly/043.JPG"
+    ],
+    "labels": [
+      "normal",
+      "normal",
+      "normal",
+      "normal",
+      "anomaly",
+      "anomaly",
+      "anomaly",
+      "anomaly"
+    ]
+  },
+  "parameters": {
+    "total": 3714658,
+    "trainable": 3714658,
+    "encoder": 3319392,
+    "head": 395266
+  },
+  "optimizer": {
+    "class": "torch.optim.AdamW",
+    "lr": 6e-05,
+    "weight_decay": 0.01,
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "eps": 1e-08,
+    "decay_tensors": 72,
+    "no_decay_tensors": 133,
+    "decay_examples": [
+      "segformer.encoder.patch_embeddings.0.proj.weight",
+      "segformer.encoder.patch_embeddings.1.proj.weight",
+      "segformer.encoder.patch_embeddings.2.proj.weight"
+    ],
+    "no_decay_examples": [
+      "segformer.encoder.patch_embeddings.0.proj.bias",
+      "segformer.encoder.patch_embeddings.0.layer_norm.weight",
+      "segformer.encoder.patch_embeddings.0.layer_norm.bias"
+    ]
+  },
+  "loss": {
+    "name": "ce_plus_foreground_soft_dice",
+    "total": "ce_weight * CE + dice_weight * mean_over_positive_images(1 - Dice_i)",
+    "ce": {
+      "op": "torch.nn.functional.cross_entropy",
+      "reduction": "mean over pixels with label != ignore_index",
+      "ignore_index": 255,
+      "precision": "logits.float() before cross_entropy, including outside autocast",
+      "upsampled_to": "label resolution (512) with bilinear, align_corners=False"
+    },
+    "dice": {
+      "class": 1,
+      "probability": "softmax(logits.float(), dim=1)[:, 1]",
+      "per_image": "(2*sum(p*g) + eps) / (sum(p) + sum(g) + eps)",
+      "valid_region": "label != ignore_index",
+      "averaged_over": "images whose valid GT contains at least one defect pixel",
+      "empty_foreground_batch": "prob.sum() * 0.0 (graph-connected exact zero)",
+      "eps": 1e-06
+    },
+    "defaults": {
+      "ce_weight": 1.0,
+      "dice_weight": 0.5,
+      "eps": 1e-06
+    },
+    "runtime": {
+      "ce_weight": 1.0,
+      "dice_weight": 0.5,
+      "eps": 1e-06
+    },
+    "rejected": "batch with zero valid pixels"
+  },
+  "score_definition": {
+    "space": "original",
+    "mask_values": "0 background, 1 defect, 255 ignored; other original IDs must first be binarized",
+    "valid_pixels": "255 excluded from confusion counts and every foreground-area denominator; all-ignore sample rejected",
+    "gt_source": "Dataset original_mask (never the 512 label resized back up)",
+    "restore": [
+      "bilinear logits -> 512x512, align_corners=False",
+      "crop pad_top..pad_top+new_h, pad_left..pad_left+new_w",
+      "bilinear valid box -> orig_h x orig_w, align_corners=False",
+      "softmax over 2 channels, take channel 1",
+      "binarize with prob >= threshold"
+    ],
+    "threshold": 0.5,
+    "confusion": "int64 TP/FP/FN/TN summed over images, divided once",
+    "foreground_iou": "TP / (TP + FP + FN)",
+    "foreground_dice": "2TP / (2TP + FP + FN)",
+    "precision": "TP / (TP + FP)",
+    "recall": "TP / (TP + FN)",
+    "no_smoothing": true,
+    "zero_denominator": "null plus a reason string",
+    "normal_image_fp": "sum(FP) / sum(valid non-255 pixels of normal images)",
+    "per_image": "IoU/Dice are null when GT and prediction are both empty",
+    "macro": "anomaly images only, averaged over images where the value is defined",
+    "rejected": "flipped evaluation samples by default (baseline flip='none')",
+    "flip_variant": "accept_flipped=True explicitly opts into a different protocol; original mask must match transformed coordinates"
+  },
+  "training": {
+    "successful_updates": 20,
+    "attempts": 20,
+    "skipped": 0,
+    "stopped_reason": "target reached (20 successful updates)",
+    "parameter_evidence": {
+      "at_success_index": 1,
+      "grad_norm_per_tensor": {
+        "segformer.encoder.patch_embeddings.0.proj.weight": 0.09311798959970474,
+        "decode_head.linear_c.0.proj.weight": 0.025289583951234818
+      },
+      "max_abs_parameter_delta": {
+        "segformer.encoder.patch_embeddings.0.proj.weight": 6.014108657836914e-05,
+        "decode_head.linear_c.0.proj.weight": 6.004422903060913e-05
+      },
+      "parameters_changed": true
+    },
+    "timing": {
+      "wall_seconds": 6.711,
+      "successful_updates": 20,
+      "attempts": 20,
+      "skipped": 0,
+      "median_step_ms": 103.0,
+      "median_step_ms_after_first": 102.81,
+      "first_step_ms": 3512.04,
+      "updates_per_second": 2.98
+    },
+    "memory": {
+      "gpu": {
+        "available": true,
+        "device": "NVIDIA GeForce RTX 4070 Laptop GPU",
+        "total_mib": 8187.5,
+        "free_mib": 6084.0,
+        "peak_allocated_mib": 806.5,
+        "peak_reserved_mib": 934.0
+      },
+      "system_ram": {
+        "total_gib": 15.22,
+        "available_gib": 1.78,
+        "load_percent": 88
+      }
+    }
+  },
+  "evaluation_before_save": {
+    "images": {
+      "total": 6,
+      "normal": 3,
+      "anomaly": 3
+    },
+    "confusion": {
+      "tp": 0,
+      "fp": 262,
+      "fn": 126065,
+      "tn": 8887353,
+      "pixels": 9013680
+    },
+    "global": {
+      "foreground_iou": 0.0,
+      "foreground_dice": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "na_reasons": {},
+      "aggregation": "sum TP/FP/FN/TN over images, then divide once"
+    },
+    "normal_images": {
+      "count": 3,
+      "false_positive_pixels": 262,
+      "total_pixels": 4506840,
+      "fp_pixel_ratio": 5.813385875691172e-05,
+      "na_reasons": {},
+      "predicted_foreground_ratio": {
+        "median": 0.0,
+        "p95": 0.0001569614,
+        "max": 0.0001744016,
+        "percentile_method": "numpy linear interpolation over per-image ratios"
+      },
+      "images_with_any_false_positive": 1,
+      "worst_offenders": [
+        {
+          "image_id": "pcb1/Data/Images/Normal/0983.JPG",
+          "predicted_foreground_pixels": 262,
+          "predicted_foreground_ratio": 0.0001744016
+        }
+      ]
+    },
+    "anomaly_images": {
+      "count": 3,
+      "macro": {
+        "iou": {
+          "mean": 0.0,
+          "defined_images": 3,
+          "na_images": 0,
+          "na_reason": ""
+        },
+        "dice": {
+          "mean": 0.0,
+          "defined_images": 3,
+          "na_images": 0,
+          "na_reason": ""
+        },
+        "precision": {
+          "mean": null,
+          "defined_images": 0,
+          "na_images": 3,
+          "na_reason": "no defined per-image precision"
+        },
+        "recall": {
+          "mean": 0.0,
+          "defined_images": 3,
+          "na_images": 0,
+          "na_reason": ""
+        }
+      }
+    },
+    "evaluation": {
+      "batch_size": 1,
+      "mode": "model.eval() + torch.inference_mode()",
+      "precision": "ieee_fp32 (TF32 disabled, autocast disabled)",
+      "precision_record": {
+        "policy": "ieee_fp32",
+        "api": "torch2.10 allow_tf32 (legacy API only)",
+        "before": {
+          "cudnn_allow_tf32": true,
+          "matmul_allow_tf32": false
+        },
+        "autocast_enabled": false,
+        "scope": "evaluation context; restore backend flags and caller autocast on exit",
+        "training_amp_config_unchanged": true,
+        "bitwise_batch_invariance_guaranteed": false,
+        "effective": {
+          "cudnn_allow_tf32": false,
+          "matmul_allow_tf32": false
+        },
+        "restored_after_exit": true
+      },
+      "threshold": 0.5,
+      "forward_ms": [
+        90.43,
+        12.28,
+        12.34,
+        11.62,
+        12.06,
+        12.19
+      ],
+      "median_forward_ms": 12.23
+    },
+    "per_image": [
+      {
+        "image_id": "pcb1/Data/Images/Normal/0011.JPG",
+        "label": "normal",
+        "split": "val",
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "tn": 1502280,
+        "gt_foreground_pixels": 0,
+        "predicted_foreground_pixels": 0,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 0.0,
+        "iou": null,
+        "iou_na": "GT and prediction are both empty",
+        "dice": null,
+        "dice_na": "GT and prediction are both empty",
+        "precision": null,
+        "recall": null,
+        "precision_na": "prediction contains no foreground pixel",
+        "recall_na": "ground truth contains no foreground pixel"
+      },
+      {
+        "image_id": "pcb1/Data/Images/Normal/0455.JPG",
+        "label": "normal",
+        "split": "val",
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "tn": 1502280,
+        "gt_foreground_pixels": 0,
+        "predicted_foreground_pixels": 0,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 0.0,
+        "iou": null,
+        "iou_na": "GT and prediction are both empty",
+        "dice": null,
+        "dice_na": "GT and prediction are both empty",
+        "precision": null,
+        "recall": null,
+        "precision_na": "prediction contains no foreground pixel",
+        "recall_na": "ground truth contains no foreground pixel"
+      },
+      {
+        "image_id": "pcb1/Data/Images/Normal/0983.JPG",
+        "label": "normal",
+        "split": "val",
+        "tp": 0,
+        "fp": 262,
+        "fn": 0,
+        "tn": 1502018,
+        "gt_foreground_pixels": 0,
+        "predicted_foreground_pixels": 262,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 0.0001744016,
+        "iou": 0.0,
+        "iou_na": "",
+        "dice": 0.0,
+        "dice_na": "",
+        "precision": 0.0,
+        "recall": null,
+        "precision_na": "",
+        "recall_na": "ground truth contains no foreground pixel"
+      },
+      {
+        "image_id": "pcb1/Data/Images/Anomaly/087.JPG",
+        "label": "anomaly",
+        "split": "val",
+        "tp": 0,
+        "fp": 0,
+        "fn": 2328,
+        "tn": 1499952,
+        "gt_foreground_pixels": 2328,
+        "predicted_foreground_pixels": 0,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 0.0,
+        "iou": 0.0,
+        "iou_na": "",
+        "dice": 0.0,
+        "dice_na": "",
+        "precision": null,
+        "recall": 0.0,
+        "precision_na": "prediction contains no foreground pixel",
+        "recall_na": ""
+      },
+      {
+        "image_id": "pcb1/Data/Images/Anomaly/010.JPG",
+        "label": "anomaly",
+        "split": "val",
+        "tp": 0,
+        "fp": 0,
+        "fn": 5153,
+        "tn": 1497127,
+        "gt_foreground_pixels": 5153,
+        "predicted_foreground_pixels": 0,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 0.0,
+        "iou": 0.0,
+        "iou_na": "",
+        "dice": 0.0,
+        "dice_na": "",
+        "precision": null,
+        "recall": 0.0,
+        "precision_na": "prediction contains no foreground pixel",
+        "recall_na": ""
+      },
+      {
+        "image_id": "pcb1/Data/Images/Anomaly/045.JPG",
+        "label": "anomaly",
+        "split": "val",
+        "tp": 0,
+        "fp": 0,
+        "fn": 118584,
+        "tn": 1383696,
+        "gt_foreground_pixels": 118584,
+        "predicted_foreground_pixels": 0,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 0.0,
+        "iou": 0.0,
+        "iou_na": "",
+        "dice": 0.0,
+        "dice_na": "",
+        "precision": null,
+        "recall": 0.0,
+        "precision_na": "prediction contains no foreground pixel",
+        "recall_na": ""
+      }
+    ]
+  },
+  "figures": [
+    "normal_0011.png",
+    "normal_0455.png",
+    "normal_0983.png",
+    "anomaly_087.png",
+    "anomaly_010.png",
+    "anomaly_045.png"
+  ],
+  "parameter_digest_before_save": {
+    "sum_of_parameters": 6937.942470742218,
+    "tensor_count": 205
+  },
+  "artifacts": {
+    "run_dir": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_003_stage09_acceptance",
+    "successful_updates": 20,
+    "attempts": 20,
+    "skipped": 0,
+    "files": {
+      "checkpoints/model_state.pt": {
+        "bytes": 14927903,
+        "sha256": "aa423c9e0834896078270bdd01ea3657831f99de17a074db39f99a6f2cbe1bda"
+      },
+      "checkpoints/training_state.pt": {
+        "bytes": 44819537,
+        "sha256": "0f84ad504201732af54638fafe6a88bb54e15a8d8f7a84ac98b4542c115f322c"
+      },
+      "eval_smoke/anomaly_010.png": {
+        "bytes": 139824,
+        "sha256": "9716b26dd5d01e19a7cb8195e271edfa00211e1eabc3ba1838c9951be1b51f0c"
+      },
+      "eval_smoke/anomaly_045.png": {
+        "bytes": 137216,
+        "sha256": "dc99a7845578db0287ba1236ad6c6b2ee1ec857ee65a4e052add1939ca31b6d4"
+      },
+      "eval_smoke/anomaly_087.png": {
+        "bytes": 143425,
+        "sha256": "4d1c12fa696732798caf2172e5d3920ff49583bc3106a31e0e276082af8d3e0b"
+      },
+      "eval_smoke/normal_0011.png": {
+        "bytes": 144244,
+        "sha256": "4ff2c38e0b27ec69526feb850899771f04c1ac68395adf915fc4ace1aa68e246"
+      },
+      "eval_smoke/normal_0455.png": {
+        "bytes": 144941,
+        "sha256": "a04f06bc502d2ebac20be3d1908fce8c4586943e8bf37a91ab5a00f5471d51d0"
+      },
+      "eval_smoke/normal_0983.png": {
+        "bytes": 139182,
+        "sha256": "4e8dd6d0e17c434f746e2541623e1d5ff37a00faaba4d9db93a76c1f0da6bf9a"
+      },
+      "model_config.json": {
+        "bytes": 2601,
+        "sha256": "a2648c94cd17508f41b3fbf7451a2815ef2443192ed3c2388fb33288d4fd1bac"
+      },
+      "pre_save_probabilities.npz": {
+        "bytes": 29336372,
+        "sha256": "72be03a1f783f2e7830632c502f81b87eb03d623c44146003142c5c430820a21"
+      },
+      "processor/preprocessor_config.json": {
+        "bytes": 396,
+        "sha256": "7854b1307bdd3737b1106ad604bbd8f90308cfce8d46609e6d5d88a1face9f58"
+      },
+      "run_extra.json": {
+        "bytes": 48,
+        "sha256": "35c76399f76d708897c56c302daed5b1613d3442db455456c25b3b80635ad94e"
+      },
+      "updates.jsonl": {
+        "bytes": 9285,
+        "sha256": "bde1bbf4253c4d6520378e388d6264745e235bc271be0df433cd17adcbb135a6"
+      }
+    },
+    "model_state_sha256": "aa423c9e0834896078270bdd01ea3657831f99de17a074db39f99a6f2cbe1bda"
+  },
+  "encoder_check": {
+    "matched_exact": 192,
+    "checkpoint_tensors": 194,
+    "max_abs_diff": 0.0
+  },
+  "provenance": {
+    "created_at": "2026-11-01T11:55:41+0800",
+    "host": "Windows-11-10.0.26200-SP0",
+    "python": "3.12.16",
+    "torch": "2.10.0+cu126",
+    "cuda_build": "12.6",
+    "manifest_identity": {
+      "train": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\train.csv",
+        "sha256": "f1522eb9b474d0acc1d736a391002f5044153208fa10f51eea3dc7df729f65b0"
+      },
+      "val": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\val.csv",
+        "sha256": "60a6c6cbf5ed7f5f9e57fb57bb096a5b57db677af5ee73f4fa140ddceaba6191"
+      },
+      "test": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\test.csv",
+        "sha256": "4bdc594148f208c7067a66a8cb3b06fde53ebc1f4ab6fda84f08f80383061284"
+      }
+    },
+    "files": {
+      "config": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\configs\\smoke.yaml",
+        "sha256": "c7587dce3445803c0a4479fcd4158b9e433f61679d317a403c04aca92f87475e"
+      },
+      "ids": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\overfit_train_ids.txt",
+        "sha256": "2ac81b816dde9888d7483a3af0b9ffa85ae17cd242242542c1ff3f88d1cec6e9"
+      },
+      "split_meta": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\split_meta.json",
+        "sha256": "7c53a669aabebcbb72cc137f84e7d00ec615e53813396b36e7f3557d6c9d0b49"
+      },
+      "preview_ids": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\val_preview_ids.txt",
+        "sha256": "4f17789dfecc28023003092dddbe3c4683ac781cb469b483e4180c2ebb8f9718"
+      }
+    },
+    "snapshot": {
+      "model_id": "nvidia/mit-b0",
+      "revision": "80983a413c30d36a39c20203974ae7807835e2b4",
+      "weights_sha256": "4af8348c2a802bf76115d34797ff5ce1d9f110bb8593c22d9b66d8bd7fa227fc"
+    },
+    "git": {
+      "head": "eb7c3ec9f2532cef49f292bf26759d1d2087bc24",
+      "status_porcelain": "M work/SegFormer/README.md\n M work/SegFormer/docs/stages/README.md\n M work/SegFormer/segformer_lab/smoke.py\n M work/SegFormer/segformer_lab/train.py\n M work/SegFormer/segformer_lab/training.py\n?? work/SegFormer/docs/stages/09-overfit-design-and-implementation.md\n?? work/SegFormer/reports/2026-11-01-stage09-handoff.md\n?? work/SegFormer/reports/2026-11-01-stage10-execution-handoff.md\n?? work/SegFormer/reports/stage08-09-evidence-audit.json\n?? work/SegFormer/reports/stage08_09_evidence/\n?? work/SegFormer/reports/stage09-reload-check.json\n?? work/SegFormer/reports/stage09-reload-check.txt\n?? work/SegFormer/reports/stage09-smoke-regression.txt\n?? work/SegFormer/reports/stage09-summary.json\n?? work/SegFormer/reports/stage09-unit-tests.txt\n?? work/SegFormer/segformer_lab/run_check.py\n?? work/SegFormer/tests/test_run_check.py\n?? work/SegFormer/tests/test_training.py"
+    },
+    "code": {
+      "segformer_lab/training.py": "1ab1b0d3334e591955dfd28b5d6cf41287d8ce600b63e1fe332137657eaac10a",
+      "segformer_lab/smoke.py": "50c47b2f8b0bb45293c69635d1cb9eee6294a73acee4dcdf0525a1b36c0a45ec",
+      "segformer_lab/losses.py": "e7195880bd49a8f03a9fbb39e9069c1f071010c8f7f96ba2bfac80d3d0ba0327",
+      "segformer_lab/metrics.py": "7d9625fa29eb94221787c80f7bc47dc429958d588207692f2c0ea1a12ecb5787",
+      "segformer_lab/evaluation.py": "0c30890eb5252d603de73bc792a6ef348fa77c2cf91c5f1b98a7167492787e53",
+      "segformer_lab/data.py": "3eb2117997db7cee7fa720b74f8b5b7df85793f4a65cebdd851943c3025ab9ce",
+      "segformer_lab/modeling.py": "318e0b0a5164eafe7c8393adf64caf1aaeea6e5895ab679ba0171c0fc57a59d3",
+      "segformer_lab/train.py": "d8721c8012d594293988146cc8acad573361639ca27e241f43e4f16ef8ffc305",
+      "segformer_lab/subset.py": "11f1831cab544270404a47ba8a721bbaa8b4d72890bb0f5a85b1fad900c16032",
+      "segformer_lab/config.py": "b2c981faca6b2222b83ea876c8b3f1cd854ee210f42cd588dce41f20caaaa391",
+      "segformer_lab/geometry.py": "b9e9d823ba91706bea650ccf578fb71f960840c3f8097f7c8687a5850ab4aacb"
+    }
+  }
+}

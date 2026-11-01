@@ -1,0 +1,61 @@
+{
+  "run_dir": "E:\\\u684c\u9762\\AI\\segformer_resources\\runs\\smoke_001",
+  "successful_updates": 20,
+  "attempts": 20,
+  "skipped": 0,
+  "files": {
+    "checkpoints/model_state.pt": {
+      "bytes": 14927903,
+      "sha256": "2b66a9d211f1423f41bf56c2210f5c143ba3aa08492aa74341bf197a943ea727"
+    },
+    "checkpoints/training_state.pt": {
+      "bytes": 44819537,
+      "sha256": "4b363bf91be84e37cc1a1ac4d68f1d794a303e8c3ec4323b6877f799c48bf715"
+    },
+    "eval_smoke/anomaly_010.png": {
+      "bytes": 139824,
+      "sha256": "9716b26dd5d01e19a7cb8195e271edfa00211e1eabc3ba1838c9951be1b51f0c"
+    },
+    "eval_smoke/anomaly_045.png": {
+      "bytes": 137216,
+      "sha256": "dc99a7845578db0287ba1236ad6c6b2ee1ec857ee65a4e052add1939ca31b6d4"
+    },
+    "eval_smoke/anomaly_087.png": {
+      "bytes": 143425,
+      "sha256": "4d1c12fa696732798caf2172e5d3920ff49583bc3106a31e0e276082af8d3e0b"
+    },
+    "eval_smoke/normal_0011.png": {
+      "bytes": 144244,
+      "sha256": "4ff2c38e0b27ec69526feb850899771f04c1ac68395adf915fc4ace1aa68e246"
+    },
+    "eval_smoke/normal_0455.png": {
+      "bytes": 144941,
+      "sha256": "a04f06bc502d2ebac20be3d1908fce8c4586943e8bf37a91ab5a00f5471d51d0"
+    },
+    "eval_smoke/normal_0983.png": {
+      "bytes": 139182,
+      "sha256": "92ff182cc3ad1c1fa90d8c92feb67da6595f4efd7767b3261e71088d29a03c0d"
+    },
+    "model_config.json": {
+      "bytes": 2601,
+      "sha256": "a2648c94cd17508f41b3fbf7451a2815ef2443192ed3c2388fb33288d4fd1bac"
+    },
+    "pre_save_probabilities.npz": {
+      "bytes": 29337425,
+      "sha256": "56d7f3050b2754466d981a2bd8cfcf5270fa33e5ceefbb60de2f0a9466faf4d9"
+    },
+    "processor/preprocessor_config.json": {
+      "bytes": 396,
+      "sha256": "7854b1307bdd3737b1106ad604bbd8f90308cfce8d46609e6d5d88a1face9f58"
+    },
+    "run_extra.json": {
+      "bytes": 48,
+      "sha256": "35c76399f76d708897c56c302daed5b1613d3442db455456c25b3b80635ad94e"
+    },
+    "updates.jsonl": {
+      "bytes": 6885,
+      "sha256": "9ccec668bae20c20616cbc8c902d6f440388c8fd2d5c67b5650ed94c2d74bbbc"
+    }
+  },
+  "model_state_sha256": "2b66a9d211f1423f41bf56c2210f5c143ba3aa08492aa74341bf197a943ea727"
+}

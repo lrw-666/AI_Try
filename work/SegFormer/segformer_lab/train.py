@@ -118,7 +118,7 @@ def _render_sheet(samples: list[dict[str, Any]], data_root: Path, out_path: Path
 
 def _render_zoom(sample: dict[str, Any], data_root: Path, out_path: Path, threshold: float,
                  tag: str) -> str:
-    """Four-panel zoom for the smallest defect: full frame, GT crop, prob crop, overlay crop."""
+    """Full-frame context above actual source/GT/probability/overlay crops."""
     probability = restore_defect_probability(sample["logits"], sample["geometry"]).numpy()
     with Image.open(data_root / sample["image_id"]) as handle:
         handle.load()
@@ -130,28 +130,31 @@ def _render_zoom(sample: dict[str, Any], data_root: Path, out_path: Path, thresh
     else:
         pad_y = max(24, int(0.06 * gt.shape[0]))
         pad_x = max(24, int(0.06 * gt.shape[1]))
-        y0, y1 = max(0, ys.min() - pad_y), min(gt.shape[0], ys.max() + pad_y)
-        x0, x1 = max(0, xs.min() - pad_x), min(gt.shape[1], xs.max() + pad_x)
+        y0, y1 = max(0, int(ys.min()) - pad_y), min(gt.shape[0], int(ys.max()) + 1 + pad_y)
+        x0, x1 = max(0, int(xs.min()) - pad_x), min(gt.shape[1], int(xs.max()) + 1 + pad_x)
 
-    figure, axes = plt.subplots(1, 4, figsize=(11.5, 3.0), dpi=100)
-    axes[0].imshow(rgb)
-    axes[0].set_title("source", fontsize=8)
-    axes[1].imshow(gt, cmap="gray", vmin=0, vmax=1)
-    axes[1].set_title(f"GT: {int((gt > 0).sum())} px", fontsize=8)
-    axes[2].imshow(probability, cmap="magma", vmin=0.0, vmax=1.0)
-    axes[2].set_title("defect probability", fontsize=8)
-    axes[3].imshow(rgb)
-    overlay = np.ma.masked_where(probability < threshold, probability)
-    axes[3].imshow(overlay, cmap="autumn", alpha=0.5, vmin=0.0, vmax=1.0)
-    axes[3].set_title(f"pred >= {threshold}", fontsize=8)
-    axes[3].add_patch(plt.Rectangle((x0, y0), x1 - x0, y1 - y0, fill=False,
-                                    edgecolor="cyan", lw=1.0, ls="--"))
-    for axis in axes:
+    figure, axes = plt.subplots(2, 4, figsize=(11.5, 6.0), dpi=100)
+    for row, region in enumerate((np.s_[:, :], np.s_[y0:y1, x0:x1])):
+        frame, mask, prob = rgb[region], gt[region], probability[region]
+        axes[row, 0].imshow(frame)
+        axes[row, 0].set_title("source" if row == 0 else f"ROI x={x0}:{x1}, y={y0}:{y1}", fontsize=8)
+        axes[row, 1].imshow(mask, cmap="gray", vmin=0, vmax=1, interpolation="nearest")
+        axes[row, 1].set_title(f"GT: {int((mask > 0).sum())} px", fontsize=8)
+        axes[row, 2].imshow(prob, cmap="magma", vmin=0.0, vmax=1.0)
+        axes[row, 2].set_title("defect probability (0-1)", fontsize=8)
+        axes[row, 3].imshow(frame)
+        overlay = np.ma.masked_where(prob < threshold, prob)
+        axes[row, 3].imshow(overlay, cmap="autumn", alpha=0.5, vmin=0.0, vmax=1.0)
+        axes[row, 3].set_title(f"pred >= {threshold}", fontsize=8)
+    for column in (0, 3):
+        axes[0, column].add_patch(plt.Rectangle((x0, y0), x1 - x0, y1 - y0,
+                                                fill=False, edgecolor="cyan", lw=1.0, ls="--"))
+    for axis in axes.flat:
         axis.set_xticks([])
-        axes_y = axis.set_yticks([])
-        del axes_y
-    figure.suptitle(f"{tag} | {Path(sample['image_id']).stem} | cyan box is magnified below", fontsize=9)
+        axis.set_yticks([])
+    figure.suptitle(f"{tag} | {Path(sample['image_id']).stem} | cyan ROI enlarged in bottom row", fontsize=9)
     figure.tight_layout()
+    out_path.parent.mkdir(parents=True, exist_ok=True)
     figure.savefig(out_path)
     plt.close(figure)
     return out_path.name

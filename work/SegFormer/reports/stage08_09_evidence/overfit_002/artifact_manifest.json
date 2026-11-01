@@ -1,0 +1,93 @@
+{
+  "run_dir": "E:\\\u684c\u9762\\AI\\segformer_resources\\runs\\overfit_002",
+  "successful_updates": 200,
+  "attempts": 201,
+  "skipped": 1,
+  "files": {
+    "checkpoints/model_state.pt": {
+      "bytes": 14927903,
+      "sha256": "92097db6d3d451c226954a2ee44436eb486641303d205b909fa03da8cc6500fa"
+    },
+    "checkpoints/training_state.pt": {
+      "bytes": 44819537,
+      "sha256": "62c70f7113c0347a04d026379d853b1d1e0a64dff77d0e96a1072152a4681337"
+    },
+    "eval/sheet_update_000.png": {
+      "bytes": 889120,
+      "sha256": "3676e4c7d0163a2cc3533a425172566831fa14b0c3da273d8a36001ad78d8b3c"
+    },
+    "eval/sheet_update_050.png": {
+      "bytes": 853964,
+      "sha256": "4689c521feefb0fe3a41989633c340b06b316af54edfc5d10acdac56466bc54e"
+    },
+    "eval/sheet_update_100.png": {
+      "bytes": 854575,
+      "sha256": "273f8b50befe3ac5a05f8b1f85580f1eb089abbfcb17d2f53f9ea77186addb61"
+    },
+    "eval/sheet_update_150.png": {
+      "bytes": 854124,
+      "sha256": "00608ed8775b694846515631e9eef2395743c97c1a571c387036a536540df869"
+    },
+    "eval/sheet_update_200.png": {
+      "bytes": 854092,
+      "sha256": "a25d2cd1d4734c475814154be6de3294ed451a3734d3a1789f22ce897b826da9"
+    },
+    "eval/update_000.json": {
+      "bytes": 8039,
+      "sha256": "2e8553dc63984fc54e4a363265ac1cd6f3833e0d37a6d1996c60d8909166b5fb"
+    },
+    "eval/update_050.json": {
+      "bytes": 7621,
+      "sha256": "cb7c75635a6872e9be0f39c17aaf15b5fb3ebcc11727efd039989aca0ecbef41"
+    },
+    "eval/update_100.json": {
+      "bytes": 7636,
+      "sha256": "021f719bdc7df3d17a3e00041039a516f40eb90120c9c22ce08f681c127c3e8d"
+    },
+    "eval/update_150.json": {
+      "bytes": 7752,
+      "sha256": "28958bd926d70daeaea5e6d9859d7892b972d8fc5d449c5fe82f8364ee322e34"
+    },
+    "eval/update_200.json": {
+      "bytes": 7838,
+      "sha256": "04491bb3c2522b059e0bcd3ae7396b0e6b5fede53ff8bebdeb0b06321c3a9774"
+    },
+    "eval/zoom_smallest_update_000.png": {
+      "bytes": 248176,
+      "sha256": "3b4c5f44f190cc6f75f0da498889dffa2b9ec3be8917f6d3eceb52f5fe53b7c2"
+    },
+    "eval/zoom_smallest_update_050.png": {
+      "bytes": 251293,
+      "sha256": "e1ee7b6b8e72aa8879eb9358be756f60cd7fe7c372afab18764a6a0e23e785b0"
+    },
+    "eval/zoom_smallest_update_100.png": {
+      "bytes": 249858,
+      "sha256": "3ba8c8d1758973155c34d4770d4b3c7d6149e10dbf82d1d32e946cd415c8f9f2"
+    },
+    "eval/zoom_smallest_update_150.png": {
+      "bytes": 222053,
+      "sha256": "b1e0c7ede972af25a4fdf3bfc0c6027d38d6204585e25ab4cd6155eb9010ea40"
+    },
+    "eval/zoom_smallest_update_200.png": {
+      "bytes": 215066,
+      "sha256": "11d7990eaaf98fb6a24981d3232dd7aed88cae2efbdcbb3336acd44ca8da7b70"
+    },
+    "model_config.json": {
+      "bytes": 2601,
+      "sha256": "a2648c94cd17508f41b3fbf7451a2815ef2443192ed3c2388fb33288d4fd1bac"
+    },
+    "processor/preprocessor_config.json": {
+      "bytes": 396,
+      "sha256": "7854b1307bdd3737b1106ad604bbd8f90308cfce8d46609e6d5d88a1face9f58"
+    },
+    "run_extra.json": {
+      "bytes": 48,
+      "sha256": "4cfdeb1373503297ce7a54d628e1527df723433240eacf42992f35e2337f9bce"
+    },
+    "updates.jsonl": {
+      "bytes": 73988,
+      "sha256": "178702dcf546c13a6bdbeacfb0ed3e16b9731f5caae271f3ec51dcb26130fa8a"
+    }
+  },
+  "model_state_sha256": "92097db6d3d451c226954a2ee44436eb486641303d205b909fa03da8cc6500fa"
+}

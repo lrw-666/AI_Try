@@ -19,8 +19,8 @@
 | 05 | 预训练权重与模型搭建 | 已通过独立验收 | [05-model-design-and-implementation.md](./05-model-design-and-implementation.md) | 快照 `models\mit-b0\source.json`；`reports\model_download.json`、`model_loading.json`、`model_check.json`；[模型加载与核验报告](../../reports/2026-10-31-stage05-model-loading-and-check.md)；`audit\stage05-*.log` |
 | 06 | Dataset、变换与配置 | 已通过独立验收 | [06-dataset-design-and-implementation.md](./06-dataset-design-and-implementation.md) | `reports\dataset_check.json`（39 项检查）；`segformer_resources\runs\dataset_check`（9 张五联图）；`audit\stage06-*.log`、`stage06-unit-tests.txt` |
 | 07 | 损失与指标 | 已通过独立验收 | [07-loss-metrics-design-and-implementation.md](./07-loss-metrics-design-and-implementation.md) | [验收报告](../../reports/2026-11-01-stage07-acceptance.md)；`loss_metrics_check.json`（42 项）；`stage07-unit-tests.txt`（186 项）；`stage07-acceptance.json`；归档恢复图 |
-| 08 | 20 步冒烟检查 | 已完成（待独立验收） | [08-smoke-design-and-implementation.md](./08-smoke-design-and-implementation.md) | `reports\stage08-gates.json`（5/5 技术门禁）；`runs\smoke_001\summary.json`、`updates.jsonl`、`reload_check.json`；`audit\stage08-*.log` |
-| 09 | 8 张训练图过拟合检查 | 未开始 | — | — |
+| 08 | 20 步冒烟检查 | 已通过独立验收 | [08-smoke-design-and-implementation.md](./08-smoke-design-and-implementation.md) | `reports\stage08-gates.json`（5/5 技术门禁）；`runs\smoke_001\summary.json`、`updates.jsonl`、`reload_check.json`；`audit\stage08-*.log` |
+| 09 | 8 张训练图过拟合检查 | 已通过独立验收 | [09-overfit-design-and-implementation.md](./09-overfit-design-and-implementation.md) | `runs\overfit_002\summary.json`、`evaluation_curve.json`、`eval\*`（仓库外）；`reports\stage09-summary.json`（仓库）；崩溃现场 `runs\overfit_001` 与 `runs\archive\overfit_001_attempt{1,2}_*`；回归 `runs\smoke_002_stage09_regression` |
 | 10 | 完整训练集短程试跑 | 未开始 | — | — |
 | 11 | 正式训练与可靠保存 | 未开始 | — | — |
 | 12 | 独立推理与原图评价 | 未开始 | — | — |
@@ -28,7 +28,15 @@
 
 ## 当前状态一句话
 
-步骤 01—07 已验收；**阶段 08（20 步 CUDA AMP 冒烟）已完成并通过 5/5 技术门禁**：20 次成功更新、编码器与解码头梯度非零、参数真实变化、B1 IEEE FP32 通路评价、新进程 `strict=True` 重载零差异。阶段 09 待执行。**没有训练后基线性能，未评价 test。**
+步骤01—09已通过独立验收；最终完整项目回归207项通过。第09阶段200/201/1跳步，固定训练子集全局IoU 0.008250→0.945710、异常macro 0.014414→0.760745、正常FP 873,511→85。该结果不代表泛化性能；完整val或test尚未评价。新进程保存物复验及当前代码smoke均通过，详见[联合验收](../../reports/2026-11-01-stage08-09-acceptance.md)。
+
+## 阶段 09 关键结论
+
+- 八图4N4A，200成功/201尝试/1跳步；所有指标仅在这八张训练图计分。大缺陷占GT前景约96.43%，必须结合macro及逐图结果。
+- 新进程208个模型状态张量全等且有限，205个优化器参数step均200；保存processor实际使用，B1 IEEE FP32原图计分与历史数值一致。旧split误标明确更正。
+- 真实step/AMP边界、模式恢复、保存processor和局部图均已完善。第09原旧概率图缺失，概率对照为null；分数复算通过，不能混淆。
+- 三次失败各进入第76次尝试，加记录运行201次，共429/500；不重跑200步。当前代码另建20步smoke，20/20/0，新进程概率差0、XOR0。
+- [验收报告](../../reports/2026-11-01-stage08-09-acceptance.md)、[原始证据](../../reports/stage08_09_evidence/README.md)、[只读复验](../../reports/stage09-reload-check.json)和[机器摘要](../../reports/stage09-acceptance.json)均在仓库。
 
 ## 阶段 08 关键结论
 
@@ -38,7 +46,7 @@
 - 计时与显存：首步 3 423 ms，稳态中位 **58.5 ms**；峰值 allocated 806.5 / reserved **934.0 MiB**（20 步实测，不能当正式训练预算）。
 - 评价：6 张固定 val，B1 FP32（TF32 关闭），IoU 0.0、误报 264 px；**只证通路，不是基线**。
 - 保存重载：run 内结构 + 权重 `strict=True`，missing/unexpected 为 0；6 张图最大概率差 **0.0**，XOR **0**，混淆量与指标完全一致。
-- 已知缺口：AMP 跳步分支未实测触发；`workers=0` 仍是唯一验证过的设置。
+- 本轮已用真实CPU GradScaler回归覆盖跳步/范数边界，并使用保存processor重新复算旧smoke；原源码SHA不一致的历史局限保留，workers>0与完整resume仍未验证。
 
 ## 阶段 07 关键结论
 
@@ -70,7 +78,7 @@
 
 ## 下一步
 
-按[阶段 08—09 执行交接](../../reports/2026-11-01-stage08-09-execution-handoff.md)可同轮串行执行：08 完成 20 次成功更新、AMP、保存与新进程重载，内部门槛通过后，09 独立初始化并检查固定 8 张训练图的学习。两份配置、run、中文文档和证据独立，完成后合并交付验收；失败先停当前阶段，不自动进入 10/11。
+仅按[阶段10执行交接](../../reports/2026-11-01-stage10-execution-handoff.md)实现并运行三轮530 train/132 val的pilot。移除八图子集，恢复随机增强与每轮set_epoch；保持B1 IEEE FP32原图评价，流式处理避免RAM堆积，从原预训练重新初始化。当前专用八图入口不可直接套配置。三轮结束再验收，不自动启动正式训练或test推理。
 
 ## 维护约定
 

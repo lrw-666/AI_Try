@@ -1,0 +1,621 @@
+{
+  "schema": "segformer-lab/stage09-acceptance/1",
+  "created_at": "2026-11-01T12:04:45.842137+08:00",
+  "git_base": "eb7c3ec9f2532cef49f292bf26759d1d2087bc24",
+  "scope": "Independent acceptance of completed stages08/09; bounded new smoke20 regression; no overfit rerun, pilot or formal training",
+  "full_stage_verified": true,
+  "not_a_baseline": true,
+  "unit_tests": {
+    "passed": 207,
+    "elapsed_seconds": 10.281,
+    "exit_code": 0,
+    "log": "work/SegFormer/reports/stage09-unit-tests.txt"
+  },
+  "fresh_gpu_saved_run_checks": {
+    "stage08-reload-check": {
+      "path": "work/SegFormer/reports/stage08-reload-check.json",
+      "size_bytes": 39777,
+      "sha256": "be45f1fb4a98c7ab9f07dc587c14b96f6bd7848d09068944e7c9257982dbf57f",
+      "checks": {
+        "artifact_and_provenance_anchors": true,
+        "strict_saved_bundle_loaded": true,
+        "saved_training_state_consistent": true,
+        "all_stored_counts_metrics_equal": true,
+        "available_probability_maps_equal": true,
+        "read_only": true,
+        "real_cuda_fp32_b1_forwards": true
+      },
+      "skipped_checks": [],
+      "training_state": {
+        "all_model_keys_exact_and_finite": true,
+        "tensor_count": 208,
+        "counters": {
+          "successful_updates": 20,
+          "attempts": 20,
+          "skipped": 0
+        },
+        "optimizer_parameters_checked": 205,
+        "optimizer_step_min": 20.0,
+        "optimizer_step_max": 20.0,
+        "grad_scaler": {
+          "scale": 65536.0,
+          "growth_factor": 2.0,
+          "backoff_factor": 0.5,
+          "growth_interval": 2000,
+          "_growth_tracker": 20
+        }
+      },
+      "probabilities": {
+        "status": "compared",
+        "max_abs_probability_diff": 0.0,
+        "xor_pixels_total": 0,
+        "atol": 1e-05,
+        "ok": true,
+        "per_image": [
+          {
+            "image_id": "pcb1/Data/Images/Normal/0011.JPG",
+            "max_abs_probability_diff": 0.0,
+            "xor_pixels": 0
+          },
+          {
+            "image_id": "pcb1/Data/Images/Normal/0455.JPG",
+            "max_abs_probability_diff": 0.0,
+            "xor_pixels": 0
+          },
+          {
+            "image_id": "pcb1/Data/Images/Normal/0983.JPG",
+            "max_abs_probability_diff": 0.0,
+            "xor_pixels": 0
+          },
+          {
+            "image_id": "pcb1/Data/Images/Anomaly/087.JPG",
+            "max_abs_probability_diff": 0.0,
+            "xor_pixels": 0
+          },
+          {
+            "image_id": "pcb1/Data/Images/Anomaly/010.JPG",
+            "max_abs_probability_diff": 0.0,
+            "xor_pixels": 0
+          },
+          {
+            "image_id": "pcb1/Data/Images/Anomaly/045.JPG",
+            "max_abs_probability_diff": 0.0,
+            "xor_pixels": 0
+          }
+        ]
+      },
+      "comparison_identical": true,
+      "metadata_corrections": [],
+      "process": {
+        "pid": 34140,
+        "python": "3.12.16",
+        "executable": "E:\\桌面\\AI\\segformer_resources\\env\\python.exe",
+        "torch": "2.10.0+cu126",
+        "cuda_build": "12.6",
+        "device": "cuda",
+        "gpu": "NVIDIA GeForce RTX 4070 Laptop GPU"
+      }
+    },
+    "stage09-reload-check": {
+      "path": "work/SegFormer/reports/stage09-reload-check.json",
+      "size_bytes": 45984,
+      "sha256": "928a090b82d532c598d89e9dbb5d296f8ecd6861370a8428094d1fc79444e586",
+      "checks": {
+        "artifact_and_provenance_anchors": true,
+        "strict_saved_bundle_loaded": true,
+        "saved_training_state_consistent": true,
+        "all_stored_counts_metrics_equal": true,
+        "available_probability_maps_equal": null,
+        "read_only": true,
+        "real_cuda_fp32_b1_forwards": true
+      },
+      "skipped_checks": [
+        "available_probability_maps_equal"
+      ],
+      "training_state": {
+        "all_model_keys_exact_and_finite": true,
+        "tensor_count": 208,
+        "counters": {
+          "successful_updates": 200,
+          "attempts": 201,
+          "skipped": 1
+        },
+        "optimizer_parameters_checked": 205,
+        "optimizer_step_min": 200.0,
+        "optimizer_step_max": 200.0,
+        "grad_scaler": {
+          "scale": 32768.0,
+          "growth_factor": 2.0,
+          "backoff_factor": 0.5,
+          "growth_interval": 2000,
+          "_growth_tracker": 125
+        }
+      },
+      "probabilities": {
+        "status": "not_available",
+        "scope": "stored counts/metrics only; old probability maps were not saved",
+        "max_abs_probability_diff": null,
+        "xor_pixels_total": null
+      },
+      "comparison_identical": true,
+      "metadata_corrections": [
+        {
+          "image_id": "pcb1/Data/Images/Normal/0025.JPG",
+          "stored_split": "val",
+          "actual_split": "train"
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0121.JPG",
+          "stored_split": "val",
+          "actual_split": "train"
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0708.JPG",
+          "stored_split": "val",
+          "actual_split": "train"
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0812.JPG",
+          "stored_split": "val",
+          "actual_split": "train"
+        },
+        {
+          "image_id": "pcb1/Data/Images/Anomaly/065.JPG",
+          "stored_split": "val",
+          "actual_split": "train"
+        },
+        {
+          "image_id": "pcb1/Data/Images/Anomaly/038.JPG",
+          "stored_split": "val",
+          "actual_split": "train"
+        },
+        {
+          "image_id": "pcb1/Data/Images/Anomaly/031.JPG",
+          "stored_split": "val",
+          "actual_split": "train"
+        },
+        {
+          "image_id": "pcb1/Data/Images/Anomaly/043.JPG",
+          "stored_split": "val",
+          "actual_split": "train"
+        }
+      ],
+      "process": {
+        "pid": 39192,
+        "python": "3.12.16",
+        "executable": "E:\\桌面\\AI\\segformer_resources\\env\\python.exe",
+        "torch": "2.10.0+cu126",
+        "cuda_build": "12.6",
+        "device": "cuda",
+        "gpu": "NVIDIA GeForce RTX 4070 Laptop GPU"
+      }
+    },
+    "stage09-smoke-reload-check": {
+      "path": "work/SegFormer/reports/stage09-smoke-reload-check.json",
+      "size_bytes": 40312,
+      "sha256": "1f6919556395082f1309d8af1a03fce69bbb20c24badffaa5d2c9218eb6f717d",
+      "checks": {
+        "artifact_and_provenance_anchors": true,
+        "strict_saved_bundle_loaded": true,
+        "saved_training_state_consistent": true,
+        "all_stored_counts_metrics_equal": true,
+        "available_probability_maps_equal": true,
+        "read_only": true,
+        "real_cuda_fp32_b1_forwards": true
+      },
+      "skipped_checks": [],
+      "training_state": {
+        "all_model_keys_exact_and_finite": true,
+        "tensor_count": 208,
+        "counters": {
+          "successful_updates": 20,
+          "attempts": 20,
+          "skipped": 0
+        },
+        "optimizer_parameters_checked": 205,
+        "optimizer_step_min": 20.0,
+        "optimizer_step_max": 20.0,
+        "grad_scaler": {
+          "scale": 65536.0,
+          "growth_factor": 2.0,
+          "backoff_factor": 0.5,
+          "growth_interval": 2000,
+          "_growth_tracker": 20
+        }
+      },
+      "probabilities": {
+        "status": "compared",
+        "max_abs_probability_diff": 0.0,
+        "xor_pixels_total": 0,
+        "atol": 1e-05,
+        "ok": true,
+        "per_image": [
+          {
+            "image_id": "pcb1/Data/Images/Normal/0011.JPG",
+            "max_abs_probability_diff": 0.0,
+            "xor_pixels": 0
+          },
+          {
+            "image_id": "pcb1/Data/Images/Normal/0455.JPG",
+            "max_abs_probability_diff": 0.0,
+            "xor_pixels": 0
+          },
+          {
+            "image_id": "pcb1/Data/Images/Normal/0983.JPG",
+            "max_abs_probability_diff": 0.0,
+            "xor_pixels": 0
+          },
+          {
+            "image_id": "pcb1/Data/Images/Anomaly/087.JPG",
+            "max_abs_probability_diff": 0.0,
+            "xor_pixels": 0
+          },
+          {
+            "image_id": "pcb1/Data/Images/Anomaly/010.JPG",
+            "max_abs_probability_diff": 0.0,
+            "xor_pixels": 0
+          },
+          {
+            "image_id": "pcb1/Data/Images/Anomaly/045.JPG",
+            "max_abs_probability_diff": 0.0,
+            "xor_pixels": 0
+          }
+        ]
+      },
+      "comparison_identical": true,
+      "metadata_corrections": [],
+      "process": {
+        "pid": 5080,
+        "python": "3.12.16",
+        "executable": "E:\\桌面\\AI\\segformer_resources\\env\\python.exe",
+        "torch": "2.10.0+cu126",
+        "cuda_build": "12.6",
+        "device": "cuda",
+        "gpu": "NVIDIA GeForce RTX 4070 Laptop GPU"
+      }
+    }
+  },
+  "recorded_overfit": {
+    "successful_updates": 200,
+    "attempts": 201,
+    "skipped": 1,
+    "round_attempt_budget": {
+      "used": 429,
+      "cap": 500
+    },
+    "training_subset_global_iou": 0.9457095171,
+    "training_subset_anomaly_macro_iou": 0.7607445312,
+    "normal_false_positive_pixels": 85,
+    "interpretation": "Scores on the exact eight optimised train images only; not held-out or baseline performance"
+  },
+  "current_code_smoke": {
+    "successful_updates": 20,
+    "attempts": 20,
+    "skipped": 0,
+    "run": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_003_stage09_acceptance",
+    "timing": {
+      "wall_seconds": 6.711,
+      "successful_updates": 20,
+      "attempts": 20,
+      "skipped": 0,
+      "median_step_ms": 103.0,
+      "median_step_ms_after_first": 102.81,
+      "first_step_ms": 3512.04,
+      "updates_per_second": 2.98
+    },
+    "memory": {
+      "gpu": {
+        "available": true,
+        "device": "NVIDIA GeForce RTX 4070 Laptop GPU",
+        "total_mib": 8187.5,
+        "free_mib": 6084.0,
+        "peak_allocated_mib": 806.5,
+        "peak_reserved_mib": 934.0
+      },
+      "system_ram": {
+        "total_gib": 15.22,
+        "available_gib": 1.78,
+        "load_percent": 88
+      }
+    },
+    "summary": "work/SegFormer/reports/stage08_09_evidence/smoke_003_stage09_acceptance/summary.json"
+  },
+  "evidence_audit": {
+    "path": "work/SegFormer/reports/stage08-09-evidence-audit.json",
+    "size_bytes": 117205,
+    "sha256": "875318ef7df93c18c7f893b4af9a101f5fb3bc4264c652fce3d02f0aacfaf0e6"
+  },
+  "visual_review": {
+    "actually_viewed": [
+      "overfit_002/sheet_update_000",
+      "overfit_002/sheet_update_050",
+      "overfit_002/sheet_update_100",
+      "overfit_002/sheet_update_150",
+      "overfit_002/sheet_update_200",
+      "original_wrong_zoom_000_200",
+      "current_real_zoom_065",
+      "current_real_zoom_031"
+    ],
+    "portable_figures": [
+      "work/SegFormer/reports/figures/stage09-initial.png",
+      "work/SegFormer/reports/figures/stage09-final.png",
+      "work/SegFormer/reports/figures/stage09-zoom-065.png",
+      "work/SegFormer/reports/figures/stage09-zoom-031.png"
+    ]
+  },
+  "limitations": [
+    "Original overfit probabilities were not saved; comparison is explicit null, not zero.",
+    "Original smoke001 exact executing source hash was not recovered; new smoke has current source identity.",
+    "Original overfit per-image split was mislabeled val; IDs independently verified train and metadata correction is explicit.",
+    "Complete epoch resume, workers>0, full-data pilot, formal baseline and test quality are not verified.",
+    "GradScaler private accessor is tied to the pinned torch2.10 runtime."
+  ],
+  "next_action": "Only stage10: new initialisation, three complete epochs of530train/132val, no automatic formal training or test inference",
+  "files": [
+    {
+      "path": "work/SegFormer/README.md",
+      "size_bytes": 29301,
+      "sha256": "6ada00df3dd8522aeead8b8219d18a9a57665bd178dccbe62d2dc991425d5a86"
+    },
+    {
+      "path": "work/SegFormer/docs/stages/08-smoke-design-and-implementation.md",
+      "size_bytes": 14582,
+      "sha256": "16feb46bfeeadb6b8fe90c484cf0ae979e6258c459fe7ee90924e55907a45ba9"
+    },
+    {
+      "path": "work/SegFormer/docs/stages/09-overfit-design-and-implementation.md",
+      "size_bytes": 12713,
+      "sha256": "fde8bd397767b7e7a5cf6bcc18044e7f8925f1d760be330a0163e4497df55c46"
+    },
+    {
+      "path": "work/SegFormer/docs/stages/README.md",
+      "size_bytes": 10959,
+      "sha256": "1c81df1a260a3758e6ee1c6508d5ecfd25694ce695c3810dcbe914f356cdfe93"
+    },
+    {
+      "path": "work/SegFormer/reports/2026-11-01-stage08-09-acceptance.md",
+      "size_bytes": 8657,
+      "sha256": "dfda72c91b806cf9a52055b7c9081a206c7760b166bd4696c4c902204d65bae6"
+    },
+    {
+      "path": "work/SegFormer/reports/2026-11-01-stage09-handoff.md",
+      "size_bytes": 869,
+      "sha256": "0895b4e7f521a01ddc64ba6d13615c91029da3e54abe6241e67fd33718b40f4c"
+    },
+    {
+      "path": "work/SegFormer/reports/2026-11-01-stage10-execution-handoff.md",
+      "size_bytes": 5874,
+      "sha256": "9231b0627f5dd286449faa668235a8e5e3de6cf17f1c8dafa0a467976f17a236"
+    },
+    {
+      "path": "work/SegFormer/reports/figures/stage09-final.png",
+      "size_bytes": 854065,
+      "sha256": "8f47435f4862ebfc05e50db0b9eba2a31725a1fe1f0b7f76b168428b47b817b4"
+    },
+    {
+      "path": "work/SegFormer/reports/figures/stage09-initial.png",
+      "size_bytes": 889120,
+      "sha256": "3676e4c7d0163a2cc3533a425172566831fa14b0c3da273d8a36001ad78d8b3c"
+    },
+    {
+      "path": "work/SegFormer/reports/figures/stage09-zoom-031.png",
+      "size_bytes": 382915,
+      "sha256": "f3b612642afaecb48367c7f5884c1148e41c1e7a37b1a4da618c3a8fd37c993a"
+    },
+    {
+      "path": "work/SegFormer/reports/figures/stage09-zoom-065.png",
+      "size_bytes": 377511,
+      "sha256": "9c8a2f50718cb6a5078c7aa6c7b046ea1aff5a69204ed35b23dd3fe02ca0ff3a"
+    },
+    {
+      "path": "work/SegFormer/reports/stage08-09-evidence-audit.json",
+      "size_bytes": 117205,
+      "sha256": "875318ef7df93c18c7f893b4af9a101f5fb3bc4264c652fce3d02f0aacfaf0e6"
+    },
+    {
+      "path": "work/SegFormer/reports/stage08-reload-check.json",
+      "size_bytes": 39777,
+      "sha256": "be45f1fb4a98c7ab9f07dc587c14b96f6bd7848d09068944e7c9257982dbf57f"
+    },
+    {
+      "path": "work/SegFormer/reports/stage08-reload-check.txt",
+      "size_bytes": 97,
+      "sha256": "ef5ceb3a24bb7d07e75ed044aed52771fe21176f9a4c0bacad99023803c3221d"
+    },
+    {
+      "path": "work/SegFormer/reports/stage08_09_evidence/README.md",
+      "size_bytes": 2579,
+      "sha256": "adaf9737676a2876ccb5982a5f861106fe04edaa6d16f3a2d2c3ab3321eba121"
+    },
+    {
+      "path": "work/SegFormer/reports/stage08_09_evidence/overfit_002/artifact_manifest.json",
+      "size_bytes": 3434,
+      "sha256": "7bc51c863a6e6d6f0337efb5ab5eb24ea5ee0dce68716da675903d0e7a83cf44"
+    },
+    {
+      "path": "work/SegFormer/reports/stage08_09_evidence/overfit_002/eval/update_000.json",
+      "size_bytes": 8039,
+      "sha256": "2e8553dc63984fc54e4a363265ac1cd6f3833e0d37a6d1996c60d8909166b5fb"
+    },
+    {
+      "path": "work/SegFormer/reports/stage08_09_evidence/overfit_002/eval/update_050.json",
+      "size_bytes": 7621,
+      "sha256": "cb7c75635a6872e9be0f39c17aaf15b5fb3ebcc11727efd039989aca0ecbef41"
+    },
+    {
+      "path": "work/SegFormer/reports/stage08_09_evidence/overfit_002/eval/update_100.json",
+      "size_bytes": 7636,
+      "sha256": "021f719bdc7df3d17a3e00041039a516f40eb90120c9c22ce08f681c127c3e8d"
+    },
+    {
+      "path": "work/SegFormer/reports/stage08_09_evidence/overfit_002/eval/update_150.json",
+      "size_bytes": 7752,
+      "sha256": "28958bd926d70daeaea5e6d9859d7892b972d8fc5d449c5fe82f8364ee322e34"
+    },
+    {
+      "path": "work/SegFormer/reports/stage08_09_evidence/overfit_002/eval/update_200.json",
+      "size_bytes": 7838,
+      "sha256": "04491bb3c2522b059e0bcd3ae7396b0e6b5fede53ff8bebdeb0b06321c3a9774"
+    },
+    {
+      "path": "work/SegFormer/reports/stage08_09_evidence/overfit_002/evaluation_curve.json",
+      "size_bytes": 1916,
+      "sha256": "47c49c87ce67523cb55ecb3535b35dc2fefa1843d2bd1d0ba38033b26c6b5ca1"
+    },
+    {
+      "path": "work/SegFormer/reports/stage08_09_evidence/overfit_002/resolved_config.yaml",
+      "size_bytes": 2509,
+      "sha256": "468433ffdfd10c3e88ebb20ab105bbeecaf198f4f906a3ef27ddde8cc265033b"
+    },
+    {
+      "path": "work/SegFormer/reports/stage08_09_evidence/overfit_002/summary.json",
+      "size_bytes": 30715,
+      "sha256": "9839d4a3067263a795d2e0e5c9ee5f99edf5218b657fce4e959ed751575c7bdc"
+    },
+    {
+      "path": "work/SegFormer/reports/stage08_09_evidence/overfit_002/updates.jsonl",
+      "size_bytes": 73988,
+      "sha256": "178702dcf546c13a6bdbeacfb0ed3e16b9731f5caae271f3ec51dcb26130fa8a"
+    },
+    {
+      "path": "work/SegFormer/reports/stage08_09_evidence/recorded_source/train.py.txt",
+      "size_bytes": 17422,
+      "sha256": "658b8ed4db98fac06028f349bbefe89fd28598e888ec7bec8ca8ef0689e124ad"
+    },
+    {
+      "path": "work/SegFormer/reports/stage08_09_evidence/recorded_source/training.py.txt",
+      "size_bytes": 24478,
+      "sha256": "4fd511a867dc01fbe7b16103230d9a780175d310ab61691db123ce5bc0938663"
+    },
+    {
+      "path": "work/SegFormer/reports/stage08_09_evidence/smoke_001/artifact_manifest.json",
+      "size_bytes": 2217,
+      "sha256": "c40e584b006c5b9e2ec6a41fae2d8cf1ab28c9d7560b55a11403889ac279c31b"
+    },
+    {
+      "path": "work/SegFormer/reports/stage08_09_evidence/smoke_001/reload_check.json",
+      "size_bytes": 16718,
+      "sha256": "fe67d2d08875482ffc5906d7175b33924d39a6bc65b22a712fe59c824b40146c"
+    },
+    {
+      "path": "work/SegFormer/reports/stage08_09_evidence/smoke_001/resolved_config.yaml",
+      "size_bytes": 2473,
+      "sha256": "e4644fa37011a33d89a7d340499ea64845bc36e77765308101bc6e0b43576ded"
+    },
+    {
+      "path": "work/SegFormer/reports/stage08_09_evidence/smoke_001/summary.json",
+      "size_bytes": 18913,
+      "sha256": "f21dda5a7c963248bdfdc12a791036723dd8abc4e5cc1df2d1ca42d0db64bdf0"
+    },
+    {
+      "path": "work/SegFormer/reports/stage08_09_evidence/smoke_001/updates.jsonl",
+      "size_bytes": 6885,
+      "sha256": "9ccec668bae20c20616cbc8c902d6f440388c8fd2d5c67b5650ed94c2d74bbbc"
+    },
+    {
+      "path": "work/SegFormer/reports/stage08_09_evidence/smoke_002_stage09_regression/artifact_manifest.json",
+      "size_bytes": 2236,
+      "sha256": "796e1faae45d79cd80a3e97ff4ed915e840296f2a8ceee251195a1aea19690b1"
+    },
+    {
+      "path": "work/SegFormer/reports/stage08_09_evidence/smoke_002_stage09_regression/resolved_config.yaml",
+      "size_bytes": 2473,
+      "sha256": "e4644fa37011a33d89a7d340499ea64845bc36e77765308101bc6e0b43576ded"
+    },
+    {
+      "path": "work/SegFormer/reports/stage08_09_evidence/smoke_002_stage09_regression/summary.json",
+      "size_bytes": 18767,
+      "sha256": "f053273e63680747417e0d854f2751bbddb525c2b06b0b92c13fb0eee2685dde"
+    },
+    {
+      "path": "work/SegFormer/reports/stage08_09_evidence/smoke_002_stage09_regression/updates.jsonl",
+      "size_bytes": 7304,
+      "sha256": "720832e3d6454725f6caf1c04f737b1d0001f2c5f743f7898c807bd2b38a5e78"
+    },
+    {
+      "path": "work/SegFormer/reports/stage08_09_evidence/smoke_003_stage09_acceptance/artifact_manifest.json",
+      "size_bytes": 2236,
+      "sha256": "10828380aebb94827aa3b34bde171978d92e8de36b8bcd0d15ae095670c9c5b2"
+    },
+    {
+      "path": "work/SegFormer/reports/stage08_09_evidence/smoke_003_stage09_acceptance/resolved_config.yaml",
+      "size_bytes": 2473,
+      "sha256": "e4644fa37011a33d89a7d340499ea64845bc36e77765308101bc6e0b43576ded"
+    },
+    {
+      "path": "work/SegFormer/reports/stage08_09_evidence/smoke_003_stage09_acceptance/summary.json",
+      "size_bytes": 19867,
+      "sha256": "7c4a2ad138e545be9695f91922925fbb7ec3a8518972b7715227998fd36fee28"
+    },
+    {
+      "path": "work/SegFormer/reports/stage08_09_evidence/smoke_003_stage09_acceptance/updates.jsonl",
+      "size_bytes": 9285,
+      "sha256": "bde1bbf4253c4d6520378e388d6264745e235bc271be0df433cd17adcbb135a6"
+    },
+    {
+      "path": "work/SegFormer/reports/stage09-reload-check.json",
+      "size_bytes": 45984,
+      "sha256": "928a090b82d532c598d89e9dbb5d296f8ecd6861370a8428094d1fc79444e586"
+    },
+    {
+      "path": "work/SegFormer/reports/stage09-reload-check.txt",
+      "size_bytes": 97,
+      "sha256": "835cef4e89e3ef5dc60e8c0209fe1e65d53442376c2e34e3ae39d18c13b9bdce"
+    },
+    {
+      "path": "work/SegFormer/reports/stage09-smoke-regression.txt",
+      "size_bytes": 1740,
+      "sha256": "74c9457a1f9912225885f32ae144f9c7721d454dfed58855a35028f7368afd67"
+    },
+    {
+      "path": "work/SegFormer/reports/stage09-smoke-reload-check.json",
+      "size_bytes": 40312,
+      "sha256": "1f6919556395082f1309d8af1a03fce69bbb20c24badffaa5d2c9218eb6f717d"
+    },
+    {
+      "path": "work/SegFormer/reports/stage09-smoke-reload-check.txt",
+      "size_bytes": 103,
+      "sha256": "784c26d2411031f5c25a2129de3ee8cd67b539ee4944e4559eb2bf12fbb80d90"
+    },
+    {
+      "path": "work/SegFormer/reports/stage09-summary.json",
+      "size_bytes": 14736,
+      "sha256": "86337232b20c3223e2815dfb057dcc76cd7005ba6b7629998ca2aac3d21e7502"
+    },
+    {
+      "path": "work/SegFormer/reports/stage09-unit-tests.txt",
+      "size_bytes": 32452,
+      "sha256": "cdd39be514ff4e619f83134021aadb7179308977d2a3b6979a0ad835ef0577a1"
+    },
+    {
+      "path": "work/SegFormer/segformer_lab/run_check.py",
+      "size_bytes": 20506,
+      "sha256": "257b617527feef4393ffc22c215616de2cad938fd177b1d4efa4b2a124875b62"
+    },
+    {
+      "path": "work/SegFormer/segformer_lab/smoke.py",
+      "size_bytes": 18729,
+      "sha256": "50c47b2f8b0bb45293c69635d1cb9eee6294a73acee4dcdf0525a1b36c0a45ec"
+    },
+    {
+      "path": "work/SegFormer/segformer_lab/train.py",
+      "size_bytes": 17813,
+      "sha256": "d8721c8012d594293988146cc8acad573361639ca27e241f43e4f16ef8ffc305"
+    },
+    {
+      "path": "work/SegFormer/segformer_lab/training.py",
+      "size_bytes": 29270,
+      "sha256": "1ab1b0d3334e591955dfd28b5d6cf41287d8ce600b63e1fe332137657eaac10a"
+    },
+    {
+      "path": "work/SegFormer/tests/test_run_check.py",
+      "size_bytes": 6999,
+      "sha256": "2764e3708c4d988ceb94f50ce3553886489c35adb5f2218376b3796884e936bd"
+    },
+    {
+      "path": "work/SegFormer/tests/test_training.py",
+      "size_bytes": 10187,
+      "sha256": "bb5f6f55a9a2cf105dc965d16ce52239398d929ee91badd6ac4c8310128c104b"
+    }
+  ]
+}

@@ -1,0 +1,576 @@
+{
+  "schema": "segformer-lab/smoke-reload/1",
+  "run_dir": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_001",
+  "elapsed_seconds": 3.95,
+  "process": {
+    "pid": 59260,
+    "python": "3.12.16",
+    "torch": "2.10.0+cu126",
+    "device": "cuda"
+  },
+  "load": {
+    "model_config_source": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_001\\model_config.json",
+    "model_state_sha256": "2b66a9d211f1423f41bf56c2210f5c143ba3aa08492aa74341bf197a943ea727",
+    "strict": true,
+    "missing_keys": [],
+    "unexpected_keys": [],
+    "parameter_count": 3714658,
+    "processor_flags": {
+      "do_resize": false,
+      "do_reduce_labels": false,
+      "do_rescale": true,
+      "do_normalize": true
+    }
+  },
+  "strict_loaded": true,
+  "precision": {
+    "policy": "ieee_fp32",
+    "api": "torch2.10 allow_tf32 (legacy API only)",
+    "before": {
+      "cudnn_allow_tf32": true,
+      "matmul_allow_tf32": false
+    },
+    "autocast_enabled": false,
+    "scope": "evaluation context; restore backend flags and caller autocast on exit",
+    "training_amp_config_unchanged": true,
+    "bitwise_batch_invariance_guaranteed": false,
+    "effective": {
+      "cudnn_allow_tf32": false,
+      "matmul_allow_tf32": false
+    },
+    "restored_after_exit": true
+  },
+  "comparison": {
+    "max_abs_probability_diff": 0.0,
+    "xor_pixels_total": 0,
+    "total_pixels": 9013680,
+    "tolerance_atol": 1e-05,
+    "within_tolerance": true,
+    "confusion_identical": true,
+    "global_metrics_identical": true,
+    "per_image": [
+      {
+        "image_id": "pcb1/Data/Images/Normal/0011.JPG",
+        "max_abs_probability_diff": 0.0,
+        "xor_pixels": 0,
+        "total_pixels": 1502280
+      },
+      {
+        "image_id": "pcb1/Data/Images/Normal/0455.JPG",
+        "max_abs_probability_diff": 0.0,
+        "xor_pixels": 0,
+        "total_pixels": 1502280
+      },
+      {
+        "image_id": "pcb1/Data/Images/Normal/0983.JPG",
+        "max_abs_probability_diff": 0.0,
+        "xor_pixels": 0,
+        "total_pixels": 1502280
+      },
+      {
+        "image_id": "pcb1/Data/Images/Anomaly/087.JPG",
+        "max_abs_probability_diff": 0.0,
+        "xor_pixels": 0,
+        "total_pixels": 1502280
+      },
+      {
+        "image_id": "pcb1/Data/Images/Anomaly/010.JPG",
+        "max_abs_probability_diff": 0.0,
+        "xor_pixels": 0,
+        "total_pixels": 1502280
+      },
+      {
+        "image_id": "pcb1/Data/Images/Anomaly/045.JPG",
+        "max_abs_probability_diff": 0.0,
+        "xor_pixels": 0,
+        "total_pixels": 1502280
+      }
+    ]
+  },
+  "metrics_after_reload": {
+    "images": {
+      "total": 6,
+      "normal": 3,
+      "anomaly": 3
+    },
+    "confusion": {
+      "tp": 0,
+      "fp": 264,
+      "fn": 126065,
+      "tn": 8887351,
+      "pixels": 9013680
+    },
+    "global": {
+      "foreground_iou": 0.0,
+      "foreground_dice": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "na_reasons": {},
+      "aggregation": "sum TP/FP/FN/TN over images, then divide once"
+    },
+    "normal_images": {
+      "count": 3,
+      "false_positive_pixels": 264,
+      "total_pixels": 4506840,
+      "fp_pixel_ratio": 5.8577628671086616e-05,
+      "na_reasons": {},
+      "predicted_foreground_ratio": {
+        "median": 0.0,
+        "p95": 0.0001581596,
+        "max": 0.0001757329,
+        "percentile_method": "numpy linear interpolation over per-image ratios"
+      },
+      "images_with_any_false_positive": 1,
+      "worst_offenders": [
+        {
+          "image_id": "pcb1/Data/Images/Normal/0983.JPG",
+          "predicted_foreground_pixels": 264,
+          "predicted_foreground_ratio": 0.0001757329
+        }
+      ]
+    },
+    "anomaly_images": {
+      "count": 3,
+      "macro": {
+        "iou": {
+          "mean": 0.0,
+          "defined_images": 3,
+          "na_images": 0,
+          "na_reason": ""
+        },
+        "dice": {
+          "mean": 0.0,
+          "defined_images": 3,
+          "na_images": 0,
+          "na_reason": ""
+        },
+        "precision": {
+          "mean": null,
+          "defined_images": 0,
+          "na_images": 3,
+          "na_reason": "no defined per-image precision"
+        },
+        "recall": {
+          "mean": 0.0,
+          "defined_images": 3,
+          "na_images": 0,
+          "na_reason": ""
+        }
+      }
+    },
+    "evaluation": {
+      "batch_size": 1,
+      "mode": "model.eval() + torch.inference_mode()",
+      "precision": "ieee_fp32 (TF32 disabled, autocast disabled)",
+      "precision_record": {
+        "policy": "ieee_fp32",
+        "api": "torch2.10 allow_tf32 (legacy API only)",
+        "before": {
+          "cudnn_allow_tf32": true,
+          "matmul_allow_tf32": false
+        },
+        "autocast_enabled": false,
+        "scope": "evaluation context; restore backend flags and caller autocast on exit",
+        "training_amp_config_unchanged": true,
+        "bitwise_batch_invariance_guaranteed": false,
+        "effective": {
+          "cudnn_allow_tf32": false,
+          "matmul_allow_tf32": false
+        },
+        "restored_after_exit": true
+      },
+      "threshold": 0.5,
+      "forward_ms": [
+        241.24,
+        22.28,
+        20.91,
+        13.15,
+        13.48,
+        13.92
+      ],
+      "median_forward_ms": 17.41
+    },
+    "per_image": [
+      {
+        "image_id": "pcb1/Data/Images/Normal/0011.JPG",
+        "label": "normal",
+        "split": "val",
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "tn": 1502280,
+        "gt_foreground_pixels": 0,
+        "predicted_foreground_pixels": 0,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 0.0,
+        "iou": null,
+        "iou_na": "GT and prediction are both empty",
+        "dice": null,
+        "dice_na": "GT and prediction are both empty",
+        "precision": null,
+        "recall": null,
+        "precision_na": "prediction contains no foreground pixel",
+        "recall_na": "ground truth contains no foreground pixel"
+      },
+      {
+        "image_id": "pcb1/Data/Images/Normal/0455.JPG",
+        "label": "normal",
+        "split": "val",
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "tn": 1502280,
+        "gt_foreground_pixels": 0,
+        "predicted_foreground_pixels": 0,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 0.0,
+        "iou": null,
+        "iou_na": "GT and prediction are both empty",
+        "dice": null,
+        "dice_na": "GT and prediction are both empty",
+        "precision": null,
+        "recall": null,
+        "precision_na": "prediction contains no foreground pixel",
+        "recall_na": "ground truth contains no foreground pixel"
+      },
+      {
+        "image_id": "pcb1/Data/Images/Normal/0983.JPG",
+        "label": "normal",
+        "split": "val",
+        "tp": 0,
+        "fp": 264,
+        "fn": 0,
+        "tn": 1502016,
+        "gt_foreground_pixels": 0,
+        "predicted_foreground_pixels": 264,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 0.0001757329,
+        "iou": 0.0,
+        "iou_na": "",
+        "dice": 0.0,
+        "dice_na": "",
+        "precision": 0.0,
+        "recall": null,
+        "precision_na": "",
+        "recall_na": "ground truth contains no foreground pixel"
+      },
+      {
+        "image_id": "pcb1/Data/Images/Anomaly/087.JPG",
+        "label": "anomaly",
+        "split": "val",
+        "tp": 0,
+        "fp": 0,
+        "fn": 2328,
+        "tn": 1499952,
+        "gt_foreground_pixels": 2328,
+        "predicted_foreground_pixels": 0,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 0.0,
+        "iou": 0.0,
+        "iou_na": "",
+        "dice": 0.0,
+        "dice_na": "",
+        "precision": null,
+        "recall": 0.0,
+        "precision_na": "prediction contains no foreground pixel",
+        "recall_na": ""
+      },
+      {
+        "image_id": "pcb1/Data/Images/Anomaly/010.JPG",
+        "label": "anomaly",
+        "split": "val",
+        "tp": 0,
+        "fp": 0,
+        "fn": 5153,
+        "tn": 1497127,
+        "gt_foreground_pixels": 5153,
+        "predicted_foreground_pixels": 0,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 0.0,
+        "iou": 0.0,
+        "iou_na": "",
+        "dice": 0.0,
+        "dice_na": "",
+        "precision": null,
+        "recall": 0.0,
+        "precision_na": "prediction contains no foreground pixel",
+        "recall_na": ""
+      },
+      {
+        "image_id": "pcb1/Data/Images/Anomaly/045.JPG",
+        "label": "anomaly",
+        "split": "val",
+        "tp": 0,
+        "fp": 0,
+        "fn": 118584,
+        "tn": 1383696,
+        "gt_foreground_pixels": 118584,
+        "predicted_foreground_pixels": 0,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 0.0,
+        "iou": 0.0,
+        "iou_na": "",
+        "dice": 0.0,
+        "dice_na": "",
+        "precision": null,
+        "recall": 0.0,
+        "precision_na": "prediction contains no foreground pixel",
+        "recall_na": ""
+      }
+    ]
+  },
+  "metrics_before_save": {
+    "images": {
+      "total": 6,
+      "normal": 3,
+      "anomaly": 3
+    },
+    "confusion": {
+      "tp": 0,
+      "fp": 264,
+      "fn": 126065,
+      "tn": 8887351,
+      "pixels": 9013680
+    },
+    "global": {
+      "foreground_iou": 0.0,
+      "foreground_dice": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "na_reasons": {},
+      "aggregation": "sum TP/FP/FN/TN over images, then divide once"
+    },
+    "normal_images": {
+      "count": 3,
+      "false_positive_pixels": 264,
+      "total_pixels": 4506840,
+      "fp_pixel_ratio": 5.8577628671086616e-05,
+      "na_reasons": {},
+      "predicted_foreground_ratio": {
+        "median": 0.0,
+        "p95": 0.0001581596,
+        "max": 0.0001757329,
+        "percentile_method": "numpy linear interpolation over per-image ratios"
+      },
+      "images_with_any_false_positive": 1,
+      "worst_offenders": [
+        {
+          "image_id": "pcb1/Data/Images/Normal/0983.JPG",
+          "predicted_foreground_pixels": 264,
+          "predicted_foreground_ratio": 0.0001757329
+        }
+      ]
+    },
+    "anomaly_images": {
+      "count": 3,
+      "macro": {
+        "iou": {
+          "mean": 0.0,
+          "defined_images": 3,
+          "na_images": 0,
+          "na_reason": ""
+        },
+        "dice": {
+          "mean": 0.0,
+          "defined_images": 3,
+          "na_images": 0,
+          "na_reason": ""
+        },
+        "precision": {
+          "mean": null,
+          "defined_images": 0,
+          "na_images": 3,
+          "na_reason": "no defined per-image precision"
+        },
+        "recall": {
+          "mean": 0.0,
+          "defined_images": 3,
+          "na_images": 0,
+          "na_reason": ""
+        }
+      }
+    },
+    "evaluation": {
+      "batch_size": 1,
+      "mode": "model.eval() + torch.inference_mode()",
+      "precision": "ieee_fp32 (TF32 disabled, autocast disabled)",
+      "precision_record": {
+        "policy": "ieee_fp32",
+        "api": "torch2.10 allow_tf32 (legacy API only)",
+        "before": {
+          "cudnn_allow_tf32": true,
+          "matmul_allow_tf32": false
+        },
+        "autocast_enabled": false,
+        "scope": "evaluation context; restore backend flags and caller autocast on exit",
+        "training_amp_config_unchanged": true,
+        "bitwise_batch_invariance_guaranteed": false,
+        "effective": {
+          "cudnn_allow_tf32": false,
+          "matmul_allow_tf32": false
+        },
+        "restored_after_exit": true
+      },
+      "threshold": 0.5,
+      "forward_ms": [
+        86.21,
+        13.23,
+        13.85,
+        16.34,
+        15.24,
+        11.91
+      ],
+      "median_forward_ms": 14.54
+    },
+    "per_image": [
+      {
+        "image_id": "pcb1/Data/Images/Normal/0011.JPG",
+        "label": "normal",
+        "split": "val",
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "tn": 1502280,
+        "gt_foreground_pixels": 0,
+        "predicted_foreground_pixels": 0,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 0.0,
+        "iou": null,
+        "iou_na": "GT and prediction are both empty",
+        "dice": null,
+        "dice_na": "GT and prediction are both empty",
+        "precision": null,
+        "recall": null,
+        "precision_na": "prediction contains no foreground pixel",
+        "recall_na": "ground truth contains no foreground pixel"
+      },
+      {
+        "image_id": "pcb1/Data/Images/Normal/0455.JPG",
+        "label": "normal",
+        "split": "val",
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "tn": 1502280,
+        "gt_foreground_pixels": 0,
+        "predicted_foreground_pixels": 0,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 0.0,
+        "iou": null,
+        "iou_na": "GT and prediction are both empty",
+        "dice": null,
+        "dice_na": "GT and prediction are both empty",
+        "precision": null,
+        "recall": null,
+        "precision_na": "prediction contains no foreground pixel",
+        "recall_na": "ground truth contains no foreground pixel"
+      },
+      {
+        "image_id": "pcb1/Data/Images/Normal/0983.JPG",
+        "label": "normal",
+        "split": "val",
+        "tp": 0,
+        "fp": 264,
+        "fn": 0,
+        "tn": 1502016,
+        "gt_foreground_pixels": 0,
+        "predicted_foreground_pixels": 264,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 0.0001757329,
+        "iou": 0.0,
+        "iou_na": "",
+        "dice": 0.0,
+        "dice_na": "",
+        "precision": 0.0,
+        "recall": null,
+        "precision_na": "",
+        "recall_na": "ground truth contains no foreground pixel"
+      },
+      {
+        "image_id": "pcb1/Data/Images/Anomaly/087.JPG",
+        "label": "anomaly",
+        "split": "val",
+        "tp": 0,
+        "fp": 0,
+        "fn": 2328,
+        "tn": 1499952,
+        "gt_foreground_pixels": 2328,
+        "predicted_foreground_pixels": 0,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 0.0,
+        "iou": 0.0,
+        "iou_na": "",
+        "dice": 0.0,
+        "dice_na": "",
+        "precision": null,
+        "recall": 0.0,
+        "precision_na": "prediction contains no foreground pixel",
+        "recall_na": ""
+      },
+      {
+        "image_id": "pcb1/Data/Images/Anomaly/010.JPG",
+        "label": "anomaly",
+        "split": "val",
+        "tp": 0,
+        "fp": 0,
+        "fn": 5153,
+        "tn": 1497127,
+        "gt_foreground_pixels": 5153,
+        "predicted_foreground_pixels": 0,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 0.0,
+        "iou": 0.0,
+        "iou_na": "",
+        "dice": 0.0,
+        "dice_na": "",
+        "precision": null,
+        "recall": 0.0,
+        "precision_na": "prediction contains no foreground pixel",
+        "recall_na": ""
+      },
+      {
+        "image_id": "pcb1/Data/Images/Anomaly/045.JPG",
+        "label": "anomaly",
+        "split": "val",
+        "tp": 0,
+        "fp": 0,
+        "fn": 118584,
+        "tn": 1383696,
+        "gt_foreground_pixels": 118584,
+        "predicted_foreground_pixels": 0,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 0.0,
+        "iou": 0.0,
+        "iou_na": "",
+        "dice": 0.0,
+        "dice_na": "",
+        "precision": null,
+        "recall": 0.0,
+        "precision_na": "prediction contains no foreground pixel",
+        "recall_na": ""
+      }
+    ]
+  },
+  "parameter_digest_before_save": {
+    "sum_of_parameters": 6937.935886186838,
+    "tensor_count": 205
+  },
+  "parameter_digest_after_reload": {
+    "sum_of_parameters": 6937.935886186838,
+    "tensor_count": 205
+  },
+  "checkpoint_sha256": "2b66a9d211f1423f41bf56c2210f5c143ba3aa08492aa74341bf197a943ea727",
+  "steps_recorded": 20
+}

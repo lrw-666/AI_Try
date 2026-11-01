@@ -70,7 +70,8 @@ def _git_state() -> dict[str, Any]:
 def _code_identity() -> dict[str, str]:
     files = ["segformer_lab/training.py", "segformer_lab/smoke.py", "segformer_lab/losses.py",
              "segformer_lab/metrics.py", "segformer_lab/evaluation.py", "segformer_lab/data.py",
-             "segformer_lab/modeling.py", "configs/smoke.yaml"]
+             "segformer_lab/modeling.py", "segformer_lab/train.py", "segformer_lab/subset.py",
+             "segformer_lab/config.py", "segformer_lab/geometry.py"]
     out = {}
     for name in files:
         path = paths.PROJECT_ROOT / name
@@ -115,8 +116,10 @@ def provenance(config: dict[str, Any], extra_files: dict[str, str] | None = None
     }
 
 
-def _preview_dataset(config: dict[str, Any], ids_path: Path, split: str = "val") -> data.PCB1Dataset:
-    return data.PCB1Dataset(config, split, flip="none", ids_file=ids_path, return_original_mask=True)
+def _preview_dataset(config: dict[str, Any], ids_path: Path, split: str = "val",
+                     processor: Any | None = None) -> data.PCB1Dataset:
+    return data.PCB1Dataset(config, split, processor=processor, flip="none",
+                           ids_file=ids_path, return_original_mask=True)
 
 
 def _labels_of(dataset: data.PCB1Dataset) -> dict[str, str]:
@@ -310,13 +313,18 @@ def do_verify(args: argparse.Namespace) -> int:
     run_dir = Path(args.verify_run).resolve()
     summary = json.loads((run_dir / "summary.json").read_text(encoding="utf-8"))
     config = load_config(args.config)
+    if sha256_file(Path(config["path"])) != summary["config"]["sha256"]:
+        raise SystemExit("reload config differs from the saved run")
+    expected_preview = summary["provenance"]["files"]["preview_ids"]["sha256"]
+    if sha256_file(Path(config["paths"]["logging.fixed_preview_manifest"])) != expected_preview:
+        raise SystemExit("reload preview identities differ from the saved run")
 
     device = args.device
     model, processor, info = load_run_model(run_dir)
     model = model.to(device)
 
     preview_ids = Path(config["paths"]["logging.fixed_preview_manifest"])
-    val_ds = _preview_dataset(config, preview_ids)
+    val_ds = _preview_dataset(config, preview_ids, processor=processor)
     label_of = _labels_of(val_ds)
     result = evaluate_dataset(model, val_ds, config, device, label_of=label_of, keep_probabilities=True)
 

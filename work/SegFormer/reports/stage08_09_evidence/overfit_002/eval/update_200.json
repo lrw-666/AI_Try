@@ -1,0 +1,289 @@
+{
+  "images": {
+    "total": 8,
+    "normal": 4,
+    "anomaly": 4
+  },
+  "confusion": {
+    "tp": 197188,
+    "fp": 10254,
+    "fn": 1066,
+    "tn": 11809732,
+    "pixels": 12018240
+  },
+  "global": {
+    "foreground_iou": 0.9457095171,
+    "foreground_dice": 0.972097334,
+    "precision": 0.9505693158,
+    "recall": 0.9946230593,
+    "na_reasons": {},
+    "aggregation": "sum TP/FP/FN/TN over images, then divide once"
+  },
+  "normal_images": {
+    "count": 4,
+    "false_positive_pixels": 85,
+    "total_pixels": 6009120,
+    "fp_pixel_ratio": 1.4145166014324892e-05,
+    "na_reasons": {},
+    "predicted_foreground_ratio": {
+      "median": 3.9939e-06,
+      "p95": 4.25021e-05,
+      "max": 4.85928e-05,
+      "percentile_method": "numpy linear interpolation over per-image ratios"
+    },
+    "images_with_any_false_positive": 2,
+    "worst_offenders": [
+      {
+        "image_id": "pcb1/Data/Images/Normal/0812.JPG",
+        "predicted_foreground_pixels": 73,
+        "predicted_foreground_ratio": 4.85928e-05
+      },
+      {
+        "image_id": "pcb1/Data/Images/Normal/0708.JPG",
+        "predicted_foreground_pixels": 12,
+        "predicted_foreground_ratio": 7.9879e-06
+      }
+    ]
+  },
+  "anomaly_images": {
+    "count": 4,
+    "macro": {
+      "iou": {
+        "mean": 0.7607445312,
+        "defined_images": 4,
+        "na_images": 0,
+        "na_reason": ""
+      },
+      "dice": {
+        "mean": 0.8562019878,
+        "defined_images": 4,
+        "na_images": 0,
+        "na_reason": ""
+      },
+      "precision": {
+        "mean": 0.8638009323,
+        "defined_images": 4,
+        "na_images": 0,
+        "na_reason": ""
+      },
+      "recall": {
+        "mean": 0.8713738057,
+        "defined_images": 4,
+        "na_images": 0,
+        "na_reason": ""
+      }
+    }
+  },
+  "evaluation": {
+    "batch_size": 1,
+    "mode": "model.eval() + torch.inference_mode()",
+    "precision": "ieee_fp32 (TF32 disabled, autocast disabled)",
+    "precision_record": {
+      "policy": "ieee_fp32",
+      "api": "torch2.10 allow_tf32 (legacy API only)",
+      "before": {
+        "cudnn_allow_tf32": true,
+        "matmul_allow_tf32": false
+      },
+      "autocast_enabled": false,
+      "scope": "evaluation context; restore backend flags and caller autocast on exit",
+      "training_amp_config_unchanged": true,
+      "bitwise_batch_invariance_guaranteed": false,
+      "effective": {
+        "cudnn_allow_tf32": false,
+        "matmul_allow_tf32": false
+      },
+      "restored_after_exit": true
+    },
+    "threshold": 0.5,
+    "forward_ms": [
+      12.13,
+      12.52,
+      12.36,
+      12.65,
+      13.2,
+      13.15,
+      13.29,
+      12.85
+    ],
+    "median_forward_ms": 12.75
+  },
+  "per_image": [
+    {
+      "image_id": "pcb1/Data/Images/Normal/0025.JPG",
+      "label": "normal",
+      "split": "val",
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "tn": 1502280,
+      "gt_foreground_pixels": 0,
+      "predicted_foreground_pixels": 0,
+      "total_pixels": 1502280,
+      "ignored_pixels": 0,
+      "predicted_foreground_ratio": 0.0,
+      "iou": null,
+      "iou_na": "GT and prediction are both empty",
+      "dice": null,
+      "dice_na": "GT and prediction are both empty",
+      "precision": null,
+      "recall": null,
+      "precision_na": "prediction contains no foreground pixel",
+      "recall_na": "ground truth contains no foreground pixel"
+    },
+    {
+      "image_id": "pcb1/Data/Images/Normal/0121.JPG",
+      "label": "normal",
+      "split": "val",
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "tn": 1502280,
+      "gt_foreground_pixels": 0,
+      "predicted_foreground_pixels": 0,
+      "total_pixels": 1502280,
+      "ignored_pixels": 0,
+      "predicted_foreground_ratio": 0.0,
+      "iou": null,
+      "iou_na": "GT and prediction are both empty",
+      "dice": null,
+      "dice_na": "GT and prediction are both empty",
+      "precision": null,
+      "recall": null,
+      "precision_na": "prediction contains no foreground pixel",
+      "recall_na": "ground truth contains no foreground pixel"
+    },
+    {
+      "image_id": "pcb1/Data/Images/Normal/0708.JPG",
+      "label": "normal",
+      "split": "val",
+      "tp": 0,
+      "fp": 12,
+      "fn": 0,
+      "tn": 1502268,
+      "gt_foreground_pixels": 0,
+      "predicted_foreground_pixels": 12,
+      "total_pixels": 1502280,
+      "ignored_pixels": 0,
+      "predicted_foreground_ratio": 7.9879e-06,
+      "iou": 0.0,
+      "iou_na": "",
+      "dice": 0.0,
+      "dice_na": "",
+      "precision": 0.0,
+      "recall": null,
+      "precision_na": "",
+      "recall_na": "ground truth contains no foreground pixel"
+    },
+    {
+      "image_id": "pcb1/Data/Images/Normal/0812.JPG",
+      "label": "normal",
+      "split": "val",
+      "tp": 0,
+      "fp": 73,
+      "fn": 0,
+      "tn": 1502207,
+      "gt_foreground_pixels": 0,
+      "predicted_foreground_pixels": 73,
+      "total_pixels": 1502280,
+      "ignored_pixels": 0,
+      "predicted_foreground_ratio": 4.85928e-05,
+      "iou": 0.0,
+      "iou_na": "",
+      "dice": 0.0,
+      "dice_na": "",
+      "precision": 0.0,
+      "recall": null,
+      "precision_na": "",
+      "recall_na": "ground truth contains no foreground pixel"
+    },
+    {
+      "image_id": "pcb1/Data/Images/Anomaly/065.JPG",
+      "label": "anomaly",
+      "split": "val",
+      "tp": 809,
+      "fp": 17,
+      "fn": 341,
+      "tn": 1501113,
+      "gt_foreground_pixels": 1150,
+      "predicted_foreground_pixels": 826,
+      "total_pixels": 1502280,
+      "ignored_pixels": 0,
+      "predicted_foreground_ratio": 0.0005498309,
+      "iou": 0.6932305056,
+      "iou_na": "",
+      "dice": 0.8188259109,
+      "dice_na": "",
+      "precision": 0.9794188862,
+      "recall": 0.7034782609,
+      "precision_na": "",
+      "recall_na": ""
+    },
+    {
+      "image_id": "pcb1/Data/Images/Anomaly/038.JPG",
+      "label": "anomaly",
+      "split": "val",
+      "tp": 2283,
+      "fp": 254,
+      "fn": 234,
+      "tn": 1499509,
+      "gt_foreground_pixels": 2517,
+      "predicted_foreground_pixels": 2537,
+      "total_pixels": 1502280,
+      "ignored_pixels": 0,
+      "predicted_foreground_ratio": 0.0016887664,
+      "iou": 0.8238902923,
+      "iou_na": "",
+      "dice": 0.9034428176,
+      "dice_na": "",
+      "precision": 0.8998817501,
+      "recall": 0.9070321812,
+      "precision_na": "",
+      "recall_na": ""
+    },
+    {
+      "image_id": "pcb1/Data/Images/Anomaly/031.JPG",
+      "label": "anomaly",
+      "split": "val",
+      "tp": 2984,
+      "fp": 1858,
+      "fn": 425,
+      "tn": 1497013,
+      "gt_foreground_pixels": 3409,
+      "predicted_foreground_pixels": 4842,
+      "total_pixels": 1502280,
+      "ignored_pixels": 0,
+      "predicted_foreground_ratio": 0.0032231009,
+      "iou": 0.5665464211,
+      "iou_na": "",
+      "dice": 0.7233062659,
+      "dice_na": "",
+      "precision": 0.6162742668,
+      "recall": 0.8753300088,
+      "precision_na": "",
+      "recall_na": ""
+    },
+    {
+      "image_id": "pcb1/Data/Images/Anomaly/043.JPG",
+      "label": "anomaly",
+      "split": "val",
+      "tp": 191112,
+      "fp": 8040,
+      "fn": 66,
+      "tn": 1303062,
+      "gt_foreground_pixels": 191178,
+      "predicted_foreground_pixels": 199152,
+      "total_pixels": 1502280,
+      "ignored_pixels": 0,
+      "predicted_foreground_ratio": 0.1325664989,
+      "iou": 0.9593109056,
+      "iou_na": "",
+      "dice": 0.9792329567,
+      "dice_na": "",
+      "precision": 0.9596288262,
+      "recall": 0.999654772,
+      "precision_na": "",
+      "recall_na": ""
+    }
+  ]
+}

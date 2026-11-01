@@ -1,0 +1,1276 @@
+{
+  "schema": "segformer-lab/saved-run-check/1",
+  "not_a_baseline": true,
+  "ok": true,
+  "process": {
+    "pid": 39192,
+    "python": "3.12.16",
+    "executable": "E:\\桌面\\AI\\segformer_resources\\env\\python.exe",
+    "torch": "2.10.0+cu126",
+    "cuda_build": "12.6",
+    "device": "cuda",
+    "gpu": "NVIDIA GeForce RTX 4070 Laptop GPU"
+  },
+  "source": {
+    "run_dir": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002",
+    "summary": {
+      "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\summary.json",
+      "bytes": 30715,
+      "sha256": "9839d4a3067263a795d2e0e5c9ee5f99edf5218b657fce4e959ed751575c7bdc"
+    },
+    "checkpoint": {
+      "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\checkpoints\\model_state.pt",
+      "bytes": 14927903,
+      "sha256": "92097db6d3d451c226954a2ee44436eb486641303d205b909fa03da8cc6500fa"
+    },
+    "stage": "09"
+  },
+  "artifacts": {
+    "files_checked": 21,
+    "files": {
+      "checkpoints/model_state.pt": {
+        "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\checkpoints\\model_state.pt",
+        "bytes": 14927903,
+        "sha256": "92097db6d3d451c226954a2ee44436eb486641303d205b909fa03da8cc6500fa"
+      },
+      "checkpoints/training_state.pt": {
+        "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\checkpoints\\training_state.pt",
+        "bytes": 44819537,
+        "sha256": "62c70f7113c0347a04d026379d853b1d1e0a64dff77d0e96a1072152a4681337"
+      },
+      "eval/sheet_update_000.png": {
+        "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\sheet_update_000.png",
+        "bytes": 889120,
+        "sha256": "3676e4c7d0163a2cc3533a425172566831fa14b0c3da273d8a36001ad78d8b3c"
+      },
+      "eval/sheet_update_050.png": {
+        "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\sheet_update_050.png",
+        "bytes": 853964,
+        "sha256": "4689c521feefb0fe3a41989633c340b06b316af54edfc5d10acdac56466bc54e"
+      },
+      "eval/sheet_update_100.png": {
+        "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\sheet_update_100.png",
+        "bytes": 854575,
+        "sha256": "273f8b50befe3ac5a05f8b1f85580f1eb089abbfcb17d2f53f9ea77186addb61"
+      },
+      "eval/sheet_update_150.png": {
+        "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\sheet_update_150.png",
+        "bytes": 854124,
+        "sha256": "00608ed8775b694846515631e9eef2395743c97c1a571c387036a536540df869"
+      },
+      "eval/sheet_update_200.png": {
+        "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\sheet_update_200.png",
+        "bytes": 854092,
+        "sha256": "a25d2cd1d4734c475814154be6de3294ed451a3734d3a1789f22ce897b826da9"
+      },
+      "eval/update_000.json": {
+        "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\update_000.json",
+        "bytes": 8039,
+        "sha256": "2e8553dc63984fc54e4a363265ac1cd6f3833e0d37a6d1996c60d8909166b5fb"
+      },
+      "eval/update_050.json": {
+        "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\update_050.json",
+        "bytes": 7621,
+        "sha256": "cb7c75635a6872e9be0f39c17aaf15b5fb3ebcc11727efd039989aca0ecbef41"
+      },
+      "eval/update_100.json": {
+        "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\update_100.json",
+        "bytes": 7636,
+        "sha256": "021f719bdc7df3d17a3e00041039a516f40eb90120c9c22ce08f681c127c3e8d"
+      },
+      "eval/update_150.json": {
+        "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\update_150.json",
+        "bytes": 7752,
+        "sha256": "28958bd926d70daeaea5e6d9859d7892b972d8fc5d449c5fe82f8364ee322e34"
+      },
+      "eval/update_200.json": {
+        "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\update_200.json",
+        "bytes": 7838,
+        "sha256": "04491bb3c2522b059e0bcd3ae7396b0e6b5fede53ff8bebdeb0b06321c3a9774"
+      },
+      "eval/zoom_smallest_update_000.png": {
+        "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\zoom_smallest_update_000.png",
+        "bytes": 248176,
+        "sha256": "3b4c5f44f190cc6f75f0da498889dffa2b9ec3be8917f6d3eceb52f5fe53b7c2"
+      },
+      "eval/zoom_smallest_update_050.png": {
+        "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\zoom_smallest_update_050.png",
+        "bytes": 251293,
+        "sha256": "e1ee7b6b8e72aa8879eb9358be756f60cd7fe7c372afab18764a6a0e23e785b0"
+      },
+      "eval/zoom_smallest_update_100.png": {
+        "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\zoom_smallest_update_100.png",
+        "bytes": 249858,
+        "sha256": "3ba8c8d1758973155c34d4770d4b3c7d6149e10dbf82d1d32e946cd415c8f9f2"
+      },
+      "eval/zoom_smallest_update_150.png": {
+        "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\zoom_smallest_update_150.png",
+        "bytes": 222053,
+        "sha256": "b1e0c7ede972af25a4fdf3bfc0c6027d38d6204585e25ab4cd6155eb9010ea40"
+      },
+      "eval/zoom_smallest_update_200.png": {
+        "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\eval\\zoom_smallest_update_200.png",
+        "bytes": 215066,
+        "sha256": "11d7990eaaf98fb6a24981d3232dd7aed88cae2efbdcbb3336acd44ca8da7b70"
+      },
+      "model_config.json": {
+        "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\model_config.json",
+        "bytes": 2601,
+        "sha256": "a2648c94cd17508f41b3fbf7451a2815ef2443192ed3c2388fb33288d4fd1bac"
+      },
+      "processor/preprocessor_config.json": {
+        "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\processor\\preprocessor_config.json",
+        "bytes": 396,
+        "sha256": "7854b1307bdd3737b1106ad604bbd8f90308cfce8d46609e6d5d88a1face9f58"
+      },
+      "run_extra.json": {
+        "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\run_extra.json",
+        "bytes": 48,
+        "sha256": "4cfdeb1373503297ce7a54d628e1527df723433240eacf42992f35e2337f9bce"
+      },
+      "updates.jsonl": {
+        "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\updates.jsonl",
+        "bytes": 73988,
+        "sha256": "178702dcf546c13a6bdbeacfb0ed3e16b9731f5caae271f3ec51dcb26130fa8a"
+      }
+    },
+    "manifest": {
+      "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\artifact_manifest.json",
+      "bytes": 3434,
+      "sha256": "7bc51c863a6e6d6f0337efb5ab5eb24ea5ee0dce68716da675903d0e7a83cf44"
+    }
+  },
+  "provenance": {
+    "anchors": {
+      "config": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\configs\\overfit.yaml",
+        "bytes": 2307,
+        "sha256": "f1f1259f4a4c9e89ad28214685fa12e0bc95d0626ee102112be7c9531b17de3b"
+      },
+      "ids": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\overfit_train_ids.txt",
+        "bytes": 272,
+        "sha256": "2ac81b816dde9888d7483a3af0b9ffa85ae17cd242242542c1ff3f88d1cec6e9"
+      },
+      "split_meta": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\split_meta.json",
+        "bytes": 5581,
+        "sha256": "7c53a669aabebcbb72cc137f84e7d00ec615e53813396b36e7f3557d6c9d0b49"
+      },
+      "preview_ids": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\val_preview_ids.txt",
+        "bytes": 363,
+        "sha256": "4f17789dfecc28023003092dddbe3c4683ac781cb469b483e4180c2ebb8f9718"
+      },
+      "train": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\train.csv",
+        "bytes": 29126,
+        "sha256": "f1522eb9b474d0acc1d736a391002f5044153208fa10f51eea3dc7df729f65b0"
+      },
+      "val": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\val.csv",
+        "bytes": 7014,
+        "sha256": "60a6c6cbf5ed7f5f9e57fb57bb096a5b57db677af5ee73f4fa140ddceaba6191"
+      },
+      "test": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\test.csv",
+        "bytes": 23852,
+        "sha256": "4bdc594148f208c7067a66a8cb3b06fde53ebc1f4ab6fda84f08f80383061284"
+      },
+      "snapshot/config.json": {
+        "path": "E:\\桌面\\AI\\segformer_resources\\models\\mit-b0\\config.json",
+        "bytes": 70043,
+        "sha256": "e2378ac7c7a6981d6bdd1d9ccf29b611264c382afce89c561f39c9291164ff91"
+      },
+      "snapshot/preprocessor_config.json": {
+        "path": "E:\\桌面\\AI\\segformer_resources\\models\\mit-b0\\preprocessor_config.json",
+        "bytes": 272,
+        "sha256": "d96ab2cb112985c19d5ea32f1d1f2369104fc78b1379f5ce26e33ca8646202a7"
+      },
+      "snapshot/pytorch_model.bin": {
+        "path": "E:\\桌面\\AI\\segformer_resources\\models\\mit-b0\\pytorch_model.bin",
+        "bytes": 14380029,
+        "sha256": "4af8348c2a802bf76115d34797ff5ce1d9f110bb8593c22d9b66d8bd7fa227fc"
+      },
+      "source_metadata": {
+        "path": "E:\\桌面\\AI\\segformer_resources\\models\\mit-b0\\source.json",
+        "bytes": 1126,
+        "sha256": "8e57fa70638ae7aad076ea9ad9603f4e4a87da54e09d2cb698ea26328beb8650"
+      }
+    },
+    "current_code": {
+      "configs/smoke.yaml": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\configs\\smoke.yaml",
+        "bytes": 2349,
+        "sha256": "c7587dce3445803c0a4479fcd4158b9e433f61679d317a403c04aca92f87475e",
+        "stored_sha256": "c7587dce3445803c0a4479fcd4158b9e433f61679d317a403c04aca92f87475e",
+        "matches_stored": true
+      },
+      "segformer_lab/__init__.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\segformer_lab\\__init__.py",
+        "bytes": 293,
+        "sha256": "2ec79c144804c61e26f957553f5835f9c42f3aa0010724f48c029c669c576a98",
+        "stored_sha256": null,
+        "matches_stored": false
+      },
+      "segformer_lab/audit_data.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\segformer_lab\\audit_data.py",
+        "bytes": 33028,
+        "sha256": "9ba6cfab71b899fe5cf12fbffd27d567494aae7d05abd0e3eaa09b186ba3fd7d",
+        "stored_sha256": null,
+        "matches_stored": false
+      },
+      "segformer_lab/config.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\segformer_lab\\config.py",
+        "bytes": 4936,
+        "sha256": "b2c981faca6b2222b83ea876c8b3f1cd854ee210f42cd588dce41f20caaaa391",
+        "stored_sha256": null,
+        "matches_stored": false
+      },
+      "segformer_lab/data.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\segformer_lab\\data.py",
+        "bytes": 17426,
+        "sha256": "3eb2117997db7cee7fa720b74f8b5b7df85793f4a65cebdd851943c3025ab9ce",
+        "stored_sha256": "3eb2117997db7cee7fa720b74f8b5b7df85793f4a65cebdd851943c3025ab9ce",
+        "matches_stored": true
+      },
+      "segformer_lab/dataset_check.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\segformer_lab\\dataset_check.py",
+        "bytes": 30623,
+        "sha256": "cf38ac70fe70b99323f17dff282136081cbe316bdd61f75e272707a12ea8436d",
+        "stored_sha256": null,
+        "matches_stored": false
+      },
+      "segformer_lab/download_model.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\segformer_lab\\download_model.py",
+        "bytes": 16219,
+        "sha256": "7859b282d709091bbcadcfa3c232a83e6d6c91a854e04459f75ffa420dc760b6",
+        "stored_sha256": null,
+        "matches_stored": false
+      },
+      "segformer_lab/env_check.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\segformer_lab\\env_check.py",
+        "bytes": 22267,
+        "sha256": "e1f55898b993ade38c7d69e7bd69baa83137faa2231114db0d16b5f047962195",
+        "stored_sha256": null,
+        "matches_stored": false
+      },
+      "segformer_lab/evaluation.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\segformer_lab\\evaluation.py",
+        "bytes": 2674,
+        "sha256": "0c30890eb5252d603de73bc792a6ef348fa77c2cf91c5f1b98a7167492787e53",
+        "stored_sha256": "0c30890eb5252d603de73bc792a6ef348fa77c2cf91c5f1b98a7167492787e53",
+        "matches_stored": true
+      },
+      "segformer_lab/geometry.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\segformer_lab\\geometry.py",
+        "bytes": 9634,
+        "sha256": "b9e9d823ba91706bea650ccf578fb71f960840c3f8097f7c8687a5850ab4aacb",
+        "stored_sha256": null,
+        "matches_stored": false
+      },
+      "segformer_lab/losses.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\segformer_lab\\losses.py",
+        "bytes": 9939,
+        "sha256": "e7195880bd49a8f03a9fbb39e9069c1f071010c8f7f96ba2bfac80d3d0ba0327",
+        "stored_sha256": "e7195880bd49a8f03a9fbb39e9069c1f071010c8f7f96ba2bfac80d3d0ba0327",
+        "matches_stored": true
+      },
+      "segformer_lab/metrics.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\segformer_lab\\metrics.py",
+        "bytes": 17682,
+        "sha256": "7d9625fa29eb94221787c80f7bc47dc429958d588207692f2c0ea1a12ecb5787",
+        "stored_sha256": "7d9625fa29eb94221787c80f7bc47dc429958d588207692f2c0ea1a12ecb5787",
+        "matches_stored": true
+      },
+      "segformer_lab/metrics_check.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\segformer_lab\\metrics_check.py",
+        "bytes": 56542,
+        "sha256": "b85a592f561df2d4666d55426ce6536a6d0d39b30165dfb0ec88ad9ca8381f25",
+        "stored_sha256": null,
+        "matches_stored": false
+      },
+      "segformer_lab/model_check.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\segformer_lab\\model_check.py",
+        "bytes": 17248,
+        "sha256": "eec04e21011b244d0d44c99a8b801ed258390b770678a36338eda74661f106dc",
+        "stored_sha256": null,
+        "matches_stored": false
+      },
+      "segformer_lab/modeling.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\segformer_lab\\modeling.py",
+        "bytes": 13677,
+        "sha256": "318e0b0a5164eafe7c8393adf64caf1aaeea6e5895ab679ba0171c0fc57a59d3",
+        "stored_sha256": "318e0b0a5164eafe7c8393adf64caf1aaeea6e5895ab679ba0171c0fc57a59d3",
+        "matches_stored": true
+      },
+      "segformer_lab/paths.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\segformer_lab\\paths.py",
+        "bytes": 2404,
+        "sha256": "a5d8814ff3adb4b162b96202d2c42d7fd68a1f26442e114f0cfa7f479c80c8b9",
+        "stored_sha256": null,
+        "matches_stored": false
+      },
+      "segformer_lab/prepare_data.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\segformer_lab\\prepare_data.py",
+        "bytes": 42773,
+        "sha256": "d98bf2ee7f5a00b3f4aa957c1f10e9e63147ca5fef0f192ece67fc11d271884c",
+        "stored_sha256": null,
+        "matches_stored": false
+      },
+      "segformer_lab/preview_data.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\segformer_lab\\preview_data.py",
+        "bytes": 16147,
+        "sha256": "aecececda8e6a50bfb8c3e67763f464fef9c34b489112f04ed6575c0f2b06681",
+        "stored_sha256": null,
+        "matches_stored": false
+      },
+      "segformer_lab/run_check.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\segformer_lab\\run_check.py",
+        "bytes": 20506,
+        "sha256": "257b617527feef4393ffc22c215616de2cad938fd177b1d4efa4b2a124875b62",
+        "stored_sha256": null,
+        "matches_stored": false
+      },
+      "segformer_lab/smoke.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\segformer_lab\\smoke.py",
+        "bytes": 18729,
+        "sha256": "50c47b2f8b0bb45293c69635d1cb9eee6294a73acee4dcdf0525a1b36c0a45ec",
+        "stored_sha256": "9c45c1dcc69b7cc77a6cff858fdfca93f9196b1cc4db1260a7f3562df427484d",
+        "matches_stored": false
+      },
+      "segformer_lab/subset.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\segformer_lab\\subset.py",
+        "bytes": 9931,
+        "sha256": "11f1831cab544270404a47ba8a721bbaa8b4d72890bb0f5a85b1fad900c16032",
+        "stored_sha256": null,
+        "matches_stored": false
+      },
+      "segformer_lab/train.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\segformer_lab\\train.py",
+        "bytes": 17813,
+        "sha256": "d8721c8012d594293988146cc8acad573361639ca27e241f43e4f16ef8ffc305",
+        "stored_sha256": null,
+        "matches_stored": false
+      },
+      "segformer_lab/training.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\segformer_lab\\training.py",
+        "bytes": 29270,
+        "sha256": "1ab1b0d3334e591955dfd28b5d6cf41287d8ce600b63e1fe332137657eaac10a",
+        "stored_sha256": "4fd511a867dc01fbe7b16103230d9a780175d310ab61691db123ce5bc0938663",
+        "matches_stored": false
+      },
+      "tests/__init__.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\tests\\__init__.py",
+        "bytes": 73,
+        "sha256": "e0842dbaa7e00143bf2018021aaf5953869f39a7f7e3faad9c5ccbcf2c667bd3",
+        "stored_sha256": null,
+        "matches_stored": false
+      },
+      "tests/test_audit_groups.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\tests\\test_audit_groups.py",
+        "bytes": 1991,
+        "sha256": "81ff621ca20ac2ada93e86319f7ea5c8e73ba5a00e78dde0402f5dad9acecdcb",
+        "stored_sha256": null,
+        "matches_stored": false
+      },
+      "tests/test_data_audit.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\tests\\test_data_audit.py",
+        "bytes": 10601,
+        "sha256": "99c31b7def1dcd2ad6ec2111c55630f00e9fec86a137b1ff320422e3f25fa011",
+        "stored_sha256": null,
+        "matches_stored": false
+      },
+      "tests/test_dataset.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\tests\\test_dataset.py",
+        "bytes": 15937,
+        "sha256": "0307a808b67577ad4a7ca3bd3ce6f63ae3e3d66477156f701fed75c7571288fd",
+        "stored_sha256": null,
+        "matches_stored": false
+      },
+      "tests/test_dataset_check.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\tests\\test_dataset_check.py",
+        "bytes": 4309,
+        "sha256": "a6ba7eec71da2ae34cf187fc43367060afb8e5f07f7cc951b26cbcac7daf0cf8",
+        "stored_sha256": null,
+        "matches_stored": false
+      },
+      "tests/test_download_model.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\tests\\test_download_model.py",
+        "bytes": 9403,
+        "sha256": "205e1ff98b270ba73a9b0c3cf5eeeb88b068684382a99c8205bdb21e5adbc588",
+        "stored_sha256": null,
+        "matches_stored": false
+      },
+      "tests/test_env_check.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\tests\\test_env_check.py",
+        "bytes": 3341,
+        "sha256": "48b81ef7a5bdae869c44a088ee76267ce6e4960e606ef50820a1ed63e656ffba",
+        "stored_sha256": null,
+        "matches_stored": false
+      },
+      "tests/test_evaluation.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\tests\\test_evaluation.py",
+        "bytes": 2800,
+        "sha256": "ff8ebc27c43eeb42adbbfc0794d1e4e2d052615ea4fa9c5b2730f64a23b5fade",
+        "stored_sha256": null,
+        "matches_stored": false
+      },
+      "tests/test_group_split.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\tests\\test_group_split.py",
+        "bytes": 6927,
+        "sha256": "6c46d822d61050b23f6dea1f577c29b116af18184b2f82b8a70d615958cc580b",
+        "stored_sha256": null,
+        "matches_stored": false
+      },
+      "tests/test_loss_metric_acceptance.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\tests\\test_loss_metric_acceptance.py",
+        "bytes": 7705,
+        "sha256": "8d5e10c0d77ae5f7494acfe2ac83f049633c1a290f7844b9aeb794d62928c2aa",
+        "stored_sha256": null,
+        "matches_stored": false
+      },
+      "tests/test_losses_metrics.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\tests\\test_losses_metrics.py",
+        "bytes": 14812,
+        "sha256": "1acf0151bc301bbeb21752d11d28169bca4e7bde77928000ff6b468284bcd084",
+        "stored_sha256": null,
+        "matches_stored": false
+      },
+      "tests/test_metrics_check.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\tests\\test_metrics_check.py",
+        "bytes": 9895,
+        "sha256": "6c0d0fc71604a511544f8f9be93d84e8be7eb74a4bbb6316b7a2fd6e8c73b395",
+        "stored_sha256": null,
+        "matches_stored": false
+      },
+      "tests/test_model_acceptance.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\tests\\test_model_acceptance.py",
+        "bytes": 6117,
+        "sha256": "6d7b78c3f35e3dd705d2a4fb6aa4d419aa55e86bbbc8c6cd0c95ee3c027079fe",
+        "stored_sha256": null,
+        "matches_stored": false
+      },
+      "tests/test_modeling.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\tests\\test_modeling.py",
+        "bytes": 6980,
+        "sha256": "dd23a1d1731e93bc9199da4a0d21f875a257960442222f537ecd31ab8b61e2dc",
+        "stored_sha256": null,
+        "matches_stored": false
+      },
+      "tests/test_prepare_data.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\tests\\test_prepare_data.py",
+        "bytes": 9801,
+        "sha256": "bf03d70211880cd38d814187ea6d92c2ac2185bcfa32f5d63ff58da2a98d5d80",
+        "stored_sha256": null,
+        "matches_stored": false
+      },
+      "tests/test_preview_ids.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\tests\\test_preview_ids.py",
+        "bytes": 1994,
+        "sha256": "33ecf90b4b3c9e3633fd1ac74ff7f88c84e4e83a32cbf715a379a625fb4b0b3f",
+        "stored_sha256": null,
+        "matches_stored": false
+      },
+      "tests/test_run_check.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\tests\\test_run_check.py",
+        "bytes": 6999,
+        "sha256": "2764e3708c4d988ceb94f50ce3553886489c35adb5f2218376b3796884e936bd",
+        "stored_sha256": null,
+        "matches_stored": false
+      },
+      "tests/test_training.py": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\tests\\test_training.py",
+        "bytes": 10187,
+        "sha256": "bb5f6f55a9a2cf105dc965d16ce52239398d929ee91badd6ac4c8310128c104b",
+        "stored_sha256": null,
+        "matches_stored": false
+      }
+    },
+    "stored_code": {
+      "segformer_lab/training.py": "4fd511a867dc01fbe7b16103230d9a780175d310ab61691db123ce5bc0938663",
+      "segformer_lab/smoke.py": "9c45c1dcc69b7cc77a6cff858fdfca93f9196b1cc4db1260a7f3562df427484d",
+      "segformer_lab/losses.py": "e7195880bd49a8f03a9fbb39e9069c1f071010c8f7f96ba2bfac80d3d0ba0327",
+      "segformer_lab/metrics.py": "7d9625fa29eb94221787c80f7bc47dc429958d588207692f2c0ea1a12ecb5787",
+      "segformer_lab/evaluation.py": "0c30890eb5252d603de73bc792a6ef348fa77c2cf91c5f1b98a7167492787e53",
+      "segformer_lab/data.py": "3eb2117997db7cee7fa720b74f8b5b7df85793f4a65cebdd851943c3025ab9ce",
+      "segformer_lab/modeling.py": "318e0b0a5164eafe7c8393adf64caf1aaeea6e5895ab679ba0171c0fc57a59d3",
+      "configs/smoke.yaml": "c7587dce3445803c0a4479fcd4158b9e433f61679d317a403c04aca92f87475e"
+    },
+    "code_note": "source drift is recorded; artifact and data/config anchors must match",
+    "test_access": "manifest hash only; no test images/masks"
+  },
+  "load": {
+    "model_config_source": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002\\model_config.json",
+    "model_state_sha256": "92097db6d3d451c226954a2ee44436eb486641303d205b909fa03da8cc6500fa",
+    "strict": true,
+    "missing_keys": [],
+    "unexpected_keys": [],
+    "parameter_count": 3714658,
+    "processor_flags": {
+      "do_resize": false,
+      "do_reduce_labels": false,
+      "do_rescale": true,
+      "do_normalize": true
+    }
+  },
+  "training_state": {
+    "all_model_keys_exact_and_finite": true,
+    "tensor_count": 208,
+    "counters": {
+      "successful_updates": 200,
+      "attempts": 201,
+      "skipped": 1
+    },
+    "optimizer_parameters_checked": 205,
+    "optimizer_step_min": 200.0,
+    "optimizer_step_max": 200.0,
+    "grad_scaler": {
+      "scale": 32768.0,
+      "growth_factor": 2.0,
+      "backoff_factor": 0.5,
+      "growth_interval": 2000,
+      "_growth_tracker": 125
+    }
+  },
+  "evaluation_subset": {
+    "split": "train",
+    "ids_file": {
+      "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\overfit_train_ids.txt",
+      "bytes": 272,
+      "sha256": "2ac81b816dde9888d7483a3af0b9ffa85ae17cd242242542c1ff3f88d1cec6e9"
+    },
+    "rows": [
+      {
+        "object": "pcb1",
+        "split": "train",
+        "label": "normal",
+        "image": "pcb1/Data/Images/Normal/0025.JPG",
+        "mask": ""
+      },
+      {
+        "object": "pcb1",
+        "split": "train",
+        "label": "normal",
+        "image": "pcb1/Data/Images/Normal/0121.JPG",
+        "mask": ""
+      },
+      {
+        "object": "pcb1",
+        "split": "train",
+        "label": "normal",
+        "image": "pcb1/Data/Images/Normal/0708.JPG",
+        "mask": ""
+      },
+      {
+        "object": "pcb1",
+        "split": "train",
+        "label": "normal",
+        "image": "pcb1/Data/Images/Normal/0812.JPG",
+        "mask": ""
+      },
+      {
+        "object": "pcb1",
+        "split": "train",
+        "label": "anomaly",
+        "image": "pcb1/Data/Images/Anomaly/065.JPG",
+        "mask": "pcb1/Data/Masks/Anomaly/065.png"
+      },
+      {
+        "object": "pcb1",
+        "split": "train",
+        "label": "anomaly",
+        "image": "pcb1/Data/Images/Anomaly/038.JPG",
+        "mask": "pcb1/Data/Masks/Anomaly/038.png"
+      },
+      {
+        "object": "pcb1",
+        "split": "train",
+        "label": "anomaly",
+        "image": "pcb1/Data/Images/Anomaly/031.JPG",
+        "mask": "pcb1/Data/Masks/Anomaly/031.png"
+      },
+      {
+        "object": "pcb1",
+        "split": "train",
+        "label": "anomaly",
+        "image": "pcb1/Data/Images/Anomaly/043.JPG",
+        "mask": "pcb1/Data/Masks/Anomaly/043.png"
+      }
+    ],
+    "saved_processor_used": true,
+    "flip": "none"
+  },
+  "comparison": {
+    "identical": true,
+    "different_sections": [],
+    "metadata_correction": [
+      {
+        "image_id": "pcb1/Data/Images/Normal/0025.JPG",
+        "stored_split": "val",
+        "actual_split": "train"
+      },
+      {
+        "image_id": "pcb1/Data/Images/Normal/0121.JPG",
+        "stored_split": "val",
+        "actual_split": "train"
+      },
+      {
+        "image_id": "pcb1/Data/Images/Normal/0708.JPG",
+        "stored_split": "val",
+        "actual_split": "train"
+      },
+      {
+        "image_id": "pcb1/Data/Images/Normal/0812.JPG",
+        "stored_split": "val",
+        "actual_split": "train"
+      },
+      {
+        "image_id": "pcb1/Data/Images/Anomaly/065.JPG",
+        "stored_split": "val",
+        "actual_split": "train"
+      },
+      {
+        "image_id": "pcb1/Data/Images/Anomaly/038.JPG",
+        "stored_split": "val",
+        "actual_split": "train"
+      },
+      {
+        "image_id": "pcb1/Data/Images/Anomaly/031.JPG",
+        "stored_split": "val",
+        "actual_split": "train"
+      },
+      {
+        "image_id": "pcb1/Data/Images/Anomaly/043.JPG",
+        "stored_split": "val",
+        "actual_split": "train"
+      }
+    ],
+    "excluded_fields": [
+      "evaluation.forward_ms",
+      "evaluation.median_forward_ms"
+    ],
+    "scope": "all stored global/per-image counts, metrics, NA reasons and evaluation policy"
+  },
+  "probabilities": {
+    "status": "not_available",
+    "scope": "stored counts/metrics only; old probability maps were not saved",
+    "max_abs_probability_diff": null,
+    "xor_pixels_total": null
+  },
+  "metrics_before": {
+    "images": {
+      "total": 8,
+      "normal": 4,
+      "anomaly": 4
+    },
+    "confusion": {
+      "tp": 197188,
+      "fp": 10254,
+      "fn": 1066,
+      "tn": 11809732,
+      "pixels": 12018240
+    },
+    "global": {
+      "foreground_iou": 0.9457095171,
+      "foreground_dice": 0.972097334,
+      "precision": 0.9505693158,
+      "recall": 0.9946230593,
+      "na_reasons": {},
+      "aggregation": "sum TP/FP/FN/TN over images, then divide once"
+    },
+    "normal_images": {
+      "count": 4,
+      "false_positive_pixels": 85,
+      "total_pixels": 6009120,
+      "fp_pixel_ratio": 1.4145166014324892e-05,
+      "na_reasons": {},
+      "predicted_foreground_ratio": {
+        "median": 3.9939e-06,
+        "p95": 4.25021e-05,
+        "max": 4.85928e-05,
+        "percentile_method": "numpy linear interpolation over per-image ratios"
+      },
+      "images_with_any_false_positive": 2,
+      "worst_offenders": [
+        {
+          "image_id": "pcb1/Data/Images/Normal/0812.JPG",
+          "predicted_foreground_pixels": 73,
+          "predicted_foreground_ratio": 4.85928e-05
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0708.JPG",
+          "predicted_foreground_pixels": 12,
+          "predicted_foreground_ratio": 7.9879e-06
+        }
+      ]
+    },
+    "anomaly_images": {
+      "count": 4,
+      "macro": {
+        "iou": {
+          "mean": 0.7607445312,
+          "defined_images": 4,
+          "na_images": 0,
+          "na_reason": ""
+        },
+        "dice": {
+          "mean": 0.8562019878,
+          "defined_images": 4,
+          "na_images": 0,
+          "na_reason": ""
+        },
+        "precision": {
+          "mean": 0.8638009323,
+          "defined_images": 4,
+          "na_images": 0,
+          "na_reason": ""
+        },
+        "recall": {
+          "mean": 0.8713738057,
+          "defined_images": 4,
+          "na_images": 0,
+          "na_reason": ""
+        }
+      }
+    },
+    "evaluation": {
+      "batch_size": 1,
+      "mode": "model.eval() + torch.inference_mode()",
+      "precision": "ieee_fp32 (TF32 disabled, autocast disabled)",
+      "precision_record": {
+        "policy": "ieee_fp32",
+        "api": "torch2.10 allow_tf32 (legacy API only)",
+        "before": {
+          "cudnn_allow_tf32": true,
+          "matmul_allow_tf32": false
+        },
+        "autocast_enabled": false,
+        "scope": "evaluation context; restore backend flags and caller autocast on exit",
+        "training_amp_config_unchanged": true,
+        "bitwise_batch_invariance_guaranteed": false,
+        "effective": {
+          "cudnn_allow_tf32": false,
+          "matmul_allow_tf32": false
+        },
+        "restored_after_exit": true
+      },
+      "threshold": 0.5,
+      "forward_ms": [
+        89.12,
+        89.97,
+        78.18,
+        76.54,
+        72.21,
+        12.42,
+        11.88,
+        15.04
+      ],
+      "median_forward_ms": 74.38
+    },
+    "per_image": [
+      {
+        "image_id": "pcb1/Data/Images/Normal/0025.JPG",
+        "label": "normal",
+        "split": "val",
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "tn": 1502280,
+        "gt_foreground_pixels": 0,
+        "predicted_foreground_pixels": 0,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 0.0,
+        "iou": null,
+        "iou_na": "GT and prediction are both empty",
+        "dice": null,
+        "dice_na": "GT and prediction are both empty",
+        "precision": null,
+        "recall": null,
+        "precision_na": "prediction contains no foreground pixel",
+        "recall_na": "ground truth contains no foreground pixel"
+      },
+      {
+        "image_id": "pcb1/Data/Images/Normal/0121.JPG",
+        "label": "normal",
+        "split": "val",
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "tn": 1502280,
+        "gt_foreground_pixels": 0,
+        "predicted_foreground_pixels": 0,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 0.0,
+        "iou": null,
+        "iou_na": "GT and prediction are both empty",
+        "dice": null,
+        "dice_na": "GT and prediction are both empty",
+        "precision": null,
+        "recall": null,
+        "precision_na": "prediction contains no foreground pixel",
+        "recall_na": "ground truth contains no foreground pixel"
+      },
+      {
+        "image_id": "pcb1/Data/Images/Normal/0708.JPG",
+        "label": "normal",
+        "split": "val",
+        "tp": 0,
+        "fp": 12,
+        "fn": 0,
+        "tn": 1502268,
+        "gt_foreground_pixels": 0,
+        "predicted_foreground_pixels": 12,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 7.9879e-06,
+        "iou": 0.0,
+        "iou_na": "",
+        "dice": 0.0,
+        "dice_na": "",
+        "precision": 0.0,
+        "recall": null,
+        "precision_na": "",
+        "recall_na": "ground truth contains no foreground pixel"
+      },
+      {
+        "image_id": "pcb1/Data/Images/Normal/0812.JPG",
+        "label": "normal",
+        "split": "val",
+        "tp": 0,
+        "fp": 73,
+        "fn": 0,
+        "tn": 1502207,
+        "gt_foreground_pixels": 0,
+        "predicted_foreground_pixels": 73,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 4.85928e-05,
+        "iou": 0.0,
+        "iou_na": "",
+        "dice": 0.0,
+        "dice_na": "",
+        "precision": 0.0,
+        "recall": null,
+        "precision_na": "",
+        "recall_na": "ground truth contains no foreground pixel"
+      },
+      {
+        "image_id": "pcb1/Data/Images/Anomaly/065.JPG",
+        "label": "anomaly",
+        "split": "val",
+        "tp": 809,
+        "fp": 17,
+        "fn": 341,
+        "tn": 1501113,
+        "gt_foreground_pixels": 1150,
+        "predicted_foreground_pixels": 826,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 0.0005498309,
+        "iou": 0.6932305056,
+        "iou_na": "",
+        "dice": 0.8188259109,
+        "dice_na": "",
+        "precision": 0.9794188862,
+        "recall": 0.7034782609,
+        "precision_na": "",
+        "recall_na": ""
+      },
+      {
+        "image_id": "pcb1/Data/Images/Anomaly/038.JPG",
+        "label": "anomaly",
+        "split": "val",
+        "tp": 2283,
+        "fp": 254,
+        "fn": 234,
+        "tn": 1499509,
+        "gt_foreground_pixels": 2517,
+        "predicted_foreground_pixels": 2537,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 0.0016887664,
+        "iou": 0.8238902923,
+        "iou_na": "",
+        "dice": 0.9034428176,
+        "dice_na": "",
+        "precision": 0.8998817501,
+        "recall": 0.9070321812,
+        "precision_na": "",
+        "recall_na": ""
+      },
+      {
+        "image_id": "pcb1/Data/Images/Anomaly/031.JPG",
+        "label": "anomaly",
+        "split": "val",
+        "tp": 2984,
+        "fp": 1858,
+        "fn": 425,
+        "tn": 1497013,
+        "gt_foreground_pixels": 3409,
+        "predicted_foreground_pixels": 4842,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 0.0032231009,
+        "iou": 0.5665464211,
+        "iou_na": "",
+        "dice": 0.7233062659,
+        "dice_na": "",
+        "precision": 0.6162742668,
+        "recall": 0.8753300088,
+        "precision_na": "",
+        "recall_na": ""
+      },
+      {
+        "image_id": "pcb1/Data/Images/Anomaly/043.JPG",
+        "label": "anomaly",
+        "split": "val",
+        "tp": 191112,
+        "fp": 8040,
+        "fn": 66,
+        "tn": 1303062,
+        "gt_foreground_pixels": 191178,
+        "predicted_foreground_pixels": 199152,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 0.1325664989,
+        "iou": 0.9593109056,
+        "iou_na": "",
+        "dice": 0.9792329567,
+        "dice_na": "",
+        "precision": 0.9596288262,
+        "recall": 0.999654772,
+        "precision_na": "",
+        "recall_na": ""
+      }
+    ]
+  },
+  "metrics_after": {
+    "images": {
+      "total": 8,
+      "normal": 4,
+      "anomaly": 4
+    },
+    "confusion": {
+      "tp": 197188,
+      "fp": 10254,
+      "fn": 1066,
+      "tn": 11809732,
+      "pixels": 12018240
+    },
+    "global": {
+      "foreground_iou": 0.9457095171,
+      "foreground_dice": 0.972097334,
+      "precision": 0.9505693158,
+      "recall": 0.9946230593,
+      "na_reasons": {},
+      "aggregation": "sum TP/FP/FN/TN over images, then divide once"
+    },
+    "normal_images": {
+      "count": 4,
+      "false_positive_pixels": 85,
+      "total_pixels": 6009120,
+      "fp_pixel_ratio": 1.4145166014324892e-05,
+      "na_reasons": {},
+      "predicted_foreground_ratio": {
+        "median": 3.9939e-06,
+        "p95": 4.25021e-05,
+        "max": 4.85928e-05,
+        "percentile_method": "numpy linear interpolation over per-image ratios"
+      },
+      "images_with_any_false_positive": 2,
+      "worst_offenders": [
+        {
+          "image_id": "pcb1/Data/Images/Normal/0812.JPG",
+          "predicted_foreground_pixels": 73,
+          "predicted_foreground_ratio": 4.85928e-05
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0708.JPG",
+          "predicted_foreground_pixels": 12,
+          "predicted_foreground_ratio": 7.9879e-06
+        }
+      ]
+    },
+    "anomaly_images": {
+      "count": 4,
+      "macro": {
+        "iou": {
+          "mean": 0.7607445312,
+          "defined_images": 4,
+          "na_images": 0,
+          "na_reason": ""
+        },
+        "dice": {
+          "mean": 0.8562019878,
+          "defined_images": 4,
+          "na_images": 0,
+          "na_reason": ""
+        },
+        "precision": {
+          "mean": 0.8638009323,
+          "defined_images": 4,
+          "na_images": 0,
+          "na_reason": ""
+        },
+        "recall": {
+          "mean": 0.8713738057,
+          "defined_images": 4,
+          "na_images": 0,
+          "na_reason": ""
+        }
+      }
+    },
+    "evaluation": {
+      "batch_size": 1,
+      "mode": "model.eval() + torch.inference_mode()",
+      "precision": "ieee_fp32 (TF32 disabled, autocast disabled)",
+      "precision_record": {
+        "policy": "ieee_fp32",
+        "api": "torch2.10 allow_tf32 (legacy API only)",
+        "before": {
+          "cudnn_allow_tf32": true,
+          "matmul_allow_tf32": false
+        },
+        "autocast_enabled": false,
+        "scope": "evaluation context; restore backend flags and caller autocast on exit",
+        "training_amp_config_unchanged": true,
+        "bitwise_batch_invariance_guaranteed": false,
+        "effective": {
+          "cudnn_allow_tf32": false,
+          "matmul_allow_tf32": false
+        },
+        "restored_after_exit": true
+      },
+      "threshold": 0.5,
+      "forward_ms": [
+        246.55,
+        14.01,
+        13.46,
+        13.83,
+        12.81,
+        13.24,
+        13.78,
+        13.51
+      ],
+      "median_forward_ms": 13.64
+    },
+    "per_image": [
+      {
+        "image_id": "pcb1/Data/Images/Normal/0025.JPG",
+        "label": "normal",
+        "split": "train",
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "tn": 1502280,
+        "gt_foreground_pixels": 0,
+        "predicted_foreground_pixels": 0,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 0.0,
+        "iou": null,
+        "iou_na": "GT and prediction are both empty",
+        "dice": null,
+        "dice_na": "GT and prediction are both empty",
+        "precision": null,
+        "recall": null,
+        "precision_na": "prediction contains no foreground pixel",
+        "recall_na": "ground truth contains no foreground pixel"
+      },
+      {
+        "image_id": "pcb1/Data/Images/Normal/0121.JPG",
+        "label": "normal",
+        "split": "train",
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "tn": 1502280,
+        "gt_foreground_pixels": 0,
+        "predicted_foreground_pixels": 0,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 0.0,
+        "iou": null,
+        "iou_na": "GT and prediction are both empty",
+        "dice": null,
+        "dice_na": "GT and prediction are both empty",
+        "precision": null,
+        "recall": null,
+        "precision_na": "prediction contains no foreground pixel",
+        "recall_na": "ground truth contains no foreground pixel"
+      },
+      {
+        "image_id": "pcb1/Data/Images/Normal/0708.JPG",
+        "label": "normal",
+        "split": "train",
+        "tp": 0,
+        "fp": 12,
+        "fn": 0,
+        "tn": 1502268,
+        "gt_foreground_pixels": 0,
+        "predicted_foreground_pixels": 12,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 7.9879e-06,
+        "iou": 0.0,
+        "iou_na": "",
+        "dice": 0.0,
+        "dice_na": "",
+        "precision": 0.0,
+        "recall": null,
+        "precision_na": "",
+        "recall_na": "ground truth contains no foreground pixel"
+      },
+      {
+        "image_id": "pcb1/Data/Images/Normal/0812.JPG",
+        "label": "normal",
+        "split": "train",
+        "tp": 0,
+        "fp": 73,
+        "fn": 0,
+        "tn": 1502207,
+        "gt_foreground_pixels": 0,
+        "predicted_foreground_pixels": 73,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 4.85928e-05,
+        "iou": 0.0,
+        "iou_na": "",
+        "dice": 0.0,
+        "dice_na": "",
+        "precision": 0.0,
+        "recall": null,
+        "precision_na": "",
+        "recall_na": "ground truth contains no foreground pixel"
+      },
+      {
+        "image_id": "pcb1/Data/Images/Anomaly/065.JPG",
+        "label": "anomaly",
+        "split": "train",
+        "tp": 809,
+        "fp": 17,
+        "fn": 341,
+        "tn": 1501113,
+        "gt_foreground_pixels": 1150,
+        "predicted_foreground_pixels": 826,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 0.0005498309,
+        "iou": 0.6932305056,
+        "iou_na": "",
+        "dice": 0.8188259109,
+        "dice_na": "",
+        "precision": 0.9794188862,
+        "recall": 0.7034782609,
+        "precision_na": "",
+        "recall_na": ""
+      },
+      {
+        "image_id": "pcb1/Data/Images/Anomaly/038.JPG",
+        "label": "anomaly",
+        "split": "train",
+        "tp": 2283,
+        "fp": 254,
+        "fn": 234,
+        "tn": 1499509,
+        "gt_foreground_pixels": 2517,
+        "predicted_foreground_pixels": 2537,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 0.0016887664,
+        "iou": 0.8238902923,
+        "iou_na": "",
+        "dice": 0.9034428176,
+        "dice_na": "",
+        "precision": 0.8998817501,
+        "recall": 0.9070321812,
+        "precision_na": "",
+        "recall_na": ""
+      },
+      {
+        "image_id": "pcb1/Data/Images/Anomaly/031.JPG",
+        "label": "anomaly",
+        "split": "train",
+        "tp": 2984,
+        "fp": 1858,
+        "fn": 425,
+        "tn": 1497013,
+        "gt_foreground_pixels": 3409,
+        "predicted_foreground_pixels": 4842,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 0.0032231009,
+        "iou": 0.5665464211,
+        "iou_na": "",
+        "dice": 0.7233062659,
+        "dice_na": "",
+        "precision": 0.6162742668,
+        "recall": 0.8753300088,
+        "precision_na": "",
+        "recall_na": ""
+      },
+      {
+        "image_id": "pcb1/Data/Images/Anomaly/043.JPG",
+        "label": "anomaly",
+        "split": "train",
+        "tp": 191112,
+        "fp": 8040,
+        "fn": 66,
+        "tn": 1303062,
+        "gt_foreground_pixels": 191178,
+        "predicted_foreground_pixels": 199152,
+        "total_pixels": 1502280,
+        "ignored_pixels": 0,
+        "predicted_foreground_ratio": 0.1325664989,
+        "iou": 0.9593109056,
+        "iou_na": "",
+        "dice": 0.9792329567,
+        "dice_na": "",
+        "precision": 0.9596288262,
+        "recall": 0.999654772,
+        "precision_na": "",
+        "recall_na": ""
+      }
+    ]
+  },
+  "read_only": {
+    "optimizer_created": false,
+    "backward_calls": 0,
+    "updates": 0,
+    "all_tensors_unchanged": true,
+    "source_artifacts_unchanged": true
+  },
+  "figures": [
+    "reload_sheet.png",
+    "reload_zoom_065.png",
+    "reload_zoom_031.png"
+  ],
+  "checks": {
+    "artifact_and_provenance_anchors": true,
+    "strict_saved_bundle_loaded": true,
+    "saved_training_state_consistent": true,
+    "all_stored_counts_metrics_equal": true,
+    "available_probability_maps_equal": null,
+    "read_only": true,
+    "real_cuda_fp32_b1_forwards": true
+  },
+  "optional_checks": [
+    "available_probability_maps_equal"
+  ],
+  "skipped_checks": [
+    "available_probability_maps_equal"
+  ],
+  "observed_forward_devices": [
+    "cuda:0",
+    "cuda:0",
+    "cuda:0",
+    "cuda:0",
+    "cuda:0",
+    "cuda:0",
+    "cuda:0",
+    "cuda:0"
+  ]
+}

@@ -9,8 +9,8 @@ add what they actually need.
 Two invariants this module exists to protect:
 
 1. **A "successful update" means the optimiser really moved the weights.**
-   ``GradScaler.step()`` returns ``None`` whether or not it skipped, so the only
-   honest signal is the scale before/after plus a parameter delta check. A
+   ``GradScaler.step()`` returns ``None`` whether or not it skipped, so count
+   actual optimiser calls and retain scale and parameter evidence. A
    training loop that counts attempts as updates can report "20 steps done" while
    the model never moved.
 2. **Evaluation is B1 / eval() / inference_mode / IEEE FP32.**
@@ -176,6 +176,10 @@ class UpdateRecord:
     skipped: bool
     step_ms: float
     batch_ids: list[str]
+    skip_reason: str | None = None
+    optimizer_step_executed: bool = False
+    parameters_unchanged: bool | None = None
+    optimizer_steps_unchanged: bool | None = None
 
     def as_dict(self) -> dict[str, Any]:
         return {
@@ -188,10 +192,14 @@ class UpdateRecord:
             "ignored_pixels": self.ignored_pixels,
             "positive_images": self.positive_images,
             "lr": self.lr,
-            "grad_norm": round(self.grad_norm, 6),
+            "grad_norm": round(self.grad_norm, 6) if math.isfinite(self.grad_norm) else None,
             "scale_before": self.scale_before,
             "scale_after": self.scale_after,
             "skipped": self.skipped,
+            "skip_reason": self.skip_reason,
+            "optimizer_step_executed": self.optimizer_step_executed,
+            "parameters_unchanged": self.parameters_unchanged,
+            "optimizer_steps_unchanged": self.optimizer_steps_unchanged,
             "step_ms": round(self.step_ms, 2),
             "batch_ids": self.batch_ids,
         }
@@ -216,6 +224,96 @@ def _batch_ids(batch: dict[str, Any]) -> list[str]:
 
 def _finite(tensor: torch.Tensor) -> bool:
     return bool(torch.isfinite(tensor).all())
+
+
+def _all_finite(tensors: Sequence[torch.Tensor]) -> bool:
+    # One host synchronisation for a single-device model, rather than one per
+    # parameter. These checks never change gradients or parameters.
+    return bool(torch.stack([torch.isfinite(tensor).all() for tensor in tensors]).all())
+
+
+def _optimizer_steps(optimizer: torch.optim.Optimizer) -> dict[int, float]:
+    return {id(parameter): float(state["step"]) for parameter, state in optimizer.state.items()
+            if "step" in state}
+
+
+def _step_optimizer(
+    model: nn.Module,
+    optimizer: torch.optim.Optimizer,
+    scaler: torch.amp.GradScaler,
+    grad_clip: float,
+) -> dict[str, Any]:
+    """Clip finite gradients and prove whether AdamW actually ran.
+
+    The pinned PyTorch 2.10 scaler caches found_inf at unscale_ time. A later
+    FP32 norm overflow is a separate failure and must not be called an AMP skip.
+    Only the rare, scaler-confirmed overflow branch copies weights for the
+    explicit no-update check; normal training keeps the original arithmetic.
+    """
+    parameters = list(model.parameters())
+    scale_before = float(scaler.get_scale())
+    scaler.unscale_(optimizer)
+    gradients = [parameter.grad for parameter in parameters if parameter.grad is not None]
+    if not gradients:
+        raise RuntimeError("no gradients before optimizer step")
+    gradients_finite = _all_finite(gradients)
+    # This private accessor is tied to the project's pinned torch 2.10 runtime.
+    # Checking the cached decision prevents unscale overflow or norm overflow
+    # from being mistaken for an overflow the scaler will actually skip.
+    found_inf = scaler.is_enabled() and any(
+        float(value) != 0.0 for value in scaler._found_inf_per_device(optimizer).values())
+    if not gradients_finite and not found_inf:
+        raise RuntimeError("non-finite gradient without a GradScaler overflow; stop before optimizer step")
+
+    before_parameters = None
+    before_steps = None
+    if found_inf:
+        grad_norm = float("inf")
+        before_parameters = [parameter.detach().clone() for parameter in parameters]
+        before_steps = _optimizer_steps(optimizer)
+    else:
+        # error_if_nonfinite checks the norm BEFORE clip_grad_norm_ mutates any
+        # gradient. Finite elements can still overflow the FP32 norm reduction.
+        try:
+            grad_norm = float(torch.nn.utils.clip_grad_norm_(
+                parameters, max_norm=grad_clip, error_if_nonfinite=True))
+        except RuntimeError as exc:
+            raise RuntimeError(f"gradient norm check failed before optimizer step: {exc}") from exc
+        if not _all_finite(gradients):
+            raise RuntimeError("non-finite gradient after clipping; stop before optimizer step")
+
+    executed = False
+
+    def mark_executed(*args: Any) -> None:
+        nonlocal executed
+        executed = True
+
+    handle = optimizer.register_step_post_hook(mark_executed)
+    try:
+        scaler.step(optimizer)
+    finally:
+        handle.remove()
+    scaler.update()
+    scale_after = float(scaler.get_scale())
+    if executed == bool(found_inf):
+        raise RuntimeError("optimizer execution disagrees with GradScaler overflow decision")
+
+    parameters_unchanged = None
+    optimizer_steps_unchanged = None
+    if not executed:
+        parameters_unchanged = all(torch.equal(parameter.detach(), before)
+                                   for parameter, before in zip(parameters, before_parameters))
+        optimizer_steps_unchanged = _optimizer_steps(optimizer) == before_steps
+        if not parameters_unchanged or not optimizer_steps_unchanged:
+            raise RuntimeError("GradScaler skip changed parameters or optimizer step counters")
+        if not scale_after < scale_before:
+            raise RuntimeError("GradScaler overflow did not reduce the loss scale")
+    if not _all_finite(parameters):
+        raise RuntimeError("non-finite parameter after optimizer attempt")
+    return {"grad_norm": grad_norm, "scale_before": scale_before, "scale_after": scale_after,
+            "skipped": not executed, "skip_reason": "nonfinite_grad" if not executed else None,
+            "optimizer_step_executed": executed, "parameters_unchanged": parameters_unchanged,
+            "optimizer_steps_unchanged": optimizer_steps_unchanged}
 
 
 def run_training(
@@ -246,6 +344,10 @@ def run_training(
     """
     if accumulation != 1:
         raise ValueError("stages 08/09 fix gradient accumulation at 1")
+    if not math.isfinite(grad_clip) or grad_clip <= 0:
+        raise ValueError("grad_clip must be finite and positive")
+    if not _all_finite(list(model.parameters())):
+        raise RuntimeError("non-finite parameter before training")
 
     optimizer, optimizer_info = build_optimizer(model, lr, weight_decay)
     scaler = torch.amp.GradScaler("cuda", enabled=amp)
@@ -267,6 +369,7 @@ def run_training(
 
     model.train()
     stop = False
+    consecutive_skips = 0
     while not stop:
         for batch in loader:
             if outcome.attempts >= max_attempts:
@@ -294,20 +397,11 @@ def run_training(
                 )
             loss = terms.total
             if not _finite(loss):
-                raise RuntimeError(f"non-finite loss at attempt {attempt}: {float(loss)}")
+                raise RuntimeError(f"non-finite loss at attempt {attempt}: {float(loss.detach())}")
 
             scaler.scale(loss).backward()
-            scaler.unscale_(optimizer)
-            grad_norm_tensor = torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=grad_clip)
-            grad_norm = float(grad_norm_tensor)
-            if not math.isfinite(grad_norm):
-                raise RuntimeError(f"non-finite gradient norm at attempt {attempt}: {grad_norm}")
-
-            scale_before = float(scaler.get_scale())
-            scaler.step(optimizer)
-            scaler.update()
-            scale_after = float(scaler.get_scale())
-            skipped = scale_after < scale_before
+            step = _step_optimizer(model, optimizer, scaler, grad_clip)
+            skipped = step["skipped"]
 
             torch.cuda.synchronize(device_index)
             step_ms = (time.perf_counter() - tick) * 1000.0
@@ -324,22 +418,29 @@ def run_training(
                 ignored_pixels=terms.ignored_pixels,
                 positive_images=terms.positive_images,
                 lr=current_lr,
-                grad_norm=grad_norm,
-                scale_before=scale_before,
-                scale_after=scale_after,
+                grad_norm=step["grad_norm"],
+                scale_before=step["scale_before"],
+                scale_after=step["scale_after"],
                 skipped=skipped,
                 step_ms=step_ms,
                 batch_ids=_batch_ids(batch),
+                skip_reason=step["skip_reason"],
+                optimizer_step_executed=step["optimizer_step_executed"],
+                parameters_unchanged=step["parameters_unchanged"],
+                optimizer_steps_unchanged=step["optimizer_steps_unchanged"],
             )
             outcome.records.append(record)
 
             if skipped:
                 outcome.skipped += 1
+                consecutive_skips += 1
                 if log_handle is not None:
                     log_handle.write(json.dumps({"event": "skipped", **record.as_dict()}, ensure_ascii=False) + "\n")
-                if outcome.skipped >= 3:
+                if consecutive_skips >= 3:
                     raise RuntimeError("three consecutive GradScaler skips; stop and diagnose instead of making up steps")
                 continue
+
+            consecutive_skips = 0
 
             outcome.successful += 1
             if not first_update_record:
@@ -357,6 +458,9 @@ def run_training(
                     "max_abs_parameter_delta": deltas,
                     "parameters_changed": all(value > 0.0 for value in deltas.values()),
                 }
+                if (not first_update_record["parameters_changed"] or set(grad_snapshot) != set(probes)
+                        or not all(math.isfinite(value) and value > 0.0 for value in grad_snapshot.values())):
+                    raise RuntimeError("encoder/head probe lacks a finite nonzero gradient or parameter update")
             if log_handle is not None and (outcome.successful % log_every == 0 or outcome.successful == 1):
                 log_handle.write(json.dumps({"event": "update", **record.as_dict()}, ensure_ascii=False) + "\n")
 
@@ -407,56 +511,60 @@ def evaluate_dataset(
 ) -> dict[str, Any]:
     """B1, eval(), inference_mode, IEEE FP32. Returns metrics plus optional maps."""
     threshold = float(config["raw"]["eval"]["threshold"]) if threshold is None else float(threshold)
-    model.eval()
-    evaluator = OriginalSpaceEvaluator(threshold=threshold)
-    order = list(range(len(dataset))) if indices is None else list(indices)
-    kept: list[dict[str, Any]] = []
-    forward_ms: list[float] = []
-    device_index = torch.cuda.current_device() if device.startswith("cuda") else None
+    was_training = model.training
+    try:
+        model.eval()
+        evaluator = OriginalSpaceEvaluator(threshold=threshold)
+        order = list(range(len(dataset))) if indices is None else list(indices)
+        kept: list[dict[str, Any]] = []
+        forward_ms: list[float] = []
+        device_index = torch.cuda.current_device() if device.startswith("cuda") else None
 
-    precision_record: dict[str, Any] = {}
-    with evaluation_precision(config, device=device) as precision_record:
-        with torch.inference_mode():
-            for index in order:
-                item = dataset[index]
-                pixels = item["pixel_values"].unsqueeze(0).to(device)
-                if device_index is not None:
-                    torch.cuda.synchronize(device_index)
-                tick = time.perf_counter()
-                logits = model(pixel_values=pixels).logits
-                if device_index is not None:
-                    torch.cuda.synchronize(device_index)
-                forward_ms.append(round((time.perf_counter() - tick) * 1000.0, 2))
-                logits = logits[0].float().cpu()
-                label = (label_of or {}).get(item["image_id"])
-                if label is None:
-                    label = "normal" if "Normal" in item["image_id"] else "anomaly"
-                evaluator.add_sample(
-                    logits,
-                    item["original_mask"],
-                    item["geometry"],
-                    image_id=item["image_id"],
-                    label=label,
-                    flipped=bool(item["flipped"]),
-                )
-                if keep_probabilities:
-                    kept.append({"image_id": item["image_id"], "label": label,
-                                 "logits": logits, "geometry": item["geometry"],
-                                 "original_mask": item["original_mask"]})
+        precision_record: dict[str, Any] = {}
+        with evaluation_precision(config, device=device) as precision_record:
+            with torch.inference_mode():
+                for index in order:
+                    item = dataset[index]
+                    pixels = item["pixel_values"].unsqueeze(0).to(device)
+                    if device_index is not None:
+                        torch.cuda.synchronize(device_index)
+                    tick = time.perf_counter()
+                    logits = model(pixel_values=pixels).logits
+                    if device_index is not None:
+                        torch.cuda.synchronize(device_index)
+                    forward_ms.append(round((time.perf_counter() - tick) * 1000.0, 2))
+                    logits = logits[0].float().cpu()
+                    label = (label_of or {}).get(item["image_id"])
+                    if label is None:
+                        label = "normal" if "Normal" in item["image_id"] else "anomaly"
+                    evaluator.add_sample(
+                        logits,
+                        item["original_mask"],
+                        item["geometry"],
+                        image_id=item["image_id"],
+                        label=label,
+                        split=dataset.split,
+                        flipped=bool(item["flipped"]),
+                    )
+                    if keep_probabilities:
+                        kept.append({"image_id": item["image_id"], "label": label,
+                                     "logits": logits, "geometry": item["geometry"],
+                                     "original_mask": item["original_mask"]})
 
-    result = evaluator.result()
-    result["evaluation"] = {
-        "batch_size": 1,
-        "mode": "model.eval() + torch.inference_mode()",
-        "precision": "ieee_fp32 (TF32 disabled, autocast disabled)",
-        "precision_record": precision_record,
-        "threshold": threshold,
-        "forward_ms": forward_ms,
-        "median_forward_ms": round(float(np.median(forward_ms)), 2) if forward_ms else None,
-    }
-    result["samples"] = kept
-    model.train()
-    return result
+        result = evaluator.result()
+        result["evaluation"] = {
+            "batch_size": 1,
+            "mode": "model.eval() + torch.inference_mode()",
+            "precision": "ieee_fp32 (TF32 disabled, autocast disabled)",
+            "precision_record": precision_record,
+            "threshold": threshold,
+            "forward_ms": forward_ms,
+            "median_forward_ms": round(float(np.median(forward_ms)), 2) if forward_ms else None,
+        }
+        result["samples"] = kept
+        return result
+    finally:
+        model.train(was_training)
 
 
 # -------------------------------------------------------------------- saving ----

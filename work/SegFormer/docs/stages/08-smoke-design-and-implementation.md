@@ -2,12 +2,12 @@
 
 | 项目 | 值 |
 | --- | --- |
-| 创建/更新时间 | 2026-11-01 11:20 +08:00 |
+| 创建/更新时间 | 2026-11-01；本轮独立验收修订 |
 | 对应步骤 | 主指南第 10 节「步骤 8：20 步冒烟检查」 |
 | 前置状态 | 阶段 01—07 已验收（07 为 42 项检查、186 项回归）；v2 清单与 MiT-B0 快照未变 |
 | 本阶段范围 | 固定 8 图、AMP 训练 20 次成功更新、B1 FP32 通路评价、保存后新进程严格重载 |
 | 明确不做 | 不评价泛化、不读 test 图像/掩码、不做测试推理、不启动 pilot 或正式训练 |
-| 对应代码身份 | `training.py`（598 行，SHA `458be482…`）、`smoke.py`（400 行，`9c45c1dc…`）、`subset.py`（219 行，`11f1831c…`） |
+| 对应代码身份 | 以下原数值属于 `smoke_001`；原记录源码与提交的差异及当前代码身份，见本文末的独立验收补充和 `reports/stage09-acceptance.json` |
 
 ## 1. 本阶段解决什么问题
 
@@ -49,7 +49,7 @@
 
 ### 3.3 "成功更新"的定义
 
-`GradScaler.step()` 无论是否跳步都返回 `None`。本实现用**前后 scale 比较**判定：
+当前 AdamW 的 `GradScaler.step()` 返回值不能判断是否执行。原实现用**前后 scale 比较**辅助判定：
 
 ```python
 scale_before = scaler.get_scale()
@@ -61,13 +61,15 @@ skipped = scale_after < scale_before
 
 并在第一次成功更新时记录编码器与解码头的梯度范数、以及更新前后参数的 `max|Δ|`。计数上区分 `attempts`（尝试）与 `successful`（真正更新）。成功目标 20，尝试上限 30，多余尝试只允许容纳记录在案的 AMP 校准跳步。
 
+独立验收已进一步改为 optimizer post-hook 观察真实执行，并核对 scaler 的异常决定、跳步时参数/优化器计数未变。总范数 inf 不必然等于 scaler 确认的溢出，不能仅据此写 skipped；实现详见[阶段 09 文档](./09-overfit-design-and-implementation.md#5-amp-跳步修复必须区分两类异常)。
+
 ### 3.4 评价路径复用阶段 07，不重写
 
 `evaluate_dataset` 里：`model.eval()` → `torch.inference_mode()` → `with evaluation_precision(config, device='cuda')`，逐张 B1 前向；概率恢复与计分全部走 `metrics.py`。`precision_record` 同时记录 TF32 关闭前后状态（本机卷积默认 `cudnn.allow_tf32=True`）。
 
 ### 3.5 保存必须自包含
 
-run 内保存 `model_config.json`、`processor/`、`checkpoints/model_state.pt`（仅模型张量）、`checkpoints/training_state.pt`（含优化器与 GradScaler 状态）、`resolved_config.yaml`、`provenance.json`。重载入口 `load_run_model` 不读取预训练快照，只用 run 内的结构配置与权重，并 `strict=True`。
+run 内保存 `model_config.json`、`processor/`、`checkpoints/model_state.pt`（仅模型张量）、`checkpoints/training_state.pt`（含优化器与 GradScaler 状态）、`resolved_config.yaml`。provenance 位于 `summary.json` 字段中，并非独立文件。重载入口 `load_run_model` 用 run 内结构与权重严格加载；本轮还确认 Dataset 实际使用保存的 processor。
 
 ## 4. 文件与接口
 
@@ -110,11 +112,11 @@ scaler.update()
 
 ### 5.2 优化器分组
 
-AdamW 按名字分两组：`.bias` 与含 `norm` 的参数 `weight_decay=0`，其余 `0.01`。这是一个容易被忽略的默认差异——对 LayerNorm 施加 decay 会在短程训练中人为拉低指标。
+AdamW 按名字分两组：`.bias` 与含 `norm` 的参数 `weight_decay=0`，其余 `0.01`。这是本实验明确采用的配方，不保证对所有任务都优于统一 decay。
 
 ### 5.3 显存与计时的口径
 
-`torch.cuda.reset_peak_memory_stats()` 在训练前调用；每步前后 `cuda.synchronize()`；首步与稳态分开记录。原因是首步包含 CUDA 上下文初始化与 cuDNN 算法选择，若把它算进"每步耗时"会得到严重偏高的估计。
+`torch.cuda.reset_peak_memory_stats()` 在训练前调用；每步前后 `cuda.synchronize()`；首步与稳态分开记录。首步可能包含首次训练内核、工作区和优化器状态准备，不能直接当稳态速度；CUDA 上下文也可能早在模型搬至 GPU 时已建立。
 
 ## 6. 如何操作与实际执行了什么
 
@@ -213,7 +215,7 @@ CE 从 **0.6350 → 0.2182**，总损失从 **1.1331 → 0.5937**；Dice 项在�
 | 1 | 首次跑完 20 步后在保存阶段 `KeyError: 'checkpoints/model_state.pt'` | `path.relative_to(run_dir)` 在 Windows 上返回反斜杠路径，与 manifest 里的 POSIX key 不一致 | 改用 `.as_posix()`；失败 run 移入 `runs/archive/smoke_001_aborted_artifact_key` 保留，重跑得到当前有效 run |
 | 2 | （预防）把尝试次数当更新次数 | `GradScaler.step()` 返回 `None` | 用前后 scale 比较判定跳步，并记录首步梯度与参数变化 |
 
-未做/待验证：
+以下是阶段 08 首次执行时的未验证项；本轮修正后的状态见第 11 节：
 
 - 没有测过 AMP 跳步的真实路径（本次 0 跳步）；该分支有日志与"连续 3 次跳步即停"的保护，但没有实测触发。
 - `workers=0` 仍是唯一验证过的设置。
@@ -221,7 +223,7 @@ CE 从 **0.6350 → 0.2182**，总损失从 **1.1331 → 0.5937**；Dice 项在�
 
 ## 9. 给用户的学习要点
 
-1. **"跑通"与"学得好"要分开验收。** 20 步的 IoU 是 0，但这不是问题：随机解码头学 20 步几乎必然全背景。真正要看的证据是梯度非零、参数确实变化、保存能被新进程严格加载。
+1. **"跑通"与"学得好"要分开验收。** 本次 20 步的 IoU 是 0，短训效果不足本身不构成通路失败；不能断言所有随机头训练 20 步都会全背景。此阶段看梯度、真实更新和新进程重载。
 2. **为什么必须记录首步与稳态两个耗时。** 首步 3.4 s、稳态 58 ms，差 58 倍。用首步推算 50 轮会得到荒谬的预算。
 3. **为什么保存结构配置和 processor，不能只存 state_dict。** 没有 `model_config.json`，别人无法知道 2 类、ignore 255、dropout 设置；没有 processor，推理时的归一化常数就要靠猜。
 4. **为什么跳步判定要看 scale。** `step()` 返回值在两种情况下都是 `None`，不检查 scale 就可能把"根本没更新"写成"第 N 步完成"。
@@ -233,3 +235,14 @@ CE 从 **0.6350 → 0.2182**，总损失从 **1.1331 → 0.5937**；Dice 项在�
 | 日期 | 变更 | 说明 |
 | --- | --- | --- |
 | 2026-11-01 | 初版 | 20 步冒烟通过，5/5 技术门禁，新进程重载零差异 |
+| 2026-11-01 | 独立验收 | 修保存 processor 注入与真实 step 判定；原 run 和新 smoke 分别新进程复验，最终完整回归 207 项通过 |
+
+## 11. 本轮独立验收补充
+
+第八、九阶段已通过[联合验收](../../reports/2026-11-01-stage08-09-acceptance.md)。原 `smoke_001` 的旧重载没有将保存 processor 传给 Dataset，本次 `run_check` 明确使用它，模型和训练状态全部核对后，6 张图概率差 0.0、XOR 0，原图指标一致。旧报告不能单独作为已验证预处理保存闭环的充分证据。
+
+共享训练步修正后，另建 `smoke_003_stage09_acceptance`，真实 CUDA 回归仍为 20 成功/20 尝试/0 跳步，首步编码器与头均有梯度和参数变化，峰值 allocated/reserved 为 806.5/934 MiB；新进程重载同样概率差 0.0、XOR 0。该次训练步中位数 103.0 ms、墙钟 6.711 s，与旧速度分开记录，不声称新旧权重按位相同。
+
+当前代码的 11 项训练 CPU 回归覆盖了真实 GradScaler 跳步、有限元素范数溢出、AMP 关闭后的非有限拒绝、连续跳步复位、参数有限性和模式恢复；完整项目回归为 207 项。新报告见 `reports/stage08-reload-check.json`、`stage09-smoke-reload-check.json`，小型运行原件在 `reports/stage08_09_evidence`。
+
+原 `smoke_001` 记录的训练源码 SHA 为 `47551c0a…`，与阶段 08 Git 提交 `458be482…` 不同，准确历史源码未恢复。这是历史复现局限；本轮新回归有当前代码 SHA，但不将它伪装成原实验源码。完整 epoch resume、workers>0 与全量训练仍未验证。阶段 09 现也已验收，下一步仅[阶段 10](../../reports/2026-11-01-stage10-execution-handoff.md)。

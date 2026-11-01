@@ -1,0 +1,424 @@
+{
+  "schema": "segformer-lab/stage09-summary/1",
+  "stage": "09",
+  "not_a_baseline": true,
+  "statement": "8-image overfit debugging run. Every metric here is measured on the same 8 training images that were optimised; it proves the label/geometry/loss/optimiser path can learn, and says nothing about generalisation or baseline quality.",
+  "generated_at": "2026-11-01T11:33:30+08:00",
+  "run": {
+    "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_002",
+    "kept_local": true,
+    "note": "checkpoints, contact sheets and per-update logs stay outside git (86 MB class)"
+  },
+  "config": {
+    "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\configs\\overfit.yaml",
+    "sha256": "f1f1259f4a4c9e89ad28214685fa12e0bc95d0626ee102112be7c9531b17de3b"
+  },
+  "identity": {
+    "ids_sha256": "2ac81b816dde9888d7483a3af0b9ffa85ae17cd242242542c1ff3f88d1cec6e9",
+    "train_manifest_sha256": "f1522eb9b474d0acc1d736a391002f5044153208fa10f51eea3dc7df729f65b0",
+    "val_manifest_sha256": "60a6c6cbf5ed7f5f9e57fb57bb096a5b57db677af5ee73f4fa140ddceaba6191",
+    "test_manifest_sha256": "4bdc594148f208c7067a66a8cb3b06fde53ebc1f4ab6fda84f08f80383061284",
+    "test_images_read": false,
+    "test_manifest_usage": "hash only, same as stages 06-08",
+    "snapshot": {
+      "model_id": "nvidia/mit-b0",
+      "revision": "80983a413c30d36a39c20203974ae7807835e2b4",
+      "weights_sha256": "4af8348c2a802bf76115d34797ff5ce1d9f110bb8593c22d9b66d8bd7fa227fc"
+    },
+    "git_head": "eb7c3ec9f2532cef49f292bf26759d1d2087bc24",
+    "git_dirty": [
+      "M work/SegFormer/segformer_lab/training.py",
+      "?? work/SegFormer/reports/2026-11-01-stage09-handoff.md"
+    ]
+  },
+  "subset": {
+    "images": [
+      "pcb1/Data/Images/Normal/0025.JPG",
+      "pcb1/Data/Images/Normal/0121.JPG",
+      "pcb1/Data/Images/Normal/0708.JPG",
+      "pcb1/Data/Images/Normal/0812.JPG",
+      "pcb1/Data/Images/Anomaly/065.JPG",
+      "pcb1/Data/Images/Anomaly/038.JPG",
+      "pcb1/Data/Images/Anomaly/031.JPG",
+      "pcb1/Data/Images/Anomaly/043.JPG"
+    ],
+    "labels": [
+      "normal",
+      "normal",
+      "normal",
+      "normal",
+      "anomaly",
+      "anomaly",
+      "anomaly",
+      "anomaly"
+    ],
+    "composition": {
+      "normal": 4,
+      "anomaly": 4
+    }
+  },
+  "model": {
+    "parameters": {
+      "total": 3714658,
+      "trainable": 3714658,
+      "encoder": 3319392,
+      "head": 395266
+    },
+    "encoder_check": {
+      "matched_exact": 192,
+      "checkpoint_tensors": 194,
+      "max_abs_diff": 0.0
+    },
+    "optimizer": {
+      "class": "torch.optim.AdamW",
+      "lr": 0.0001,
+      "weight_decay": 0.01,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1E-08,
+      "decay_tensors": 72,
+      "no_decay_tensors": 133,
+      "decay_examples": [
+        "segformer.encoder.patch_embeddings.0.proj.weight",
+        "segformer.encoder.patch_embeddings.1.proj.weight",
+        "segformer.encoder.patch_embeddings.2.proj.weight"
+      ],
+      "no_decay_examples": [
+        "segformer.encoder.patch_embeddings.0.proj.bias",
+        "segformer.encoder.patch_embeddings.0.layer_norm.weight",
+        "segformer.encoder.patch_embeddings.0.layer_norm.bias"
+      ]
+    },
+    "init_from": "pinned MiT-B0 snapshot, decode head re-initialised",
+    "initial_parameter_digest": {
+      "sum_of_parameters": 6937.768430818599,
+      "tensor_count": 205
+    },
+    "smoke_final_parameter_digest": {
+      "sum_of_parameters": 6937.935886186838,
+      "tensor_count": 205
+    },
+    "smoke_state_inherited": false
+  },
+  "training": {
+    "successful_updates": 200,
+    "attempts": 201,
+    "skipped": 1,
+    "stopped_reason": "target reached (200 successful updates)",
+    "timing": {
+      "wall_seconds": 48.773,
+      "successful_updates": 200,
+      "attempts": 201,
+      "skipped": 1,
+      "median_step_ms": 58.34,
+      "median_step_ms_after_first": 58.31,
+      "first_step_ms": 3209.57,
+      "updates_per_second": 4.1006
+    },
+    "memory": {
+      "gpu": {
+        "available": true,
+        "device": "NVIDIA GeForce RTX 4070 Laptop GPU",
+        "total_mib": 8187.5,
+        "free_mib": 6084.0,
+        "peak_allocated_mib": 805.7,
+        "peak_reserved_mib": 932.0
+      },
+      "system_ram": {
+        "total_gib": 15.22,
+        "available_gib": 0.98,
+        "load_percent": 93
+      }
+    },
+    "parameter_evidence": {
+      "at_success_index": 1,
+      "grad_norm_per_tensor": {
+        "segformer.encoder.patch_embeddings.0.proj.weight": 0.09309650957584381,
+        "decode_head.linear_c.0.proj.weight": 0.025289760902523994
+      },
+      "max_abs_parameter_delta": {
+        "segformer.encoder.patch_embeddings.0.proj.weight": 0.00010021030902862549,
+        "decode_head.linear_c.0.proj.weight": 0.00010006874799728394
+      },
+      "parameters_changed": true
+    },
+    "skipped_event": {
+      "attempt": 76,
+      "batch_ids": [
+        "043.JPG",
+        "0812.JPG"
+      ],
+      "ce": 0.05783103,
+      "dice": 0.17254782,
+      "total": 0.14410494,
+      "grad_norm": null,
+      "scale_before": 65536.0,
+      "scale_after": 32768.0,
+      "skip_reason": "nonfinite_grad"
+    }
+  },
+  "learning": {
+    "baseline_update": 0,
+    "verdicts": {
+      "100": {
+        "iou": 0.83614648,
+        "baseline_iou": 0.00825018,
+        "iou_gain": 0.8278963,
+        "true_positive_pixels": 197706,
+        "anomaly_macro_iou": 0.418920057,
+        "min_iou_gain": 0.02,
+        "learning": true
+      },
+      "200": {
+        "iou": 0.94570952,
+        "baseline_iou": 0.00825018,
+        "iou_gain": 0.93745934,
+        "true_positive_pixels": 197188,
+        "anomaly_macro_iou": 0.7607445312,
+        "min_iou_gain": 0.02,
+        "learning": true
+      }
+    },
+    "curve": [
+      {
+        "update": 0,
+        "global_iou": 0.0082501792,
+        "global_dice": 0.0163653414,
+        "tp": 17853,
+        "fp": 1965699,
+        "fn": 180401,
+        "anomaly_macro_iou": 0.014414483,
+        "normal_fp_ratio": 0.1453642130628112
+      },
+      {
+        "update": 50,
+        "global_iou": 0.9151125618,
+        "global_dice": 0.9556749614,
+        "tp": 190930,
+        "fp": 10387,
+        "fn": 7324,
+        "anomaly_macro_iou": 0.2592790716,
+        "normal_fp_ratio": 0.0
+      },
+      {
+        "update": 100,
+        "global_iou": 0.836146484,
+        "global_dice": 0.9107622854,
+        "tp": 197706,
+        "fp": 38195,
+        "fn": 548,
+        "anomaly_macro_iou": 0.418920057,
+        "normal_fp_ratio": 0.0
+      },
+      {
+        "update": 150,
+        "global_iou": 0.9163213239,
+        "global_dice": 0.9563336925,
+        "tp": 197897,
+        "fp": 17715,
+        "fn": 357,
+        "anomaly_macro_iou": 0.5944910649,
+        "normal_fp_ratio": 2.6626194850493917E-06
+      },
+      {
+        "update": 200,
+        "global_iou": 0.9457095171,
+        "global_dice": 0.972097334,
+        "tp": 197188,
+        "fp": 10254,
+        "fn": 1066,
+        "anomaly_macro_iou": 0.7607445312,
+        "normal_fp_ratio": 1.4145166014324892E-05
+      }
+    ]
+  },
+  "per_image": [
+    {
+      "image": "0025.JPG",
+      "label": "normal",
+      "gt_foreground_pixels": 0,
+      "predicted_foreground_pixels_update_0": 152385,
+      "predicted_foreground_pixels_update_200": 0,
+      "iou_update_0": 0.0,
+      "iou_update_200": null,
+      "fp_update_0": 152385,
+      "fp_update_200": 0,
+      "fn_update_200": 0
+    },
+    {
+      "image": "0121.JPG",
+      "label": "normal",
+      "gt_foreground_pixels": 0,
+      "predicted_foreground_pixels_update_0": 319655,
+      "predicted_foreground_pixels_update_200": 0,
+      "iou_update_0": 0.0,
+      "iou_update_200": null,
+      "fp_update_0": 319655,
+      "fp_update_200": 0,
+      "fn_update_200": 0
+    },
+    {
+      "image": "0708.JPG",
+      "label": "normal",
+      "gt_foreground_pixels": 0,
+      "predicted_foreground_pixels_update_0": 242134,
+      "predicted_foreground_pixels_update_200": 12,
+      "iou_update_0": 0.0,
+      "iou_update_200": 0.0,
+      "fp_update_0": 242134,
+      "fp_update_200": 12,
+      "fn_update_200": 0
+    },
+    {
+      "image": "0812.JPG",
+      "label": "normal",
+      "gt_foreground_pixels": 0,
+      "predicted_foreground_pixels_update_0": 159337,
+      "predicted_foreground_pixels_update_200": 73,
+      "iou_update_0": 0.0,
+      "iou_update_200": 0.0,
+      "fp_update_0": 159337,
+      "fp_update_200": 73,
+      "fn_update_200": 0
+    },
+    {
+      "image": "065.JPG",
+      "label": "anomaly",
+      "gt_foreground_pixels": 1150,
+      "predicted_foreground_pixels_update_0": 256532,
+      "predicted_foreground_pixels_update_200": 826,
+      "iou_update_0": 0.0044828715,
+      "iou_update_200": 0.6932305056,
+      "fp_update_0": 255382,
+      "fp_update_200": 17,
+      "fn_update_200": 341
+    },
+    {
+      "image": "038.JPG",
+      "label": "anomaly",
+      "gt_foreground_pixels": 2517,
+      "predicted_foreground_pixels_update_0": 362550,
+      "predicted_foreground_pixels_update_200": 2537,
+      "iou_update_0": 0.0069424907,
+      "iou_update_200": 0.8238902923,
+      "fp_update_0": 360033,
+      "fp_update_200": 254,
+      "fn_update_200": 234
+    },
+    {
+      "image": "031.JPG",
+      "label": "anomaly",
+      "gt_foreground_pixels": 3409,
+      "predicted_foreground_pixels_update_0": 129384,
+      "predicted_foreground_pixels_update_200": 4842,
+      "iou_update_0": 0.0263479256,
+      "iou_update_200": 0.5665464211,
+      "fp_update_0": 125975,
+      "fp_update_200": 1858,
+      "fn_update_200": 425
+    },
+    {
+      "image": "043.JPG",
+      "label": "anomaly",
+      "gt_foreground_pixels": 191178,
+      "predicted_foreground_pixels_update_0": 361575,
+      "predicted_foreground_pixels_update_200": 199152,
+      "iou_update_0": 0.0198846443,
+      "iou_update_200": 0.9593109056,
+      "fp_update_0": 350798,
+      "fp_update_200": 8040,
+      "fn_update_200": 66
+    }
+  ],
+  "normal_false_alarms": {
+    "update_0_fp_pixels": 873511,
+    "update_0_fp_ratio": 0.1453642130628112,
+    "update_200_fp_pixels": 85,
+    "update_200_fp_ratio": 1.4145166014324892E-05
+  },
+  "shared_code_change": {
+    "file": "segformer_lab/training.py",
+    "reason": "attempt 76 raised on a non-finite gradient before GradScaler could skip it",
+    "change": "non-finite gradient -> record skip_reason=nonfinite_grad, let scaler.step skip, scaler.update halve the scale; consecutive-skip counter resets on success and only three consecutive skips stop the run",
+    "semantics_unchanged": [
+      "data/label semantics",
+      "geometry and normalisation",
+      "loss definition",
+      "optimizer groups",
+      "learning rate",
+      "evaluation path"
+    ],
+    "regression_smoke_run": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_002_stage09_regression",
+    "regression_smoke": {
+      "successful_updates": 20,
+      "attempts": 20,
+      "skipped": 0,
+      "encoder_max_delta": 6.014108657836914E-05,
+      "head_max_delta": 6.004422903060913E-05
+    }
+  },
+  "aborted_attempts": [
+    {
+      "label": "attempt 1",
+      "path": "E:\\桌面\\AI\\segformer_resources\\runs\\archive\\overfit_001_attempt1_crash_inf_grad_76",
+      "stop": "RuntimeError non-finite gradient norm at attempt 76 (traceback hidden by EAP=Stop)",
+      "successful_updates_before_stop": 75,
+      "attempts_including_aborted_update": 76
+    },
+    {
+      "label": "attempt 2",
+      "path": "E:\\桌面\\AI\\segformer_resources\\runs\\archive\\overfit_001_attempt2_crash_inf_grad_76",
+      "stop": "same crash at attempt 76",
+      "successful_updates_before_stop": 75,
+      "attempts_including_aborted_update": 76
+    },
+    {
+      "label": "attempt 3 (crash scene kept in place)",
+      "path": "E:\\桌面\\AI\\segformer_resources\\runs\\overfit_001",
+      "stop": "RuntimeError non-finite gradient norm at attempt 76 (traceback captured)",
+      "successful_updates_before_stop": 75,
+      "attempts_including_aborted_update": 76
+    }
+  ],
+  "attempt_budget": {
+    "cap": 500,
+    "consumed_by_recorded_run": 201,
+    "consumed_by_diagnostic_attempts": 228,
+    "total": 429,
+    "note": "Corrected at acceptance: each aborted run entered attempt 76; 3*76+201=429. Successful updates and attempts are distinct."
+  },
+  "artifacts": {
+    "local_only": [
+      "checkpoints/model_state.pt (14.9 MB)",
+      "checkpoints/training_state.pt (44.8 MB)",
+      "eval/sheet_update_{000,050,100,150,200}.png (~0.85 MB each)",
+      "eval/zoom_smallest_update_{000,050,100,150,200}.png (~0.22-0.25 MB each)",
+      "updates.jsonl (201 records)"
+    ],
+    "in_git": [
+      "reports/stage09-summary.json",
+      "docs/stages/09-overfit-design-and-implementation.md"
+    ]
+  },
+  "limitations": [
+    "8 training images, 200 updates: a wiring check, not a baseline.",
+    "The 0.9457 IoU is on images the model was trained on; it cannot be read as generalisation.",
+    "IoU is dominated by the 191 178 px defect; anomaly macro IoU (0.761) is the honest per-image view.",
+    "One AMP overflow was absorbed at attempt 76; whether that is rare or systematic at 512/fp16 is unresolved.",
+    "workers=0 remains the only validated loader setting; workers>0 is untested.",
+    "No validation-set or test-set inference was run in this stage."
+  ],
+  "acceptance": {
+    "report": "reports/2026-11-01-stage08-09-acceptance.md",
+    "read_only_reload": "reports/stage09-reload-check.json",
+    "recorded_training_source_sha256": "4fd511a867dc01fbe7b16103230d9a780175d310ab61691db123ce5bc0938663",
+    "recorded_training_source": "reports/stage08_09_evidence/recorded_source/training.py.txt",
+    "original_runs_unchanged": true,
+    "original_split_metadata_incorrect": "Per-image split was val in the historical overfit JSON; all eight IDs are verified members of train. New checker explicitly corrects metadata and compares every numeric field.",
+    "normal_false_positive_pixels": "873511 at update0; 85 at update200; 1965699 was all-image FP",
+    "original_probability_maps": "Not saved for overfit; fresh checkpoint counts/metrics can be compared, full probability equality cannot be established",
+    "current_code": "See reports/stage09-acceptance.json; acceptance adds finite-step guards, saved-processor use, actual split, mode restoration and real crops without rewriting the recorded 200-update run."
+  }
+}
