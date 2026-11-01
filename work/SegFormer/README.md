@@ -3,10 +3,12 @@
 本目录是 VisA PCB1 high-shot 协议下 SegFormer-B0 单基线实验的工程根目录：代码、配置、清单、阶段文档。
 环境、缓存、数据、模型与运行产物**不在本目录**，统一放在仓库外的 `E:\桌面\AI\segformer_resources`。
 
+- 2026-11-02学习入口：[从论文到训练实现的学习指南](../../docs/research/2026-11-02-segformer-baseline-learning-and-code-guide.md)、[基于现有成果的开题与导师沟通指南](../../docs/research/2026-11-02-proposal-preparation-and-advisor-discussion-guide.md)。近期重点为理解现有训练流程、整理当前功能与开题材料；新模型和额外实验不作为开题前置任务。
+
 - 当前进度：**步骤1—13已完成当前工程闭环；阶段12—13已通过独立验收。**291项回归、v2 val门禁74/74；完整132张val与442张test技术复核及原图PNG/GT计数一致。test全局IoU **0.6833**、Dice0.8119、异常macro IoU **0.5249**；正常3689FP像素、32/402张有FP。五张修正图已逐看，23张展示图XOR0；未启动DINOv3或新训练。
 - 验收记录：[阶段01—02验收与完善](./reports/2026-10-31-stage01-02-acceptance.md)、[第三阶段验收](./reports/2026-10-31-stage03-acceptance.md)、[第四阶段验收](./reports/2026-10-31-stage04-acceptance.md)、[第五阶段模型加载与核验](./reports/2026-10-31-stage05-model-loading-and-check.md)、[第六阶段验收](./reports/2026-10-31-stage06-acceptance.md)
 - 阶段索引：[docs/stages/README.md](./docs/stages/README.md)
-- 最新验收：[第十二、十三阶段](./reports/2026-11-01-stage12-13-acceptance.md)、[机器摘要](./reports/stage12-13-acceptance.json)；结果见[实验卡](./reports/pcb1_b0_v2_seed42/experiment-card.md)。下一步按[基线闭环后交接](./reports/2026-11-01-post-baseline-next-step-handoff.md)做冻结DINOv3小规模可行性验证，本轮未执行。
+- 最新验收：[第十二、十三阶段](./reports/2026-11-01-stage12-13-acceptance.md)、[机器摘要](./reports/stage12-13-acceptance.json)；结果见[实验卡](./reports/pcb1_b0_v2_seed42/experiment-card.md)。2026-11-02近期安排以[现有成果开题指南](../../docs/research/2026-11-02-proposal-preparation-and-advisor-discussion-guide.md)为准，先理解训练并准备材料；DINOv3保留为未实施的可选候选。
 - [阶段12—13统一交接](./reports/2026-11-01-stage12-13-continuous-execution-handoff.md)保留为已完成任务的历史执行依据，当前状态与下一步以上述验收记录为准。
 - 主指南：`../../docs/research/2026-10-31-segformer-baseline-end-to-end-guide.md`
 - 环境隔离规范：`../../docs/research/2026-10-31-segformer-environment-isolation-and-stage-docs.md`
@@ -467,4 +469,4 @@ Invoke-SegPip list
 
 [联合验收](./reports/2026-11-01-stage12-13-acceptance.md)已通过：291项回归、74项val门禁、完整132/442图技术复核及原始GT计数、独立无GT单图、23张展示图二值一致和五张图目视检查均有记录。代码保护、图表与解释已修正，原模型和首次评价目录保持不变。
 
-下一步见[基线闭环后交接](./reports/2026-11-01-post-baseline-next-step-handoff.md)：先理解并备份基线，按原研究计划验证冻结DINOv3-S/16加简单头的特征/梯度与资源可行性，不直接融合或长训练。本轮没有启动新模型。
+近期按[训练学习指南](../../docs/research/2026-11-02-segformer-baseline-learning-and-code-guide.md)理解现有流程，按[开题指南](../../docs/research/2026-11-02-proposal-preparation-and-advisor-discussion-guide.md)整理当前成果并与导师确认对象和工作量。原[后续技术交接](./reports/2026-11-01-post-baseline-next-step-handoff.md)保留为可选参考，不构成开题必做任务或新模型承诺。
