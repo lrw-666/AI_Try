@@ -24,7 +24,7 @@
 | 09 | 8 张训练图过拟合检查 | 已通过独立验收 | [09-overfit-design-and-implementation.md](./09-overfit-design-and-implementation.md) | `runs\overfit_002\summary.json`、`evaluation_curve.json`、`eval\*`（仓库外）；`reports\stage09-summary.json`（仓库）；崩溃现场 `runs\overfit_001` 与 `runs\archive\overfit_001_attempt{1,2}_*`；回归 `runs\smoke_002_stage09_regression` |
 | 10 | 完整训练集短程试跑 | 已通过独立验收 | [10-pilot-design-and-implementation.md](./10-pilot-design-and-implementation.md) | `runs\pilot_001\summary.json`、`epochs.jsonl`、`updates.jsonl`、`reload_check.json`（仓库外）；`reports\stage10-summary.json`、`reports\stage10-unit-tests.txt`、`reports\figures\stage10-*.png`（仓库） |
 | 11 | 正式训练与可靠保存 | 正式训练及保存模型已验收；恢复数值复现未通过原容差 | [11-training-design-and-implementation.md](./11-training-design-and-implementation.md) | [验收](../../reports/2026-11-01-stage11-acceptance.md)；`reports/stage11-acceptance.json`、`stage11-reload-check.json`、`stage11-resume-fixture.json`、263项回归、`stage11_evidence`原件；权重留仓库外 |
-| 12 | 独立推理与原图评价 | 未开始，已有执行交接 | — | [阶段12执行交接](../../reports/2026-11-01-stage12-execution-handoff.md) |
+| 12 | 独立推理与原图评价 | 已完成，自检通过，待独立验收 | [12-evaluation-design-and-implementation.md](./12-evaluation-design-and-implementation.md) | `runs\pcb1_b0_v2_seed42_eval_001\{val,test}`（仓库外）；`reports\stage12-summary.json`、`reports\stage12_evidence\`（56 KB，含 132/442 行逐图统计 gzip）、`reports\stage12-unit-tests.txt`（273 项） |
 | 13 | 结果可视化、失败分析与实验卡 | 未开始 | — | — |
 
 ## 当前状态一句话
@@ -105,11 +105,23 @@
 
 [第七阶段验收](../../reports/2026-11-01-stage07-acceptance.md)：42 项完整检查、186 项回归通过；明确 NA、原图 255、FP16 CE、真实 XOR、精度策略与前置身份保护，源码及小型证据保存在仓库。旧版和 TF32 对照分别归档，不覆盖失败事实。未训练，不报告模型质量。
 
+**第12阶段已完成，自检通过，待独立验收**：新进程从 run 内结构与 best 严格重建，完整 132 张 val 复算通过 **29/29 门禁**（混淆量/全局/macro/逐图/NA 全等，6 张预览概率差 0、XOR 0），随后按冻结协议**一次性**评价 442 张 test：全局 IoU **0.6833**、Dice 0.8119、P 0.9008、R 0.7390，异常 40 张 macro IoU **0.5249**，正常 402 张 FP **3 689 px**（32/402 张有任意 FP）。回归 273 项通过。test 与 val 分列，未用于选参。
+
+## 阶段 12 关键结论
+
+- 入口：新增 `segformer_lab/inference.py`（共享推理通道）、`evaluate.py`（val 门禁 + test）、`predict.py`（无 GT 单图）；共享 `data/geometry/metrics.restore_defect_probability/evaluation`，没有第二套还原或计分。
+- 身份：best `192c827b…`（epoch 39 / step 10 330）strict 0/0，`model_state.pt` 与 best 逐张量相等，processor 四开关与 config/清单/`split_meta`/快照全部核对。
+- val 门禁：29 项全过，`failed = []`；TP/FP/FN/TN 279 246 / 17 894 / 62 003 / 197 941 817，IoU 0.7775342969、macro 0.5395555278、正常 FP 1 495 px、预览概率差 0 / XOR 0。容差先声明（整数精确、浮点 1e-9、概率 1e-5）。
+- test：442 行 0 缺失 0 重复；PNG 全部 1070×1404、取值 {0,1}；TP/FP/FN/TN 252 227 / 27 779 / 89 101 / 663 638 653；macro P 0.8070891646（38/40 有定义，2 张无预测记 NA）；正常图 FP 比 6.108459751459705e-06。
+- 单图：`prepare_image` 与 dataset 预处理位级相等；修复"单图未走 IEEE FP32 上下文"的 TF32 缺陷后，045 预测 127 757 px 与 val 完全一致（XOR 0、概率差 0.0）。
+- 只读：评价前后训练 run 21 个文件 bytes/SHA 未变；全量浮点概率不落盘，只有 6 张预览在内存中比对。
+- 局限：40 张异常 test 图 macro 区间宽；面积加权使全局 IoU 偏高；无图像级判定规则；未测推理延迟；单 seed 单数据集。
+
 ## 下一步
 
-只做[阶段12执行交接](../../reports/2026-11-01-stage12-execution-handoff.md)：冻结best39与保存结构/processor，新进程先对齐完整132图val，再评价442图test（402正常+40异常）。固定原图还原、0.5、B1 IEEE FP32；不能依据test选择权重/阈值/后处理。必要技术复核须同协议并保留原因和全部结果，不按成绩择优。
+第12阶段已完成并自检通过（val 门禁 29/29、test 442 张一次性评价），**等待独立验收**。阶段 13 消费同一批结果生成图表、失败分析与实验卡：只分析并提出后续假设（切块、分辨率、采样、DINOv3 等候选对照），不实施新训练、不改阈值、不重选 best。
 
-本轮未实施12或读取test图像。跨机器另行复制训练best及processor并核SHA。恢复数值限制与workers>0未验证如实带入后续；042/051/081的失败归因留阶段13。
+test 已被查看，后续任何方法调整都必须披露"该 test 已参与开发"这一事实。跨机器需另行复制训练 best 与 processor 并核 SHA，Git 中没有权重；`workers>0` 未验证、恢复的跨进程数值限制保留在实验卡中。
 
 ## 维护约定
 

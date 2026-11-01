@@ -1,0 +1,53 @@
+{
+  "schema": "segformer-lab/stage12-consistency/1",
+  "peak": {
+    "preprocessing_equivalence": {
+      "image": "pcb1/Data/Images/Anomaly/045.JPG",
+      "pixel_values_bitwise_equal": true,
+      "max_abs_pixel_diff": 0.0,
+      "probability_diff_same_process": 0.0
+    },
+    "evaluate_vs_predict": {
+      "max_abs_probability_diff": 0.0,
+      "xor_pixels_vs_val_mask": 0,
+      "predict_pixels": 127757,
+      "val_pixels": 127757,
+      "total_pixels": 1502280,
+      "same_shape": true,
+      "atol": 1e-05
+    },
+    "test_coverage": {
+      "rows": 442,
+      "manifest_rows": 442,
+      "missing_ids": 0,
+      "duplicate_ids": 0,
+      "order_matches_manifest": true,
+      "missing_png": [],
+      "png_shapes": [
+        [
+          1070,
+          1404
+        ]
+      ],
+      "png_values": [
+        0,
+        1
+      ],
+      "normal_rows": 402,
+      "anomaly_rows": 40
+    },
+    "trained_run_unchanged": {
+      "files_before": 21,
+      "files_after": 21,
+      "changed": [],
+      "added": [],
+      "removed": [],
+      "unchanged": true
+    },
+    "notes": [
+      "predict writes a 0/1 PNG; predictions_display/ is never scored",
+      "the probability comparison uses the same model instance, so a non-zero diff would be a preprocessing defect rather than GPU jitter",
+      "binary masks are compared at threshold >= 0.5"
+    ]
+  }
+}
