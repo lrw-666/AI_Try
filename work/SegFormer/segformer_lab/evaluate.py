@@ -21,6 +21,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import math
 import os
 import platform
 import sys
@@ -33,13 +34,14 @@ import numpy as np
 import torch
 from PIL import Image
 
-from . import paths
+from . import data, paths, pilot
 from .config import load_config
-from .inference import FrozenRun, build_dataset, load_frozen_run, save_binary_mask, stream_split
+from .inference import (FrozenRun, build_dataset, guard_output_directory, load_frozen_run,
+                        save_binary_mask, stream_split)
 from .training import sha256_file
 
 SCHEMA = "segformer-lab/eval-metrics/1"
-GATE_SCHEMA = "segformer-lab/eval-gate/1"
+GATE_SCHEMA = "segformer-lab/eval-gate/2"
 
 EXPECTED = {"val": (132, 120, 12), "test": (442, 402, 40)}
 
@@ -67,7 +69,7 @@ GATE_TOLERANCE = {
 def _json_dump(path: Path, payload: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     tmp = path.with_suffix(path.suffix + ".tmp")
-    tmp.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+    tmp.write_text(json.dumps(payload, indent=2, ensure_ascii=False, allow_nan=False), encoding="utf-8")
     os.replace(tmp, path)
 
 
@@ -93,17 +95,96 @@ def sha256_file_text(text: str) -> str:
 
 
 def _code_identity() -> dict[str, str]:
-    files = [
-        "segformer_lab/inference.py", "segformer_lab/evaluate.py", "segformer_lab/predict.py",
-        "segformer_lab/training.py", "segformer_lab/data.py", "segformer_lab/geometry.py",
-        "segformer_lab/metrics.py", "segformer_lab/evaluation.py", "segformer_lab/modeling.py",
-        "segformer_lab/config.py", "segformer_lab/losses.py",
-    ]
-    out: dict[str, str] = {}
-    for name in files:
-        path = paths.PROJECT_ROOT / name
-        out[name] = sha256_file(path) if path.is_file() else ""
-    return out
+    files = sorted((paths.PROJECT_ROOT / "segformer_lab").glob("*.py"))
+    files += sorted((paths.PROJECT_ROOT / "scripts").glob("*.ps1"))
+    return {path.relative_to(paths.PROJECT_ROOT).as_posix(): sha256_file(path) for path in files}
+
+
+def _runtime_info(device: str) -> dict[str, Any]:
+    from importlib.metadata import version
+
+    info = {"executable": sys.executable, "python": sys.version,
+            "platform": platform.platform(), "device": str(torch.device(device)),
+            "versions": {name: version(name) for name in
+                         ("torch", "transformers", "numpy", "Pillow", "matplotlib", "PyYAML")},
+            "cuda_build": torch.version.cuda, "cudnn": torch.backends.cudnn.version()}
+    if torch.device(device).type == "cuda":
+        info["device_name"] = torch.cuda.get_device_name(torch.device(device))
+    return info
+
+
+def _data_identity(config: dict[str, Any]) -> dict[str, Any]:
+    """Bind original image AND mask bytes using the frozen extraction inventory.
+
+    Reading metadata here never opens test image/GT files. Their actual bytes
+    are checked only after a valid gate has been established.
+    """
+    meta_path = Path(config["paths"]["data.split_meta"])
+    meta = json.loads(meta_path.read_text(encoding="utf-8"))
+    root = Path(config["data_root"]).resolve()
+    inventory_path = root / "extraction_manifest.json"
+    if sha256_file(inventory_path) != meta["extraction"]["manifest_sha256"]:
+        raise SystemExit("data extraction inventory differs from frozen split metadata")
+    inventory = json.loads(inventory_path.read_text(encoding="utf-8"))
+    indexed = {item["path"]: item for item in inventory["files"]}
+    if len(indexed) != len(inventory["files"]):
+        raise SystemExit("duplicate paths in data extraction inventory")
+    official = Path(meta["sources"]["official_csv"]["copy"])
+    official_sha = sha256_file(official)
+    if official_sha != meta["sources"]["official_csv"]["sha256"]:
+        raise SystemExit("official split CSV differs from frozen split metadata")
+    splits = {}
+    for split in ("val", "test"):
+        rows = data.read_manifest(config["paths"][f"data.{split}_manifest"])
+        ids = [row["image"] for row in rows]
+        if len(ids) != len(set(ids)):
+            raise SystemExit(f"duplicate image IDs in {split} manifest")
+        records = []
+        for row in rows:
+            if row["label"] not in {"normal", "anomaly"} or bool(row["mask"].strip()) != (row["label"] == "anomaly"):
+                raise SystemExit(f"invalid label/mask contract: {row['image']}")
+            for kind in ("image", "mask"):
+                name = row[kind].strip()
+                if not name:
+                    continue
+                actual = (root / name).resolve()
+                if not actual.is_relative_to(root) or Path(name).is_absolute() or ".." in Path(name).parts:
+                    raise SystemExit(f"data path escapes source root: {name}")
+                expected = indexed.get(name)
+                if expected is None:
+                    raise SystemExit(f"data path missing from extraction inventory: {name}")
+                records.append({"image_id": row["image"], "label": row["label"], "kind": kind,
+                                "path": name, "bytes": int(expected["size"]), "sha256": expected["sha256"]})
+        splits[split] = records
+    return {"data_root": str(root), "extraction_inventory": {
+                "path": str(inventory_path), "sha256": sha256_file(inventory_path)},
+            "official_csv": {"path": str(official), "sha256": official_sha}, "splits": splits}
+
+
+def _verify_data_files(identity: dict[str, Any], split: str) -> None:
+    for record in identity["splits"][split]:
+        path = Path(identity["data_root"]) / record["path"]
+        if not path.is_file() or path.stat().st_size != record["bytes"] or sha256_file(path) != record["sha256"]:
+            raise SystemExit(f"{split} {record['kind']} bytes differ from frozen inventory: {record['path']}")
+
+
+def _protocol_identity(config: dict[str, Any]) -> dict[str, Any]:
+    requested = config["raw"]["eval"]
+    if requested.get("precision") != "ieee_fp32" or requested.get("batch_size") != 1 or \
+            requested.get("threshold") != 0.5 or requested.get("postprocess") != "none" or \
+            config["raw"]["data"].get("workers") != 0:
+        raise SystemExit("evaluation requires frozen IEEE FP32/B1/threshold0.5/no-postprocess protocol")
+    return {"batch_size": 1, "workers": 0, "precision": "ieee_fp32", "autocast": False,
+            "cudnn_allow_tf32": False, "matmul_allow_tf32": False, "threshold": 0.5,
+            "flip": "none", "postprocess": "none", "tta": False,
+            "restore": "logits->bilinear512(align_corners=False)->crop->bilinear_original->softmax1",
+            "original_gt": "nonzero merged to 1; normal zero mask", "tolerance": GATE_TOLERANCE}
+
+
+def _evaluation_binding(frozen: FrozenRun, config: dict[str, Any]) -> dict[str, Any]:
+    return {"identity": frozen.identity, "code": _code_identity(),
+            "data": _data_identity(config), "protocol": _protocol_identity(config),
+            "runtime": _runtime_info(frozen.device)}
 
 
 def _manifest_of(root: Path, exclude: set[str]) -> dict[str, Any]:
@@ -174,7 +255,7 @@ def _gate_compare(fresh: dict[str, Any], saved: dict[str, Any]) -> dict[str, Any
             return
         diff = abs(float(left) - float(right))
         checks.append({"name": name, "kind": "float", "left": float(left), "right": float(right),
-                       "abs_diff": diff, "ok": diff <= tol})
+                       "abs_diff": diff, "ok": math.isfinite(diff) and diff <= tol})
 
     exact("images.total", fresh["images"]["total"], saved["images"]["total"])
     exact("images.normal", fresh["images"]["normal"], saved["images"]["normal"])
@@ -188,6 +269,9 @@ def _gate_compare(fresh: dict[str, Any], saved: dict[str, Any]) -> dict[str, Any
 
     fresh_rows = {row["image_id"]: row for row in fresh["per_image"]}
     saved_rows = {row["image_id"]: row for row in saved["per_image"]}
+    exact("per_image.row_count", len(fresh["per_image"]), len(saved["per_image"]))
+    exact("per_image.unique_ids", len(fresh_rows) == len(fresh["per_image"])
+          and len(saved_rows) == len(saved["per_image"]), True)
     exact("per_image.ids", sorted(fresh_rows), sorted(saved_rows))
     integer_fields = ("total_pixels", "gt_foreground_pixels", "predicted_foreground_pixels",
                       "tp", "fp", "fn", "tn")
@@ -196,18 +280,29 @@ def _gate_compare(fresh: dict[str, Any], saved: dict[str, Any]) -> dict[str, Any
     mismatched = []
     for image_id in sorted(set(fresh_rows) & set(saved_rows)):
         left, right = fresh_rows[image_id], saved_rows[image_id]
+        for field in ("label", "split", "ignored_pixels"):
+            if left.get(field) != right.get(field):
+                mismatched.append({"image_id": image_id, "field": field,
+                                   "fresh": left.get(field), "saved": right.get(field)})
+        # Older epoch records lack dimensions; frozen original-file hashes bind
+        # those dimensions. Compare them directly whenever saved by the producer.
+        for field in ("height", "width"):
+            if field in right and left.get(field) != right[field]:
+                mismatched.append({"image_id": image_id, "field": field,
+                                   "fresh": left.get(field), "saved": right[field]})
         for field in integer_fields:
             if int(left[field]) != int(right[field]):
                 mismatched.append(f"{image_id}:{field}")
         for field in float_fields:
             a, b = left.get(field), right.get(field)
-            if (a is None) != (b is None) or (a is not None and abs(float(a) - float(b)) > 1e-9):
+            if (a is None) != (b is None) or (a is not None and
+                    (not math.isfinite(float(a)) or not math.isfinite(float(b)) or abs(float(a) - float(b)) > 1e-9)):
                 mismatched.append(f"{image_id}:{field}")
         for field in na_fields:
             if left.get(field) != right.get(field):
                 mismatched.append(f"{image_id}:{field}")
     checks.append({"name": "per_image.fields", "kind": "integer/na/float", "ok": not mismatched,
-                   "mismatched": mismatched[:20], "mismatched_count": len(mismatched)})
+                   "mismatched": mismatched, "mismatched_count": len(mismatched)})
 
     for metric in ("iou", "dice", "precision", "recall"):
         exact(f"macro.{metric}.defined_images",
@@ -216,6 +311,9 @@ def _gate_compare(fresh: dict[str, Any], saved: dict[str, Any]) -> dict[str, Any
         close(f"macro.{metric}.mean",
               fresh["anomaly_images"]["macro"][metric]["mean"],
               saved["anomaly_images"]["macro"][metric]["mean"])
+        for field in ("na_images", "na_reason"):
+            exact(f"macro.{metric}.{field}", fresh["anomaly_images"]["macro"][metric].get(field),
+                  saved["anomaly_images"]["macro"][metric].get(field))
     exact("anomaly.count", fresh["anomaly_images"]["count"], saved["anomaly_images"]["count"])
     exact("normal.count", fresh["normal_images"]["count"], saved["normal_images"]["count"])
     exact("normal.false_positive_pixels", int(fresh["normal_images"]["false_positive_pixels"]),
@@ -225,6 +323,22 @@ def _gate_compare(fresh: dict[str, Any], saved: dict[str, Any]) -> dict[str, Any
     exact("normal.images_with_any_false_positive",
           int(fresh["normal_images"]["images_with_any_false_positive"]),
           int(saved["normal_images"]["images_with_any_false_positive"]))
+
+    def compare_tree(name: str, left: Any, right: Any) -> None:
+        if isinstance(left, dict) and isinstance(right, dict):
+            exact(name + ".keys", sorted(left), sorted(right))
+            for key in sorted(set(left) & set(right)):
+                compare_tree(name + "." + key, left[key], right[key])
+        elif isinstance(left, list) and isinstance(right, list):
+            exact(name + ".count", len(left), len(right))
+            for index, (a, b) in enumerate(zip(left, right)):
+                compare_tree(f"{name}[{index}]", a, b)
+        elif isinstance(left, float) or isinstance(right, float):
+            close(name, left, right)
+        else:
+            exact(name, left, right)
+
+    compare_tree("normal.all_fields", fresh["normal_images"], saved["normal_images"])
 
     failed = [check["name"] for check in checks if not check["ok"]]
     return {"schema": GATE_SCHEMA, "tolerance": GATE_TOLERANCE, "checks": checks,
@@ -237,38 +351,52 @@ def _verify_val_gate(gate_path: Path, frozen: FrozenRun, config: dict[str, Any])
     gate = json.loads(gate_path.read_text(encoding="utf-8"))
     if gate.get("schema") != GATE_SCHEMA:
         raise SystemExit("val gate has an unexpected schema")
-    if not gate.get("passed"):
+    if gate.get("passed") is not True or gate.get("failed") != []:
         raise SystemExit(f"val gate did not pass: {gate.get('failed')}")
-    for key in ("best_sha256", "config_sha256"):
-        if gate["identity"][key] != frozen.identity[key]:
-            raise SystemExit(f"val gate {key} does not match the frozen run")
-    for split in ("train", "val", "test"):
-        if gate["identity"]["manifests"][split]["sha256"] != \
-                frozen.identity["manifests"][split]["sha256"]:
-            raise SystemExit(f"val gate {split} manifest does not match the frozen run")
-    if gate["identity"]["split_meta_sha256"] != frozen.identity["split_meta_sha256"]:
-        raise SystemExit("val gate split_meta does not match the frozen run")
-    if abs(float(gate["threshold"]) - float(config["raw"]["eval"]["threshold"])) > 0:
-        raise SystemExit("val gate threshold differs from the configured threshold")
-    if gate["identity"]["model_config_sha256"] != frozen.identity["model_config_sha256"]:
-        raise SystemExit("val gate model structure does not match the frozen run")
+    checks = gate.get("checks")
+    required = {"images.total", "images.normal", "images.anomaly", "per_image.fields",
+                "per_image.ids", "per_image.unique_ids", "preview.probability", "coverage"}
+    if not isinstance(checks, list) or not checks or any(check.get("ok") is not True for check in checks) or \
+            not required <= {check.get("name") for check in checks}:
+        raise SystemExit("val gate is missing complete passing validation/preview/coverage checks")
+    count_checks = {check["name"]: check for check in checks if check.get("name") in
+                    {"images.total", "images.normal", "images.anomaly"}}
+    if any(count_checks[f"images.{name}"].get("left") != expected or
+           count_checks[f"images.{name}"].get("right") != expected
+           for name, expected in zip(("total", "normal", "anomaly"), EXPECTED["val"])):
+        raise SystemExit("val gate does not cover the complete 132-image validation split")
+    if gate.get("identity") != frozen.identity or gate.get("threshold") != 0.5:
+        raise SystemExit("val gate frozen input identity/threshold differs")
+    if "binding" not in gate or gate["binding"] != _evaluation_binding(frozen, config):
+        raise SystemExit("val gate code/processor/data/runtime/protocol binding differs")
+    _verify_data_files(gate["binding"]["data"], "val")
     return gate
 
 
 def do_evaluate(args: argparse.Namespace) -> int:
     started = time.perf_counter()
+    started_at = time.strftime("%Y-%m-%dT%H:%M:%S%z")
+    code_before = _code_identity()
     config = load_config(args.config)
+    _protocol_identity(config)
     threshold = float(config["raw"]["eval"]["threshold"])
     split = args.split
     if split not in EXPECTED:
         raise SystemExit("--split must be val or test")
 
-    out_dir = Path(args.out).resolve()
-    if out_dir.exists() and any(out_dir.iterdir()):
-        raise SystemExit(f"refusing to overwrite an existing evaluation directory: {out_dir}")
-    out_dir.mkdir(parents=True, exist_ok=True)
+    out_dir = guard_output_directory(args.out, args.run, config)
 
     frozen = load_frozen_run(config, args.run, device=args.device)
+    gate = None
+    if split == "test":
+        if not args.val_gate:
+            raise SystemExit("test evaluation requires --val-gate from a passing val run")
+        gate = _verify_val_gate(Path(args.val_gate).resolve(), frozen, config)
+    binding = _evaluation_binding(frozen, config)
+    if binding["code"] != code_before:
+        raise SystemExit("source code changed during initialization")
+    # For test this is deliberately AFTER the gate, and before opening a sample.
+    _verify_data_files(binding["data"], split)
     dataset = build_dataset(config, split, processor=frozen.processor)
     expected_total, expected_normal, expected_anomaly = EXPECTED[split]
     labels = [row["label"] for row in dataset.rows]
@@ -277,11 +405,10 @@ def do_evaluate(args: argparse.Namespace) -> int:
         raise SystemExit(f"{split} split is {observed}, protocol expects "
                          f"{(expected_total, expected_normal, expected_anomaly)}")
 
-    gate = None
-    if split == "test":
-        if not args.val_gate:
-            raise SystemExit("test evaluation requires --val-gate from a passing val run")
-        gate = _verify_val_gate(Path(args.val_gate).resolve(), frozen, config)
+    ids = [row["image"] for row in dataset.rows]
+    if len(ids) != len(set(ids)):
+        raise SystemExit("duplicate image IDs in evaluation split")
+    out_dir.mkdir(parents=True, exist_ok=False)
 
     rules_path = out_dir / "display_rules.json"
     _json_dump(rules_path, {"split": split, "rules": DISPLAY_RULES,
@@ -310,10 +437,17 @@ def do_evaluate(args: argparse.Namespace) -> int:
     keep_ids = set()
     preview_path = frozen.run_dir / "pre_save_probabilities.npz"
     preview_keys: set[str] = set()
-    if split == "val" and preview_path.is_file():
-        preview_keys = set(np.load(preview_path).files)
-        keep_ids = {row["image"] for row in dataset.rows
-                    if row["image"].replace("/", "_") in preview_keys}
+    if split == "val":
+        fixed_path = Path(config["paths"]["logging.fixed_preview_manifest"])
+        fixed_ids = [line.strip() for line in fixed_path.read_text(encoding="utf-8").splitlines()
+                     if line.strip() and not line.lstrip().startswith("#")]
+        if len(fixed_ids) != 6 or len(set(fixed_ids)) != 6 or not set(fixed_ids) <= set(ids):
+            raise SystemExit("validation requires all six fixed preview IDs")
+        keep_ids = set(fixed_ids)
+        preview_keys = {name.replace("/", "_") for name in fixed_ids}
+        with np.load(preview_path, allow_pickle=False) as stored:
+            if len(stored.files) != 6 or set(stored.files) != preview_keys:
+                raise SystemExit("saved preview probabilities do not match the six fixed IDs")
 
     result, kept = stream_split(frozen, dataset, threshold=threshold, on_sample=on_sample,
                                 keep_ids=keep_ids)
@@ -327,6 +461,15 @@ def do_evaluate(args: argparse.Namespace) -> int:
     seen = {row["image_id"] for row in per_image}
     missing = sorted({row["image"] for row in dataset.rows} - seen)
     duplicates = len(per_image) - len(seen)
+    if missing or duplicates or len(per_image) != expected_total or [row["image_id"] for row in per_image] != ids:
+        raise SystemExit("evaluation coverage/order differs from the complete split manifest")
+
+    # Freeze evidence over the whole operation, including original source bytes.
+    _verify_data_files(binding["data"], split)
+    code_after = _code_identity()
+    if code_after != code_before or _evaluation_binding(frozen, config) != binding or \
+            _manifest_of(frozen.run_dir, exclude=set())["files"] != frozen.identity["source_files"]:
+        raise SystemExit("code, metadata or original training run changed during evaluation")
 
     metrics = {
         "schema": SCHEMA,
@@ -374,30 +517,19 @@ def do_evaluate(args: argparse.Namespace) -> int:
              "per_image": per_image, "anomaly_images": result["anomaly_images"],
              "normal_images": result["normal_images"]},
             saved_entry["val"])
-        if preview_keys:
-            stored = np.load(preview_path)
-            diffs = []
-            xor_total = 0
-            for key in sorted(preview_keys):
-                fresh = kept[key]
-                old = stored[key]
-                diffs.append(float(np.abs(old - fresh).max()))
-                xor_total += int(((old >= threshold) != (fresh >= threshold)).sum())
-            preview_block = {
-                "images": len(preview_keys),
-                "max_abs_probability_diff": max(diffs) if diffs else None,
-                "xor_pixels": xor_total,
-                "total_pixels": int(sum(stored[key].size for key in preview_keys)),
-                "atol": GATE_TOLERANCE["preview_probability_atol"],
-                "within_tolerance": bool(diffs) and max(diffs) <= GATE_TOLERANCE["preview_probability_atol"],
-                "xor_ok": xor_total == 0,
-            }
-            comparison["checks"].append({"name": "preview.probability", "kind": "float",
-                                         "ok": preview_block["within_tolerance"] and preview_block["xor_ok"],
-                                         "detail": preview_block})
+        with np.load(preview_path, allow_pickle=False) as stored:
+            preview_block = pilot.compare_probabilities(stored, kept, threshold=threshold,
+                                                        atol=GATE_TOLERANCE["preview_probability_atol"])
+        preview_block.update({"images": len(kept), "xor_pixels": preview_block["xor_pixels_total"]})
+        comparison["checks"].extend([
+            {"name": "preview.probability", "kind": "float", "ok": preview_block["ok"], "detail": preview_block},
+            {"name": "coverage", "kind": "integer", "ok": not missing and duplicates == 0 and len(per_image) == 132}])
+        comparison["checks"].append({"name": "source.stable", "kind": "identity",
+                                      "ok": _code_identity() == code_before and
+                                      _manifest_of(frozen.run_dir, exclude=set())["files"] == frozen.identity["source_files"]})
         comparison["failed"] = [check["name"] for check in comparison["checks"] if not check["ok"]]
         comparison["passed"] = not comparison["failed"]
-        comparison.update({"identity": frozen.identity, "threshold": threshold,
+        comparison.update({"identity": frozen.identity, "threshold": threshold, "binding": binding,
                            "saved_record": {"epoch": saved_entry["epoch"],
                                             "source": "run/summary.json epochs[best]"},
                            "evaluated_at": time.strftime("%Y-%m-%dT%H:%M:%S%z")})
@@ -410,10 +542,9 @@ def do_evaluate(args: argparse.Namespace) -> int:
         "schema": "segformer-lab/eval-meta/1",
         "stage": "12",
         "command": {"argv": sys.argv, "module": "segformer_lab.evaluate"},
-        "process": {"pid": os.getpid(), "python": sys.version.split()[0],
-                    "platform": platform.platform()},
-        "versions": {"torch": torch.__version__, "cuda_build": torch.version.cuda,
-                     "numpy": np.__version__},
+        "process": {"pid": os.getpid(), **_runtime_info(args.device)},
+        "started_at": started_at,
+        "completed_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
         "device": args.device,
         "split": split,
         "threshold": threshold,
@@ -424,9 +555,15 @@ def do_evaluate(args: argparse.Namespace) -> int:
                          "training-only padding 255 never appears here",
         "display_rules_sha256": sha256_file(rules_path),
         "identity": frozen.identity,
+        "input_data": binding["data"],
+        "protocol": binding["protocol"],
+        "technical_rerun_reason": getattr(args, "rerun_reason", None),
         "val_gate": gate_block,
         "val_gate_input": str(Path(args.val_gate).resolve()) if args.val_gate else None,
-        "code": _code_identity(),
+        "code": code_before,
+        "code_after": code_after,
+        "code_and_original_run_unchanged": True,
+        "val_gate_input_sha256": sha256_file(Path(args.val_gate)) if args.val_gate else None,
         "git": _git_state(),
         "timings": {"elapsed_seconds": round(time.perf_counter() - started, 3),
                     "png_write_seconds": round(write_seconds, 3)},
@@ -466,6 +603,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--display-masks", action="store_true",
                         help="also write a 0/255 display copy (never used for scoring)")
     parser.add_argument("--device", default="cuda")
+    parser.add_argument("--rerun-reason", default=None, help="reason for a required technical re-verification")
     args = parser.parse_args(argv)
     return do_evaluate(args)
 

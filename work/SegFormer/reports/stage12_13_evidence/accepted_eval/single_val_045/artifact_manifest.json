@@ -1,0 +1,31 @@
+{
+  "root": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42_eval_acceptance_20261101\\single_val_045",
+  "files": {
+    "heatmap.png": {
+      "bytes": 36307,
+      "sha256": "67219021221d401320756b73b9919d86cd35d898ebcdc655e77f389ac14b5d9b"
+    },
+    "mask.png": {
+      "bytes": 2972,
+      "sha256": "e7656e7e091a4c622fbda2a76a167df5c723753b16b164aa1403271ddc8aa4de"
+    },
+    "mask_display.png": {
+      "bytes": 3992,
+      "sha256": "66744cb95db0b1a0568b83797d5dc2ad3f05389ee984724fb5ce602de36fedab"
+    },
+    "overlay.png": {
+      "bytes": 587828,
+      "sha256": "9a7af56cb205678ab39c9194af4077f30a2f56ea1433293802a92ea8928c2c8c"
+    },
+    "prediction_meta.json": {
+      "bytes": 15861,
+      "sha256": "5a27347b7f3144e8804b6b5cafe4ebc6e77e25e8c0a1fe01bcf91940c37fe92b"
+    },
+    "probability.npz": {
+      "bytes": 5228993,
+      "sha256": "ce4099c2f76506ed6d274879d8302089837cd79d5d2178b46c96d8ebddbe0b5e"
+    }
+  },
+  "file_count": 6,
+  "total_bytes": 5875953
+}

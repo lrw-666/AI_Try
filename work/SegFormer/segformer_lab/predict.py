@@ -28,20 +28,26 @@ import numpy as np
 from PIL import Image
 
 from .config import load_config
-from .inference import load_frozen_run, prepare_image, probability_map, save_binary_mask
+from .inference import (guard_output_directory, load_frozen_run, prepare_image,
+                        probability_map, save_binary_mask)
 from .training import sha256_file
 
 
 def _json_dump(path: Path, payload: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     tmp = path.with_suffix(path.suffix + ".tmp")
-    tmp.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+    tmp.write_text(json.dumps(payload, indent=2, ensure_ascii=False, allow_nan=False), encoding="utf-8")
     os.replace(tmp, path)
 
 
 def do_predict(args: argparse.Namespace) -> int:
     started = time.perf_counter()
+    started_at = time.strftime("%Y-%m-%dT%H:%M:%S%z")
+    from .evaluate import _code_identity, _manifest_of, _protocol_identity, _runtime_info
+
+    code_before = _code_identity()
     config = load_config(args.config)
+    protocol = _protocol_identity(config)
     threshold = float(config["raw"]["eval"]["threshold"])
     image_path = Path(args.image).resolve()
     if not image_path.is_file():
@@ -49,15 +55,17 @@ def do_predict(args: argparse.Namespace) -> int:
     if image_path.suffix.lower() not in {".jpg", ".jpeg", ".png", ".bmp"}:
         raise SystemExit(f"unsupported image extension: {image_path.suffix}")
 
-    out_dir = Path(args.out).resolve()
-    if out_dir.exists() and any(out_dir.iterdir()):
-        raise SystemExit(f"refusing to overwrite an existing prediction directory: {out_dir}")
-    out_dir.mkdir(parents=True, exist_ok=True)
+    out_dir = guard_output_directory(args.out, args.run, config, inputs=(image_path,))
+    image_sha_before = sha256_file(image_path)
 
     frozen = load_frozen_run(config, args.run, device=args.device)
     prepared = prepare_image(frozen.processor, image_path, config)
     probability = probability_map(frozen.model, prepared, args.device, config)
     mask = (probability >= threshold).astype(np.uint8)
+    if probability.dtype != np.float32 or probability.shape != tuple(prepared["source_size"]) or \
+            not np.isfinite(probability).all() or not ((probability >= 0) & (probability <= 1)).all():
+        raise SystemExit("prediction must be a finite original-size float32 probability in [0,1]")
+    out_dir.mkdir(parents=True, exist_ok=False)
 
     save_binary_mask(out_dir / "mask.png", mask)
     Image.fromarray((mask * 255).astype(np.uint8), mode="L").save(
@@ -94,11 +102,15 @@ def do_predict(args: argparse.Namespace) -> int:
     figure.savefig(out_dir / "overlay.png")
     plt.close(figure)
 
+    code_after = _code_identity()
+    if code_after != code_before or sha256_file(image_path) != image_sha_before or \
+            _manifest_of(frozen.run_dir, exclude=set())["files"] != frozen.identity["source_files"]:
+        raise SystemExit("code, input image or original training run changed during prediction")
     meta = {
         "schema": "segformer-lab/predict-meta/1",
         "stage": "12",
         "command": {"argv": sys.argv},
-        "image": {"path": str(image_path), "sha256": sha256_file(image_path),
+        "image": {"path": str(image_path), "sha256": image_sha_before,
                   "bytes": image_path.stat().st_size},
         "image_uses_gt": False,
         "threshold": threshold,
@@ -109,6 +121,13 @@ def do_predict(args: argparse.Namespace) -> int:
         "probability": {"min": float(probability.min()), "max": float(probability.max()),
                         "mean": float(probability.mean())},
         "identity": frozen.identity,
+        "process": {"pid": os.getpid(), **_runtime_info(args.device)},
+        "started_at": started_at,
+        "completed_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+        "protocol": protocol,
+        "code": code_before,
+        "code_after": code_after,
+        "code_and_original_run_unchanged": True,
         "restore_order": "logits -> bilinear 512 -> crop padding -> bilinear original H/W "
                          "-> softmax channel 1 -> threshold >= 0.5",
         "outputs": {"mask": "mask.png (0/1)", "display": "mask_display.png (0/255, display only)",
@@ -117,6 +136,7 @@ def do_predict(args: argparse.Namespace) -> int:
         "elapsed_seconds": round(time.perf_counter() - started, 3),
     }
     _json_dump(out_dir / "prediction_meta.json", meta)
+    _json_dump(out_dir / "artifact_manifest.json", _manifest_of(out_dir, exclude={"artifact_manifest.json"}))
 
     print(f"  image   : {image_path.name} {prepared['source_size'][1]}x{prepared['source_size'][0]}")
     print(f"  predict : {int(mask.sum())} px >= {threshold} ({mask.mean():.6f} of pixels)")

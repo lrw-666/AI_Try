@@ -1,0 +1,123 @@
+{
+  "schema": "segformer-lab/eval-meta/1",
+  "stage": "12",
+  "command": {
+    "argv": [
+      "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\segformer_lab\\evaluate.py",
+      "--config",
+      "configs\\baseline.yaml",
+      "--run",
+      "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42",
+      "--split",
+      "val",
+      "--out",
+      "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42_eval_001\\val"
+    ],
+    "module": "segformer_lab.evaluate"
+  },
+  "process": {
+    "pid": 33704,
+    "python": "3.12.16",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "versions": {
+    "torch": "2.10.0+cu126",
+    "cuda_build": "12.6",
+    "numpy": "2.5.4"
+  },
+  "device": "cuda",
+  "split": "val",
+  "threshold": 0.5,
+  "precision": {
+    "policy": "ieee_fp32",
+    "api": "torch2.10 allow_tf32 (legacy API only)",
+    "before": {
+      "cudnn_allow_tf32": true,
+      "matmul_allow_tf32": false
+    },
+    "autocast_enabled": false,
+    "scope": "evaluation context; restore backend flags and caller autocast on exit",
+    "training_amp_config_unchanged": true,
+    "bitwise_batch_invariance_guaranteed": false,
+    "effective": {
+      "cudnn_allow_tf32": false,
+      "matmul_allow_tf32": false
+    },
+    "restored_after_exit": true
+  },
+  "restore_order": "logits -> bilinear 512 (align_corners=False) -> crop padding -> bilinear original H/W -> channel softmax -> threshold >= 0.5",
+  "gt_definition": "original-size binary mask; normal images get an all-zero mask; training-only padding 255 never appears here",
+  "display_rules_sha256": "3d2a0376bf7115d0d8ff7e846c8617e13a48bf22f9290779a617236d15c9367d",
+  "identity": {
+    "run_dir": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42",
+    "best_path": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42\\checkpoints\\best.pt",
+    "best_sha256": "192c827bef00607f4258e5fadf0f1d97970ca5cc727a0add749be0fba5997485",
+    "best_epoch": 39,
+    "best_global_step": 10330,
+    "best_lr": 8.487794373008304e-06,
+    "model_config_sha256": "a2648c94cd17508f41b3fbf7451a2815ef2443192ed3c2388fb33288d4fd1bac",
+    "processor_sha256": "7854b1307bdd3737b1106ad604bbd8f90308cfce8d46609e6d5d88a1face9f58",
+    "model_state_sha256": "eb27b1375b28e106151e871e8eb9e7b12823f67062331cfea12441a8691cf304",
+    "summary_sha256": "a66f06167b3469a247d040713870419b8f04232ca6ff76e970f8f135270e86a5",
+    "config_sha256": "7fbea4eca4309a2e3565f7651f661895791dc94248f711cc9c2659377e2bbe47",
+    "resolved_config_sha256": "90a279b1d2e0b7c6d86ab3237024ed8b250a174e6a737430cd1529bfffa292e0",
+    "manifests": {
+      "train": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\train.csv",
+        "sha256": "f1522eb9b474d0acc1d736a391002f5044153208fa10f51eea3dc7df729f65b0"
+      },
+      "val": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\val.csv",
+        "sha256": "60a6c6cbf5ed7f5f9e57fb57bb096a5b57db677af5ee73f4fa140ddceaba6191"
+      },
+      "test": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\test.csv",
+        "sha256": "4bdc594148f208c7067a66a8cb3b06fde53ebc1f4ab6fda84f08f80383061284"
+      }
+    },
+    "split_meta_sha256": "7c53a669aabebcbb72cc137f84e7d00ec615e53813396b36e7f3557d6c9d0b49",
+    "snapshot": {
+      "model_id": "nvidia/mit-b0",
+      "revision": "80983a413c30d36a39c20203974ae7807835e2b4",
+      "weights_sha256": "4af8348c2a802bf76115d34797ff5ce1d9f110bb8593c22d9b66d8bd7fa227fc"
+    },
+    "trained_epochs": 50,
+    "selection": "highest val global foreground IoU; ties keep the earlier epoch",
+    "strict_load": true,
+    "missing_keys": [],
+    "unexpected_keys": [],
+    "trainable_parameters_left": 0
+  },
+  "val_gate": {
+    "passed": true,
+    "failed": [],
+    "path": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42_eval_001\\val\\gate.json"
+  },
+  "val_gate_input": null,
+  "code": {
+    "segformer_lab/inference.py": "b54719362ea7345052453cc332615d4add4934a932234ea26dd4aa4a4ac19026",
+    "segformer_lab/evaluate.py": "a77626c25027a89afbaeb83e8cf3d7277d835b4d8a20fdf8bb8b631c09b190a6",
+    "segformer_lab/predict.py": "cccc45ca28171bc13b54101a71505583bc5257f9e6e4b48f57c80ada93bf0166",
+    "segformer_lab/training.py": "91c829d2447dd849b8a586e4f95dd355789e1a9255bcaf814661b8eaf57bd6f3",
+    "segformer_lab/data.py": "3eb2117997db7cee7fa720b74f8b5b7df85793f4a65cebdd851943c3025ab9ce",
+    "segformer_lab/geometry.py": "b9e9d823ba91706bea650ccf578fb71f960840c3f8097f7c8687a5850ab4aacb",
+    "segformer_lab/metrics.py": "7d9625fa29eb94221787c80f7bc47dc429958d588207692f2c0ea1a12ecb5787",
+    "segformer_lab/evaluation.py": "0c30890eb5252d603de73bc792a6ef348fa77c2cf91c5f1b98a7167492787e53",
+    "segformer_lab/modeling.py": "318e0b0a5164eafe7c8393adf64caf1aaeea6e5895ab679ba0171c0fc57a59d3",
+    "segformer_lab/config.py": "b2c981faca6b2222b83ea876c8b3f1cd854ee210f42cd588dce41f20caaaa391",
+    "segformer_lab/losses.py": "e7195880bd49a8f03a9fbb39e9069c1f071010c8f7f96ba2bfac80d3d0ba0327"
+  },
+  "git": {
+    "head": "6682014f682c254cc22fbc9fdeffaf8123d2eda2",
+    "status_porcelain": "?? work/SegFormer/segformer_lab/evaluate.py\n?? work/SegFormer/segformer_lab/inference.py\n?? work/SegFormer/segformer_lab/predict.py\n?? work/SegFormer/tests/test_inference_eval.py",
+    "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "timings": {
+    "elapsed_seconds": 19.839,
+    "png_write_seconds": 1.826
+  },
+  "outputs": {
+    "predictions": "predictions/ (uint8 0/1, original size)",
+    "display_masks": null
+  }
+}

@@ -1,0 +1,184 @@
+"""One-off independent acceptance driver; run through scripts/run_project.ps1.
+
+No training or tuning. Originals stay read-only. Modes run in fresh processes.
+The tracked text is the exact script executed for this acceptance.
+"""
+from pathlib import Path
+import argparse
+import csv
+import hashlib
+import json
+import sys
+import time
+
+PROJECT = Path.cwd().resolve()
+sys.path.insert(0, str(PROJECT))
+RESOURCE = PROJECT.parents[2] / "segformer_resources"
+TRAINED = RESOURCE / "runs/pcb1_b0_v2_seed42"
+ORIGINAL = RESOURCE / "runs/pcb1_b0_v2_seed42_eval_001"
+FRESH = RESOURCE / "runs/pcb1_b0_v2_seed42_eval_acceptance_20261101"
+
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def read(path):
+    return json.loads(path.read_text(encoding="utf-8-sig"))
+
+
+def inventory(root):
+    return {p.relative_to(root).as_posix(): {"bytes": p.stat().st_size, "sha256": sha(p)}
+            for p in sorted(root.rglob("*")) if p.is_file()}
+
+
+def assert_original_training():
+    expected = read(PROJECT / "reports/stage11-acceptance.json")["historical_evidence"]["original_formal_files"]
+    actual = inventory(TRAINED)
+    assert actual == {r["path"]: {"bytes": r["bytes"], "sha256": r["sha256"]} for r in expected}
+    return actual
+
+
+def compare_saved(split):
+    import numpy as np
+    from PIL import Image
+
+    original = ORIGINAL / split
+    fresh = FRESH / split
+    old_metrics, new_metrics = read(original / "metrics.json"), read(fresh / "metrics.json")
+    for key in ("images", "confusion", "global", "anomaly_images", "normal_images", "coverage"):
+        assert new_metrics[key] == old_metrics[key], (split, key)
+    old_rows = read(original / "per_image.json")["rows"]
+    new_rows = read(fresh / "per_image.json")["rows"]
+    assert len(old_rows) == len(new_rows) == (132 if split == "val" else 442)
+    with (PROJECT / f"manifests/{split}.csv").open(encoding="utf-8", newline="") as handle:
+        manifest = {r["image"]: r for r in csv.DictReader(handle)}
+    total = {k: 0 for k in ("tp", "fp", "fn", "tn")}
+    verified = []
+    for old, new in zip(old_rows, new_rows):
+        assert all(k in new and new[k] == value for k, value in old.items()), (split, old["image_id"])
+        name = new["image_id"]
+        with Image.open(fresh / "predictions" / new["prediction_png"]) as handle:
+            pred = np.asarray(handle).copy()
+        with Image.open(original / "predictions" / old["prediction_png"]) as handle:
+            previous = np.asarray(handle)
+        assert pred.shape == (1070, 1404) and pred.dtype == np.uint8 and np.isin(pred, (0, 1)).all(), name
+        assert np.array_equal(pred, previous), (name, "old/new PNG mismatch")
+        row = manifest[name]
+        assert new["label"] == row["label"]
+        if row["mask"]:
+            with Image.open(RESOURCE / "data/visa" / row["mask"]) as handle:
+                gt = np.asarray(handle) > 0
+        else:
+            gt = np.zeros(pred.shape, dtype=bool)
+        assert gt.shape == pred.shape
+        positive = pred == 1
+        counts = {"tp": int(np.count_nonzero(positive & gt)),
+                  "fp": int(np.count_nonzero(positive & ~gt)),
+                  "fn": int(np.count_nonzero(~positive & gt)),
+                  "tn": int(np.count_nonzero(~positive & ~gt))}
+        assert all(new[k] == value for k, value in counts.items()), (name, counts)
+        assert int(gt.sum()) == new["gt_foreground_pixels"]
+        assert int(positive.sum()) == new["predicted_foreground_pixels"]
+        for key, value in counts.items(): total[key] += value
+        verified.append(name)
+    assert len(set(verified)) == len(verified) and set(verified) == set(manifest)
+    assert all(new_metrics["confusion"][k] == v for k, v in total.items())
+    return {"images": len(verified), "compared_metric_fields_identical": True,
+            "compared_metric_fields": ["images", "confusion", "global", "anomaly_images", "normal_images", "coverage"],
+            "all_old_per_image_fields_identical": True, "all_binary_png_arrays_identical": True,
+            "all_original_size_binary_and_original_GT_confusion_verified": True,
+            "independent_confusion_from_actual_PNG_and_original_GT": total}
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("mode", choices=("val", "test", "predict"))
+    args = parser.parse_args()
+    import numpy as np
+    import torch
+    from PIL import Image
+    from segformer_lab import evaluate, predict
+
+    started = time.perf_counter()
+    original_before = inventory(ORIGINAL)
+    trained_before = assert_original_training()
+    source_before = evaluate._code_identity()
+    observed = []
+    loaded = []
+    original_load = evaluate.load_frozen_run
+
+    def monitored_load(config, run_dir, device="cuda"):
+        frozen = original_load(config, run_dir, device=device)
+        loaded.append(frozen.identity)
+
+        def hook(model, inputs, kwargs, output):
+            pixels, logits = kwargs["pixel_values"], output.logits
+            item = {"device": str(pixels.device), "input_dtype": str(pixels.dtype),
+                    "logits_dtype": str(logits.dtype), "input_shape": list(pixels.shape),
+                    "logits_shape": list(logits.shape), "model_training": model.training,
+                    "model_float32": all(p.dtype == torch.float32 for p in model.parameters()),
+                    "inference_mode": torch.is_inference_mode_enabled(),
+                    "grad_enabled": torch.is_grad_enabled(),
+                    "autocast_enabled": torch.is_autocast_enabled("cuda"),
+                    "cudnn_tf32": torch.backends.cudnn.allow_tf32,
+                    "matmul_tf32": torch.backends.cuda.matmul.allow_tf32,
+                    "finite_logits": bool(torch.isfinite(logits).all())}
+            assert pixels.device.type == "cuda" and item["input_shape"] == [1, 3, 512, 512]
+            assert item["logits_shape"] == [1, 2, 128, 128]
+            assert item["input_dtype"] == item["logits_dtype"] == "torch.float32"
+            assert not any(item[k] for k in ("model_training", "grad_enabled", "autocast_enabled", "cudnn_tf32", "matmul_tf32"))
+            assert item["model_float32"] and item["inference_mode"] and item["finite_logits"]
+            observed.append(item)
+
+        frozen.model.register_forward_hook(hook, with_kwargs=True)
+        return frozen
+
+    evaluate.load_frozen_run = predict.load_frozen_run = monitored_load
+    if args.mode in ("val", "test"):
+        cli = ["--config", "configs/baseline.yaml", "--run", str(TRAINED),
+               "--split", args.mode, "--out", str(FRESH / args.mode), "--device", "cuda",
+               "--rerun-reason", "Independent stage12-13 acceptance after identity/guard fixes; frozen best/data/threshold/math unchanged; preserve original eval001 and compare all PNG/GT counts, no score-based selection."]
+        if args.mode == "test": cli += ["--val-gate", str(FRESH / "val/gate.json")]
+        assert evaluate.main(cli) == 0
+        assert len(observed) == (132 if args.mode == "val" else 442)
+        result = compare_saved(args.mode)
+        if args.mode == "val": assert read(FRESH / "val/gate.json")["passed"]
+    else:
+        image = RESOURCE / "data/visa/pcb1/Data/Images/Anomaly/045.JPG"
+        cli = ["--config", "configs/baseline.yaml", "--run", str(TRAINED),
+               "--image", str(image), "--out", str(FRESH / "single_val_045"), "--device", "cuda"]
+        assert predict.main(cli) == 0 and len(observed) == 1
+        with np.load(FRESH / "single_val_045/probability.npz") as handle: fresh_probability = handle["probability"]
+        with np.load(TRAINED / "pre_save_probabilities.npz") as handle: saved_probability = handle["pcb1_Data_Images_Anomaly_045.JPG"]
+        difference = float(np.max(np.abs(fresh_probability - saved_probability)))
+        with Image.open(FRESH / "single_val_045/mask.png") as handle: single_mask = np.asarray(handle)
+        with Image.open(FRESH / "val/predictions/pcb1/Data/Images/Anomaly/045.png") as handle: val_mask = np.asarray(handle)
+        xor = int(np.count_nonzero(single_mask != val_mask))
+        assert fresh_probability.dtype == np.float32 and fresh_probability.shape == (1070, 1404)
+        assert np.isfinite(fresh_probability).all() and difference <= 1e-5 and xor == 0
+        result = {"predict_API_uses_GT": False, "scope": "No GT argument or label is supplied to predict; not an OS-wide file-access audit.",
+                  "probability_max_abs_diff_vs_training_saved": difference,
+                  "binary_XOR_vs_full_val": xor, "shape": list(single_mask.shape),
+                  "probability_dtype": str(fresh_probability.dtype)}
+    assert source_before == evaluate._code_identity(), "source changed during acceptance"
+    assert trained_before == assert_original_training()
+    assert original_before == inventory(ORIGINAL), "original eval artifacts changed"
+    report = {"schema": "segformer-lab/stage12-13-executed-acceptance/1", "mode": args.mode,
+              "ok": True, "purpose": "Fixed-protocol technical verification; no training or score-based selection",
+              "actual_argv": sys.argv, "executed_cli": cli, "executable": sys.executable,
+              "torch": torch.__version__, "device_name": torch.cuda.get_device_name(),
+              "driver_sha256": sha(Path(__file__)), "code_sha256": source_before,
+              "loaded": loaded, "actual_forward_count": len(observed),
+              "actual_forward_all_equal": all(x == observed[0] for x in observed),
+              "actual_forward_observation": observed[0], "comparison": result,
+              "original_training_21_files_unchanged": True, "original_eval001_unchanged": True,
+              "elapsed_seconds": round(time.perf_counter() - started, 3)}
+    out = PROJECT / f"reports/stage12-13-{args.mode}-acceptance-check.json"
+    assert not out.exists(), out
+    out.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(json.dumps({"mode": args.mode, "ok": True, "forwards": len(observed), "elapsed": report["elapsed_seconds"]}))
+
+
+if __name__ == "__main__":
+    main()

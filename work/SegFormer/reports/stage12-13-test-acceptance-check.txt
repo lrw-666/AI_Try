@@ -1,0 +1,6 @@
+  split   : test, 442 images (402N+40A)
+  global  : IoU 0.6833438542 Dice 0.8118886139 P 0.9007914116 R 0.7389578353
+  macro   : IoU 0.5248580728 (defined 40)
+  normal  : FP 3689 px, 32/402 images
+  wrote   : E:\桌面\AI\segformer_resources\runs\pcb1_b0_v2_seed42_eval_acceptance_20261101\test
+{"mode": "test", "ok": true, "forwards": 442, "elapsed": 60.593}

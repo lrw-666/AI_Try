@@ -3,11 +3,11 @@
 本目录是 VisA PCB1 high-shot 协议下 SegFormer-B0 单基线实验的工程根目录：代码、配置、清单、阶段文档。
 环境、缓存、数据、模型与运行产物**不在本目录**，统一放在仓库外的 `E:\桌面\AI\segformer_resources`。
 
-- 当前进度：**步骤1—11已验收；第12、13阶段均已完成，自检通过，待独立验收。**test 442 张（一次性）：全局 IoU **0.6833**、Dice 0.8119、P 0.9008、R 0.7390，异常 40 张 macro IoU **0.5249**，正常 402 张 FP **3 689 px**（32/402 张）。阶段 13 生成 5 张图、`curves.csv`、`failure-cases.csv`、实验卡与复现说明，23 张展示图重算概率与阶段 12 **XOR 全 0**。**277 项回归通过**。未做新训练/调参，未进入 DINOv3。
+- 当前进度：**步骤1—13已完成当前工程闭环；阶段12—13已通过独立验收。**291项回归、v2 val门禁74/74；完整132张val与442张test技术复核及原图PNG/GT计数一致。test全局IoU **0.6833**、Dice0.8119、异常macro IoU **0.5249**；正常3689FP像素、32/402张有FP。五张修正图已逐看，23张展示图XOR0；未启动DINOv3或新训练。
 - 验收记录：[阶段01—02验收与完善](./reports/2026-10-31-stage01-02-acceptance.md)、[第三阶段验收](./reports/2026-10-31-stage03-acceptance.md)、[第四阶段验收](./reports/2026-10-31-stage04-acceptance.md)、[第五阶段模型加载与核验](./reports/2026-10-31-stage05-model-loading-and-check.md)、[第六阶段验收](./reports/2026-10-31-stage06-acceptance.md)
 - 阶段索引：[docs/stages/README.md](./docs/stages/README.md)
-- 最新验收：[第十一阶段](./reports/2026-11-01-stage11-acceptance.md)、[机器摘要](./reports/stage11-acceptance.json)、[阶段学习文档](./docs/stages/11-training-design-and-implementation.md)。阶段 12 结果见[第十二阶段文档](./docs/stages/12-evaluation-design-and-implementation.md)、`reports/stage12-summary.json` 与 `reports/stage12_evidence/`，等待独立验收。
-- 连续执行入口：[阶段12—13统一交接](./reports/2026-11-01-stage12-13-continuous-execution-handoff.md)。已授权开发Agent按技术门禁连续执行、每阶段分别提交并推送，状态为“完成（待验收）”；本文件更新仅准备交接，尚未启动阶段12或13。
+- 最新验收：[第十二、十三阶段](./reports/2026-11-01-stage12-13-acceptance.md)、[机器摘要](./reports/stage12-13-acceptance.json)；结果见[实验卡](./reports/pcb1_b0_v2_seed42/experiment-card.md)。下一步按[基线闭环后交接](./reports/2026-11-01-post-baseline-next-step-handoff.md)做冻结DINOv3小规模可行性验证，本轮未执行。
+- [阶段12—13统一交接](./reports/2026-11-01-stage12-13-continuous-execution-handoff.md)保留为已完成任务的历史执行依据，当前状态与下一步以上述验收记录为准。
 - 主指南：`../../docs/research/2026-10-31-segformer-baseline-end-to-end-guide.md`
 - 环境隔离规范：`../../docs/research/2026-10-31-segformer-environment-isolation-and-stage-docs.md`
 
@@ -170,8 +170,8 @@ E:\桌面\AI\segformer_resources\       仓库外（不进 Git）
 | 09 8 张训练图过拟合检查 | 已通过独立验收 | [09-overfit-design-and-implementation.md](./docs/stages/09-overfit-design-and-implementation.md) |
 | 10 完整训练集三轮 pilot | 已通过独立验收 | [10-pilot-design-and-implementation.md](./docs/stages/10-pilot-design-and-implementation.md) |
 | 11 50 轮正式单基线 | 正式训练与保存模型已验收；恢复数值复现未通过 | [11-training-design-and-implementation.md](./docs/stages/11-training-design-and-implementation.md) |
-| 12 独立推理与最终 test | 已完成，自检通过，待独立验收 | [12-evaluation-design-and-implementation.md](./docs/stages/12-evaluation-design-and-implementation.md) |
-| 13 可视化、失败分析与实验卡 | 已完成，自检通过，待独立验收 | [13-results-design-and-implementation.md](./docs/stages/13-results-design-and-implementation.md) |
+| 12 独立推理与最终 test | 已通过独立验收 | [12-evaluation-design-and-implementation.md](./docs/stages/12-evaluation-design-and-implementation.md) |
+| 13 可视化、失败分析与实验卡 | 已通过独立验收 | [13-results-design-and-implementation.md](./docs/stages/13-results-design-and-implementation.md) |
 
 ## 5.1 数据现状（2026-10-31）
 
@@ -275,24 +275,21 @@ E:\桌面\AI\segformer_resources\       仓库外（不进 Git）
 - 正式run未用resume，故可用已复验best进入阶段12。训练2609.179s（计算1711.191s、loader等待897.991s）、验证533.355s、保存8.053s；GPU峰值allocated/reserved806.3/934MiB。workers>0未验证，不改环境或包。
 - [验收报告](./reports/2026-11-01-stage11-acceptance.md)、[完整复验](./reports/stage11-reload-check.json)、[纠正后恢复汇总](./reports/stage11-resume-fixture.json)、[原件归档](./reports/stage11_evidence/README.md)、[阶段学习文档](./docs/stages/11-training-design-and-implementation.md)。正式日志无损gzip与原运行源码可追溯；权重/概率/批量输出留仓库外。
 
-## 5.10 独立推理与最终 test（阶段 12）
+## 5.10 独立推理与test（阶段12，已验收）
 
-- 入口：`segformer_lab/inference.py`（共享通道：`load_frozen_run`/`stream_split`/`probability_map`/`prepare_image`）、`evaluate.py`（`--config --run --split --out [--val-gate]`）、`predict.py`（`--image`，不需要 GT）。数学全部复用 `data`/`geometry`/`metrics.restore_defect_probability`/`evaluation`。
-- 重建：只用 run 内 `model_config.json` + `best.pt` 模型张量 + `processor/`，`strict=True` 0/0，`model_state.pt` 与 best 逐张量相等；config/清单/`split_meta`/快照 SHA 全部核对，不符即 `FrozenRunError`。
-- val 门禁：完整 132 张复算与训练记录 epoch 39 **逐项一致**（整数精确、浮点 1e-9、NA 结构精确），29 项检查全过；6 张预览概率差 **0.0**、XOR **0**。test 入口强制要求 `gate.json` 且身份匹配。
-- test（442 = 402 + 40，只评一次）：TP/FP/FN/TN **252 227 / 27 779 / 89 101 / 663 638 653**；全局 IoU **0.6833438542**、Dice 0.8118886139、P 0.9007914116、R 0.7389578353；异常 macro IoU **0.5248580728**、macro Dice 0.6351、macro P 0.8071（38/40 有定义）、macro R 0.5832；正常图 FP **3 689 px**（比 6.108459751459705e-06），**32/402** 张有任意 FP。
-- 产物：`predictions/` 442 张原尺寸 0/1 PNG（全部 1070×1404、取值 {0,1}）、`per_image.{json,csv}` 442 行 0 缺失 0 重复、`metrics.json`、`evaluation_meta.json`、`artifact_manifest.json`、`display_rules.json`（推理前写入）、`selection.json`；全量浮点概率不落盘。
-- 单图：`prepare_image` 与 dataset 预处理 `pixel_values` 位级相等；修复"单图未套 IEEE FP32 上下文"的 TF32 缺陷后，045 预测 127 757 px 与 val 完全一致（XOR 0、概率差 0.0）。
-- 只读：评价前后训练 run **21 个文件 bytes/SHA 未变**；耗时 val 19.84 s、test 60.89 s（PNG 写盘 1.83/6.13 s）。
-- 证据：`reports/stage12-summary.json`（15 KB）、`reports/stage12_evidence/`（56 KB，含 132/442 行逐图 CSV 的 gzip）、`reports/stage12-unit-tests.txt`（273 项）。
+- 共享inference/evaluate/predict，保存best39/10330、结构和processor严格加载；输入/模型/logits FP32、B1、IEEE评价，原图GT和同一还原/指标实现。
+- v2 val门禁74/74，6张预览概率差0.0、XOR0；绑定processor/源码/数据字节/运行环境/精度，旧v1门禁不再使用。
+- 完整test442图：TP252227 / FP27779 / FN89101 / TN663638653；global IoU0.6833438542、Dice0.8118886139、P0.9007914116、R0.7389578353；异常macro IoU0.5248580728、Dice0.6350735444；正常FP3689像素、32/402图有FP。
+- 新进程技术复核中，全部574张PNG与首次评价一致，并从实际PNG和原始GT独立逐图重算混淆量。无GT单图045与完整val/训练保存概率对齐。原训练21文件及首次eval001不变。
+- 原阶段12计分源码完整文本未保存，后续TF32修复后源码另行归档；新验收运行绑定当前准确源码。必要技术复核保留各次记录，不据test选择设置或成绩。
 
-## 5.11 可视化、失败分析与实验卡（阶段 13）
+## 5.11 结果、分析与实验卡（阶段13，已验收）
 
-- 入口 `segformer_lab/summarize.py`：只读 `run/epochs.jsonl` 与阶段 12 的评价目录，**不训练、不重选 best、不重算指标**；为展示图用同一冻结通道重算概率并与阶段 12 的 0/1 PNG 校验（23/23 XOR 0）。
-- 产出（`reports/pcb1_b0_v2_seed42/`）：`figures/training-curves.png`（loss / LR / val IoU+macro / 正常 FP，标 best 39）、`anomaly-fixed-6.png`（5 面板：原图/GT/概率/二值/TP-FP-FN）、`anomaly-worst-cases.png`、`normal-fixed-6.png`、`normal-worst-fp.png`；`curves.csv`（50 行，含"实测末步 LR"与"按 scheduler_completed 反算 LR"两列）、`failure-cases.csv`（23 行含入选理由与重算 XOR）、`results.md`、`experiment-card.md`、`reproduction.md`、`results-summary.json`。
-- 口径：概率统一 0—1 色标（不按图拉伸）；TP 绿 `#00A666` / FP 红 `#E24B4A` / FN 蓝 `#378ADD` 且有图例；正常图画误报而不是空 GT；Dice 项只对 48 张正 GT 图平均，0 不等于"分割完美"。
-- 失败事实：异常 **TP=0 共 3 张**（049/057/077），其中**预测完全为空 2 张**（049/057）；正常有任意 FP **32/402**，集中在引脚端与板边。全局 0.6833 与 macro 0.5249 的差值是"小目标弱于大目标"的直接读数。
-- 失败分析 4 条（观察—证据—假设—下一项验证）：细长金属结构系统性漏检、正常图引脚/边误报、全局 vs macro 差距、边界粗糙。全部只提出后续对照（切块、高分辨率、采样/损失、DINOv3），**未在本轮实施**。
+- 五张修正图已目视复核：补val Dice和正常零GT；FP用symlog保留0；概率固定0—1，TP绿/FP红/FN蓝。23张同模型概率重建的二值与已验收test PNG全部XOR0。
+- best步数10330与最终13243分开；warmup在第3轮已达到base LR，不据前3轮全背景证明原因；预测面积/GT不能冒充recall，global/macro差异不能单独证明尺寸效应。区间、宽度与机制未测写未测/假设。
+- 049/057预测空；077预测351像素但TP0；异常IoU<0.1共7/40。正常FP与异常macro分报，空分母保留NA。
+- 当前291项回归通过。[结果摘要](./reports/pcb1_b0_v2_seed42/results.md)、[实验卡](./reports/pcb1_b0_v2_seed42/experiment-card.md)、[复现说明](./reports/pcb1_b0_v2_seed42/reproduction.md)、[学习文档](./docs/stages/13-results-design-and-implementation.md)指向同一best与固定协议。
+- 当前推理CLI要求完整21文件训练bundle及同绝对路径布局；Git无权重/数据/环境，环境应重建，不能仅复制best或搬Conda目录后宣称可复现。推理延迟、多seed、跨数据集和workers>0未验证；阶段11续训数值限制保留。
 
 ## 6. 常见操作
 
@@ -466,30 +463,8 @@ Invoke-SegPip list
 
 以上为第十阶段验收时的历史安排，正式训练现已完成；当前下一步见下节。
 
-## 第十三阶段执行结果与下一步
+## 第十二、十三阶段验收与下一步
 
-阶段 13 只做"把结果变成可读材料"：`summarize.py` 读 50 轮日志与阶段 12 的评价目录，生成训练曲线（loss / LR / val IoU+macro / 正常 FP）、固定 6 正常 + 6 异常样本表、最差 IoU/recall 与正常 FP 最多的样本表，以及 `curves.csv`、`failure-cases.csv`、`results.md`、`experiment-card.md`、`reproduction.md`。
+[联合验收](./reports/2026-11-01-stage12-13-acceptance.md)已通过：291项回归、74项val门禁、完整132/442图技术复核及原始GT计数、独立无GT单图、23张展示图二值一致和五张图目视检查均有记录。代码保护、图表与解释已修正，原模型和首次评价目录保持不变。
 
-为了画概率图，对 23 张入选图用同一冻结通道重算概率，并与阶段 12 的 0/1 PNG 逐张比对（**23/23 XOR = 0**）；这些重算**只用于显示**，不改变任何已报指标。失败分析给出 4 条"观察—证据—假设—下一项验证"：细长金属结构系统性漏检（049/057，val 的 042/051 同类）、正常图误报集中在引脚端与板边（32/402）、全局 0.6833 与 macro 0.5249 的差距、边界粗糙（003/008）。本轮**不实施**任何新训练、不调阈值、不换后处理。
-
-`reports/pcb1_b0_v2_seed42/experiment-card.md` 里 val 与 test 分列，推理延迟如实写"未测"；`reproduction.md` 说明 Git 中没有权重，换机必须单独搬 `best.pt`/`model_config.json`/`processor/` 并核 SHA，重下 `mit-b0` 不能替代 best。
-
-下一步：本任务到此为止，等待用户对阶段 12、13 的独立验收。验收后再决定切块/高分辨率、采样或损失侧对照、DINOv3 等方向；test 已被查看，任何后续调整都须披露这一点。
-
-## 第十二阶段执行结果与下一步
-
-按[阶段12—13统一交接](./reports/2026-11-01-stage12-13-continuous-execution-handoff.md)执行：新增 `segformer_lab/inference.py`（冻结 run 推理通道）、`evaluate.py`（val 门禁 + test）、`predict.py`（无 GT 单图）与 10 项单测；数学全部复用既有的 `data`/`geometry`/`metrics`/`evaluation`。
-
-完整 132 张 val 在新进程复算，与训练记录 epoch 39 **逐项一致**（29 项检查，整数精确、浮点 1e-9、NA 结构精确；6 张预览概率差 0、XOR 0），门禁通过后才读取 test。442 张 test 一次性评价：全局 IoU **0.6833438542**、Dice 0.8118886139、P 0.9007914116、R 0.7389578353；异常 40 张 macro IoU **0.5248580728**；正常 402 张 FP **3 689 px**（**32/402** 张有任意 FP）。TP/FP/FN/TN = 252 227 / 27 779 / 89 101 / 663 638 653。
-
-修复了一处真实缺陷：单图推理最初没有套 `evaluation_precision`，TF32 默认开启导致 045 少报 2 个像素（XOR 4）；接口改为强制传 config 后，045 与 val 完全一致（127 757 px、概率差 0.0、XOR 0）。评价前后训练 run 21 个文件 bytes/SHA 未变；全量浮点概率不落盘。
-
-下一步：等待阶段 12 独立验收；按授权阶段 13 随即开始并单独提交。test 已被查看，后续任何方法调整都必须披露这一事实。
-
-## 第十一阶段验收与下一步
-
-[正式训练与保存模型已验收](./reports/2026-11-01-stage11-acceptance.md)：263项回归，完整val与固定预览新进程复验通过。冻结best39，SHA `192c827bef00607f4258e5fadf0f1d97970ca5cc727a0add749be0fba5997485`；原训练文件保持不变。恢复状态与顺序已确认，最终last数值对照未通过原容差，限制详见验收记录；不影响连续完成的正式模型评价。
-
-下一步只做[阶段12](./reports/2026-11-01-stage12-execution-handoff.md)：从保存best、模型结构及processor独立推理，先通过完整132图val门禁，再在冻结协议下评价442图test（402正常+40异常）。固定阈值0.5、B1 IEEE FP32、原图尺度还原；不能依据test选参。必要技术复核可按同一协议重跑并保留原因与所有结果，不按分数挑选。本轮未执行阶段12或test。
-
-跨机器需另外复制已训练best、结构和processor并核SHA；Git不包含大权重，重下MiT-B0不能替代已训练best。
+下一步见[基线闭环后交接](./reports/2026-11-01-post-baseline-next-step-handoff.md)：先理解并备份基线，按原研究计划验证冻结DINOv3-S/16加简单头的特征/梯度与资源可行性，不直接融合或长训练。本轮没有启动新模型。

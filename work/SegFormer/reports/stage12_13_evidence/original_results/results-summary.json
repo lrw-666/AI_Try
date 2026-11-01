@@ -1,0 +1,211 @@
+{
+  "schema": "segformer-lab/stage13-results/1",
+  "stage": "13",
+  "run_dir": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42",
+  "eval_dir": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42_eval_001",
+  "best_epoch": 39,
+  "best_selection": "highest val global foreground IoU; ties keep the earlier epoch",
+  "figures": {
+    "anomaly_sheet": "anomaly-fixed-6.png",
+    "normal_sheet": "normal-fixed-6.png",
+    "worst_anomaly_sheet": "anomaly-worst-cases.png",
+    "worst_normal_sheet": "normal-worst-fp.png"
+  },
+  "curves_csv": "curves.csv",
+  "failure_cases_csv": "failure-cases.csv",
+  "display_rules_source": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42_eval_001\\test\\display_rules.json",
+  "display_rules_sha256": "8120b0a6b559c1f35e6885e77b097c9deacd7eb043c4b260ad391db7fd204fe9",
+  "recomputed_probabilities": {
+    "images": 23,
+    "reason": "stage 12 deliberately stored only 0/1 masks for the 442 test images",
+    "channel": "segformer_lab.inference.probability_map (same frozen run, threshold from config)",
+    "xor_vs_stage12": {
+      "pcb1/Data/Images/Normal/0001.JPG": 0,
+      "pcb1/Data/Images/Normal/0002.JPG": 0,
+      "pcb1/Data/Images/Normal/0005.JPG": 0,
+      "pcb1/Data/Images/Normal/0008.JPG": 0,
+      "pcb1/Data/Images/Normal/0009.JPG": 0,
+      "pcb1/Data/Images/Normal/0012.JPG": 0,
+      "pcb1/Data/Images/Anomaly/000.JPG": 0,
+      "pcb1/Data/Images/Anomaly/001.JPG": 0,
+      "pcb1/Data/Images/Anomaly/002.JPG": 0,
+      "pcb1/Data/Images/Anomaly/003.JPG": 0,
+      "pcb1/Data/Images/Anomaly/008.JPG": 0,
+      "pcb1/Data/Images/Anomaly/012.JPG": 0,
+      "pcb1/Data/Images/Anomaly/049.JPG": 0,
+      "pcb1/Data/Images/Anomaly/057.JPG": 0,
+      "pcb1/Data/Images/Anomaly/077.JPG": 0,
+      "pcb1/Data/Images/Anomaly/048.JPG": 0,
+      "pcb1/Data/Images/Anomaly/097.JPG": 0,
+      "pcb1/Data/Images/Anomaly/069.JPG": 0,
+      "pcb1/Data/Images/Normal/0333.JPG": 0,
+      "pcb1/Data/Images/Normal/0694.JPG": 0,
+      "pcb1/Data/Images/Normal/0261.JPG": 0,
+      "pcb1/Data/Images/Normal/0230.JPG": 0,
+      "pcb1/Data/Images/Normal/0669.JPG": 0
+    },
+    "all_zero": true
+  },
+  "lists": {
+    "all_anomaly_tp_zero": [
+      "pcb1/Data/Images/Anomaly/049.JPG",
+      "pcb1/Data/Images/Anomaly/057.JPG",
+      "pcb1/Data/Images/Anomaly/077.JPG"
+    ],
+    "all_anomaly_empty_prediction": [
+      "pcb1/Data/Images/Anomaly/049.JPG",
+      "pcb1/Data/Images/Anomaly/057.JPG"
+    ],
+    "all_normal_with_false_positive_count": 32,
+    "all_normal_with_false_positive": [
+      "pcb1/Data/Images/Normal/0026.JPG",
+      "pcb1/Data/Images/Normal/0029.JPG",
+      "pcb1/Data/Images/Normal/0030.JPG",
+      "pcb1/Data/Images/Normal/0035.JPG",
+      "pcb1/Data/Images/Normal/0110.JPG",
+      "pcb1/Data/Images/Normal/0111.JPG",
+      "pcb1/Data/Images/Normal/0149.JPG",
+      "pcb1/Data/Images/Normal/0192.JPG",
+      "pcb1/Data/Images/Normal/0214.JPG",
+      "pcb1/Data/Images/Normal/0230.JPG",
+      "pcb1/Data/Images/Normal/0234.JPG",
+      "pcb1/Data/Images/Normal/0261.JPG",
+      "pcb1/Data/Images/Normal/0274.JPG",
+      "pcb1/Data/Images/Normal/0333.JPG",
+      "pcb1/Data/Images/Normal/0347.JPG",
+      "pcb1/Data/Images/Normal/0373.JPG",
+      "pcb1/Data/Images/Normal/0376.JPG",
+      "pcb1/Data/Images/Normal/0439.JPG",
+      "pcb1/Data/Images/Normal/0536.JPG",
+      "pcb1/Data/Images/Normal/0601.JPG",
+      "pcb1/Data/Images/Normal/0622.JPG",
+      "pcb1/Data/Images/Normal/0663.JPG",
+      "pcb1/Data/Images/Normal/0665.JPG",
+      "pcb1/Data/Images/Normal/0669.JPG",
+      "pcb1/Data/Images/Normal/0691.JPG",
+      "pcb1/Data/Images/Normal/0694.JPG",
+      "pcb1/Data/Images/Normal/0711.JPG",
+      "pcb1/Data/Images/Normal/0728.JPG",
+      "pcb1/Data/Images/Normal/0746.JPG",
+      "pcb1/Data/Images/Normal/0779.JPG",
+      "pcb1/Data/Images/Normal/0867.JPG",
+      "pcb1/Data/Images/Normal/0872.JPG"
+    ],
+    "anomaly_denominator": 40,
+    "normal_denominator": 402
+  },
+  "metrics": {
+    "val": {
+      "confusion": {
+        "tp": 279246,
+        "fp": 17894,
+        "fn": 62003,
+        "tn": 197941817,
+        "pixels": 198300960,
+        "accumulator_dtype": "int64"
+      },
+      "global": {
+        "foreground_iou": 0.7775342969,
+        "foreground_dice": 0.8748459012,
+        "precision": 0.9397792286,
+        "recall": 0.8183056947,
+        "na_reasons": {},
+        "aggregation": "sum TP/FP/FN/TN over images, then divide once"
+      },
+      "anomaly_macro": {
+        "iou": {
+          "mean": 0.5395555278,
+          "defined_images": 12,
+          "na_images": 0,
+          "na_reason": ""
+        },
+        "dice": {
+          "mean": 0.6203118681,
+          "defined_images": 12,
+          "na_images": 0,
+          "na_reason": ""
+        },
+        "precision": {
+          "mean": 0.7953262383,
+          "defined_images": 11,
+          "na_images": 1,
+          "na_reason": ""
+        },
+        "recall": {
+          "mean": 0.6154797088,
+          "defined_images": 12,
+          "na_images": 0,
+          "na_reason": ""
+        }
+      },
+      "normal": {
+        "count": 120,
+        "false_positive_pixels": 1495,
+        "fp_pixel_ratio": 8.292950271143417e-06,
+        "images_with_any_false_positive": 11
+      }
+    },
+    "test": {
+      "confusion": {
+        "tp": 252227,
+        "fp": 27779,
+        "fn": 89101,
+        "tn": 663638653,
+        "pixels": 664007760,
+        "accumulator_dtype": "int64"
+      },
+      "global": {
+        "foreground_iou": 0.6833438542,
+        "foreground_dice": 0.8118886139,
+        "precision": 0.9007914116,
+        "recall": 0.7389578353,
+        "na_reasons": {},
+        "aggregation": "sum TP/FP/FN/TN over images, then divide once"
+      },
+      "anomaly_macro": {
+        "iou": {
+          "mean": 0.5248580728,
+          "defined_images": 40,
+          "na_images": 0,
+          "na_reason": ""
+        },
+        "dice": {
+          "mean": 0.6350735444,
+          "defined_images": 40,
+          "na_images": 0,
+          "na_reason": ""
+        },
+        "precision": {
+          "mean": 0.8070891646,
+          "defined_images": 38,
+          "na_images": 2,
+          "na_reason": ""
+        },
+        "recall": {
+          "mean": 0.5831748857,
+          "defined_images": 40,
+          "na_images": 0,
+          "na_reason": ""
+        }
+      },
+      "normal": {
+        "count": 402,
+        "false_positive_pixels": 3689,
+        "total_pixels": 603916560,
+        "fp_pixel_ratio": 6.108459751459705e-06,
+        "predicted_foreground_ratio": {
+          "median": 0.0,
+          "p95": 2.19333e-05,
+          "max": 0.0003827516,
+          "percentile_method": "numpy linear interpolation over per-image ratios"
+        },
+        "images_with_any_false_positive": 32
+      }
+    }
+  },
+  "notes": [
+    "selection rules were frozen by stage 12 in display_rules.json before the first test image was decoded",
+    "the Dice term in the loss curve is image-weighted over positive-GT images; a batch with no foreground contributes an exact zero to that batch statistic and is excluded from the epoch aggregate, it is not a sign of perfect segmentation"
+  ],
+  "elapsed_seconds": 18.114
+}

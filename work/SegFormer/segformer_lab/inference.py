@@ -22,6 +22,7 @@ Restoration order (identical to training evaluation, stage 07/11):
 from __future__ import annotations
 
 import json
+from copy import deepcopy
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable
@@ -30,8 +31,7 @@ import numpy as np
 import torch
 from PIL import Image
 
-from . import data, geometry
-from .config import load_config
+from . import data, geometry, paths
 from .evaluation import evaluation_precision
 from .metrics import OriginalSpaceEvaluator, restore_defect_probability
 from .training import sha256_file
@@ -39,6 +39,27 @@ from .training import sha256_file
 
 class FrozenRunError(RuntimeError):
     """Raised when a run cannot be used as a frozen inference source."""
+
+
+FROZEN_BEST_SHA256 = "192c827bef00607f4258e5fadf0f1d97970ca5cc727a0add749be0fba5997485"
+
+
+def guard_output_directory(out: str | Path, run: str | Path,
+                           config: dict[str, Any], *, inputs: tuple[Path, ...] = ()) -> Path:
+    """Reject reuse and writes into any source tree before creating output."""
+    destination = Path(out).resolve()
+    protected = [Path(run), Path(config["path"]), *inputs]
+    protected.extend(paths.PROJECT_ROOT / name for name in
+                     ("segformer_lab", "tests", "configs", "manifests", "scripts", ".git"))
+    protected.extend(Path(value) for key, value in config["paths"].items()
+                     if value is not None and key != "experiment.output_root")
+    for source in protected:
+        source = source.resolve()
+        if destination == source or destination.is_relative_to(source) or source.is_relative_to(destination):
+            raise SystemExit(f"output would modify protected input: {source}")
+    if destination.exists():
+        raise SystemExit(f"refusing to reuse an existing output directory: {destination}")
+    return destination
 
 
 @dataclass
@@ -63,11 +84,23 @@ def load_frozen_run(config: dict[str, Any], run_dir: str | Path, device: str = "
     run_dir = Path(run_dir).resolve()
     best_path = run_dir / "checkpoints" / "best.pt"
     for required in (best_path, run_dir / "processor" / "preprocessor_config.json",
-                     run_dir / "model_config.json", run_dir / "summary.json"):
-        if not required.is_file() and not required.is_dir():
+                     run_dir / "model_config.json", run_dir / "summary.json",
+                     run_dir / "resolved_config.yaml", run_dir / "pre_save_probabilities.npz",
+                     run_dir / "artifact_manifest.json"):
+        if not required.is_file():
             raise FrozenRunError(f"missing run artefact: {required}")
-    if not best_path.is_file():
-        raise FrozenRunError(f"missing best checkpoint: {best_path}")
+
+    # Verify the local bundle BEFORE deserializing optimizer/RNG pickle objects.
+    from . import pilot
+    summary = _read_json(run_dir / "summary.json")
+    try:
+        inventory = pilot.verify_inventory(run_dir, summary)
+    except (ValueError, KeyError, OSError) as exc:
+        raise FrozenRunError(f"run artifact integrity failed: {exc}") from exc
+    best_sha = sha256_file(best_path)
+    if best_sha != FROZEN_BEST_SHA256 or summary["best"]["epoch"] != 39:
+        raise FrozenRunError("run is not the frozen stage-11 best39 checkpoint")
+    source_files = pilot._manifest_of(run_dir)["files"]
 
     # Our own checkpoint carries optimizer/scheduler/RNG objects.
     payload = torch.load(best_path, map_location="cpu", weights_only=False)
@@ -77,7 +110,6 @@ def load_frozen_run(config: dict[str, Any], run_dir: str | Path, device: str = "
         raise FrozenRunError(f"unexpected checkpoint schema {payload.get('schema')!r}")
 
     run_config_sha = sha256_file(Path(config["path"]))
-    summary = _read_json(run_dir / "summary.json")
     if summary["config"]["sha256"] != run_config_sha:
         raise FrozenRunError(
             "the supplied config is not the one this run was trained with "
@@ -89,14 +121,36 @@ def load_frozen_run(config: dict[str, Any], run_dir: str | Path, device: str = "
     if sha256_file(Path(config["paths"]["data.split_meta"])) != \
             summary["identity"]["start"]["split_meta_sha256"]:
         raise FrozenRunError("split_meta differs from the run identity")
+    if sha256_file(config["paths"]["logging.fixed_preview_manifest"]) != \
+            summary["identity"]["start"]["preview_ids_sha256"]:
+        raise FrozenRunError("fixed preview IDs differ from the run identity")
+    import yaml
+
+    resolved = yaml.safe_load((run_dir / "resolved_config.yaml").read_text(encoding="utf-8"))
+    if resolved["raw"] != config["raw"] or resolved["paths"] != {
+            key: str(value) if value is not None else None for key, value in config["paths"].items()}:
+        raise FrozenRunError("saved resolved config differs from the supplied config")
+
+    if (int(payload["epoch_completed"]), int(payload["step"]["successful"])) != (39, 10330):
+        raise FrozenRunError("frozen best epoch/step differs from best39/10330")
+    entry = next(row for row in summary["epochs"] if row["epoch"] == 39)
+    if payload["metrics"]["val"] != entry["val"]:
+        raise FrozenRunError("checkpoint validation record differs from saved best epoch")
 
     model_config_file = _read_json(run_dir / "model_config.json")
     payload_config = payload["model_config"]
-    if {k: v for k, v in model_config_file.items() if k != "id2label"} != \
-            {k: v for k, v in payload_config.items() if k != "id2label"}:
+    # JSON serialisation normalises integer id2label keys, without dropping them.
+    if model_config_file != json.loads(json.dumps(payload_config)):
         raise FrozenRunError("run model_config.json disagrees with the checkpoint's model_config")
+    if model_config_file.get("id2label") != {"0": "background", "1": "defect"}:
+        raise FrozenRunError("model labels must be 0=background, 1=defect")
+    for name, tensor in payload["model"].items():
+        if not isinstance(tensor, torch.Tensor) or (tensor.is_floating_point() and
+                (tensor.dtype != torch.float32 or not bool(torch.isfinite(tensor).all()))):
+            raise FrozenRunError(f"model tensor must be finite FP32: {name}")
 
-    model = SegformerForSemanticSegmentation(SegformerConfig.from_dict(payload_config))
+    # Transformers pops fields from this argument in some versions.
+    model = SegformerForSemanticSegmentation(SegformerConfig.from_dict(deepcopy(payload_config)))
     missing, unexpected = model.load_state_dict(payload["model"], strict=True)
     if missing or unexpected:
         raise FrozenRunError(f"strict load failed: missing={missing} unexpected={unexpected}")
@@ -110,12 +164,10 @@ def load_frozen_run(config: dict[str, Any], run_dir: str | Path, device: str = "
             raise FrozenRunError("model_state.pt is not the same model as best.pt")
 
     processor = SegformerImageProcessor.from_pretrained(
-        str(run_dir / "processor"), local_files_only=True, do_resize=False,
-        do_reduce_labels=False, do_rescale=True, do_normalize=True)
-    for flag, expected in (("do_resize", False), ("do_reduce_labels", False),
-                           ("do_rescale", True), ("do_normalize", True)):
-        if getattr(processor, flag, None) != expected:
-            raise FrozenRunError(f"processor.{flag} is not {expected}")
+        str(run_dir / "processor"), local_files_only=True)
+    data._processor_statistics(processor)
+    if not np.isfinite(float(processor.rescale_factor)) or float(processor.rescale_factor) != 1 / 255:
+        raise FrozenRunError("saved processor rescale_factor must be 1/255")
 
     model = model.to(device)
     model.eval()
@@ -126,12 +178,17 @@ def load_frozen_run(config: dict[str, Any], run_dir: str | Path, device: str = "
     identity = {
         "run_dir": str(run_dir),
         "best_path": str(best_path),
-        "best_sha256": sha256_file(best_path),
+        "best_sha256": best_sha,
         "best_epoch": int(payload["epoch_completed"]),
         "best_global_step": int(payload["step"]["successful"]),
         "best_lr": float(payload["lr"]),
         "model_config_sha256": sha256_file(run_dir / "model_config.json"),
         "processor_sha256": sha256_file(run_dir / "processor" / "preprocessor_config.json"),
+        "processor_loaded_without_flag_overrides": True,
+        "processor_parameters": processor.to_dict(),
+        "source_files": source_files,
+        "artifact_integrity": inventory,
+        "preview_ids_sha256": sha256_file(config["paths"]["logging.fixed_preview_manifest"]),
         "model_state_sha256": sha256_file(mirror) if mirror.is_file() else None,
         "summary_sha256": sha256_file(run_dir / "summary.json"),
         "config_sha256": run_config_sha,
@@ -153,8 +210,13 @@ def load_frozen_run(config: dict[str, Any], run_dir: str | Path, device: str = "
 def forward_logits(model: Any, item: dict[str, Any], device: str) -> torch.Tensor:
     """Single-sample FP32 logits on CPU (B1, inference_mode)."""
     pixels = item["pixel_values"].unsqueeze(0).to(device)
+    if model.training or pixels.dtype != torch.float32 or pixels.shape[0] != 1:
+        raise FrozenRunError("forward requires eval mode and B1 FP32 inputs")
     with torch.inference_mode():
         logits = model(pixel_values=pixels).logits
+    if logits.dtype != torch.float32 or logits.ndim != 4 or logits.shape[:2] != (1, 2) or \
+            not bool(torch.isfinite(logits).all()):
+        raise FrozenRunError("forward requires finite B1 two-channel FP32 logits")
     return logits[0].float().cpu()
 
 

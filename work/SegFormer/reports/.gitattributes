@@ -1,0 +1,3 @@
+# Preserve exact red/green console evidence, including native stderr spacing.
+# All source and other new reports keep the inherited whitespace checks.
+stage12-fix-tests.txt -whitespace

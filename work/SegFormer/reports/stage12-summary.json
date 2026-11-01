@@ -1,7 +1,7 @@
 {
-  "schema": "segformer-lab/stage12-summary/1",
+  "schema": "segformer-lab/stage12-summary/2",
   "stage": "12",
-  "status": "completed_self_checked_pending_independent_acceptance",
+  "status": "accepted_after_independent_validation",
   "frozen_run": {
     "path": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42",
     "best_sha256": "192c827bef00607f4258e5fadf0f1d97970ca5cc727a0add749be0fba5997485",
@@ -526,9 +526,29 @@
   },
   "limitations": [
     "Single model, single seed, PCB1 v2 protocol; no claim of cross-category or industrial generality.",
-    "40 anomaly test images: macro IoU has a wide interval, and the global IoU is area-weighted.",
+    "40 anomaly test images: macro uncertainty was not quantified; global IoU is area-weighted.",
     "Normal-image statistics are pixel-level; no image-level detection rule was defined or evaluated.",
-    "Test was evaluated once under the frozen protocol; its score must not be used to pick thresholds, epochs or post-processing.",
+    "Original test evaluation and fixed-protocol technical acceptance rerun are retained separately; neither is used to choose thresholds, epochs or post-processing.",
     "Resume numerics remain outside the previous tolerance (stage 11); this does not affect the frozen best."
-  ]
+  ],
+  "recorded_execution_scope": "Existing val_gate/test/timings/environment fields describe original eval001; current acceptance evidence is separately bound below. Original portable summary retained in stage12_13_evidence/original-stage12-summary.json.",
+  "acceptance": {
+    "date": "2026-11-01",
+    "report": "reports/2026-11-01-stage12-13-acceptance.md",
+    "machine_report": "reports/stage12-13-acceptance.json",
+    "tests": 291,
+    "current_val_gate_schema": "segformer-lab/eval-gate/2",
+    "current_val_gate_checks": 74,
+    "current_eval_root": "E:/桌面/AI/segformer_resources/runs/pcb1_b0_v2_seed42_eval_acceptance_20261101",
+    "actual_forwards": {
+      "val": 132,
+      "test": 442,
+      "predict": 1
+    },
+    "all_original_prediction_masks_and_per_image_counts_identical": true,
+    "actual_png_and_original_GT_confusion_verified": true,
+    "original_training_and_eval001_unchanged": true,
+    "new_training_or_test_selection": false,
+    "regression_test_seconds": 11.593
+  }
 }

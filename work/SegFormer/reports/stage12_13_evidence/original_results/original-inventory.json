@@ -1,0 +1,62 @@
+{
+  "scope": "Original stage13 committed HEAD7478742 artifacts, retained before acceptance regeneration",
+  "files": [
+    {
+      "path": "curves.csv",
+      "bytes": 12392,
+      "sha256": "51ee8986f6b05b00c32cf7e16d78d005697e98dc08f9961070293af44f614f68"
+    },
+    {
+      "path": "experiment-card.md",
+      "bytes": 3371,
+      "sha256": "e55c33d3a7c1fdb4d6eb8f801e50abed1cbfabfb4a5d2c6c2a754bd86d94e705"
+    },
+    {
+      "path": "failure-cases.csv",
+      "bytes": 4237,
+      "sha256": "d172d994cd98921058681114e6691d17dc4f6e90c2e0583d1c0f676cd82ebc22"
+    },
+    {
+      "path": "figures/anomaly-fixed-6.png",
+      "bytes": 1252032,
+      "sha256": "408609962ccce97447328b1d6bffd958be4ad276ef6181e86b4da7c8e1756fe3"
+    },
+    {
+      "path": "figures/anomaly-worst-cases.png",
+      "bytes": 1217151,
+      "sha256": "8a48c89e55095e21b5898b1c39337c406910dd243b35536c106fad31c01564d7"
+    },
+    {
+      "path": "figures/normal-fixed-6.png",
+      "bytes": 1156638,
+      "sha256": "425b933200875ba25bfb083e9b7ebfcb9eee9f69048cfef0507f6eedb3c33596"
+    },
+    {
+      "path": "figures/normal-worst-fp.png",
+      "bytes": 926863,
+      "sha256": "38c340df6209b81d1947f1cd34a92faab65b24c06b97fd5afd55a9c66f6bebb1"
+    },
+    {
+      "path": "figures/training-curves.png",
+      "bytes": 129164,
+      "sha256": "14e390f6a50d10850d6fdaac85a68fb761f55325971dbcba55401f68630209b0"
+    },
+    {
+      "path": "reproduction.md",
+      "bytes": 2163,
+      "sha256": "c6479d9f75c5ba06e5072b7fc60798352566ecd26ecd612f095cab65e08f7276"
+    },
+    {
+      "path": "results-summary.json",
+      "bytes": 7403,
+      "sha256": "b0fd7db514a3601f2b08860dfba523f48d3fbedf30b2bef9e250bb4ced2d2e44"
+    },
+    {
+      "path": "results.md",
+      "bytes": 2967,
+      "sha256": "6a80f3e1b94ac7ac3d6591fde15963498ffdfcdf5cc6556a8fc5834d621c393e"
+    }
+  ],
+  "figures_preserved_in_git_commit": "747874245986aa74dedd88ef5438d2af5e7d933f",
+  "figures_not_duplicated_in_this_archive": true
+}

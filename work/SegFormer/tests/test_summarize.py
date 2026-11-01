@@ -1,5 +1,10 @@
 """CPU regressions for the stage-13 summary helpers (no plotting backend needed)."""
 import unittest
+import argparse
+import json
+import tempfile
+from pathlib import Path
+from unittest.mock import patch
 
 import numpy as np
 
@@ -67,6 +72,44 @@ class OverlayTests(unittest.TestCase):
         self.assertEqual(tuple(canvas[1, 1]), summarize.FN_COLOR)
         # untouched background: source*0.55 + 255*0.45, truncated to uint8
         self.assertEqual(tuple(canvas[1, 2]), (114, 114, 114))
+
+
+class SourceGuardTests(unittest.TestCase):
+    def test_existing_results_are_preserved_before_loading_config_or_model(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary) / "results"
+            output.mkdir()
+            evidence = output / "results.md"
+            evidence.write_text("original evidence", encoding="utf-8")
+            args = argparse.Namespace(out=str(output), config="missing.yaml",
+                                      run="unused", eval_run="unused", device="cpu")
+            with patch.object(summarize, "load_config") as load:
+                with self.assertRaisesRegex(SystemExit, "refusing to overwrite"):
+                    summarize.do_summarize(args)
+                load.assert_not_called()
+            self.assertEqual(evidence.read_text(encoding="utf-8"), "original evidence")
+
+    def test_changed_metrics_are_rejected_by_original_artifact_manifest(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            metrics = directory / "metrics.json"
+            metrics.write_text('{"iou": 0.5}', encoding="utf-8")
+            manifest = {"files": {"metrics.json": {
+                "bytes": metrics.stat().st_size,
+                "sha256": summarize.sha256_file(metrics)}}}
+            (directory / "artifact_manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
+            summarize._verify_artifact_manifest(directory)
+            metrics.write_text('{"iou": 0.9}', encoding="utf-8")
+            with self.assertRaisesRegex(SystemExit, "artifact.*metrics.json"):
+                summarize._verify_artifact_manifest(directory)
+
+    def test_processor_mismatch_is_rejected_even_when_best_epoch_matches(self):
+        expected = {"best_epoch": 39, "processor_sha256": "frozen-processor"}
+        metadata = {"split": "test", "threshold": 0.5,
+                    "identity": {"best_epoch": 39, "processor_sha256": "different-processor"},
+                    "precision": {"policy": "ieee_fp32"}}
+        with self.assertRaisesRegex(SystemExit, "processor_sha256"):
+            summarize._check_evaluation_identity(metadata, expected, "test", 0.5)
 
 
 if __name__ == "__main__":

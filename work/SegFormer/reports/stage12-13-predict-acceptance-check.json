@@ -1,0 +1,263 @@
+{
+  "schema": "segformer-lab/stage12-13-executed-acceptance/1",
+  "mode": "predict",
+  "ok": true,
+  "purpose": "Fixed-protocol technical verification; no training or score-based selection",
+  "actual_argv": [
+    "reports/stage12_13_evidence/acceptance_driver.py.txt",
+    "predict"
+  ],
+  "executed_cli": [
+    "--config",
+    "configs/baseline.yaml",
+    "--run",
+    "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42",
+    "--image",
+    "E:\\桌面\\AI\\segformer_resources\\data\\visa\\pcb1\\Data\\Images\\Anomaly\\045.JPG",
+    "--out",
+    "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42_eval_acceptance_20261101\\single_val_045",
+    "--device",
+    "cuda"
+  ],
+  "executable": "E:\\桌面\\AI\\segformer_resources\\env\\python.exe",
+  "torch": "2.10.0+cu126",
+  "device_name": "NVIDIA GeForce RTX 4070 Laptop GPU",
+  "driver_sha256": "0dbe22104642b5b84d7991b3570463c1427a39802cef938f52ba45b9f983c282",
+  "code_sha256": {
+    "segformer_lab/__init__.py": "2ec79c144804c61e26f957553f5835f9c42f3aa0010724f48c029c669c576a98",
+    "segformer_lab/audit_data.py": "9ba6cfab71b899fe5cf12fbffd27d567494aae7d05abd0e3eaa09b186ba3fd7d",
+    "segformer_lab/config.py": "b2c981faca6b2222b83ea876c8b3f1cd854ee210f42cd588dce41f20caaaa391",
+    "segformer_lab/data.py": "3eb2117997db7cee7fa720b74f8b5b7df85793f4a65cebdd851943c3025ab9ce",
+    "segformer_lab/dataset_check.py": "cf38ac70fe70b99323f17dff282136081cbe316bdd61f75e272707a12ea8436d",
+    "segformer_lab/download_model.py": "7859b282d709091bbcadcfa3c232a83e6d6c91a854e04459f75ffa420dc760b6",
+    "segformer_lab/env_check.py": "e1f55898b993ade38c7d69e7bd69baa83137faa2231114db0d16b5f047962195",
+    "segformer_lab/evaluate.py": "f91a5b06a819ce2da9644b1b60e9e505cc371a2c190326989103751105a9d4a2",
+    "segformer_lab/evaluation.py": "0c30890eb5252d603de73bc792a6ef348fa77c2cf91c5f1b98a7167492787e53",
+    "segformer_lab/full_check.py": "9545119b62af8bee2367acc88e549f3daf0cd717f2bf102c8c841b7afd864f2b",
+    "segformer_lab/geometry.py": "b9e9d823ba91706bea650ccf578fb71f960840c3f8097f7c8687a5850ab4aacb",
+    "segformer_lab/inference.py": "5ef75eb4b793090564cccbd8c4130e6fab11e7a1b6367aa43e15a573532496e0",
+    "segformer_lab/losses.py": "e7195880bd49a8f03a9fbb39e9069c1f071010c8f7f96ba2bfac80d3d0ba0327",
+    "segformer_lab/metrics.py": "7d9625fa29eb94221787c80f7bc47dc429958d588207692f2c0ea1a12ecb5787",
+    "segformer_lab/metrics_check.py": "b85a592f561df2d4666d55426ce6536a6d0d39b30165dfb0ec88ad9ca8381f25",
+    "segformer_lab/model_check.py": "eec04e21011b244d0d44c99a8b801ed258390b770678a36338eda74661f106dc",
+    "segformer_lab/modeling.py": "318e0b0a5164eafe7c8393adf64caf1aaeea6e5895ab679ba0171c0fc57a59d3",
+    "segformer_lab/paths.py": "a5d8814ff3adb4b162b96202d2c42d7fd68a1f26442e114f0cfa7f479c80c8b9",
+    "segformer_lab/pilot.py": "28825b9346c4b19677db756a8be7bdf98c56d03c8f9f99cad64c2cab3e9f737c",
+    "segformer_lab/predict.py": "fb3b05ccd563db0bb6a1545f3aa636ef1e3306d96ded7c43206612fc5e840882",
+    "segformer_lab/prepare_data.py": "d98bf2ee7f5a00b3f4aa957c1f10e9e63147ca5fef0f192ece67fc11d271884c",
+    "segformer_lab/preview_data.py": "aecececda8e6a50bfb8c3e67763f464fef9c34b489112f04ed6575c0f2b06681",
+    "segformer_lab/resume_check.py": "506ad9a3188a63ce0f316673a9fc188f4192ba7c302c4715ee0d4ce51d3cff82",
+    "segformer_lab/run_check.py": "257b617527feef4393ffc22c215616de2cad938fd177b1d4efa4b2a124875b62",
+    "segformer_lab/smoke.py": "50c47b2f8b0bb45293c69635d1cb9eee6294a73acee4dcdf0525a1b36c0a45ec",
+    "segformer_lab/subset.py": "11f1831cab544270404a47ba8a721bbaa8b4d72890bb0f5a85b1fad900c16032",
+    "segformer_lab/summarize.py": "6c1fa3e10437d34bb1254f3990baa9f1a697a1cd94fbb58015806bf08341596a",
+    "segformer_lab/train.py": "d8721c8012d594293988146cc8acad573361639ca27e241f43e4f16ef8ffc305",
+    "segformer_lab/train_full.py": "2f5214272dddd37060057a163c833f46975d02deca394044caa37ec4bb562bf4",
+    "segformer_lab/training.py": "91c829d2447dd849b8a586e4f95dd355789e1a9255bcaf814661b8eaf57bd6f3",
+    "scripts/enter_project.ps1": "19d5ef5924568181669f03049bf0d8b2204036db19ee3ad78adaa5e3490b92d8",
+    "scripts/run_project.ps1": "13e6a55938be145f776d3da52b70d8708d62647b12676e99dedce4a903438aa1",
+    "scripts/snapshot_environment.ps1": "0e6b140ebc50e34d4f3cc375386187d382805e0bc1a191b076f75d8f529783cd",
+    "scripts/test_runtime_context.ps1": "f7acce86a23200a127497c29f6138dcfa9af7662b9fa05bea4463b1ba645bb50"
+  },
+  "loaded": [
+    {
+      "run_dir": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42",
+      "best_path": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42\\checkpoints\\best.pt",
+      "best_sha256": "192c827bef00607f4258e5fadf0f1d97970ca5cc727a0add749be0fba5997485",
+      "best_epoch": 39,
+      "best_global_step": 10330,
+      "best_lr": 8.487794373008304e-06,
+      "model_config_sha256": "a2648c94cd17508f41b3fbf7451a2815ef2443192ed3c2388fb33288d4fd1bac",
+      "processor_sha256": "7854b1307bdd3737b1106ad604bbd8f90308cfce8d46609e6d5d88a1face9f58",
+      "processor_loaded_without_flag_overrides": true,
+      "processor_parameters": {
+        "_processor_class": null,
+        "image_processor_type": "SegformerImageProcessor",
+        "do_resize": false,
+        "size": {
+          "height": 512,
+          "width": 512
+        },
+        "resample": 2,
+        "do_rescale": true,
+        "rescale_factor": 0.00392156862745098,
+        "do_normalize": true,
+        "image_mean": [
+          0.485,
+          0.456,
+          0.406
+        ],
+        "image_std": [
+          0.229,
+          0.224,
+          0.225
+        ],
+        "do_reduce_labels": false
+      },
+      "source_files": {
+        "artifact_manifest.json": {
+          "bytes": 2993,
+          "sha256": "0f04aeab51d2eff238124768b17d3741f1bbda46d9274942fe3d534a3823b1f4"
+        },
+        "checkpoints/best.pt": {
+          "bytes": 44876363,
+          "sha256": "192c827bef00607f4258e5fadf0f1d97970ca5cc727a0add749be0fba5997485"
+        },
+        "checkpoints/last.pt": {
+          "bytes": 44876363,
+          "sha256": "b1e61f29d46e501cc015a5650abf362d456045b061c0c9a57f5a930313a59877"
+        },
+        "checkpoints/model_state.pt": {
+          "bytes": 14927903,
+          "sha256": "eb27b1375b28e106151e871e8eb9e7b12823f67062331cfea12441a8691cf304"
+        },
+        "code_identity_end.json": {
+          "bytes": 12899,
+          "sha256": "795c579e380d2fc18a93ebf0296829ccf7fe06415ecea222243a73715786a9bf"
+        },
+        "code_identity_start.json": {
+          "bytes": 12901,
+          "sha256": "c8ec16a7d168637a022e4b2f7151f7c640c99c49afd44c3bdff343e9fcd7579e"
+        },
+        "curves.png": {
+          "bytes": 73236,
+          "sha256": "13568de3816975411775a2a135351e619fe9e7f83c6975bae8418bb5233fea90"
+        },
+        "epochs.jsonl": {
+          "bytes": 3708600,
+          "sha256": "5b29a04d02c816ba85557143f4f76496a98ac1abc18d5c10b7e0ed608ab1b4c1"
+        },
+        "model_config.json": {
+          "bytes": 2601,
+          "sha256": "a2648c94cd17508f41b3fbf7451a2815ef2443192ed3c2388fb33288d4fd1bac"
+        },
+        "pre_save_probabilities.npz": {
+          "bytes": 32596044,
+          "sha256": "cf24b2f260970185a692ceb9201c3cb8e4658d83fe11b021fca727a96f987e14"
+        },
+        "processor/preprocessor_config.json": {
+          "bytes": 396,
+          "sha256": "7854b1307bdd3737b1106ad604bbd8f90308cfce8d46609e6d5d88a1face9f58"
+        },
+        "reload_check.json": {
+          "bytes": 197782,
+          "sha256": "e58a82ad4ed75e6055dac147ad076649bbb1dcf91eedf0d73f9c9a2008ce09fb"
+        },
+        "resolved_config.yaml": {
+          "bytes": 2813,
+          "sha256": "90a279b1d2e0b7c6d86ab3237024ed8b250a174e6a737430cd1529bfffa292e0"
+        },
+        "summary.json": {
+          "bytes": 5768668,
+          "sha256": "a66f06167b3469a247d040713870419b8f04232ca6ff76e970f8f135270e86a5"
+        },
+        "updates.jsonl": {
+          "bytes": 6116346,
+          "sha256": "bcef54666f379d386b7a6b2a01f3cd52f73785f7dd6a95f8ea87d1c8864cf0ff"
+        },
+        "val_previews/best/anomaly_010.png": {
+          "bytes": 141582,
+          "sha256": "3d3740d1f6a7c7c0a336ea0642ce9b29f7d332f8d370ccad1273d1813d065003"
+        },
+        "val_previews/best/anomaly_045.png": {
+          "bytes": 150386,
+          "sha256": "0a78682d86e8d92e1d2c51df312787c3cd1505a0f7fd0fa6740c947158ef57a0"
+        },
+        "val_previews/best/anomaly_087.png": {
+          "bytes": 145148,
+          "sha256": "5e8f509cf827bb2abcd8aed5c9da2a0b1ee3cb8b6d7550d4a1a1cb4f4c1aa3e0"
+        },
+        "val_previews/best/normal_0011.png": {
+          "bytes": 144915,
+          "sha256": "e21a0a0b31af26299d71769f885d8ed686f3039d31b22972136301ad40139b64"
+        },
+        "val_previews/best/normal_0455.png": {
+          "bytes": 145610,
+          "sha256": "7f96525c8eb4026510d2bd1fa86f731e8312ccfcc03c59c3c81775b3006a22bd"
+        },
+        "val_previews/best/normal_0983.png": {
+          "bytes": 139586,
+          "sha256": "0509cd01b5d51316eb70627ebb2aa33956821c590a0813c83981c2ba3714979f"
+        }
+      },
+      "artifact_integrity": {
+        "ok": true,
+        "files_checked": 19,
+        "summary_inventory_files": 18,
+        "manifest_sha256": "0f04aeab51d2eff238124768b17d3741f1bbda46d9274942fe3d534a3823b1f4"
+      },
+      "preview_ids_sha256": "4f17789dfecc28023003092dddbe3c4683ac781cb469b483e4180c2ebb8f9718",
+      "model_state_sha256": "eb27b1375b28e106151e871e8eb9e7b12823f67062331cfea12441a8691cf304",
+      "summary_sha256": "a66f06167b3469a247d040713870419b8f04232ca6ff76e970f8f135270e86a5",
+      "config_sha256": "7fbea4eca4309a2e3565f7651f661895791dc94248f711cc9c2659377e2bbe47",
+      "resolved_config_sha256": "90a279b1d2e0b7c6d86ab3237024ed8b250a174e6a737430cd1529bfffa292e0",
+      "manifests": {
+        "train": {
+          "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\train.csv",
+          "sha256": "f1522eb9b474d0acc1d736a391002f5044153208fa10f51eea3dc7df729f65b0"
+        },
+        "val": {
+          "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\val.csv",
+          "sha256": "60a6c6cbf5ed7f5f9e57fb57bb096a5b57db677af5ee73f4fa140ddceaba6191"
+        },
+        "test": {
+          "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\test.csv",
+          "sha256": "4bdc594148f208c7067a66a8cb3b06fde53ebc1f4ab6fda84f08f80383061284"
+        }
+      },
+      "split_meta_sha256": "7c53a669aabebcbb72cc137f84e7d00ec615e53813396b36e7f3557d6c9d0b49",
+      "snapshot": {
+        "model_id": "nvidia/mit-b0",
+        "revision": "80983a413c30d36a39c20203974ae7807835e2b4",
+        "weights_sha256": "4af8348c2a802bf76115d34797ff5ce1d9f110bb8593c22d9b66d8bd7fa227fc"
+      },
+      "trained_epochs": 50,
+      "selection": "highest val global foreground IoU; ties keep the earlier epoch",
+      "strict_load": true,
+      "missing_keys": [],
+      "unexpected_keys": [],
+      "trainable_parameters_left": 0
+    }
+  ],
+  "actual_forward_count": 1,
+  "actual_forward_all_equal": true,
+  "actual_forward_observation": {
+    "device": "cuda:0",
+    "input_dtype": "torch.float32",
+    "logits_dtype": "torch.float32",
+    "input_shape": [
+      1,
+      3,
+      512,
+      512
+    ],
+    "logits_shape": [
+      1,
+      2,
+      128,
+      128
+    ],
+    "model_training": false,
+    "model_float32": true,
+    "inference_mode": true,
+    "grad_enabled": false,
+    "autocast_enabled": false,
+    "cudnn_tf32": false,
+    "matmul_tf32": false,
+    "finite_logits": true
+  },
+  "comparison": {
+    "predict_API_uses_GT": false,
+    "scope": "No GT argument or label is supplied to predict; not an OS-wide file-access audit.",
+    "probability_max_abs_diff_vs_training_saved": 0.0,
+    "binary_XOR_vs_full_val": 0,
+    "shape": [
+      1070,
+      1404
+    ],
+    "probability_dtype": "float32"
+  },
+  "original_training_21_files_unchanged": true,
+  "original_eval001_unchanged": true,
+  "elapsed_seconds": 5.119
+}

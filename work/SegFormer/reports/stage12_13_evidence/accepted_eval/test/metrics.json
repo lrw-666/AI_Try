@@ -1,0 +1,131 @@
+{
+  "schema": "segformer-lab/eval-metrics/1",
+  "stage": "12",
+  "split": "test",
+  "run_dir": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42",
+  "best_epoch": 39,
+  "best_global_step": 10330,
+  "images": {
+    "total": 442,
+    "normal": 402,
+    "anomaly": 40
+  },
+  "confusion": {
+    "tp": 252227,
+    "fp": 27779,
+    "fn": 89101,
+    "tn": 663638653,
+    "pixels": 664007760,
+    "accumulator_dtype": "int64"
+  },
+  "global": {
+    "foreground_iou": 0.6833438542,
+    "foreground_dice": 0.8118886139,
+    "precision": 0.9007914116,
+    "recall": 0.7389578353,
+    "na_reasons": {},
+    "aggregation": "sum TP/FP/FN/TN over images, then divide once"
+  },
+  "anomaly_images": {
+    "count": 40,
+    "macro": {
+      "iou": {
+        "mean": 0.5248580728,
+        "defined_images": 40,
+        "na_images": 0,
+        "na_reason": ""
+      },
+      "dice": {
+        "mean": 0.6350735444,
+        "defined_images": 40,
+        "na_images": 0,
+        "na_reason": ""
+      },
+      "precision": {
+        "mean": 0.8070891646,
+        "defined_images": 38,
+        "na_images": 2,
+        "na_reason": ""
+      },
+      "recall": {
+        "mean": 0.5831748857,
+        "defined_images": 40,
+        "na_images": 0,
+        "na_reason": ""
+      }
+    },
+    "na_detail": {
+      "iou_or_dice": []
+    }
+  },
+  "normal_images": {
+    "count": 402,
+    "false_positive_pixels": 3689,
+    "total_pixels": 603916560,
+    "fp_pixel_ratio": 6.108459751459705e-06,
+    "na_reasons": {},
+    "predicted_foreground_ratio": {
+      "median": 0.0,
+      "p95": 2.19333e-05,
+      "max": 0.0003827516,
+      "percentile_method": "numpy linear interpolation over per-image ratios"
+    },
+    "images_with_any_false_positive": 32,
+    "worst_offenders": [
+      {
+        "image_id": "pcb1/Data/Images/Normal/0333.JPG",
+        "predicted_foreground_pixels": 575,
+        "predicted_foreground_ratio": 0.0003827516
+      },
+      {
+        "image_id": "pcb1/Data/Images/Normal/0694.JPG",
+        "predicted_foreground_pixels": 540,
+        "predicted_foreground_ratio": 0.0003594536
+      },
+      {
+        "image_id": "pcb1/Data/Images/Normal/0261.JPG",
+        "predicted_foreground_pixels": 379,
+        "predicted_foreground_ratio": 0.0002522832
+      },
+      {
+        "image_id": "pcb1/Data/Images/Normal/0230.JPG",
+        "predicted_foreground_pixels": 367,
+        "predicted_foreground_ratio": 0.0002442953
+      },
+      {
+        "image_id": "pcb1/Data/Images/Normal/0669.JPG",
+        "predicted_foreground_pixels": 229,
+        "predicted_foreground_ratio": 0.000152435
+      }
+    ]
+  },
+  "evaluation": {
+    "batch_size": 1,
+    "mode": "model.eval() + torch.inference_mode()",
+    "precision": "ieee_fp32 (TF32 disabled, autocast disabled)",
+    "precision_record": {
+      "policy": "ieee_fp32",
+      "api": "torch2.10 allow_tf32 (legacy API only)",
+      "before": {
+        "cudnn_allow_tf32": true,
+        "matmul_allow_tf32": false
+      },
+      "autocast_enabled": false,
+      "scope": "evaluation context; restore backend flags and caller autocast on exit",
+      "training_amp_config_unchanged": true,
+      "bitwise_batch_invariance_guaranteed": false,
+      "effective": {
+        "cudnn_allow_tf32": false,
+        "matmul_allow_tf32": false
+      },
+      "restored_after_exit": true
+    },
+    "threshold": 0.5
+  },
+  "coverage": {
+    "rows": 442,
+    "missing": [],
+    "duplicates": 0
+  },
+  "note": "integer counts are exact; NA means the denominator was zero, no epsilon is added; normal-image statistics are pixel-level, not an image-level detection rate"
+}

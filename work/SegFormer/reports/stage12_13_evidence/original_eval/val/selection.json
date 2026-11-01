@@ -1,0 +1,254 @@
+{
+  "split": "val",
+  "fixed_normal": [
+    {
+      "image_id": "pcb1/Data/Images/Normal/0011.JPG",
+      "label": "normal",
+      "reason": "fixed_normal",
+      "iou": null,
+      "recall": null,
+      "fp": 0
+    },
+    {
+      "image_id": "pcb1/Data/Images/Normal/0045.JPG",
+      "label": "normal",
+      "reason": "fixed_normal",
+      "iou": null,
+      "recall": null,
+      "fp": 0
+    },
+    {
+      "image_id": "pcb1/Data/Images/Normal/0056.JPG",
+      "label": "normal",
+      "reason": "fixed_normal",
+      "iou": null,
+      "recall": null,
+      "fp": 0
+    },
+    {
+      "image_id": "pcb1/Data/Images/Normal/0058.JPG",
+      "label": "normal",
+      "reason": "fixed_normal",
+      "iou": null,
+      "recall": null,
+      "fp": 0
+    },
+    {
+      "image_id": "pcb1/Data/Images/Normal/0065.JPG",
+      "label": "normal",
+      "reason": "fixed_normal",
+      "iou": null,
+      "recall": null,
+      "fp": 0
+    },
+    {
+      "image_id": "pcb1/Data/Images/Normal/0067.JPG",
+      "label": "normal",
+      "reason": "fixed_normal",
+      "iou": null,
+      "recall": null,
+      "fp": 0
+    }
+  ],
+  "fixed_anomaly": [
+    {
+      "image_id": "pcb1/Data/Images/Anomaly/010.JPG",
+      "label": "anomaly",
+      "reason": "fixed_anomaly",
+      "iou": 0.6226283725,
+      "recall": 0.6941587425,
+      "fp": 592
+    },
+    {
+      "image_id": "pcb1/Data/Images/Anomaly/016.JPG",
+      "label": "anomaly",
+      "reason": "fixed_anomaly",
+      "iou": 0.7837689133,
+      "recall": 0.8043478261,
+      "fp": 93
+    },
+    {
+      "image_id": "pcb1/Data/Images/Anomaly/019.JPG",
+      "label": "anomaly",
+      "reason": "fixed_anomaly",
+      "iou": 0.6128808864,
+      "recall": 0.6555555556,
+      "fp": 282
+    },
+    {
+      "image_id": "pcb1/Data/Images/Anomaly/033.JPG",
+      "label": "anomaly",
+      "reason": "fixed_anomaly",
+      "iou": 0.8553798689,
+      "recall": 0.9268700376,
+      "fp": 200
+    },
+    {
+      "image_id": "pcb1/Data/Images/Anomaly/042.JPG",
+      "label": "anomaly",
+      "reason": "fixed_anomaly",
+      "iou": 0.0,
+      "recall": 0.0,
+      "fp": 47
+    },
+    {
+      "image_id": "pcb1/Data/Images/Anomaly/045.JPG",
+      "label": "anomaly",
+      "reason": "fixed_anomaly",
+      "iou": 0.918902287,
+      "recall": 0.9947800715,
+      "fp": 9792
+    }
+  ],
+  "worst_iou": [
+    {
+      "image_id": "pcb1/Data/Images/Anomaly/042.JPG",
+      "label": "anomaly",
+      "reason": "worst_iou",
+      "iou": 0.0,
+      "recall": 0.0,
+      "fp": 47
+    },
+    {
+      "image_id": "pcb1/Data/Images/Anomaly/051.JPG",
+      "label": "anomaly",
+      "reason": "worst_iou",
+      "iou": 0.0,
+      "recall": 0.0,
+      "fp": 0
+    },
+    {
+      "image_id": "pcb1/Data/Images/Anomaly/081.JPG",
+      "label": "anomaly",
+      "reason": "worst_iou",
+      "iou": 0.0105131021,
+      "recall": 0.0105131021,
+      "fp": 0
+    },
+    {
+      "image_id": "pcb1/Data/Images/Anomaly/087.JPG",
+      "label": "anomaly",
+      "reason": "worst_iou",
+      "iou": 0.428141783,
+      "recall": 0.8560996564,
+      "fp": 2327
+    },
+    {
+      "image_id": "pcb1/Data/Images/Anomaly/019.JPG",
+      "label": "anomaly",
+      "reason": "worst_iou",
+      "iou": 0.6128808864,
+      "recall": 0.6555555556,
+      "fp": 282
+    }
+  ],
+  "worst_recall": [
+    {
+      "image_id": "pcb1/Data/Images/Anomaly/042.JPG",
+      "label": "anomaly",
+      "reason": "worst_recall",
+      "iou": 0.0,
+      "recall": 0.0,
+      "fp": 47
+    },
+    {
+      "image_id": "pcb1/Data/Images/Anomaly/051.JPG",
+      "label": "anomaly",
+      "reason": "worst_recall",
+      "iou": 0.0,
+      "recall": 0.0,
+      "fp": 0
+    },
+    {
+      "image_id": "pcb1/Data/Images/Anomaly/081.JPG",
+      "label": "anomaly",
+      "reason": "worst_recall",
+      "iou": 0.0105131021,
+      "recall": 0.0105131021,
+      "fp": 0
+    },
+    {
+      "image_id": "pcb1/Data/Images/Anomaly/059.JPG",
+      "label": "anomaly",
+      "reason": "worst_recall",
+      "iou": 0.6214680856,
+      "recall": 0.6263626363,
+      "fp": 630
+    },
+    {
+      "image_id": "pcb1/Data/Images/Anomaly/019.JPG",
+      "label": "anomaly",
+      "reason": "worst_recall",
+      "iou": 0.6128808864,
+      "recall": 0.6555555556,
+      "fp": 282
+    }
+  ],
+  "most_normal_fp": [
+    {
+      "image_id": "pcb1/Data/Images/Normal/0245.JPG",
+      "label": "normal",
+      "reason": "most_normal_fp",
+      "iou": 0.0,
+      "recall": null,
+      "fp": 548
+    },
+    {
+      "image_id": "pcb1/Data/Images/Normal/0737.JPG",
+      "label": "normal",
+      "reason": "most_normal_fp",
+      "iou": 0.0,
+      "recall": null,
+      "fp": 397
+    },
+    {
+      "image_id": "pcb1/Data/Images/Normal/0684.JPG",
+      "label": "normal",
+      "reason": "most_normal_fp",
+      "iou": 0.0,
+      "recall": null,
+      "fp": 134
+    },
+    {
+      "image_id": "pcb1/Data/Images/Normal/0271.JPG",
+      "label": "normal",
+      "reason": "most_normal_fp",
+      "iou": 0.0,
+      "recall": null,
+      "fp": 104
+    },
+    {
+      "image_id": "pcb1/Data/Images/Normal/0200.JPG",
+      "label": "normal",
+      "reason": "most_normal_fp",
+      "iou": 0.0,
+      "recall": null,
+      "fp": 80
+    }
+  ],
+  "all_anomaly_tp_zero": [
+    "pcb1/Data/Images/Anomaly/042.JPG",
+    "pcb1/Data/Images/Anomaly/051.JPG"
+  ],
+  "all_anomaly_empty_prediction": [
+    "pcb1/Data/Images/Anomaly/051.JPG"
+  ],
+  "all_normal_with_false_positive": [
+    "pcb1/Data/Images/Normal/0193.JPG",
+    "pcb1/Data/Images/Normal/0200.JPG",
+    "pcb1/Data/Images/Normal/0233.JPG",
+    "pcb1/Data/Images/Normal/0245.JPG",
+    "pcb1/Data/Images/Normal/0271.JPG",
+    "pcb1/Data/Images/Normal/0299.JPG",
+    "pcb1/Data/Images/Normal/0419.JPG",
+    "pcb1/Data/Images/Normal/0505.JPG",
+    "pcb1/Data/Images/Normal/0658.JPG",
+    "pcb1/Data/Images/Normal/0684.JPG",
+    "pcb1/Data/Images/Normal/0737.JPG"
+  ],
+  "counts": {
+    "normal": 120,
+    "anomaly": 12
+  },
+  "distinct_tp_zero_and_empty": true
+}

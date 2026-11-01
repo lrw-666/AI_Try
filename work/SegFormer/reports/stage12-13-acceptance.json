@@ -1,0 +1,1072 @@
+{
+  "schema": "segformer-lab/stage12-13-acceptance/1",
+  "date": "2026-11-01",
+  "verified_at_utc": "2026-11-01T10:34:44.936768+00:00",
+  "status": "accepted",
+  "stages": [
+    12,
+    13
+  ],
+  "scope": {
+    "baseline_engineering_13_steps_complete": true,
+    "thesis_or_new_method_complete": false,
+    "new_training": false,
+    "DINOv3_executed": false,
+    "original_eval_and_fixed_protocol_acceptance_rerun_both_retained": true,
+    "no_test_based_parameter_or_result_selection": true
+  },
+  "git": {
+    "head_before_acceptance_commit": "747874245986aa74dedd88ef5438d2af5e7d933f",
+    "remote": "https://github.com/lrw-666/AI_Try.git",
+    "requested_commit_message": "第十二、十三阶段验收",
+    "scope": "work/SegFormer only; code/docs/small evidence/selected figures"
+  },
+  "frozen_model": {
+    "run": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42",
+    "best_epoch": 39,
+    "best_successful_step": 10330,
+    "last_successful_step": 13243,
+    "sha256": "192c827bef00607f4258e5fadf0f1d97970ca5cc727a0add749be0fba5997485",
+    "training_run_unchanged": true,
+    "files": 21,
+    "bytes": 154043135
+  },
+  "tests": {
+    "passed": 291,
+    "elapsed_seconds": 11.593,
+    "exit_code": 0,
+    "log": {
+      "path": "reports/stage12-13-unit-tests.txt",
+      "bytes": 45199,
+      "sha256": "e1b5b3c4c50b920cc7fdafbb4a972cb2482cdf66feb8d90e52cfba05626cecf0"
+    },
+    "stage12_directed_tests": 21,
+    "stage13_directed_tests": 7,
+    "test_source_sha256": {
+      "tests/__init__.py": "e0842dbaa7e00143bf2018021aaf5953869f39a7f7e3faad9c5ccbcf2c667bd3",
+      "tests/test_audit_groups.py": "81ff621ca20ac2ada93e86319f7ea5c8e73ba5a00e78dde0402f5dad9acecdcb",
+      "tests/test_data_audit.py": "99c31b7def1dcd2ad6ec2111c55630f00e9fec86a137b1ff320422e3f25fa011",
+      "tests/test_dataset.py": "0307a808b67577ad4a7ca3bd3ce6f63ae3e3d66477156f701fed75c7571288fd",
+      "tests/test_dataset_check.py": "a6ba7eec71da2ae34cf187fc43367060afb8e5f07f7cc951b26cbcac7daf0cf8",
+      "tests/test_download_model.py": "205e1ff98b270ba73a9b0c3cf5eeeb88b068684382a99c8205bdb21e5adbc588",
+      "tests/test_env_check.py": "48b81ef7a5bdae869c44a088ee76267ce6e4960e606ef50820a1ed63e656ffba",
+      "tests/test_evaluation.py": "ff8ebc27c43eeb42adbbfc0794d1e4e2d052615ea4fa9c5b2730f64a23b5fade",
+      "tests/test_full_check.py": "ca62412769ad17a6f9d6b546dd27e98221f39e4081b4a7f3fc1b2774734a83bd",
+      "tests/test_group_split.py": "6c46d822d61050b23f6dea1f577c29b116af18184b2f82b8a70d615958cc580b",
+      "tests/test_inference_eval.py": "798b3d79b8e9e693c6ba948aacc23f9ee3f95d87f3f046a123240680651cc51b",
+      "tests/test_loss_metric_acceptance.py": "8d5e10c0d77ae5f7494acfe2ac83f049633c1a290f7844b9aeb794d62928c2aa",
+      "tests/test_losses_metrics.py": "1acf0151bc301bbeb21752d11d28169bca4e7bde77928000ff6b468284bcd084",
+      "tests/test_metrics_check.py": "6c0d0fc71604a511544f8f9be93d84e8be7eb74a4bbb6316b7a2fd6e8c73b395",
+      "tests/test_model_acceptance.py": "6d7b78c3f35e3dd705d2a4fb6aa4d419aa55e86bbbc8c6cd0c95ee3c027079fe",
+      "tests/test_modeling.py": "dd23a1d1731e93bc9199da4a0d21f875a257960442222f537ecd31ab8b61e2dc",
+      "tests/test_pilot.py": "79786857b6a3706b41407d3b3a853edc468c39eef53ffe59e4455638c2de8152",
+      "tests/test_prepare_data.py": "bf03d70211880cd38d814187ea6d92c2ac2185bcfa32f5d63ff58da2a98d5d80",
+      "tests/test_preview_ids.py": "33ecf90b4b3c9e3633fd1ac74ff7f88c84e4e83a32cbf715a379a625fb4b0b3f",
+      "tests/test_resume_check.py": "d1b101837807b8a27ab864c4571433e4d4cc41cb36e8b3afc77fb34b7f3609fb",
+      "tests/test_run_check.py": "2764e3708c4d988ceb94f50ce3553886489c35adb5f2218376b3796884e936bd",
+      "tests/test_summarize.py": "432d5ff447b2a72546d1d2b35d502ffd08b2f852227f9c5c56a2d2a3bb9ba737",
+      "tests/test_train_full.py": "50fafda3434f8da15f1deff53d0cfdcc26d4961181cb4d03834a75dd6cc2b494",
+      "tests/test_training.py": "bb5f6f55a9a2cf105dc965d16ce52239398d929ee91badd6ac4c8310128c104b"
+    }
+  },
+  "independent_scalar_and_byte_audit": {
+    "report": {
+      "path": "reports/stage12-13-evidence-audit.json",
+      "bytes": 20768,
+      "sha256": "7a705de5a31501bb565e02147ca470342eadbebed72703644cd9f587447ffc11"
+    },
+    "checks": 24584,
+    "failed": [],
+    "scope": "Persisted scalar arithmetic/NA/coverage/selection/curves/archive and byte checks; original audit did not decode pixels or run models."
+  },
+  "executed_checks": {
+    "val": {
+      "report": {
+        "path": "reports/stage12-13-val-acceptance-check.json",
+        "bytes": 12576,
+        "sha256": "52e0387fba17b2af3cb1973d3ccc5659fed980903c44d50b1c7e29d93de22e1e"
+      },
+      "actual_forwards": 132,
+      "forward": {
+        "device": "cuda:0",
+        "input_dtype": "torch.float32",
+        "logits_dtype": "torch.float32",
+        "input_shape": [
+          1,
+          3,
+          512,
+          512
+        ],
+        "logits_shape": [
+          1,
+          2,
+          128,
+          128
+        ],
+        "model_training": false,
+        "model_float32": true,
+        "inference_mode": true,
+        "grad_enabled": false,
+        "autocast_enabled": false,
+        "cudnn_tf32": false,
+        "matmul_tf32": false,
+        "finite_logits": true
+      },
+      "comparison": {
+        "images": 132,
+        "compared_metric_fields_identical": true,
+        "compared_metric_fields": [
+          "images",
+          "confusion",
+          "global",
+          "anomaly_images",
+          "normal_images",
+          "coverage"
+        ],
+        "all_old_per_image_fields_identical": true,
+        "all_binary_png_arrays_identical": true,
+        "all_original_size_binary_and_original_GT_confusion_verified": true,
+        "independent_confusion_from_actual_PNG_and_original_GT": {
+          "tp": 279246,
+          "fp": 17894,
+          "fn": 62003,
+          "tn": 197941817
+        }
+      },
+      "elapsed_seconds": 20.618
+    },
+    "test": {
+      "report": {
+        "path": "reports/stage12-13-test-acceptance-check.json",
+        "bytes": 12709,
+        "sha256": "27cce720f66d313b6223ede21de8f37b660976f906f9794a84fd2ebbf16933a1"
+      },
+      "actual_forwards": 442,
+      "forward": {
+        "device": "cuda:0",
+        "input_dtype": "torch.float32",
+        "logits_dtype": "torch.float32",
+        "input_shape": [
+          1,
+          3,
+          512,
+          512
+        ],
+        "logits_shape": [
+          1,
+          2,
+          128,
+          128
+        ],
+        "model_training": false,
+        "model_float32": true,
+        "inference_mode": true,
+        "grad_enabled": false,
+        "autocast_enabled": false,
+        "cudnn_tf32": false,
+        "matmul_tf32": false,
+        "finite_logits": true
+      },
+      "comparison": {
+        "images": 442,
+        "compared_metric_fields_identical": true,
+        "compared_metric_fields": [
+          "images",
+          "confusion",
+          "global",
+          "anomaly_images",
+          "normal_images",
+          "coverage"
+        ],
+        "all_old_per_image_fields_identical": true,
+        "all_binary_png_arrays_identical": true,
+        "all_original_size_binary_and_original_GT_confusion_verified": true,
+        "independent_confusion_from_actual_PNG_and_original_GT": {
+          "tp": 252227,
+          "fp": 27779,
+          "fn": 89101,
+          "tn": 663638653
+        }
+      },
+      "elapsed_seconds": 60.593
+    },
+    "predict": {
+      "report": {
+        "path": "reports/stage12-13-predict-acceptance-check.json",
+        "bytes": 12211,
+        "sha256": "41e822d96fe6e924664d8ec13f7b70bfd584f31f14ce34581f60680b39190928"
+      },
+      "actual_forwards": 1,
+      "forward": {
+        "device": "cuda:0",
+        "input_dtype": "torch.float32",
+        "logits_dtype": "torch.float32",
+        "input_shape": [
+          1,
+          3,
+          512,
+          512
+        ],
+        "logits_shape": [
+          1,
+          2,
+          128,
+          128
+        ],
+        "model_training": false,
+        "model_float32": true,
+        "inference_mode": true,
+        "grad_enabled": false,
+        "autocast_enabled": false,
+        "cudnn_tf32": false,
+        "matmul_tf32": false,
+        "finite_logits": true
+      },
+      "comparison": {
+        "predict_API_uses_GT": false,
+        "scope": "No GT argument or label is supplied to predict; not an OS-wide file-access audit.",
+        "probability_max_abs_diff_vs_training_saved": 0.0,
+        "binary_XOR_vs_full_val": 0,
+        "shape": [
+          1070,
+          1404
+        ],
+        "probability_dtype": "float32"
+      },
+      "elapsed_seconds": 5.119
+    }
+  },
+  "current_val_gate": {
+    "schema": "segformer-lab/eval-gate/2",
+    "checks": 74,
+    "passed": true,
+    "failed": [],
+    "report": {
+      "path": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42_eval_acceptance_20261101\\val\\gate.json",
+      "bytes": 251714,
+      "sha256": "607f417f7b3b7ea56a6c95e289ce5be34915df322cb0402e1f57787e9dd1a80d"
+    },
+    "binding_fields": [
+      "identity",
+      "code",
+      "data",
+      "protocol",
+      "runtime"
+    ],
+    "code_sha256": {
+      "segformer_lab/__init__.py": "2ec79c144804c61e26f957553f5835f9c42f3aa0010724f48c029c669c576a98",
+      "segformer_lab/audit_data.py": "9ba6cfab71b899fe5cf12fbffd27d567494aae7d05abd0e3eaa09b186ba3fd7d",
+      "segformer_lab/config.py": "b2c981faca6b2222b83ea876c8b3f1cd854ee210f42cd588dce41f20caaaa391",
+      "segformer_lab/data.py": "3eb2117997db7cee7fa720b74f8b5b7df85793f4a65cebdd851943c3025ab9ce",
+      "segformer_lab/dataset_check.py": "cf38ac70fe70b99323f17dff282136081cbe316bdd61f75e272707a12ea8436d",
+      "segformer_lab/download_model.py": "7859b282d709091bbcadcfa3c232a83e6d6c91a854e04459f75ffa420dc760b6",
+      "segformer_lab/env_check.py": "e1f55898b993ade38c7d69e7bd69baa83137faa2231114db0d16b5f047962195",
+      "segformer_lab/evaluate.py": "f91a5b06a819ce2da9644b1b60e9e505cc371a2c190326989103751105a9d4a2",
+      "segformer_lab/evaluation.py": "0c30890eb5252d603de73bc792a6ef348fa77c2cf91c5f1b98a7167492787e53",
+      "segformer_lab/full_check.py": "9545119b62af8bee2367acc88e549f3daf0cd717f2bf102c8c841b7afd864f2b",
+      "segformer_lab/geometry.py": "b9e9d823ba91706bea650ccf578fb71f960840c3f8097f7c8687a5850ab4aacb",
+      "segformer_lab/inference.py": "5ef75eb4b793090564cccbd8c4130e6fab11e7a1b6367aa43e15a573532496e0",
+      "segformer_lab/losses.py": "e7195880bd49a8f03a9fbb39e9069c1f071010c8f7f96ba2bfac80d3d0ba0327",
+      "segformer_lab/metrics.py": "7d9625fa29eb94221787c80f7bc47dc429958d588207692f2c0ea1a12ecb5787",
+      "segformer_lab/metrics_check.py": "b85a592f561df2d4666d55426ce6536a6d0d39b30165dfb0ec88ad9ca8381f25",
+      "segformer_lab/model_check.py": "eec04e21011b244d0d44c99a8b801ed258390b770678a36338eda74661f106dc",
+      "segformer_lab/modeling.py": "318e0b0a5164eafe7c8393adf64caf1aaeea6e5895ab679ba0171c0fc57a59d3",
+      "segformer_lab/paths.py": "a5d8814ff3adb4b162b96202d2c42d7fd68a1f26442e114f0cfa7f479c80c8b9",
+      "segformer_lab/pilot.py": "28825b9346c4b19677db756a8be7bdf98c56d03c8f9f99cad64c2cab3e9f737c",
+      "segformer_lab/predict.py": "fb3b05ccd563db0bb6a1545f3aa636ef1e3306d96ded7c43206612fc5e840882",
+      "segformer_lab/prepare_data.py": "d98bf2ee7f5a00b3f4aa957c1f10e9e63147ca5fef0f192ece67fc11d271884c",
+      "segformer_lab/preview_data.py": "aecececda8e6a50bfb8c3e67763f464fef9c34b489112f04ed6575c0f2b06681",
+      "segformer_lab/resume_check.py": "506ad9a3188a63ce0f316673a9fc188f4192ba7c302c4715ee0d4ce51d3cff82",
+      "segformer_lab/run_check.py": "257b617527feef4393ffc22c215616de2cad938fd177b1d4efa4b2a124875b62",
+      "segformer_lab/smoke.py": "50c47b2f8b0bb45293c69635d1cb9eee6294a73acee4dcdf0525a1b36c0a45ec",
+      "segformer_lab/subset.py": "11f1831cab544270404a47ba8a721bbaa8b4d72890bb0f5a85b1fad900c16032",
+      "segformer_lab/summarize.py": "6c1fa3e10437d34bb1254f3990baa9f1a697a1cd94fbb58015806bf08341596a",
+      "segformer_lab/train.py": "d8721c8012d594293988146cc8acad573361639ca27e241f43e4f16ef8ffc305",
+      "segformer_lab/train_full.py": "2f5214272dddd37060057a163c833f46975d02deca394044caa37ec4bb562bf4",
+      "segformer_lab/training.py": "91c829d2447dd849b8a586e4f95dd355789e1a9255bcaf814661b8eaf57bd6f3",
+      "scripts/enter_project.ps1": "19d5ef5924568181669f03049bf0d8b2204036db19ee3ad78adaa5e3490b92d8",
+      "scripts/run_project.ps1": "13e6a55938be145f776d3da52b70d8708d62647b12676e99dedce4a903438aa1",
+      "scripts/snapshot_environment.ps1": "0e6b140ebc50e34d4f3cc375386187d382805e0bc1a191b076f75d8f529783cd",
+      "scripts/test_runtime_context.ps1": "f7acce86a23200a127497c29f6138dcfa9af7662b9fa05bea4463b1ba645bb50"
+    },
+    "protocol": {
+      "batch_size": 1,
+      "workers": 0,
+      "precision": "ieee_fp32",
+      "autocast": false,
+      "cudnn_allow_tf32": false,
+      "matmul_allow_tf32": false,
+      "threshold": 0.5,
+      "flip": "none",
+      "postprocess": "none",
+      "tta": false,
+      "restore": "logits->bilinear512(align_corners=False)->crop->bilinear_original->softmax1",
+      "original_gt": "nonzero merged to 1; normal zero mask",
+      "tolerance": {
+        "integers": "exact",
+        "na_strings": "exact",
+        "floats": "abs diff <= 1e-9",
+        "preview_probability_atol": 1e-05,
+        "preview_xor_pixels": 0
+      }
+    },
+    "runtime": {
+      "executable": "E:\\桌面\\AI\\segformer_resources\\env\\python.exe",
+      "python": "3.12.16 | packaged by Anaconda, Inc. | (main, Oct 26 2026, 20:13:05) [MSC v.1942 64 bit (AMD64)]",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "device": "cuda",
+      "versions": {
+        "torch": "2.10.0+cu126",
+        "transformers": "4.57.6",
+        "numpy": "2.5.4",
+        "Pillow": "12.3.0",
+        "matplotlib": "3.11.2",
+        "PyYAML": "6.0.3"
+      },
+      "cuda_build": "12.6",
+      "cudnn": 91002,
+      "device_name": "NVIDIA GeForce RTX 4070 Laptop GPU"
+    },
+    "all_val_original_data_files": 144,
+    "all_test_original_data_files": 482
+  },
+  "validation": {
+    "images": {
+      "total": 132,
+      "normal": 120,
+      "anomaly": 12
+    },
+    "confusion": {
+      "tp": 279246,
+      "fp": 17894,
+      "fn": 62003,
+      "tn": 197941817,
+      "pixels": 198300960,
+      "accumulator_dtype": "int64"
+    },
+    "global": {
+      "foreground_iou": 0.7775342969,
+      "foreground_dice": 0.8748459012,
+      "precision": 0.9397792286,
+      "recall": 0.8183056947,
+      "na_reasons": {},
+      "aggregation": "sum TP/FP/FN/TN over images, then divide once"
+    },
+    "anomaly_images": {
+      "count": 12,
+      "macro": {
+        "iou": {
+          "mean": 0.5395555278,
+          "defined_images": 12,
+          "na_images": 0,
+          "na_reason": ""
+        },
+        "dice": {
+          "mean": 0.6203118681,
+          "defined_images": 12,
+          "na_images": 0,
+          "na_reason": ""
+        },
+        "precision": {
+          "mean": 0.7953262383,
+          "defined_images": 11,
+          "na_images": 1,
+          "na_reason": ""
+        },
+        "recall": {
+          "mean": 0.6154797088,
+          "defined_images": 12,
+          "na_images": 0,
+          "na_reason": ""
+        }
+      },
+      "na_detail": {
+        "iou_or_dice": []
+      }
+    },
+    "normal_images": {
+      "count": 120,
+      "false_positive_pixels": 1495,
+      "total_pixels": 180273600,
+      "fp_pixel_ratio": 8.292950271143417e-06,
+      "na_reasons": {},
+      "predicted_foreground_ratio": {
+        "median": 0.0,
+        "p95": 3.62782e-05,
+        "max": 0.0003647789,
+        "percentile_method": "numpy linear interpolation over per-image ratios"
+      },
+      "images_with_any_false_positive": 11,
+      "worst_offenders": [
+        {
+          "image_id": "pcb1/Data/Images/Normal/0245.JPG",
+          "predicted_foreground_pixels": 548,
+          "predicted_foreground_ratio": 0.0003647789
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0737.JPG",
+          "predicted_foreground_pixels": 397,
+          "predicted_foreground_ratio": 0.000264265
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0684.JPG",
+          "predicted_foreground_pixels": 134,
+          "predicted_foreground_ratio": 8.91978e-05
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0271.JPG",
+          "predicted_foreground_pixels": 104,
+          "predicted_foreground_ratio": 6.92281e-05
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0200.JPG",
+          "predicted_foreground_pixels": 80,
+          "predicted_foreground_ratio": 5.32524e-05
+        }
+      ]
+    },
+    "coverage": {
+      "rows": 132,
+      "missing": [],
+      "duplicates": 0
+    }
+  },
+  "test": {
+    "images": {
+      "total": 442,
+      "normal": 402,
+      "anomaly": 40
+    },
+    "confusion": {
+      "tp": 252227,
+      "fp": 27779,
+      "fn": 89101,
+      "tn": 663638653,
+      "pixels": 664007760,
+      "accumulator_dtype": "int64"
+    },
+    "global": {
+      "foreground_iou": 0.6833438542,
+      "foreground_dice": 0.8118886139,
+      "precision": 0.9007914116,
+      "recall": 0.7389578353,
+      "na_reasons": {},
+      "aggregation": "sum TP/FP/FN/TN over images, then divide once"
+    },
+    "anomaly_images": {
+      "count": 40,
+      "macro": {
+        "iou": {
+          "mean": 0.5248580728,
+          "defined_images": 40,
+          "na_images": 0,
+          "na_reason": ""
+        },
+        "dice": {
+          "mean": 0.6350735444,
+          "defined_images": 40,
+          "na_images": 0,
+          "na_reason": ""
+        },
+        "precision": {
+          "mean": 0.8070891646,
+          "defined_images": 38,
+          "na_images": 2,
+          "na_reason": ""
+        },
+        "recall": {
+          "mean": 0.5831748857,
+          "defined_images": 40,
+          "na_images": 0,
+          "na_reason": ""
+        }
+      },
+      "na_detail": {
+        "iou_or_dice": []
+      }
+    },
+    "normal_images": {
+      "count": 402,
+      "false_positive_pixels": 3689,
+      "total_pixels": 603916560,
+      "fp_pixel_ratio": 6.108459751459705e-06,
+      "na_reasons": {},
+      "predicted_foreground_ratio": {
+        "median": 0.0,
+        "p95": 2.19333e-05,
+        "max": 0.0003827516,
+        "percentile_method": "numpy linear interpolation over per-image ratios"
+      },
+      "images_with_any_false_positive": 32,
+      "worst_offenders": [
+        {
+          "image_id": "pcb1/Data/Images/Normal/0333.JPG",
+          "predicted_foreground_pixels": 575,
+          "predicted_foreground_ratio": 0.0003827516
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0694.JPG",
+          "predicted_foreground_pixels": 540,
+          "predicted_foreground_ratio": 0.0003594536
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0261.JPG",
+          "predicted_foreground_pixels": 379,
+          "predicted_foreground_ratio": 0.0002522832
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0230.JPG",
+          "predicted_foreground_pixels": 367,
+          "predicted_foreground_ratio": 0.0002442953
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0669.JPG",
+          "predicted_foreground_pixels": 229,
+          "predicted_foreground_ratio": 0.000152435
+        }
+      ]
+    },
+    "coverage": {
+      "rows": 442,
+      "missing": [],
+      "duplicates": 0
+    }
+  },
+  "figures_and_results": {
+    "source_directory": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42_results_acceptance_20261101",
+    "portable_directory": "reports/pcb1_b0_v2_seed42",
+    "generator_sha256": "6c1fa3e10437d34bb1254f3990baa9f1a697a1cd94fbb58015806bf08341596a",
+    "five_figures_visually_checked_by_root": true,
+    "independent_reviewer_also_viewed_all_five": true,
+    "23_selected_recomputed_masks_all_XOR_zero": true,
+    "selection": {
+      "all_anomaly_tp_zero": [
+        "pcb1/Data/Images/Anomaly/049.JPG",
+        "pcb1/Data/Images/Anomaly/057.JPG",
+        "pcb1/Data/Images/Anomaly/077.JPG"
+      ],
+      "all_anomaly_empty_prediction": [
+        "pcb1/Data/Images/Anomaly/049.JPG",
+        "pcb1/Data/Images/Anomaly/057.JPG"
+      ],
+      "all_normal_with_false_positive_count": 32,
+      "all_normal_with_false_positive": [
+        "pcb1/Data/Images/Normal/0026.JPG",
+        "pcb1/Data/Images/Normal/0029.JPG",
+        "pcb1/Data/Images/Normal/0030.JPG",
+        "pcb1/Data/Images/Normal/0035.JPG",
+        "pcb1/Data/Images/Normal/0110.JPG",
+        "pcb1/Data/Images/Normal/0111.JPG",
+        "pcb1/Data/Images/Normal/0149.JPG",
+        "pcb1/Data/Images/Normal/0192.JPG",
+        "pcb1/Data/Images/Normal/0214.JPG",
+        "pcb1/Data/Images/Normal/0230.JPG",
+        "pcb1/Data/Images/Normal/0234.JPG",
+        "pcb1/Data/Images/Normal/0261.JPG",
+        "pcb1/Data/Images/Normal/0274.JPG",
+        "pcb1/Data/Images/Normal/0333.JPG",
+        "pcb1/Data/Images/Normal/0347.JPG",
+        "pcb1/Data/Images/Normal/0373.JPG",
+        "pcb1/Data/Images/Normal/0376.JPG",
+        "pcb1/Data/Images/Normal/0439.JPG",
+        "pcb1/Data/Images/Normal/0536.JPG",
+        "pcb1/Data/Images/Normal/0601.JPG",
+        "pcb1/Data/Images/Normal/0622.JPG",
+        "pcb1/Data/Images/Normal/0663.JPG",
+        "pcb1/Data/Images/Normal/0665.JPG",
+        "pcb1/Data/Images/Normal/0669.JPG",
+        "pcb1/Data/Images/Normal/0691.JPG",
+        "pcb1/Data/Images/Normal/0694.JPG",
+        "pcb1/Data/Images/Normal/0711.JPG",
+        "pcb1/Data/Images/Normal/0728.JPG",
+        "pcb1/Data/Images/Normal/0746.JPG",
+        "pcb1/Data/Images/Normal/0779.JPG",
+        "pcb1/Data/Images/Normal/0867.JPG",
+        "pcb1/Data/Images/Normal/0872.JPG"
+      ],
+      "anomaly_denominator": 40,
+      "normal_denominator": 402
+    },
+    "source_validation": {
+      "identity": {
+        "best_sha256": "192c827bef00607f4258e5fadf0f1d97970ca5cc727a0add749be0fba5997485",
+        "best_epoch": 39,
+        "best_global_step": 10330,
+        "model_config_sha256": "a2648c94cd17508f41b3fbf7451a2815ef2443192ed3c2388fb33288d4fd1bac",
+        "processor_sha256": "7854b1307bdd3737b1106ad604bbd8f90308cfce8d46609e6d5d88a1face9f58",
+        "resolved_config_sha256": "90a279b1d2e0b7c6d86ab3237024ed8b250a174e6a737430cd1529bfffa292e0",
+        "summary_sha256": "a66f06167b3469a247d040713870419b8f04232ca6ff76e970f8f135270e86a5",
+        "config_sha256": "7fbea4eca4309a2e3565f7651f661895791dc94248f711cc9c2659377e2bbe47",
+        "manifests": {
+          "train": {
+            "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\train.csv",
+            "sha256": "f1522eb9b474d0acc1d736a391002f5044153208fa10f51eea3dc7df729f65b0"
+          },
+          "val": {
+            "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\val.csv",
+            "sha256": "60a6c6cbf5ed7f5f9e57fb57bb096a5b57db677af5ee73f4fa140ddceaba6191"
+          },
+          "test": {
+            "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\test.csv",
+            "sha256": "4bdc594148f208c7067a66a8cb3b06fde53ebc1f4ab6fda84f08f80383061284"
+          }
+        },
+        "split_meta_sha256": "7c53a669aabebcbb72cc137f84e7d00ec615e53813396b36e7f3557d6c9d0b49",
+        "selection": "highest val global foreground IoU; ties keep the earlier epoch",
+        "model_state_sha256": "eb27b1375b28e106151e871e8eb9e7b12823f67062331cfea12441a8691cf304"
+      },
+      "run_files": {
+        "checkpoints/best.pt": "192c827bef00607f4258e5fadf0f1d97970ca5cc727a0add749be0fba5997485",
+        "model_config.json": "a2648c94cd17508f41b3fbf7451a2815ef2443192ed3c2388fb33288d4fd1bac",
+        "processor/preprocessor_config.json": "7854b1307bdd3737b1106ad604bbd8f90308cfce8d46609e6d5d88a1face9f58",
+        "resolved_config.yaml": "90a279b1d2e0b7c6d86ab3237024ed8b250a174e6a737430cd1529bfffa292e0",
+        "epochs.jsonl": "5b29a04d02c816ba85557143f4f76496a98ac1abc18d5c10b7e0ed608ab1b4c1"
+      },
+      "data_inventory": {
+        "path": "E:\\桌面\\AI\\segformer_resources\\data\\visa\\extraction_manifest.json",
+        "sha256": "c6a0950ce9db9b476be1e482121fcbf7baf34c15db69e0e7981daf81f5015b7c"
+      },
+      "official_csv": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\official_2cls_highshot.csv",
+        "sha256": "c3331eede15f2da8a75b380d4fbfb24f75ee036ec9a25147eca898da6e972f09"
+      },
+      "evaluation_files": {
+        "val": {
+          "display_rules.json": "28d187a24e4f62d3bac210781331bc28fa3324a5c412ee8b56859162a3f5cf0c",
+          "evaluation_meta.json": "bef63b30068913cd3c96e8c668cfe567292e61147dac36fd0126c07d5b83323c",
+          "gate.json": "607f417f7b3b7ea56a6c95e289ce5be34915df322cb0402e1f57787e9dd1a80d",
+          "metrics.json": "102da5d230750f92c3e54dda4a6ff103855659b30f8715932dc99dd2f89fa474",
+          "per_image.json": "77ff5594cdc226c1e2c4d5257a9f43ad3595cdebd5e5bd8ebbdf9a0b5078073a",
+          "selection.json": "2f7fcf085a7925da9e680dae71270b7457d7a709a30f0607299c12201d9b66ca",
+          "artifact_manifest.json": "87d5e4929afe124473ff742c99906f4cf6fbcce27ef2b8eb68a0f490b54ba55a"
+        },
+        "test": {
+          "display_rules.json": "6b2784ede779652055a6c445013269650ec90dfdc41d7da1f21445edbbbf3fe3",
+          "evaluation_meta.json": "a24c1650770e697f41c42110505eef6981e9f6a38d723fbb2dcc46d3e30feb3e",
+          "metrics.json": "c341c4e6becc987508a6b55dc0ef81e299f0a74f335ae1428307ea5d568010e9",
+          "per_image.json": "73cdfc3152d4bf529777e83443fa34185a688d4b2f434b89544c09aeac05a2b8",
+          "selection.json": "4257e2b5698553e28860f4642046b91db8daf44eb9b4ecc485dbc13557019955",
+          "artifact_manifest.json": "a7c74ae0fabda782cb1fc5936d68be6ff6921565d753a7eb54f342b4dc7f1c5d"
+        }
+      }
+    },
+    "portable_status_annotations_only": [
+      "experiment-card.md",
+      "results-summary.json"
+    ],
+    "original_figures_in_git_commit": "747874245986aa74dedd88ef5438d2af5e7d933f"
+  },
+  "archives": {
+    "accepted_eval_archive": {
+      "path": "reports/stage12_13_evidence/accepted-eval-archive.json",
+      "bytes": 7977,
+      "sha256": "0d4a1b53adc4f708fd5cb3ce4bccc7daf476a66ba0bbda71cd69695a919d28f4"
+    },
+    "exact_after_optional_gzip": true,
+    "original_committed_pre_acceptance_code_matches_git": true,
+    "actual_executed_driver": {
+      "path": "reports/stage12_13_evidence/acceptance_driver.py.txt",
+      "bytes": 10115,
+      "sha256": "0dbe22104642b5b84d7991b3570463c1427a39802cef938f52ba45b9f983c282"
+    }
+  },
+  "limitations": [
+    "Single seed/model/PCB1; no cross-category/production/generalization claim.",
+    "No computed confidence intervals, area-stratified causal test, boundary-width measurement, or stable inference-latency benchmark.",
+    "Original scored inference/predict source bodies not retained; pre-acceptance committed source and original SHA metadata preserved separately. New bound source directly reproduces complete predictions/counts.",
+    "No OS-wide file-access or temporal ordering audit; saved written-before-inference records and inspected code are scoped evidence.",
+    "Original stage11 numerical continuation reproduction remains unaccepted; this inference acceptance does not change it.",
+    "Current CLI requires complete21file training bundle and same absolute-path layout; new-root migration is not implemented.",
+    "Test has been inspected; later method development must disclose this and use train/val for selection."
+  ],
+  "next": {
+    "document": "reports/2026-11-01-post-baseline-next-step-handoff.md",
+    "recommended_task": "Frozen DINOv3-S/16 plus simple head feasibility only: access, token geometry, freeze/gradients and resource budget.",
+    "executed": false
+  },
+  "documentation": {
+    "acceptance": "reports/2026-11-01-stage12-13-acceptance.md",
+    "stage12": "docs/stages/12-evaluation-design-and-implementation.md",
+    "stage13": "docs/stages/13-results-design-and-implementation.md",
+    "local_links_checked": 104
+  },
+  "portable_files": {
+    "excluding_this_self_report": true,
+    "files": [
+      {
+        "path": "work/SegFormer/README.md",
+        "bytes": 42981,
+        "sha256": "7387fcdf0642c8067bece2efc98e80470ae17106c792b53021bdefec56ca5afd"
+      },
+      {
+        "path": "work/SegFormer/docs/stages/12-evaluation-design-and-implementation.md",
+        "bytes": 24230,
+        "sha256": "2de961149b51648e689edeb735e4dc36bf12be9717a866985fa3e02d640c7c06"
+      },
+      {
+        "path": "work/SegFormer/docs/stages/13-results-design-and-implementation.md",
+        "bytes": 30923,
+        "sha256": "d54b73312fbc65625dbe4a3f0bf40643ec3945ec9f946d45cb8e1184c9bb9b28"
+      },
+      {
+        "path": "work/SegFormer/docs/stages/README.md",
+        "bytes": 18907,
+        "sha256": "e0148a7fdcded9d76a3968406870c316253959cf19f46f84971cd60b1eacd0f3"
+      },
+      {
+        "path": "work/SegFormer/reports/.gitattributes",
+        "bytes": 185,
+        "sha256": "f593d6a7aa8024d50d41d9ad28a53070f9888f371be10338f736671fa895d993"
+      },
+      {
+        "path": "work/SegFormer/reports/2026-11-01-post-baseline-next-step-handoff.md",
+        "bytes": 7224,
+        "sha256": "671924c494b4676b38d8c95ea5e2d9945671e270fb91c4e006fc355f8c0d5574"
+      },
+      {
+        "path": "work/SegFormer/reports/2026-11-01-stage12-13-acceptance.md",
+        "bytes": 7877,
+        "sha256": "c6f20ee46b0411c56db95d23e4160260623c9d5d60e3dd26dcf222a0050731a7"
+      },
+      {
+        "path": "work/SegFormer/reports/pcb1_b0_v2_seed42/experiment-card.md",
+        "bytes": 3849,
+        "sha256": "06ec814dcaee3aca68d8d0ed05b0046c161f8218436715a5b88964616d807c15"
+      },
+      {
+        "path": "work/SegFormer/reports/pcb1_b0_v2_seed42/figures/normal-fixed-6.png",
+        "bytes": 1191982,
+        "sha256": "b995c1c3475cc5f849b86dca42ac330c06f5ba1e79716e74989a3c2be122a8dc"
+      },
+      {
+        "path": "work/SegFormer/reports/pcb1_b0_v2_seed42/figures/normal-worst-fp.png",
+        "bytes": 967583,
+        "sha256": "d7e4df72df802fe69812e29f79d08ca542b8bb18fef318ac8d3df7c83de20814"
+      },
+      {
+        "path": "work/SegFormer/reports/pcb1_b0_v2_seed42/figures/training-curves.png",
+        "bytes": 143536,
+        "sha256": "ee2439b9e8ac9f235932c0b3ae3fb3e9eb36f7cce0dff1070eebf6326aec81a8"
+      },
+      {
+        "path": "work/SegFormer/reports/pcb1_b0_v2_seed42/reproduction.md",
+        "bytes": 6613,
+        "sha256": "6633d12b3b6cc696d759ff628e694fad88c5d83f19677ab5f87b029c74218795"
+      },
+      {
+        "path": "work/SegFormer/reports/pcb1_b0_v2_seed42/results-summary.json",
+        "bytes": 12070,
+        "sha256": "864eb8d2f7628d4189c21e385d0a1561f44588cd24c48567751c5ece73208037"
+      },
+      {
+        "path": "work/SegFormer/reports/pcb1_b0_v2_seed42/results.md",
+        "bytes": 3649,
+        "sha256": "0260df92ce5a13bfedc056103ec38006d88b34bac88f00ccdc53cb5983ea8c75"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12-13-evidence-audit.json",
+        "bytes": 20768,
+        "sha256": "7a705de5a31501bb565e02147ca470342eadbebed72703644cd9f587447ffc11"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12-13-predict-acceptance-check.json",
+        "bytes": 12211,
+        "sha256": "41e822d96fe6e924664d8ec13f7b70bfd584f31f14ce34581f60680b39190928"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12-13-predict-acceptance-check.txt",
+        "bytes": 297,
+        "sha256": "1628259e3b3f7486e42b5f24378084c518f1a9f3e0a8ab881cba865bc8948708"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12-13-results-regeneration.txt",
+        "bytes": 448,
+        "sha256": "a222184eca8756c435c46683f7d78395f78528e61f3ab92d2c0a727657af5af4"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12-13-test-acceptance-check.json",
+        "bytes": 12709,
+        "sha256": "27cce720f66d313b6223ede21de8f37b660976f906f9794a84fd2ebbf16933a1"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12-13-test-acceptance-check.txt",
+        "bytes": 366,
+        "sha256": "23377156454ce0229275c21321e297f2a6da7d92855a4f6513a18771890bd3b4"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12-13-unit-tests.txt",
+        "bytes": 45199,
+        "sha256": "e1b5b3c4c50b920cc7fdafbb4a972cb2482cdf66feb8d90e52cfba05626cecf0"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12-13-val-acceptance-check.json",
+        "bytes": 12576,
+        "sha256": "52e0387fba17b2af3cb1973d3ccc5659fed980903c44d50b1c7e29d93de22e1e"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12-13-val-acceptance-check.txt",
+        "bytes": 432,
+        "sha256": "b8c0b9116d3e7bb5c7007f7ade780bbca20296407a3adb59e5d8ffdd6b25eebe"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12-fix-tests.txt",
+        "bytes": 15682,
+        "sha256": "3370b6e8f55d2b1e46e92767a1b8880403c7cb9342b35b02abe516e3306943a6"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12-summary.json",
+        "bytes": 16276,
+        "sha256": "26ba08eda824076d830c7273064b54cf915dd244d82ccdef9574783bb6f368d4"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/README.md",
+        "bytes": 2665,
+        "sha256": "7a4a9de21e3da1a4e9c6d4de1c701222def0524c617a57bd18d0b072fb939670"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/acceptance_driver.py.txt",
+        "bytes": 10115,
+        "sha256": "0dbe22104642b5b84d7991b3570463c1427a39802cef938f52ba45b9f983c282"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/accepted-eval-archive.json",
+        "bytes": 7977,
+        "sha256": "0d4a1b53adc4f708fd5cb3ce4bccc7daf476a66ba0bbda71cd69695a919d28f4"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/accepted_eval/single_val_045/artifact_manifest.json",
+        "bytes": 1023,
+        "sha256": "1dfe272a0e973387fe7f2fd4256872e9e109379a047262489f4fd9ea05ae41cb"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/accepted_eval/single_val_045/prediction_meta.json",
+        "bytes": 15861,
+        "sha256": "5a27347b7f3144e8804b6b5cafe4ebc6e77e25e8c0a1fe01bcf91940c37fe92b"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/accepted_eval/test/artifact_manifest.json",
+        "bytes": 75721,
+        "sha256": "a7c74ae0fabda782cb1fc5936d68be6ff6921565d753a7eb54f342b4dc7f1c5d"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/accepted_eval/test/display_rules.json",
+        "bytes": 971,
+        "sha256": "6b2784ede779652055a6c445013269650ec90dfdc41d7da1f21445edbbbf3fe3"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/accepted_eval/test/evaluation_meta.json",
+        "bytes": 212889,
+        "sha256": "a24c1650770e697f41c42110505eef6981e9f6a38d723fbb2dcc46d3e30feb3e"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/accepted_eval/test/metrics.json",
+        "bytes": 3735,
+        "sha256": "c341c4e6becc987508a6b55dc0ef81e299f0a74f335ae1428307ea5d568010e9"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/accepted_eval/test/per_image.csv.gz",
+        "bytes": 5694,
+        "sha256": "f478d168f20f99c573780c21ca5cdfdf826b55c0fe84808668362132aa1c3ae1"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/accepted_eval/test/per_image.json.gz",
+        "bytes": 7817,
+        "sha256": "19f4879dfcd92cbac0bc1b3e5993c0e046ad7b08621d4562222280eb0395036e"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/accepted_eval/test/selection.json",
+        "bytes": 7123,
+        "sha256": "4257e2b5698553e28860f4642046b91db8daf44eb9b4ecc485dbc13557019955"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/accepted_eval/val/artifact_manifest.json",
+        "bytes": 23464,
+        "sha256": "87d5e4929afe124473ff742c99906f4cf6fbcce27ef2b8eb68a0f490b54ba55a"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/accepted_eval/val/display_rules.json",
+        "bytes": 970,
+        "sha256": "28d187a24e4f62d3bac210781331bc28fa3324a5c412ee8b56859162a3f5cf0c"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/accepted_eval/val/evaluation_meta.json",
+        "bytes": 212704,
+        "sha256": "bef63b30068913cd3c96e8c668cfe567292e61147dac36fd0126c07d5b83323c"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/accepted_eval/val/gate.json",
+        "bytes": 251714,
+        "sha256": "607f417f7b3b7ea56a6c95e289ce5be34915df322cb0402e1f57787e9dd1a80d"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/accepted_eval/val/metrics.json",
+        "bytes": 3730,
+        "sha256": "102da5d230750f92c3e54dda4a6ff103855659b30f8715932dc99dd2f89fa474"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/accepted_eval/val/per_image.csv.gz",
+        "bytes": 1947,
+        "sha256": "2c052126c1e09d287aea3e828bccc617bab04fc6e720e861130df5733c9a3c09"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/accepted_eval/val/per_image.json.gz",
+        "bytes": 2718,
+        "sha256": "225f01ee40ec7b6ee00ce05ba0ead0241ef555c030ce57f761e9445e923db036"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/accepted_eval/val/selection.json",
+        "bytes": 6200,
+        "sha256": "2f7fcf085a7925da9e680dae71270b7457d7a709a30f0607299c12201d9b66ca"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/original-stage12-summary.json",
+        "bytes": 15234,
+        "sha256": "819d5c511cb403b2b37d9a8646309623e9708be0a2defcafdd8b08a4070459f7"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/original_eval/test/artifact_manifest.json",
+        "bytes": 75703,
+        "sha256": "f7eca831551a01b6c4d55108b19af743ef7780d19af013c1194dcb523ba5b2d5"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/original_eval/test/display_rules.json",
+        "bytes": 971,
+        "sha256": "8120b0a6b559c1f35e6885e77b097c9deacd7eb043c4b260ad391db7fd204fe9"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/original_eval/test/evaluation_meta.json",
+        "bytes": 5740,
+        "sha256": "e2e4de4f6c58cbce522769f4c1d08ca39b05edb5db771bb521891e307536e5c7"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/original_eval/test/selection.json",
+        "bytes": 7123,
+        "sha256": "4257e2b5698553e28860f4642046b91db8daf44eb9b4ecc485dbc13557019955"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/original_eval/val/artifact_manifest.json",
+        "bytes": 23445,
+        "sha256": "bf780b51ba71dd323c15ca24cb6e1609b6255e67a9fe54b781c8806f4313429f"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/original_eval/val/display_rules.json",
+        "bytes": 970,
+        "sha256": "3d2a0376bf7115d0d8ff7e846c8617e13a48bf22f9290779a617236d15c9367d"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/original_eval/val/evaluation_meta.json",
+        "bytes": 5681,
+        "sha256": "8719412756045024f29c4ca629d077ab5db0053669fe1c615ca93b721e421bb5"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/original_eval/val/gate.json",
+        "bytes": 19081,
+        "sha256": "6df1dfe498a28fda788d4ebb9d4444ddb67a9ae6d40ed9a9131af118293c91c3"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/original_eval/val/selection.json",
+        "bytes": 6200,
+        "sha256": "2f7fcf085a7925da9e680dae71270b7457d7a709a30f0607299c12201d9b66ca"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/original_results/curves.csv",
+        "bytes": 12392,
+        "sha256": "51ee8986f6b05b00c32cf7e16d78d005697e98dc08f9961070293af44f614f68"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/original_results/experiment-card.md",
+        "bytes": 3371,
+        "sha256": "e55c33d3a7c1fdb4d6eb8f801e50abed1cbfabfb4a5d2c6c2a754bd86d94e705"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/original_results/failure-cases.csv",
+        "bytes": 4237,
+        "sha256": "d172d994cd98921058681114e6691d17dc4f6e90c2e0583d1c0f676cd82ebc22"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/original_results/original-inventory.json",
+        "bytes": 2044,
+        "sha256": "8a2641d271c922c12911d2cec6fbb75138cd4b21291c38851d14358750eb4725"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/original_results/reproduction.md",
+        "bytes": 2163,
+        "sha256": "c6479d9f75c5ba06e5072b7fc60798352566ecd26ecd612f095cab65e08f7276"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/original_results/results-summary.json",
+        "bytes": 7403,
+        "sha256": "b0fd7db514a3601f2b08860dfba523f48d3fbedf30b2bef9e250bb4ced2d2e44"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/original_results/results.md",
+        "bytes": 2967,
+        "sha256": "6a80f3e1b94ac7ac3d6591fde15963498ffdfcdf5cc6556a8fc5834d621c393e"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/pre_acceptance_source/evaluate.py.txt",
+        "bytes": 24105,
+        "sha256": "a77626c25027a89afbaeb83e8cf3d7277d835b4d8a20fdf8bb8b631c09b190a6"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/pre_acceptance_source/inference.py.txt",
+        "bytes": 12189,
+        "sha256": "0ceeae72365fc9b635d67c4e5341a22d6e2e3641b09d6a4886ec7b946b982136"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/pre_acceptance_source/predict.py.txt",
+        "bytes": 5875,
+        "sha256": "0bacfad75491f0ab25947c5e73dfadca682ef259970d8bfff209a5b52792ed37"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/pre_acceptance_source/summarize.py.txt",
+        "bytes": 32935,
+        "sha256": "f8575e90af4a5b7ef9827b902eb798a2a04995fe613ec5704df54da60987b5f8"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/regenerated-results-archive.json",
+        "bytes": 2106,
+        "sha256": "a135d9b3f552b89f106d505771cd4e0b6d695c42d8d7ad85a4a639007318229b"
+      },
+      {
+        "path": "work/SegFormer/reports/stage12_13_evidence/source-identity-scope.json",
+        "bytes": 1635,
+        "sha256": "b7aa3f04242a08808c01cc2e7d324c5606509ad2227e756520638f354da11c8f"
+      },
+      {
+        "path": "work/SegFormer/segformer_lab/evaluate.py",
+        "bytes": 33252,
+        "sha256": "f91a5b06a819ce2da9644b1b60e9e505cc371a2c190326989103751105a9d4a2"
+      },
+      {
+        "path": "work/SegFormer/segformer_lab/inference.py",
+        "bytes": 15976,
+        "sha256": "5ef75eb4b793090564cccbd8c4130e6fab11e7a1b6367aa43e15a573532496e0"
+      },
+      {
+        "path": "work/SegFormer/segformer_lab/predict.py",
+        "bytes": 7163,
+        "sha256": "fb3b05ccd563db0bb6a1545f3aa636ef1e3306d96ded7c43206612fc5e840882"
+      },
+      {
+        "path": "work/SegFormer/segformer_lab/summarize.py",
+        "bytes": 45781,
+        "sha256": "6c1fa3e10437d34bb1254f3990baa9f1a697a1cd94fbb58015806bf08341596a"
+      },
+      {
+        "path": "work/SegFormer/tests/test_inference_eval.py",
+        "bytes": 19632,
+        "sha256": "798b3d79b8e9e693c6ba948aacc23f9ee3f95d87f3f046a123240680651cc51b"
+      },
+      {
+        "path": "work/SegFormer/tests/test_summarize.py",
+        "bytes": 5988,
+        "sha256": "432d5ff447b2a72546d1d2b35d502ffd08b2f852227f9c5c56a2d2a3bb9ba737"
+      }
+    ],
+    "count": 74,
+    "bytes": 3854973,
+    "max_file_bytes": 1191982,
+    "heavy_resources_excluded": true
+  }
+}

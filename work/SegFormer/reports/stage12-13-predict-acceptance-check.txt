@@ -1,0 +1,5 @@
+  image   : 045.JPG 1404x1070
+  predict : 127757 px >= 0.5 (0.085042 of pixels)
+  identity: best 192c827bef00 epoch 39
+  wrote   : E:\桌面\AI\segformer_resources\runs\pcb1_b0_v2_seed42_eval_acceptance_20261101\single_val_045
+{"mode": "predict", "ok": true, "forwards": 1, "elapsed": 5.119}

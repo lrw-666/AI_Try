@@ -10,16 +10,19 @@ These pin the parts that can silently mis-report:
 * the frozen-run loader refusing an incomplete run directory.
 """
 import json
+import copy
+import hashlib
 import tempfile
 import unittest
 from pathlib import Path
 from types import SimpleNamespace
+from unittest.mock import patch
 
 import numpy as np
 import torch
 from PIL import Image
 
-from segformer_lab import evaluate, inference
+from segformer_lab import evaluate, inference, predict
 
 
 def _row(image_id, label, *, tp=0, fp=0, fn=0, tn=100, gt=0, pred=0, iou=None,
@@ -108,18 +111,51 @@ class GateTests(unittest.TestCase):
         gate = evaluate._gate_compare(left, right)
         self.assertFalse(gate["passed"])
 
+    def test_duplicate_rows_cannot_be_hidden_by_image_id_dictionary(self):
+        fresh, saved = self.build(), self.build()
+        fresh["per_image"].append(copy.deepcopy(fresh["per_image"][0]))
+        self.assertFalse(evaluate._gate_compare(fresh, saved)["passed"])
+
+    def test_per_image_label_and_nonfinite_value_are_rejected(self):
+        for field, value in (("label", "normal"), ("iou", float("nan"))):
+            with self.subTest(field=field):
+                fresh, saved = self.build(), self.build()
+                fresh["per_image"][0][field] = value
+                self.assertFalse(evaluate._gate_compare(fresh, saved)["passed"])
+
+    def test_normal_percentiles_and_macro_na_are_compared(self):
+        for section, field, value in (("normal_images", "predicted_foreground_ratio", {"p95": 0.5}),
+                                      ("anomaly_images", "macro", {"iou": {"na_images": 1}})):
+            with self.subTest(section=section):
+                fresh, saved = self.build(), self.build()
+                if section == "normal_images":
+                    fresh[section][field] = value
+                    saved[section][field] = {"p95": 0.0}
+                else:
+                    fresh[section][field]["iou"]["na_images"] = 1
+                self.assertFalse(evaluate._gate_compare(fresh, saved)["passed"])
+
     def test_gate_file_must_pass_and_match_identity(self):
         frozen = SimpleNamespace(identity={
             "best_sha256": "abc", "config_sha256": "cfg",
             "manifests": {split: {"sha256": split} for split in ("train", "val", "test")},
             "split_meta_sha256": "meta", "model_config_sha256": "modelcfg"})
         config = {"raw": {"eval": {"threshold": 0.5}}}
+        binding = {"code": {"inference.py": "source-a"}, "data": {"splits": {}},
+                   "protocol": {"precision": "ieee_fp32"}, "runtime": {"torch": "same"}}
+        names = ("images.total", "images.normal", "images.anomaly", "per_image.fields",
+                 "per_image.ids", "per_image.unique_ids", "preview.probability", "coverage")
+        checks = [{"name": name, "ok": True} for name in names]
+        for check, count in zip(checks[:3], (132, 120, 12)):
+            check.update(left=count, right=count)
         good = {"schema": evaluate.GATE_SCHEMA, "passed": True, "failed": [],
                 "identity": {"best_sha256": "abc", "config_sha256": "cfg",
                              "manifests": frozen.identity["manifests"],
                              "split_meta_sha256": "meta", "model_config_sha256": "modelcfg"},
-                "threshold": 0.5}
-        with tempfile.TemporaryDirectory() as tmp:
+                "threshold": 0.5, "checks": checks, "binding": binding}
+        with tempfile.TemporaryDirectory() as tmp, \
+                patch.object(evaluate, "_evaluation_binding", return_value=copy.deepcopy(binding)), \
+                patch.object(evaluate, "_verify_data_files"):
             path = Path(tmp) / "gate.json"
             path.write_text(json.dumps(good), encoding="utf-8")
             self.assertEqual(evaluate._verify_val_gate(path, frozen, config)["passed"], True)
@@ -131,12 +167,100 @@ class GateTests(unittest.TestCase):
             with self.assertRaises(SystemExit):
                 evaluate._verify_val_gate(path, frozen, config)
 
+            for section in ("code", "data", "protocol", "runtime"):
+                with self.subTest(binding=section):
+                    stale = copy.deepcopy(good)
+                    stale["binding"][section] = {"changed": True}
+                    path.write_text(json.dumps(stale), encoding="utf-8")
+                    with self.assertRaises(SystemExit):
+                        evaluate._verify_val_gate(path, frozen, config)
+
             other = json.loads(json.dumps(good))
             other["identity"]["best_sha256"] = "different"
             path.write_text(json.dumps(other), encoding="utf-8")
             with self.assertRaises(SystemExit):
                 evaluate._verify_val_gate(path, frozen, config)
 
+    def test_stale_processor_and_unbound_legacy_gates_are_rejected(self):
+        frozen = SimpleNamespace(identity={
+            "best_sha256": "abc", "config_sha256": "cfg", "processor_sha256": "current",
+            "manifests": {split: {"sha256": split} for split in ("train", "val", "test")},
+            "split_meta_sha256": "meta", "model_config_sha256": "modelcfg"})
+        gate = {"schema": evaluate.GATE_SCHEMA, "passed": True, "failed": [],
+                "identity": {**frozen.identity, "processor_sha256": "stale"}, "threshold": 0.5}
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "gate.json"
+            path.write_text(json.dumps(gate), encoding="utf-8")
+            with self.assertRaises(SystemExit):
+                evaluate._verify_val_gate(path, frozen, {"raw": {"eval": {"threshold": 0.5}}})
+
+
+class OutputGuardTests(unittest.TestCase):
+    def test_predict_refuses_even_an_empty_existing_output_before_loading_model(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            image = Path(tmp) / "source.png"
+            Image.new("RGB", (2, 3)).save(image)
+            output = Path(tmp) / "existing"
+            output.mkdir()
+            args = SimpleNamespace(config="configs/baseline.yaml", image=str(image),
+                                   out=str(output), run=str(Path(tmp) / "run"), device="cpu")
+            with patch.object(predict, "load_frozen_run", side_effect=AssertionError("loaded before guard")):
+                with self.assertRaises(SystemExit):
+                    predict.do_predict(args)
+
+    def test_evaluate_refuses_a_new_output_inside_the_source_run(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            run = Path(tmp) / "run"
+            run.mkdir()
+            args = SimpleNamespace(config="configs/baseline.yaml", out=str(run / "evaluation"),
+                                   run=str(run), device="cpu", split="val")
+            with patch.object(evaluate, "load_frozen_run", side_effect=AssertionError("loaded before guard")):
+                with self.assertRaises(SystemExit):
+                    evaluate.do_evaluate(args)
+            self.assertFalse((run / "evaluation").exists())
+
+    def test_test_gate_is_checked_before_dataset_or_test_bytes_are_read(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            gate = Path(tmp) / "bad_gate.json"
+            gate.write_text("{}", encoding="utf-8")
+            args = SimpleNamespace(config="configs/baseline.yaml", out=str(Path(tmp) / "new"),
+                                   run=str(Path(tmp) / "run"), device="cpu", split="test", val_gate=str(gate))
+            with patch.object(evaluate, "load_frozen_run", return_value=SimpleNamespace()), \
+                    patch.object(evaluate, "build_dataset", side_effect=AssertionError("read test dataset")), \
+                    patch.object(evaluate, "_verify_data_files", side_effect=AssertionError("read test bytes")):
+                with self.assertRaises(SystemExit):
+                    evaluate.do_evaluate(args)
+            self.assertFalse((Path(tmp) / "new").exists())
+
+
+class DataIdentityTests(unittest.TestCase):
+    def test_image_and_gt_bytes_are_both_checked_against_frozen_inventory(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            image, mask = root / "image.jpg", root / "mask.png"
+            image.write_bytes(b"original image")
+            mask.write_bytes(b"original gt")
+            records = [{"path": path.name, "kind": kind, "bytes": path.stat().st_size,
+                        "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+                       for kind, path in (("image", image), ("mask", mask))]
+            identity = {"data_root": str(root), "splits": {"test": records}}
+            evaluate._verify_data_files(identity, "test")
+            for path, original in ((image, b"original image"), (mask, b"original gt")):
+                with self.subTest(kind=path.name):
+                    path.write_bytes(b"modified content")
+                    with self.assertRaises(SystemExit):
+                        evaluate._verify_data_files(identity, "test")
+                    path.write_bytes(original)
+
+    def test_preview_nan_shape_missing_keys_fail_closed(self):
+        from segformer_lab import pilot
+
+        fresh = {"preview": np.zeros((3, 4), dtype=np.float32)}
+        for stored in ({}, {"preview": np.full((3, 4), np.nan)},
+                       {"preview": np.zeros((4, 3), dtype=np.float32)}):
+            with self.subTest(stored=list(stored)):
+                with self.assertRaises(ValueError):
+                    pilot.compare_probabilities(stored, fresh, threshold=0.5)
 
 class MaskTests(unittest.TestCase):
     def test_writes_uint8_mask_and_rejects_non_binary(self):
@@ -161,6 +285,54 @@ class FrozenRunGuardTests(unittest.TestCase):
             config = {"path": Path(tmp) / "config.yaml", "paths": {}}
             with self.assertRaises(inference.FrozenRunError):
                 inference.load_frozen_run(config, Path(tmp) / "missing_run", device="cpu")
+
+    def test_missing_preview_is_refused_before_checkpoint_deserialization(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            run = Path(tmp) / "run"
+            for name in ("checkpoints/best.pt", "processor/preprocessor_config.json", "model_config.json",
+                         "summary.json", "resolved_config.yaml", "artifact_manifest.json"):
+                path = run / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(b"placeholder")
+            with patch.object(torch, "load", side_effect=AssertionError("deserialized incomplete bundle")):
+                with self.assertRaisesRegex(inference.FrozenRunError, "pre_save_probabilities"):
+                    inference.load_frozen_run({"path": Path(tmp) / "config.yaml", "paths": {}}, run, device="cpu")
+
+
+class NoGroundTruthPredictionTests(unittest.TestCase):
+    def test_image_only_cli_writes_original_size_binary_and_float_probability(self):
+        class Processor:
+            def __call__(self, *, images, return_tensors):
+                return {"pixel_values": torch.zeros((1, 3, 512, 512), dtype=torch.float32)}
+
+        class Model(torch.nn.Module):
+            def forward(self, *, pixel_values):
+                # Equal logits produce exactly 0.5, so >=0.5 must export ones.
+                return SimpleNamespace(logits=torch.zeros((1, 2, 2, 2), dtype=torch.float32))
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            run = root / "run"
+            run.mkdir()
+            image = root / "image.png"
+            Image.new("RGB", (2, 3), color=(10, 20, 30)).save(image)
+            frozen = SimpleNamespace(model=Model().eval(), processor=Processor(), run_dir=run,
+                                     identity={"source_files": {}, "best_sha256": "unit-fixture", "best_epoch": 39})
+            args = SimpleNamespace(config="configs/baseline.yaml", image=str(image), out=str(root / "out"),
+                                   run=str(run), device="cpu")
+            with patch.object(predict, "load_frozen_run", return_value=frozen), \
+                    patch("segformer_lab.data.PCB1Dataset", side_effect=AssertionError("GT dataset accessed")):
+                self.assertEqual(predict.do_predict(args), 0)
+            with Image.open(root / "out" / "mask.png") as handle:
+                np.testing.assert_array_equal(np.asarray(handle), np.ones((3, 2), dtype=np.uint8))
+            with np.load(root / "out" / "probability.npz") as saved:
+                np.testing.assert_array_equal(saved["probability"], np.full((3, 2), 0.5, dtype=np.float32))
+                self.assertEqual(saved["probability"].dtype, np.float32)
+            meta = json.loads((root / "out" / "prediction_meta.json").read_text(encoding="utf-8"))
+            self.assertFalse(meta["image_uses_gt"])
+            self.assertEqual(meta["source_size"], [3, 2])
+            self.assertTrue((root / "out" / "heatmap.png").is_file())
+            self.assertTrue((root / "out" / "overlay.png").is_file())
 
 
 class PreprocessEquivalenceTests(unittest.TestCase):

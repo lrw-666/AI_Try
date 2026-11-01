@@ -7,7 +7,7 @@
 - 隔离规范：`../../../../docs/research/2026-10-31-segformer-environment-isolation-and-stage-docs.md`
 - 文档模板：`../../../../docs/research/templates/segformer-stage-design-and-implementation-template.md`
 - 项目根：`E:\桌面\AI\AI_Try\work\SegFormer`　资源根：`E:\桌面\AI\segformer_resources`
-- 连续执行：[阶段12—13统一交接](../../reports/2026-11-01-stage12-13-continuous-execution-handoff.md)，两阶段自检后分别commit/push，最终独立验收留待用户回来；当前仅生成指令，未启动执行。
+- [阶段12—13统一交接](../../reports/2026-11-01-stage12-13-continuous-execution-handoff.md)为历史执行依据；[联合验收](../../reports/2026-11-01-stage12-13-acceptance.md)已通过，当前下一步见文末。
 
 ## 状态总览
 
@@ -24,8 +24,8 @@
 | 09 | 8 张训练图过拟合检查 | 已通过独立验收 | [09-overfit-design-and-implementation.md](./09-overfit-design-and-implementation.md) | `runs\overfit_002\summary.json`、`evaluation_curve.json`、`eval\*`（仓库外）；`reports\stage09-summary.json`（仓库）；崩溃现场 `runs\overfit_001` 与 `runs\archive\overfit_001_attempt{1,2}_*`；回归 `runs\smoke_002_stage09_regression` |
 | 10 | 完整训练集短程试跑 | 已通过独立验收 | [10-pilot-design-and-implementation.md](./10-pilot-design-and-implementation.md) | `runs\pilot_001\summary.json`、`epochs.jsonl`、`updates.jsonl`、`reload_check.json`（仓库外）；`reports\stage10-summary.json`、`reports\stage10-unit-tests.txt`、`reports\figures\stage10-*.png`（仓库） |
 | 11 | 正式训练与可靠保存 | 正式训练及保存模型已验收；恢复数值复现未通过原容差 | [11-training-design-and-implementation.md](./11-training-design-and-implementation.md) | [验收](../../reports/2026-11-01-stage11-acceptance.md)；`reports/stage11-acceptance.json`、`stage11-reload-check.json`、`stage11-resume-fixture.json`、263项回归、`stage11_evidence`原件；权重留仓库外 |
-| 12 | 独立推理与原图评价 | 已完成，自检通过，待独立验收 | [12-evaluation-design-and-implementation.md](./12-evaluation-design-and-implementation.md) | `runs\pcb1_b0_v2_seed42_eval_001\{val,test}`（仓库外）；`reports\stage12-summary.json`、`reports\stage12_evidence\`（56 KB，含 132/442 行逐图统计 gzip）、`reports\stage12-unit-tests.txt`（273 项） |
-| 13 | 结果可视化、失败分析与实验卡 | 已完成，自检通过，待独立验收 | [13-results-design-and-implementation.md](./13-results-design-and-implementation.md) | `reports\pcb1_b0_v2_seed42\{results.md, experiment-card.md, reproduction.md, curves.csv, failure-cases.csv, results-summary.json, figures\}`；`reports\stage13-unit-tests.txt`（277 项） |
+| 12 | 独立推理与原图评价 | 已通过独立验收 | [12-evaluation-design-and-implementation.md](./12-evaluation-design-and-implementation.md) | v2门禁74/74；完整132/442图新进程复核及原始PNG/GT计数；无GT单图；`reports/stage12-13-*-acceptance-check.json`、`stage12_13_evidence` |
+| 13 | 可视化、失败分析与实验卡 | 已通过独立验收 | [13-results-design-and-implementation.md](./13-results-design-and-implementation.md) | 五图逐看、23张XOR0；`reports/pcb1_b0_v2_seed42`；291项完整回归；[联合验收](../../reports/2026-11-01-stage12-13-acceptance.md) |
 
 ## 当前状态一句话
 
@@ -33,7 +33,7 @@
 
 **第10阶段已通过独立验收**：795/795更新、0跳步；最终231项回归通过，新进程完整132图的逐图/macro/global/NA一致，预览概率差0、XOR0。val全局IoU0.6081、异常macro0.2207，仍有7/12异常图预测空，不能当正式基线成绩。[验收入口](../../reports/2026-11-01-stage10-acceptance.md)。
 
-**第11阶段正式训练与保存模型已验收，恢复数值复现有明确限制**：50轮，13250尝试 / 13243成功 / 7次AMP跳步；best39，val全局IoU0.7775、异常macro0.5396。当前263项回归，新进程完整132张val与6张预览通过；未读取test图像或执行阶段12。[验收记录](../../reports/2026-11-01-stage11-acceptance.md)。
+**第11阶段验收时的历史状态**：50轮，13250尝试 / 13243成功 / 7次AMP跳步；best39，val全局IoU0.7775、异常macro0.5396。当时263项回归，新进程完整132张val与6张预览通过，尚未执行test或阶段12；恢复数值复现限制保留。当前已完成阶段12—13及291项回归，见文末[联合验收](../../reports/2026-11-01-stage12-13-acceptance.md)。
 
 ## 阶段 11 关键结论
 
@@ -105,35 +105,19 @@
 
 [第七阶段验收](../../reports/2026-11-01-stage07-acceptance.md)：42 项完整检查、186 项回归通过；明确 NA、原图 255、FP16 CE、真实 XOR、精度策略与前置身份保护，源码及小型证据保存在仓库。旧版和 TF32 对照分别归档，不覆盖失败事实。未训练，不报告模型质量。
 
-**第12阶段已完成，自检通过，待独立验收**：新进程从 run 内结构与 best 严格重建，完整 132 张 val 复算通过 **29/29 门禁**（混淆量/全局/macro/逐图/NA 全等，6 张预览概率差 0、XOR 0），随后按冻结协议**一次性**评价 442 张 test：全局 IoU **0.6833**、Dice 0.8119、P 0.9008、R 0.7390，异常 40 张 macro IoU **0.5249**，正常 402 张 FP **3 689 px**（32/402 张有任意 FP）。回归 273 项通过。test 与 val 分列，未用于选参。
+## 第12—13阶段独立验收
 
-## 阶段 12 关键结论
+两阶段已通过[联合验收](../../reports/2026-11-01-stage12-13-acceptance.md)。291项回归，v2门禁74/74；实际CUDA/B1/IEEE FP32完整val132与test442复核，574张PNG和原始GT独立计数一致，6张预览/单图概率差0、二值XOR0。正式训练21文件与首次eval001未变。
 
-- 入口：新增 `segformer_lab/inference.py`（共享推理通道）、`evaluate.py`（val 门禁 + test）、`predict.py`（无 GT 单图）；共享 `data/geometry/metrics.restore_defect_probability/evaluation`，没有第二套还原或计分。
-- 身份：best `192c827b…`（epoch 39 / step 10 330）strict 0/0，`model_state.pt` 与 best 逐张量相等，processor 四开关与 config/清单/`split_meta`/快照全部核对。
-- val 门禁：29 项全过，`failed = []`；TP/FP/FN/TN 279 246 / 17 894 / 62 003 / 197 941 817，IoU 0.7775342969、macro 0.5395555278、正常 FP 1 495 px、预览概率差 0 / XOR 0。容差先声明（整数精确、浮点 1e-9、概率 1e-5）。
-- test：442 行 0 缺失 0 重复；PNG 全部 1070×1404、取值 {0,1}；TP/FP/FN/TN 252 227 / 27 779 / 89 101 / 663 638 653；macro P 0.8070891646（38/40 有定义，2 张无预测记 NA）；正常图 FP 比 6.108459751459705e-06。
-- 单图：`prepare_image` 与 dataset 预处理位级相等；修复"单图未走 IEEE FP32 上下文"的 TF32 缺陷后，045 预测 127 757 px 与 val 完全一致（XOR 0、概率差 0.0）。
-- 只读：评价前后训练 run 21 个文件 bytes/SHA 未变；全量浮点概率不落盘，只有 6 张预览在内存中比对。
-- 局限：40 张异常 test 图 macro 区间宽；面积加权使全局 IoU 偏高；无图像级判定规则；未测推理延迟；单 seed 单数据集。
+test global IoU0.6833438542、Dice0.8118886139、P0.9007914116、R0.7389578353；异常macro IoU0.5248580728、Dice0.6350735444；正常FP3689像素、32/402图有FP。异常TP0三张049/057/077，其中仅049/057预测空；IoU<0.1七张。全局、macro与正常误报不能混成单一指标。
 
-**第13阶段已完成，自检通过，待独立验收**：只从阶段 11 的 `epochs.jsonl` 与阶段 12 的评价目录生成 5 张图、`curves.csv`、`failure-cases.csv`、实验卡与复现说明；为 23 张展示图用同一冻结通道重算概率，二值与阶段 12 PNG **23/23 XOR = 0**。回归 277 项通过。失败分析给出 4 条"观察—证据—假设—下一项验证"，未实施任何新训练或调参。
+代码已补完整门禁身份、数据字节与原件保护；补正常零GT、val Dice、FP真实0，纠正best10330/最终13243、warmup因果、召回和面积混用、未经量化的区间与尺寸结论。五张修正图逐看，23张展示掩码XOR0。源码历史局限及现版本完整技术复验分别保存，未静默覆盖原证据。
 
-## 阶段 13 关键结论
-
-- 只读消费：曲线来自 `epochs.jsonl`（50 行），指标来自阶段 12 的 `metrics.json`/`per_image.json`，不重算混淆量、不重选 best。
-- 图表口径：概率统一 0—1 色标（不按图拉伸）；TP 绿 / FP 红 / FN 蓝且有图例；正常图画误报而不是空 GT；LR 同时给"实测末步"与"按 `scheduler_completed` 反算"两列（单测逐点对齐 `WarmupCosineLR`）。
-- 曲线要点：总损失 0.8030→0.0773；Dice 项 0.9836→0.1710（只对 48 张正 GT 图平均，0 不代表完美）；val IoU 前 3 轮为 0、第 4 轮跳起、best 0.7775@39；正常 FP 第 4 轮起非零但极小。
-- 失败案例：异常 TP=0 共 3 张（049/057/077），其中**预测完全为空 2 张（049/057）**——两个口径分开记；正常有任意 FP 32/402，误报集中在引脚端/板边。
-- 失败分析 4 条：A 细长金属结构系统性漏检（049/057，val 的 042/051 同类）；B 正常图误报集中在引脚端/板边；C 全局 0.683 vs macro 0.525；D 边界粗糙（003/008）。全部只给"下一项验证"，不实施。
-- 一致性：23 张重算二值与阶段 12 完全一致；图/CSV/实验卡/报告都指向 `pcb1_b0_v2_seed42` 与 best 39。
-- 局限：推理延迟**未测**；无图像级判定规则；失败原因为假设；test 已被查看，后续方法调整须披露。
+当前CLI需完整训练bundle及同路径布局，环境按记录重建；原始首次计分的完整源码文本未保存，现版本源码与直接复核已绑定。单seed/单类、推理延迟未测、workers>0未验证、阶段11恢复数值限制保留；test已被查看，后续调整须披露且仍只用train/val选型。
 
 ## 下一步
 
-阶段 12 与阶段 13 均已完成并自检通过，**等待用户独立验收**。验收通过后再决定后续方向：切块/高分辨率推理对照（验证细结构漏检）、采样或损失侧对照（针对正常图误报）、DINOv3 等新主干，均需新的授权与独立 run；本目录不再自动推进。
-
-test 已被查看，后续任何基于这些失败模式的调整都必须披露"该 test 已参与开发"。跨机器需另行复制训练 best 与 processor 并核 SHA，Git 中没有权重；`workers>0` 未验证、恢复的跨进程数值限制、推理延迟未测保留在实验卡与阶段文档中。
+[基线闭环后的交接](../../reports/2026-11-01-post-baseline-next-step-handoff.md)：先理解与备份基线，并带PCB样例与导师讨论对象边界；技术任务沿原路线做冻结DINOv3-S/16加简单头的可行性验证，只验证权重访问、特征/梯度、几何和资源，不立即融合或长训练。本轮未执行DINOv3。
 
 ## 维护约定
 

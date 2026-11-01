@@ -59,6 +59,109 @@ def _read_jsonl(path: Path) -> list[dict[str, Any]]:
     return rows
 
 
+def _verify_artifact_manifest(directory: Path) -> dict[str, Any]:
+    """Check saved evaluation bytes before trusting any plotted values or IDs."""
+    manifest = json.loads((directory / "artifact_manifest.json").read_text(encoding="utf-8"))
+    for name, recorded in manifest["files"].items():
+        path = (directory / name).resolve()
+        if not path.is_relative_to(directory.resolve()) or not path.is_file() or \
+                path.stat().st_size != recorded["bytes"] or sha256_file(path) != recorded["sha256"]:
+            raise SystemExit(f"evaluation artifact differs from its manifest: {name}")
+    return manifest
+
+
+def _check_evaluation_identity(meta: dict[str, Any], expected: dict[str, Any],
+                               split: str, threshold: float) -> None:
+    if meta["split"] != split or meta["threshold"] != threshold or \
+            meta["precision"]["policy"] != "ieee_fp32":
+        raise SystemExit(f"evaluation protocol differs for {split}")
+    for key, value in expected.items():
+        if meta["identity"].get(key) != value:
+            raise SystemExit(f"evaluation identity differs for {split}: {key}")
+
+
+def _validate_sources(cfg: dict[str, Any], run_dir: Path, eval_dir: Path,
+                      summary: dict[str, Any], epochs: list[dict[str, Any]]) -> dict[str, Any]:
+    """Bind metadata, metrics, saved selection and training curves before inference."""
+    from .evaluate import (DISPLAY_RULES, _data_identity, _protocol_identity,
+                           _verify_data_files, display_selection)
+
+    data_identity = _data_identity(cfg)
+    protocol = _protocol_identity(cfg)
+    _verify_data_files(data_identity, "test")
+
+    files = summary["artifacts"]["files"]
+    required = ("checkpoints/best.pt", "model_config.json", "processor/preprocessor_config.json",
+                "resolved_config.yaml", "epochs.jsonl")
+    for name in required:
+        if sha256_file(run_dir / name) != files[name]["sha256"]:
+            raise SystemExit(f"run artifact differs from training summary: {name}")
+    best_epoch = int(summary["best"]["epoch"])
+    best_rows = [row for row in epochs if row["epoch"] == best_epoch]
+    if len(best_rows) != 1:
+        raise SystemExit("best epoch is not unique in the training log")
+    expected = {
+        "best_sha256": files["checkpoints/best.pt"]["sha256"],
+        "best_epoch": best_epoch, "best_global_step": best_rows[0]["successful_total"],
+        "model_config_sha256": files["model_config.json"]["sha256"],
+        "processor_sha256": files["processor/preprocessor_config.json"]["sha256"],
+        "resolved_config_sha256": files["resolved_config.yaml"]["sha256"],
+        "summary_sha256": sha256_file(run_dir / "summary.json"),
+        "config_sha256": sha256_file(Path(cfg["path"])),
+        "manifests": summary["identity"]["start"]["manifests"],
+        "split_meta_sha256": summary["identity"]["start"]["split_meta_sha256"],
+        "selection": summary["selection"],
+    }
+    mirror = run_dir / "checkpoints" / "model_state.pt"
+    expected["model_state_sha256"] = sha256_file(mirror) if mirror.is_file() else None
+    if expected["config_sha256"] != summary["config"]["sha256"]:
+        raise SystemExit("config differs from the training summary")
+    provenance: dict[str, Any] = {
+        "identity": expected,
+        "run_files": {name: files[name]["sha256"] for name in required},
+        "data_inventory": data_identity["extraction_inventory"],
+        "official_csv": data_identity["official_csv"],
+        "evaluation_files": {}}
+    for split in ("val", "test"):
+        directory = eval_dir / split
+        manifest = _verify_artifact_manifest(directory)
+        names = {"evaluation_meta.json", "metrics.json", "per_image.json", "selection.json",
+                 "display_rules.json"} | ({"gate.json"} if split == "val" else set())
+        if not names.issubset(manifest["files"]):
+            raise SystemExit(f"evaluation manifest lacks required {split} artifacts")
+        read = lambda name: json.loads((directory / name).read_text(encoding="utf-8"))
+        meta, metrics = read("evaluation_meta.json"), read("metrics.json")
+        if ("input_data" in meta and meta["input_data"] != data_identity) or \
+                ("protocol" in meta and meta["protocol"] != protocol):
+            raise SystemExit(f"evaluation data/protocol binding differs for {split}")
+        _check_evaluation_identity(meta, expected, split, float(cfg["raw"]["eval"]["threshold"]))
+        for key in ("best_epoch", "best_global_step"):
+            if metrics[key] != expected[key]:
+                raise SystemExit(f"metrics identity differs for {split}: {key}")
+        rows = read("per_image.json")
+        if metrics["split"] != split or rows["split"] != split or \
+                metrics["images"]["total"] != len(rows["rows"]):
+            raise SystemExit(f"evaluation coverage differs for {split}")
+        if metrics["evaluation"]["threshold"] != meta["threshold"] or \
+                metrics["evaluation"]["precision_record"]["policy"] != meta["precision"]["policy"]:
+            raise SystemExit(f"metrics protocol differs for {split}")
+        rules = read("display_rules.json")
+        if sha256_file(directory / "display_rules.json") != meta["display_rules_sha256"] or \
+                not rules["written_before_inference"] or rules["rules"] != DISPLAY_RULES:
+            raise SystemExit(f"saved display rules differ for {split}")
+        if read("selection.json") != display_selection(rows["rows"], split):
+            raise SystemExit(f"saved display selection differs from evaluated rows for {split}")
+        if split == "val":
+            gate = read("gate.json")
+            if not gate["passed"] or gate["identity"] != meta["identity"]:
+                raise SystemExit("validation gate is not passing for this evaluation identity")
+        provenance["evaluation_files"][split] = {
+            name: manifest["files"][name]["sha256"] for name in sorted(names)}
+        provenance["evaluation_files"][split]["artifact_manifest.json"] = \
+            sha256_file(directory / "artifact_manifest.json")
+    return provenance
+
+
 def lr_from_schedule(completed: int, plan: dict[str, Any]) -> float:
     """Same formula as ``training.WarmupCosineLR``; used only for a plotted column."""
     base, floor = float(plan["base_lr"]), float(plan["min_lr"])
@@ -144,16 +247,18 @@ def _anomaly_row(axes: list[Any], source: np.ndarray, gt: np.ndarray, probabilit
         axis.set_yticks([])
 
 
-def _normal_row(axes: list[Any], source: np.ndarray, probability: np.ndarray,
+def _normal_row(axes: list[Any], source: np.ndarray, gt: np.ndarray, probability: np.ndarray,
                 pred: np.ndarray, title: str) -> None:
     axes[0].imshow(source)
     axes[0].set_title("source", fontsize=8)
-    axes[1].imshow(probability, cmap="magma", vmin=0.0, vmax=1.0)
-    axes[1].set_title("probability (0-1)", fontsize=8)
+    axes[1].imshow(gt, cmap="gray", vmin=0, vmax=1)
+    axes[1].set_title("original GT (all zero)", fontsize=8)
+    axes[2].imshow(probability, cmap="magma", vmin=0.0, vmax=1.0)
+    axes[2].set_title("probability (0-1)", fontsize=8)
     canvas = (source.astype(np.float32) * 0.55 + 255 * 0.45).astype(np.uint8)
     canvas[pred == 1] = FP_COLOR
-    axes[2].imshow(canvas)
-    axes[2].set_title("false positives (red)", fontsize=8)
+    axes[3].imshow(canvas)
+    axes[3].set_title("false positives (red)", fontsize=8)
     axes[0].set_ylabel(title, fontsize=7)
     for axis in axes:
         axis.set_xticks([])
@@ -186,11 +291,11 @@ def render_normal_sheet(path: Path, rows: list[dict[str, Any]], title: str) -> s
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 
-    figure, axes = plt.subplots(len(rows), 3, figsize=(9.6, 2.35 * len(rows)), dpi=105)
+    figure, axes = plt.subplots(len(rows), 4, figsize=(12.0, 2.35 * len(rows)), dpi=105)
     if len(rows) == 1:
         axes = np.asarray([axes])
     for index, row in enumerate(rows):
-        _normal_row(list(axes[index]), row["source"], row["probability"], row["pred"], row["title"])
+        _normal_row(list(axes[index]), row["source"], row["gt"], row["probability"], row["pred"], row["title"])
     figure.suptitle(title, fontsize=10)
     figure.tight_layout(rect=(0, 0, 1, 0.96))
     figure.savefig(path)
@@ -215,16 +320,18 @@ def render_training_curves(path: Path, table: list[dict[str, Any]], best_epoch: 
     axes[0, 0].legend(fontsize=8)
 
     axes[0, 1].plot(epoch, [row["lr_last_used"] for row in table], color="#534AB7", lw=1.6,
-                    label="LR used at last update of epoch")
+                    label="LR recorded before last attempt of epoch")
     axes[0, 1].plot(epoch, [row["lr_after_epoch_computed"] for row in table], color="#888780",
                     lw=1.0, ls="--", label="LR after that update (computed)")
     axes[0, 1].set_yscale("log")
     axes[0, 1].set_title("learning rate (frozen 13250/662 plan)", fontsize=9)
     axes[0, 1].legend(fontsize=8)
 
-    axes[1, 0].plot(epoch, [row["val_iou"] or 0.0 for row in table], color="#185FA5", lw=1.6,
+    axes[1, 0].plot(epoch, [row["val_iou"] for row in table], color="#185FA5", lw=1.6,
                     label="val global IoU")
-    axes[1, 0].plot(epoch, [row["anomaly_macro_iou"] or 0.0 for row in table], color="#993C1D",
+    axes[1, 0].plot(epoch, [row["val_dice"] for row in table], color="#0F6E56", lw=1.1,
+                    ls=":", label="val global Dice")
+    axes[1, 0].plot(epoch, [row["anomaly_macro_iou"] for row in table], color="#993C1D",
                     lw=1.3, ls="--", label="val anomaly macro IoU")
     axes[1, 0].axvline(best_epoch, color="#444441", lw=0.8, ls="-.")
     axes[1, 0].annotate(f"best epoch {best_epoch}", xy=(best_epoch, 0.02), xytext=(4, 8),
@@ -233,11 +340,13 @@ def render_training_curves(path: Path, table: list[dict[str, Any]], best_epoch: 
     axes[1, 0].set_title("validation (132 images, original space, IEEE FP32)", fontsize=9)
     axes[1, 0].legend(fontsize=8)
 
-    axes[1, 1].plot(epoch, [max(1, row["normal_fp_pixels"]) for row in table], color="#A32D2D",
-                    lw=1.5, label="normal FP pixels (log)")
-    axes[1, 1].set_yscale("log")
+    axes[1, 1].plot(epoch, [row["normal_fp_pixels"] for row in table], color="#A32D2D",
+                    lw=1.5, label="normal FP pixels (zero retained)")
+    axes[1, 1].set_yscale("symlog", linthresh=1)
     axes[1, 1].set_title("false positives on 120 normal val images", fontsize=9)
     axes[1, 1].legend(fontsize=8)
+    for axis, label in zip(axes.flat, ("loss", "learning rate", "score", "FP pixels (symlog)")):
+        axis.set_ylabel(label, fontsize=8)
 
     for axis in axes.flat:
         axis.set_xlabel("epoch", fontsize=8)
@@ -251,9 +360,13 @@ def render_training_curves(path: Path, table: list[dict[str, Any]], best_epoch: 
 
 
 def _collect(cfg: dict[str, Any], run_dir: Path, eval_dir: Path, device: str,
-             selection: dict[str, Any], rows_by_id: dict[str, dict[str, Any]]) -> dict[str, Any]:
+             selection: dict[str, Any], rows_by_id: dict[str, dict[str, Any]],
+             expected_identity: dict[str, Any]) -> dict[str, Any]:
     """Recompute probabilities for the displayed ids and verify them against stage 12."""
     frozen = inference.load_frozen_run(cfg, run_dir, device=device)
+    for key, value in expected_identity.items():
+        if frozen.identity.get(key) != value:
+            raise SystemExit(f"loaded run differs from evaluation identity: {key}")
     dataset = inference.build_dataset(cfg, "test", processor=frozen.processor)
     index_of = {row["image"]: index for index, row in enumerate(dataset.rows)}
 
@@ -293,26 +406,22 @@ def _fmt(value: Any) -> str:
 
 def do_summarize(args: argparse.Namespace) -> int:
     started = time.perf_counter()
+    out_dir = Path(args.out).resolve()
+    if out_dir.exists() and (not out_dir.is_dir() or any(out_dir.iterdir())):
+        raise SystemExit(f"refusing to overwrite an existing results directory: {out_dir}")
     cfg = load_config(args.config)
     run_dir = Path(args.run).resolve()
     eval_dir = Path(args.eval_run).resolve()
-    out_dir = Path(args.out).resolve()
-    out_dir.mkdir(parents=True, exist_ok=True)
+    inference.guard_output_directory(out_dir, run_dir, cfg, inputs=(eval_dir,))
     figures = out_dir / "figures"
-    figures.mkdir(parents=True, exist_ok=True)
 
     summary = json.loads((run_dir / "summary.json").read_text(encoding="utf-8"))
     epochs = _read_jsonl(run_dir / "epochs.jsonl")
     epochs = [entry for entry in epochs if "val" in entry]
+    provenance = _validate_sources(cfg, run_dir, eval_dir, summary, epochs)
     best_epoch = int(summary["best"]["epoch"])
     plan = summary["scheduler"]
     table = curves_table(epochs, plan)
-
-    with (out_dir / "curves.csv").open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(table[0]))
-        writer.writeheader()
-        writer.writerows(table)
-    curve_png = render_training_curves(figures / "training-curves.png", table, best_epoch)
 
     test_metrics = json.loads((eval_dir / "test" / "metrics.json").read_text(encoding="utf-8"))
     val_metrics = json.loads((eval_dir / "val" / "metrics.json").read_text(encoding="utf-8"))
@@ -325,15 +434,25 @@ def do_summarize(args: argparse.Namespace) -> int:
         row["_png_path"] = eval_dir / "test" / "predictions" / row["prediction_png"]
         rows_by_id[row["image_id"]] = row
 
-    collected = _collect(cfg, run_dir, eval_dir, args.device, selection, rows_by_id)
+    collected = _collect(cfg, run_dir, eval_dir, args.device, selection, rows_by_id,
+                         provenance["identity"])
     if collected["mismatch"]:
         raise SystemExit(f"recomputed masks disagree with stage 12: {collected['mismatch']}")
     items = collected["items"]
+    from .evaluate import _data_identity, _verify_data_files
+    _verify_data_files(_data_identity(cfg), "test")
+    figures.mkdir(parents=True, exist_ok=True)
+    with (out_dir / "curves.csv").open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=list(table[0]))
+        writer.writeheader()
+        writer.writerows(table)
+    curve_png = render_training_curves(figures / "training-curves.png", table, best_epoch)
 
     def pick(key: str) -> list[dict[str, Any]]:
         return [items[item["image_id"]] for item in selection[key]]
 
     rendered = {
+        "training_curves": curve_png,
         "anomaly_sheet": render_anomaly_sheet(
             figures / "anomaly-fixed-6.png", pick("fixed_anomaly"),
             "Fixed anomaly samples (first 6 by image_id) — test split, best epoch "
@@ -391,6 +510,9 @@ def do_summarize(args: argparse.Namespace) -> int:
         "run_dir": str(run_dir),
         "eval_dir": str(eval_dir),
         "best_epoch": best_epoch,
+        "best_global_step": provenance["identity"]["best_global_step"],
+        "source_validation": provenance,
+        "generator_source_sha256": sha256_file(Path(__file__)),
         "best_selection": summary["selection"],
         "figures": rendered,
         "curves_csv": "curves.csv",
@@ -434,7 +556,7 @@ def do_summarize(args: argparse.Namespace) -> int:
     _json_dump(out_dir / "results-summary.json", results)
 
     _write_reports(out_dir, summary, val_metrics, test_metrics, table, selection, rules,
-                   best_epoch, rendered, items)
+                   best_epoch, rendered, items, run_dir, eval_dir)
     print(f"  run     : {run_dir}")
     print(f"  eval    : {eval_dir}")
     print(f"  best    : epoch {best_epoch}")
@@ -448,25 +570,26 @@ def do_summarize(args: argparse.Namespace) -> int:
 def _write_reports(out_dir: Path, summary: dict[str, Any], val: dict[str, Any],
                    test: dict[str, Any], table: list[dict[str, Any]],
                    selection: dict[str, Any], rules: dict[str, Any], best_epoch: int,
-                   rendered: dict[str, str], items: dict[str, Any]) -> None:
+                    rendered: dict[str, str], items: dict[str, Any],
+                    run_dir: Path, eval_dir: Path) -> None:
     best = summary["best"]
     identity = summary["identity"]["start"]
     best_sha = summary["artifacts"]["files"]["checkpoints/best.pt"]["sha256"]
-    run_path = summary["artifacts"]["run_dir"]
     val_global, test_global = val["global"], test["global"]
     val_macro, test_macro = val["anomaly_images"]["macro"], test["anomaly_images"]["macro"]
     val_normal, test_normal = val["normal_images"], test["normal_images"]
+    best_step = next(row["successful_total"] for row in table if row["epoch"] == best_epoch)
 
     results_md = f"""# PCB1 SegFormer-B0 — 结果摘要
 
 > 本文所有数字来自同一条 run `pcb1_b0_v2_seed42` 与它的评价目录，**没有重新训练、没有重新选 best、没有第二套指标实现**。
-> val 用于选模，test 只评一次；两者分列，不混用。
+> val 用于选模；test 原始一次性评价与验收技术复核分开留档，未据复核分数择优。两者分列，不混用。
 
 ## 1. 模型与选模
 
 | 项目 | 值 |
 | --- | --- |
-| best epoch / step | **{best['epoch']}** / {summary['training']['successful_updates']} 次成功更新（全 50 轮中该 epoch 的 step） |
+| best epoch / step | **{best['epoch']}** / **{best_step}** 次累计成功更新（best checkpoint 时刻） |
 | 选择规则 | {summary['selection']} |
 | best 权重 SHA-256 | `{best_sha}` |
 | 训练预算 | 50 epoch × 265 batch = 13 250 次尝试；{summary['training']['successful_updates']} 次成功、{summary['training']['skipped']} 次 AMP 跳步 |
@@ -481,7 +604,7 @@ def _write_reports(out_dir: Path, summary: dict[str, Any], val: dict[str, Any],
 | 异常 12 张 macro IoU / Dice | **{val_macro['iou']['mean']:.4f}** / {val_macro['dice']['mean']:.4f} |
 | 正常图 FP | {val_normal['false_positive_pixels']:,} px（{val_normal['images_with_any_false_positive']}/{val_normal['count']} 张有任意 FP），比例 {val_normal['fp_pixel_ratio']:.3e} |
 
-## 3. 测试集（442 = 402 正常 + 40 异常，只评一次）
+## 3. 测试集（442 = 402 正常 + 40 异常，冻结协议）
 
 | 指标 | 值 |
 | --- | --- |
@@ -495,23 +618,24 @@ def _write_reports(out_dir: Path, summary: dict[str, Any], val: dict[str, Any],
 
 ## 4. 怎么读这两个数
 
-- **全局 IoU 是面积加权**：少数大缺陷贡献了大部分前景像素，所以 test 0.68 与 macro 0.52 的差距本身就是信息——它说明小缺陷的表现明显弱于大缺陷。
-- **val 比 test 高是正常的**：val 参与选模。不要把 test 0.6833 替换成 val 0.7775，也不要反过来。
+- **全局与 macro 权重及样本范围不同**：全局先累加全部图的 TP/FP/FN，再除一次；可视为按各图并集像素数加权。异常 macro 则对 40 张异常图等权，正常图 FP 另报。0.6833 与 0.5249 的差距提示逐图表现不均，尚不能证明小缺陷一定弱于大缺陷；需要按 GT 面积/宽度分层验证。
+- **val 与 test 必须分列**：val 参与选模，这会影响与 test 的比较；本次 test 更低的具体原因未经对照验证。不能用其中一组分数替换另一组。
 - **正常图只有像素级统计**：{test_normal['images_with_any_false_positive']}/{test_normal['count']} 张"有任意误报像素"不等于"图像级假阳性率"，本项目没有定义图像级判定规则。
 
 ## 5. 图表
 
 | 文件 | 内容 |
 | --- | --- |
-| `figures/training-curves.png` | 50 轮 loss / LR / val IoU / 正常 FP，标注 best epoch {best_epoch} |
+| `figures/training-curves.png` | 50 轮 loss / LR / val IoU、Dice、macro IoU / 正常 FP（symlog 保留零），标注 best epoch {best_epoch} |
 | `figures/anomaly-fixed-6.png` | 固定 6 张异常：原图 / GT / 概率（0–1 固定色标）/ 二值 / TP-FP-FN |
 | `figures/anomaly-worst-cases.png` | IoU 最低与 recall 最低的并集（按规则排序） |
-| `figures/normal-fixed-6.png` | 固定 6 张正常：原图 / 概率 / 误报（红） |
+| `figures/normal-fixed-6.png` | 固定 6 张正常：原图 / 全零 GT / 概率 / 误报（红） |
 | `figures/normal-worst-fp.png` | 正常图误报像素最多的 5 张 |
 | `curves.csv` | 逐轮数值（epoch / attempt / successful / LR / loss / val 指标） |
 | `failure-cases.csv` | 入选图 ID、入选理由、逐图计数与重建 XOR |
 
 色标说明：概率图统一 `vmin=0, vmax=1`，没有按图拉伸；TP 绿、FP 红、FN 蓝，图内有图例。
+来源：run `{run_dir}`；evaluation `{eval_dir}`。生成器在推理与写图前核验评价文件清单、best/processor/config/日志身份与展示选择；完整 SHA 见 `results-summary.json.source_validation`。
 """
     (out_dir / "results.md").write_text(results_md, encoding="utf-8")
 
@@ -524,53 +648,76 @@ def _write_reports(out_dir: Path, summary: dict[str, Any], val: dict[str, Any],
 - 划分：530 / 132 / 442；train 482 正常 + 48 异常，val 120 + 12，test 402 + 40
 - 预训练：`{identity['snapshot']['model_id']}`，revision `{identity['snapshot']['revision']}`，权重 SHA `{identity['snapshot']['weights_sha256'][:16]}…`（编码器 192/194 张量精确匹配）
 - 模型与参数量：SegFormer-B0 + 二类解码头，{summary['parameters']['total']:,} 参数（编码器 {summary['parameters']['encoder']:,} + 头 {summary['parameters']['head']:,}），全量微调
-- 输入 / 还原：512 letterbox（padding 255 只存在于训练输入），原图 {1404}×{1070} 尺度计分；`logits→512→裁 padding→原 H/W→softmax→阈值 0.5`
+- 输入 / 还原：512 letterbox；标签 padding=255 用于训练/验证预处理中的忽略区域，原尺寸评价 GT 仅 0/1。原图 {1404}×{1070} 尺度计分；`logits→512→裁 padding→原 H/W→softmax→阈值 0.5`
 - 损失：`CE(ignore_index=255) + 0.5 × 正 GT 图逐图前景 Soft Dice`，eps 1e-6，Dice 在 FP32 上算
 - 训练：物理 batch 2、累积 1、有效 batch 2；LR 6e-5（warmup 662 步线性 + cosine 到 1e-6）；50 epoch / 13 250 次计划更新；AMP FP16 + GradScaler；seed 42；`flip: random` p=0.5，每轮 `set_epoch`
 - 环境：Python 3.12.16 / torch 2.10.0+cu126 / torchvision 0.25.0+cu126 / transformers 4.57.6 / CUDA 12.6 / RTX 4070 Laptop 8 188 MiB（驱动 617.42）
 - 代码身份：git HEAD `{identity['git_head']}` + 未提交改动（14 个源文件 SHA 记录在 run 的 `code_identity_start.json`）；`source_and_config_unchanged = {summary['identity']['source_and_config_unchanged']}`
 - 实际完成轮数 / 最佳 epoch：50 / **{best['epoch']}**，按 val 全局前景 IoU 选择（并列取较早轮次）
 - val（132 张，原图 IEEE FP32，阈值 0.5）：IoU **{val_global['foreground_iou']:.4f}**、Dice {val_global['foreground_dice']:.4f}、P {val_global['precision']:.4f}、R {val_global['recall']:.4f}；异常 macro IoU {val_macro['iou']['mean']:.4f}；正常图 FP {val_normal['false_positive_pixels']:,} px（{val_normal['images_with_any_false_positive']}/120 张）
-- test（442 张，同一协议，只评一次）：IoU **{test_global['foreground_iou']:.4f}**、Dice {test_global['foreground_dice']:.4f}、P {test_global['precision']:.4f}、R {test_global['recall']:.4f}；异常 macro IoU {test_macro['iou']['mean']:.4f}、macro Dice {test_macro['dice']['mean']:.4f}；正常图 FP {test_normal['false_positive_pixels']:,} px（{test_normal['images_with_any_false_positive']}/{test_normal['count']} 张），比例 {test_normal['fp_pixel_ratio']:.3e}
+- test（442 张，同一冻结协议；原始评价与验收技术复核分别留档）：IoU **{test_global['foreground_iou']:.4f}**、Dice {test_global['foreground_dice']:.4f}、P {test_global['precision']:.4f}、R {test_global['recall']:.4f}；异常 macro IoU {test_macro['iou']['mean']:.4f}、macro Dice {test_macro['dice']['mean']:.4f}；正常图 FP {test_normal['false_positive_pixels']:,} px（{test_normal['images_with_any_false_positive']}/{test_normal['count']} 张），比例 {test_normal['fp_pixel_ratio']:.3e}
 - 训练耗时 / 显存：50 轮墙钟 {summary['timing']['train_seconds_total']:.1f} s（其中读图等待 {summary['timing']['loader_wait_seconds_total']:.1f} s）、验证 {summary['timing']['val_seconds_total']:.1f} s；峰值 allocated {summary['memory']['gpu']['peak_allocated_mib']} / reserved {summary['memory']['gpu']['peak_reserved_mib']} MiB
-- 评价耗时：val 19.84 s、test 60.89 s（B1，含 442 张 0/1 PNG 写盘）；**推理延迟未测**（没有做预热/多次计时的稳定基准）
+- 原始阶段 12 评价耗时：val 19.84 s、test 60.89 s（B1，test 含 442 张 0/1 PNG 写盘）；验收技术复核耗时见各评价目录 `evaluation_meta.json.timings`。**推理延迟未测**（没有做预热/多次计时的稳定基准）
 - 失败案例：test 中 049、057 预测为空，077 的 351 px 全部为 FP；val 上 042（15 523 px）与 051 仍近乎全漏、081 仅 0.0105。详见 `failure-cases.csv` 与 `figures/anomaly-worst-cases.png`
-- 局限：单模型、单 seed、单数据集；仅 40 张异常 test 图，macro 区间宽；全局 IoU 面积加权；无图像级判定规则；`workers=0` 未做吞吐对照；恢复的跨进程数值限制保留（阶段 11）
+- 局限：单模型、单 seed、单数据集；仅 40 张异常 test 图，未估计置信区间；全局按并集像素加权，macro 与全局差值不能单独证明面积效应；无图像级判定规则；`workers=0` 未做吞吐对照；恢复的跨进程数值限制保留（阶段 11）
 - 独立预测命令：`python -m segformer_lab.predict --config configs/baseline.yaml --run <run> --image <img> --out <dir>`
 - 复算 val 命令：`python -m segformer_lab.evaluate --config configs/baseline.yaml --run <run> --split val --out <dir>`
-- 路径：run `{run_path}`；评价 `runs/pcb1_b0_v2_seed42_eval_001`；本目录 `reports/pcb1_b0_v2_seed42`
+- 路径：run `{run_dir}`；评价 `{eval_dir}`；本目录 `reports/pcb1_b0_v2_seed42`
 """
     (out_dir / "experiment-card.md").write_text(card, encoding="utf-8")
 
-    repro = """# 复现说明
+    repro = r"""# 复现说明
 
 ## 1. 需要从仓库外单独搬运的东西
 
-Git 里**没有**模型权重、数据与环境。换一台机器，至少需要：
+Git 里保存源代码、配置、清单和便携摘要，**没有**模型权重、完整数据与 Conda 环境。当前冻结加载器要求原样保留整个训练 run 的 21 个文件（154 043 135 bytes），下表只按用途列出内容，不是可删减的最小包：
 
 | 内容 | 位置 | 校验方式 |
 | --- | --- | --- |
-| 已训练的 best | `runs/pcb1_b0_v2_seed42/checkpoints/best.pt` | SHA-256 `192c827b…`（完整值见 `reports/stage12-summary.json`） |
-| 结构与 processor | 同 run 的 `model_config.json`、`processor/` | 与 `code_identity_start.json` 中的摘要一致 |
-| PCB1 数据 | `data/visa/pcb1/Data/{Images,Masks}` | 清单 SHA：train/val/test 见实验卡 |
-| Conda 环境 | `env/`（Python 3.12.16 + torch 2.10.0+cu126） | `requirements-lock.txt` |
+| 已训练的 best 与本次镜像 | `checkpoints/best.pt`、`checkpoints/model_state.pt` | best SHA-256 `@BEST_SHA@`；其余文件按 run `summary.json.artifacts.files` 核验 |
+| 结构与预处理 | `model_config.json`、`processor/preprocessor_config.json`、`resolved_config.yaml` | 同上；processor 摘要来自保存的工件清单，不是预训练快照 |
+| 曲线、选模与工件完整性记录 | `summary.json`、`epochs.jsonl`、`artifact_manifest.json` | 当前冻结加载器核验完整 run 的文件集合与 SHA；不要删去表中未逐项列出的历史日志/预览等工件，推荐整目录保留 |
+| val 门禁参考与历史身份 | `pre_save_probabilities.npz`、`code_identity_{start,end}.json` | val 预览复核需要 NPZ；身份文件用于追溯训练时源码（推荐整个 run 保留） |
+| 阶段 12 评价目录 | 完整的 `val/` 与 `test/`，包括 `evaluation_meta.json`、`artifact_manifest.json`、`metrics.json`、`per_image.{json,csv}`、`selection.json`、`display_rules.json`、`predictions/*.png`，以及 `val/gate.json` | 原评价与验收技术复核分目录保存；summarize 校验清单 SHA、身份与选择一致性后才绘图 |
+| PCB1 原图、GT、解压索引与官方划分副本 | `data/visa/pcb1/Data/{Images,Masks}`、`data/visa/extraction_manifest.json`，以及 `split_meta.sources.official_csv.copy` 指向的文件 | 从原审计数据恢复；split_meta 固定解压索引与官方 CSV SHA，评价/绘图前对照索引核验图像/GT 字节；清单 CSV SHA 不能代替数据字节校验 |
+| 环境重建资料 | `requirements-runtime.txt`、`requirements-lock.txt`、`requirements-cu126.txt`、阶段 02 文档；资源区 `audit/conda-explicit-win64.txt` | 在新前缀重建并运行 env_check；不要直接复制/搬移原 Conda prefix |
 
 **重新下载 `nvidia/mit-b0` 不能替代 best**：快照只是初始化起点，训练后的权重只存在于 best.pt。
 
 ## 2. 环境与上下文
 
+下列 `<repo>` / `<resource-root>` 是原记录路径的占位说明，不代表任意位置可直接替换。当前加载器还逐项比较 `resolved_config.yaml` 的绝对路径，因此仓库、数据/模型/输出根及官方 CSV 副本必须还原至原记录的同一绝对布局（本机仓库 `E:\桌面\AI\AI_Try`、资源 `E:\桌面\AI\segformer_resources`）。相对 manifest 从项目目录解析，但克隆至另一位置也会改变其 resolved 路径。修改 YAML 中路径又会改变 config SHA，当前身份检查会拒绝。不同根路径需要后续明确审计的迁移协议，本轮未实现，不能改写原 run 绕过检查。跨平台/不同 GPU 的逐位一致性未保证，先复核 val。
+
 ```powershell
 $env:PSExecutionPolicyPreference = 'Bypass'
-Set-Location -LiteralPath '<repo>\\work\\SegFormer'
-. '.\\scripts\\enter_project.ps1'
+Set-Location -LiteralPath '<repo>\work\SegFormer'
+. '.\scripts\enter_project.ps1' -ResourceRoot '<resource-root>' -CondaExe '<conda.exe>'
 $ErrorActionPreference = 'Continue'
 ```
+
+只在全新的、尚不存在的 `$SegEnv` 前缀重建环境（现有环境先核对，勿覆盖）：
+
+```powershell
+if (Test-Path -LiteralPath $SegEnv) { throw 'Use a fresh prefix or verify the existing environment first' }
+Assert-SegCondaIsolation
+& $SegConda create --prefix $SegEnv --copy --no-shortcuts --no-default-packages `
+  --override-channels --channel 'https://repo.anaconda.com/pkgs/main' `
+  python=3.12.16 pip -y
+if ($LASTEXITCODE -ne 0) { throw 'Environment creation failed' }
+Invoke-SegPip install --no-user -r requirements-runtime.txt --index-url https://pypi.org/simple
+Invoke-SegPython -m pip check
+Invoke-SegPython -m segformer_lab.env_check --help
+```
+
+按阶段 02 的 env_check 参数记录解释器、包版本、CUDA 实际运算和缓存路径。`requirements-runtime.txt` 才是完整可移植包清单；原始 `requirements-lock.txt` 含本机 wheel URL，不能原样在另一台机器 replay。Conda 管理器、驱动和 OS 仍是共享层，环境重建不是 VM 级隔离，也不保证不同硬件逐位复现。
+
+训练时 git HEAD 加未提交源码的身份保存在 `code_identity_start.json`；`evaluation_meta.json.code` 保留评价源码 SHA；本次生成器 SHA 和输入文件 SHA 保存在 `results-summary.json`。仅 checkout 某个 HEAD 不足以复原当时未提交源码。`reports/stage12_13_evidence/pre_acceptance_source/` 保存验收前已提交版本；它与原评价元数据内 inference/predict 的 SHA 不同，原打分源码字节不可恢复，不能称其为完整原始源码快照。原评价身份与验收修复后技术复核身份分别留档，新 val/test 证明当前通道而非倒推原源码。
 
 ## 3. 复算 val（应先与 `reports/stage12_evidence/val_metrics.json` 对齐）
 
 ```powershell
-Invoke-SegPython -u -m segformer_lab.evaluate --config 'configs\\baseline.yaml' `
-  --run '<...>\\runs\\pcb1_b0_v2_seed42' --split val --out '<new-dir>\\val'
+Invoke-SegPython -u -m segformer_lab.evaluate --config 'configs\baseline.yaml' `
+  --run '<resource-root>\runs\pcb1_b0_v2_seed42' --split val --out '<new-eval-dir>\val'
 ```
 
 门禁 `gate.json` 应显示 `passed=true`；任何一项不一致先停下定位（eval 模式、归一化、还原顺序、阈值）。
@@ -578,19 +725,19 @@ Invoke-SegPython -u -m segformer_lab.evaluate --config 'configs\\baseline.yaml' 
 ## 4. 复现图表
 
 ```powershell
-Invoke-SegPython -u -m segformer_lab.summarize --config 'configs\\baseline.yaml' `
-  --run '<...>\\runs\\pcb1_b0_v2_seed42' `
-  --eval-run '<...>\\runs\\pcb1_b0_v2_seed42_eval_001' `
-  --out '<repo>\\work\\SegFormer\\reports\\pcb1_b0_v2_seed42'
+Invoke-SegPython -u -m segformer_lab.summarize --config 'configs\baseline.yaml' `
+  --run '<resource-root>\runs\pcb1_b0_v2_seed42' `
+  --eval-run '@EVAL_DIR@' `
+  --out '<new-empty-results-dir>'
 ```
 
-`summarize` 不训练、不选 best；它只读 `epochs.jsonl` 与阶段 12 的评价目录，并用同一冻结通道为展示图重算概率（二值结果必须与阶段 12 的 PNG 完全一致，否则脚本报错退出）。
+`--out` 必须是尚不存在的新目录，并且不得位于 run、评价来源、源码、配置或数据目录内；程序拒绝复用已有目录。先保留旧摘要，再在新目录生成，验证后才更新仓库内便携交付。`summarize` 不训练、不选 best；它只读上述 run 与评价工件，并用同一冻结通道为 23 张展示图重算概率（二值结果必须与来源评价 PNG 完全一致，否则退出）。原始评价的图表与技术复核图表要记录各自 eval 路径，不能混写来源。
 
 ## 5. 约束
 
 - test 已经评价过一次；再跑属于技术复核，需保留原因与全部结果，不得按分数择优。
 - 阈值 0.5、B1、IEEE FP32、无 TTA / 后处理，不得为提升分数而修改。
-"""
+""".replace("@BEST_SHA@", best_sha).replace("@EVAL_DIR@", str(eval_dir))
     (out_dir / "reproduction.md").write_text(repro, encoding="utf-8")
 
 

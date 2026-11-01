@@ -1,0 +1,26 @@
+{
+  "segformer_lab/inference.py": {
+    "archived_sha256": "0ceeae72365fc9b635d67c4e5341a22d6e2e3641b09d6a4886ec7b946b982136",
+    "recorded_original_test_sha256": "b54719362ea7345052453cc332615d4add4934a932234ea26dd4aa4a4ac19026",
+    "matches_original_test": false,
+    "archive_scope": "Current pre-acceptance HEAD7478742; some code was edited after original scoring, not claimed to be original scoring source."
+  },
+  "segformer_lab/evaluate.py": {
+    "archived_sha256": "a77626c25027a89afbaeb83e8cf3d7277d835b4d8a20fdf8bb8b631c09b190a6",
+    "recorded_original_test_sha256": "a77626c25027a89afbaeb83e8cf3d7277d835b4d8a20fdf8bb8b631c09b190a6",
+    "matches_original_test": true,
+    "archive_scope": "Current pre-acceptance HEAD7478742; some code was edited after original scoring, not claimed to be original scoring source."
+  },
+  "segformer_lab/predict.py": {
+    "archived_sha256": "0bacfad75491f0ab25947c5e73dfadca682ef259970d8bfff209a5b52792ed37",
+    "recorded_original_test_sha256": "cccc45ca28171bc13b54101a71505583bc5257f9e6e4b48f57c80ada93bf0166",
+    "matches_original_test": false,
+    "archive_scope": "Current pre-acceptance HEAD7478742; some code was edited after original scoring, not claimed to be original scoring source."
+  },
+  "segformer_lab/summarize.py": {
+    "archived_sha256": "f8575e90af4a5b7ef9827b902eb798a2a04995fe613ec5704df54da60987b5f8",
+    "recorded_original_test_sha256": null,
+    "matches_original_test": false,
+    "archive_scope": "Current pre-acceptance HEAD7478742; some code was edited after original scoring, not claimed to be original scoring source."
+  }
+}

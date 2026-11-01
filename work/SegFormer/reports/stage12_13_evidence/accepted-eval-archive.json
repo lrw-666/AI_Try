@@ -1,0 +1,140 @@
+{
+  "files": [
+    {
+      "path": "reports/stage12_13_evidence/accepted_eval/val/metrics.json",
+      "source_path": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42_eval_acceptance_20261101\\val\\metrics.json",
+      "source_bytes": 3730,
+      "source_sha256": "102da5d230750f92c3e54dda4a6ff103855659b30f8715932dc99dd2f89fa474",
+      "portable_bytes": 3730,
+      "portable_sha256": "102da5d230750f92c3e54dda4a6ff103855659b30f8715932dc99dd2f89fa474",
+      "exact_source_after_optional_gzip": true
+    },
+    {
+      "path": "reports/stage12_13_evidence/accepted_eval/val/evaluation_meta.json",
+      "source_path": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42_eval_acceptance_20261101\\val\\evaluation_meta.json",
+      "source_bytes": 212704,
+      "source_sha256": "bef63b30068913cd3c96e8c668cfe567292e61147dac36fd0126c07d5b83323c",
+      "portable_bytes": 212704,
+      "portable_sha256": "bef63b30068913cd3c96e8c668cfe567292e61147dac36fd0126c07d5b83323c",
+      "exact_source_after_optional_gzip": true
+    },
+    {
+      "path": "reports/stage12_13_evidence/accepted_eval/val/artifact_manifest.json",
+      "source_path": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42_eval_acceptance_20261101\\val\\artifact_manifest.json",
+      "source_bytes": 23464,
+      "source_sha256": "87d5e4929afe124473ff742c99906f4cf6fbcce27ef2b8eb68a0f490b54ba55a",
+      "portable_bytes": 23464,
+      "portable_sha256": "87d5e4929afe124473ff742c99906f4cf6fbcce27ef2b8eb68a0f490b54ba55a",
+      "exact_source_after_optional_gzip": true
+    },
+    {
+      "path": "reports/stage12_13_evidence/accepted_eval/val/display_rules.json",
+      "source_path": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42_eval_acceptance_20261101\\val\\display_rules.json",
+      "source_bytes": 970,
+      "source_sha256": "28d187a24e4f62d3bac210781331bc28fa3324a5c412ee8b56859162a3f5cf0c",
+      "portable_bytes": 970,
+      "portable_sha256": "28d187a24e4f62d3bac210781331bc28fa3324a5c412ee8b56859162a3f5cf0c",
+      "exact_source_after_optional_gzip": true
+    },
+    {
+      "path": "reports/stage12_13_evidence/accepted_eval/val/selection.json",
+      "source_path": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42_eval_acceptance_20261101\\val\\selection.json",
+      "source_bytes": 6200,
+      "source_sha256": "2f7fcf085a7925da9e680dae71270b7457d7a709a30f0607299c12201d9b66ca",
+      "portable_bytes": 6200,
+      "portable_sha256": "2f7fcf085a7925da9e680dae71270b7457d7a709a30f0607299c12201d9b66ca",
+      "exact_source_after_optional_gzip": true
+    },
+    {
+      "path": "reports/stage12_13_evidence/accepted_eval/val/gate.json",
+      "source_path": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42_eval_acceptance_20261101\\val\\gate.json",
+      "source_bytes": 251714,
+      "source_sha256": "607f417f7b3b7ea56a6c95e289ce5be34915df322cb0402e1f57787e9dd1a80d",
+      "portable_bytes": 251714,
+      "portable_sha256": "607f417f7b3b7ea56a6c95e289ce5be34915df322cb0402e1f57787e9dd1a80d",
+      "exact_source_after_optional_gzip": true
+    },
+    {
+      "path": "reports/stage12_13_evidence/accepted_eval/val/per_image.json.gz",
+      "source_path": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42_eval_acceptance_20261101\\val\\per_image.json",
+      "source_bytes": 103340,
+      "source_sha256": "77ff5594cdc226c1e2c4d5257a9f43ad3595cdebd5e5bd8ebbdf9a0b5078073a",
+      "portable_bytes": 2718,
+      "portable_sha256": "225f01ee40ec7b6ee00ce05ba0ead0241ef555c030ce57f761e9445e923db036",
+      "exact_source_after_optional_gzip": true
+    },
+    {
+      "path": "reports/stage12_13_evidence/accepted_eval/val/per_image.csv.gz",
+      "source_path": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42_eval_acceptance_20261101\\val\\per_image.csv",
+      "source_bytes": 34007,
+      "source_sha256": "557ca0f7d587419aed7b21003ef4b3290951e74b65535610876828094d410cdd",
+      "portable_bytes": 1947,
+      "portable_sha256": "2c052126c1e09d287aea3e828bccc617bab04fc6e720e861130df5733c9a3c09",
+      "exact_source_after_optional_gzip": true
+    },
+    {
+      "path": "reports/stage12_13_evidence/accepted_eval/test/metrics.json",
+      "source_path": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42_eval_acceptance_20261101\\test\\metrics.json",
+      "source_bytes": 3735,
+      "source_sha256": "c341c4e6becc987508a6b55dc0ef81e299f0a74f335ae1428307ea5d568010e9",
+      "portable_bytes": 3735,
+      "portable_sha256": "c341c4e6becc987508a6b55dc0ef81e299f0a74f335ae1428307ea5d568010e9",
+      "exact_source_after_optional_gzip": true
+    },
+    {
+      "path": "reports/stage12_13_evidence/accepted_eval/test/evaluation_meta.json",
+      "source_path": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42_eval_acceptance_20261101\\test\\evaluation_meta.json",
+      "source_bytes": 212889,
+      "source_sha256": "a24c1650770e697f41c42110505eef6981e9f6a38d723fbb2dcc46d3e30feb3e",
+      "portable_bytes": 212889,
+      "portable_sha256": "a24c1650770e697f41c42110505eef6981e9f6a38d723fbb2dcc46d3e30feb3e",
+      "exact_source_after_optional_gzip": true
+    },
+    {
+      "path": "reports/stage12_13_evidence/accepted_eval/test/artifact_manifest.json",
+      "source_path": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42_eval_acceptance_20261101\\test\\artifact_manifest.json",
+      "source_bytes": 75721,
+      "source_sha256": "a7c74ae0fabda782cb1fc5936d68be6ff6921565d753a7eb54f342b4dc7f1c5d",
+      "portable_bytes": 75721,
+      "portable_sha256": "a7c74ae0fabda782cb1fc5936d68be6ff6921565d753a7eb54f342b4dc7f1c5d",
+      "exact_source_after_optional_gzip": true
+    },
+    {
+      "path": "reports/stage12_13_evidence/accepted_eval/test/display_rules.json",
+      "source_path": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42_eval_acceptance_20261101\\test\\display_rules.json",
+      "source_bytes": 971,
+      "source_sha256": "6b2784ede779652055a6c445013269650ec90dfdc41d7da1f21445edbbbf3fe3",
+      "portable_bytes": 971,
+      "portable_sha256": "6b2784ede779652055a6c445013269650ec90dfdc41d7da1f21445edbbbf3fe3",
+      "exact_source_after_optional_gzip": true
+    },
+    {
+      "path": "reports/stage12_13_evidence/accepted_eval/test/selection.json",
+      "source_path": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42_eval_acceptance_20261101\\test\\selection.json",
+      "source_bytes": 7123,
+      "source_sha256": "4257e2b5698553e28860f4642046b91db8daf44eb9b4ecc485dbc13557019955",
+      "portable_bytes": 7123,
+      "portable_sha256": "4257e2b5698553e28860f4642046b91db8daf44eb9b4ecc485dbc13557019955",
+      "exact_source_after_optional_gzip": true
+    },
+    {
+      "path": "reports/stage12_13_evidence/accepted_eval/test/per_image.json.gz",
+      "source_path": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42_eval_acceptance_20261101\\test\\per_image.json",
+      "source_bytes": 346952,
+      "source_sha256": "73cdfc3152d4bf529777e83443fa34185a688d4b2f434b89544c09aeac05a2b8",
+      "portable_bytes": 7817,
+      "portable_sha256": "19f4879dfcd92cbac0bc1b3e5993c0e046ad7b08621d4562222280eb0395036e",
+      "exact_source_after_optional_gzip": true
+    },
+    {
+      "path": "reports/stage12_13_evidence/accepted_eval/test/per_image.csv.gz",
+      "source_path": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42_eval_acceptance_20261101\\test\\per_image.csv",
+      "source_bytes": 114324,
+      "source_sha256": "0c389e0693b8bbd0087d7b2d3fb6859fdde4ddce06369fa5cf9cbae992772220",
+      "portable_bytes": 5694,
+      "portable_sha256": "f478d168f20f99c573780c21ca5cdfdf826b55c0fe84808668362132aa1c3ae1",
+      "exact_source_after_optional_gzip": true
+    }
+  ],
+  "predictions_and_full_probabilities_not_copied": true
+}

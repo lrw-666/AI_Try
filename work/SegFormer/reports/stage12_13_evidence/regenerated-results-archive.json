@@ -1,0 +1,65 @@
+{
+  "source": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42_results_acceptance_20261101",
+  "raw_files": [
+    {
+      "path": "curves.csv",
+      "bytes": 12392,
+      "sha256": "51ee8986f6b05b00c32cf7e16d78d005697e98dc08f9961070293af44f614f68"
+    },
+    {
+      "path": "experiment-card.md",
+      "bytes": 3675,
+      "sha256": "8e57c28812486aafe82aab4bffe0a2cd0f3b45ff5481f1efaba62be94843ee9d"
+    },
+    {
+      "path": "failure-cases.csv",
+      "bytes": 4237,
+      "sha256": "d172d994cd98921058681114e6691d17dc4f6e90c2e0583d1c0f676cd82ebc22"
+    },
+    {
+      "path": "figures/anomaly-fixed-6.png",
+      "bytes": 1252032,
+      "sha256": "408609962ccce97447328b1d6bffd958be4ad276ef6181e86b4da7c8e1756fe3"
+    },
+    {
+      "path": "figures/anomaly-worst-cases.png",
+      "bytes": 1217151,
+      "sha256": "8a48c89e55095e21b5898b1c39337c406910dd243b35536c106fad31c01564d7"
+    },
+    {
+      "path": "figures/normal-fixed-6.png",
+      "bytes": 1191982,
+      "sha256": "b995c1c3475cc5f849b86dca42ac330c06f5ba1e79716e74989a3c2be122a8dc"
+    },
+    {
+      "path": "figures/normal-worst-fp.png",
+      "bytes": 967583,
+      "sha256": "d7e4df72df802fe69812e29f79d08ca542b8bb18fef318ac8d3df7c83de20814"
+    },
+    {
+      "path": "figures/training-curves.png",
+      "bytes": 143536,
+      "sha256": "ee2439b9e8ac9f235932c0b3ae3fb3e9eb36f7cce0dff1070eebf6326aec81a8"
+    },
+    {
+      "path": "reproduction.md",
+      "bytes": 6613,
+      "sha256": "6633d12b3b6cc696d759ff628e694fad88c5d83f19677ab5f87b029c74218795"
+    },
+    {
+      "path": "results-summary.json",
+      "bytes": 11503,
+      "sha256": "6ea90ab9a876c8d5967f272082567640eebf64a0cdd9f8677f33a7b9b99b7bc5"
+    },
+    {
+      "path": "results.md",
+      "bytes": 3649,
+      "sha256": "0260df92ce5a13bfedc056103ec38006d88b34bac88f00ccdc53cb5983ea8c75"
+    }
+  ],
+  "portable_status_annotations": [
+    "experiment-card.md",
+    "results-summary.json"
+  ],
+  "original_figures_preserved_in_prior_commit": "747874245986aa74dedd88ef5438d2af5e7d933f"
+}

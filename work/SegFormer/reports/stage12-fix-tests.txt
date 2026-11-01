@@ -1,0 +1,166 @@
+test_duplicate_rows_cannot_be_hidden_by_image_id_dictionary (tests.test_inference_eval.GateTests.test_duplicate_rows_cannot_be_hidden_by_image_id_dictionary) ... FAIL
+test_float_drift_beyond_tolerance_fails (tests.test_inference_eval.GateTests.test_float_drift_beyond_tolerance_fails) ... ok
+test_gate_file_must_pass_and_match_identity (tests.test_inference_eval.GateTests.test_gate_file_must_pass_and_match_identity) ... ok
+test_identical_records_pass (tests.test_inference_eval.GateTests.test_identical_records_pass) ... ok
+test_integer_difference_fails (tests.test_inference_eval.GateTests.test_integer_difference_fails) ... ok
+test_na_structure_difference_fails (tests.test_inference_eval.GateTests.test_na_structure_difference_fails) ... ok
+test_normal_percentiles_and_macro_na_are_compared (tests.test_inference_eval.GateTests.test_normal_percentiles_and_macro_na_are_compared) ... 
+  test_normal_percentiles_and_macro_na_are_compared (tests.test_inference_eval.GateTests.test_normal_percentiles_and_macro_na_are_compared) (section='normal_images') ... FAIL
+  test_normal_percentiles_and_macro_na_are_compared (tests.test_inference_eval.GateTests.test_normal_percentiles_and_macro_na_are_compared) (section='anomaly_images') ... FAIL
+test_per_image_label_and_nonfinite_value_are_rejected (tests.test_inference_eval.GateTests.test_per_image_label_and_nonfinite_value_are_rejected) ... 
+  test_per_image_label_and_nonfinite_value_are_rejected (tests.test_inference_eval.GateTests.test_per_image_label_and_nonfinite_value_are_rejected) (field='label') ... FAIL
+  test_per_image_label_and_nonfinite_value_are_rejected (tests.test_inference_eval.GateTests.test_per_image_label_and_nonfinite_value_are_rejected) (field='iou') ... FAIL
+test_stale_processor_and_unbound_legacy_gates_are_rejected (tests.test_inference_eval.GateTests.test_stale_processor_and_unbound_legacy_gates_are_rejected) ... FAIL
+test_evaluate_refuses_a_new_output_inside_the_source_run (tests.test_inference_eval.OutputGuardTests.test_evaluate_refuses_a_new_output_inside_the_source_run) ... FAIL
+test_predict_refuses_even_an_empty_existing_output_before_loading_model (tests.test_inference_eval.OutputGuardTests.test_predict_refuses_even_an_empty_existing_output_before_loading_model) ... FAIL
+
+======================================================================
+FAIL: test_duplicate_rows_cannot_be_hidden_by_image_id_dictionary (tests.test_inference_eval.GateTests.test_duplicate_rows_cannot_be_hidden_by_image_id_dictionary)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "E:\桌面\AI\AI_Try\work\SegFormer\tests\test_inference_eval.py", line 116, in test_duplicate_rows_cannot_be_hidden_by_image_id_dictionary
+    self.assertFalse(evaluate._gate_compare(fresh, saved)["passed"])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_normal_percentiles_and_macro_na_are_compared (tests.test_inference_eval.GateTests.test_normal_percentiles_and_macro_na_are_compared) (section='normal_images')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "E:\桌面\AI\AI_Try\work\SegFormer\tests\test_inference_eval.py", line 135, in test_normal_percentiles_and_macro_na_are_compared
+    self.assertFalse(evaluate._gate_compare(fresh, saved)["passed"])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_normal_percentiles_and_macro_na_are_compared (tests.test_inference_eval.GateTests.test_normal_percentiles_and_macro_na_are_compared) (section='anomaly_images')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "E:\桌面\AI\AI_Try\work\SegFormer\tests\test_inference_eval.py", line 135, in test_normal_percentiles_and_macro_na_are_compared
+    self.assertFalse(evaluate._gate_compare(fresh, saved)["passed"])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_per_image_label_and_nonfinite_value_are_rejected (tests.test_inference_eval.GateTests.test_per_image_label_and_nonfinite_value_are_rejected) (field='label')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "E:\桌面\AI\AI_Try\work\SegFormer\tests\test_inference_eval.py", line 123, in test_per_image_label_and_nonfinite_value_are_rejected
+    self.assertFalse(evaluate._gate_compare(fresh, saved)["passed"])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_per_image_label_and_nonfinite_value_are_rejected (tests.test_inference_eval.GateTests.test_per_image_label_and_nonfinite_value_are_rejected) (field='iou')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "E:\桌面\AI\AI_Try\work\SegFormer\tests\test_inference_eval.py", line 123, in test_per_image_label_and_nonfinite_value_are_rejected
+    self.assertFalse(evaluate._gate_compare(fresh, saved)["passed"])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_stale_processor_and_unbound_legacy_gates_are_rejected (tests.test_inference_eval.GateTests.test_stale_processor_and_unbound_legacy_gates_are_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "E:\桌面\AI\AI_Try\work\SegFormer\tests\test_inference_eval.py", line 176, in test_stale_processor_and_unbound_legacy_gates_are_rejected
+    with self.assertRaises(SystemExit):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: SystemExit not raised
+
+======================================================================
+FAIL: test_evaluate_refuses_a_new_output_inside_the_source_run (tests.test_inference_eval.OutputGuardTests.test_evaluate_refuses_a_new_output_inside_the_source_run)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "E:\桌面\AI\AI_Try\work\SegFormer\tests\test_inference_eval.py", line 201, in test_evaluate_refuses_a_new_output_inside_the_source_run
+    evaluate.do_evaluate(args)
+  File "E:\桌面\AI\AI_Try\work\SegFormer\segformer_lab\evaluate.py", line 271, in do_evaluate
+    frozen = load_frozen_run(config, args.run, device=args.device)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\桌面\AI\segformer_resources\env\Lib\unittest\mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\桌面\AI\segformer_resources\env\Lib\unittest\mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\桌面\AI\segformer_resources\env\Lib\unittest\mock.py", line 1198, in _execute_mock_call
+    raise effect
+AssertionError: loaded before guard
+
+======================================================================
+FAIL: test_predict_refuses_even_an_empty_existing_output_before_loading_model (tests.test_inference_eval.OutputGuardTests.test_predict_refuses_even_an_empty_existing_output_before_loading_model)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "E:\桌面\AI\AI_Try\work\SegFormer\tests\test_inference_eval.py", line 191, in test_predict_refuses_even_an_empty_existing_output_before_loading_model
+    predict.do_predict(args)
+  File "E:\桌面\AI\AI_Try\work\SegFormer\segformer_lab\predict.py", line 57, in do_predict
+    frozen = load_frozen_run(config, args.run, device=args.device)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\桌面\AI\segformer_resources\env\Lib\unittest\mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\桌面\AI\segformer_resources\env\Lib\unittest\mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\桌面\AI\segformer_resources\env\Lib\unittest\mock.py", line 1198, in _execute_mock_call
+    raise effect
+AssertionError: loaded before guard
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.076s
+
+FAILED (failures=8)
+ERROR conda.cli.main_run:execute(125): `conda run python -m unittest tests.test_inference_eval.GateTests tests.test_inference_eval.OutputGuardTests -v` failed. (See above for error)
+test_image_and_gt_bytes_are_both_checked_against_frozen_inventory (tests.test_inference_eval.DataIdentityTests.test_image_and_gt_bytes_are_both_checked_against_frozen_inventory) ... ok
+test_preview_nan_shape_missing_keys_fail_closed (tests.test_inference_eval.DataIdentityTests.test_preview_nan_shape_missing_keys_fail_closed) ... ok
+test_incomplete_run_is_refused (tests.test_inference_eval.FrozenRunGuardTests.test_incomplete_run_is_refused) ... ok
+test_duplicate_rows_cannot_be_hidden_by_image_id_dictionary (tests.test_inference_eval.GateTests.test_duplicate_rows_cannot_be_hidden_by_image_id_dictionary) ... ok
+test_float_drift_beyond_tolerance_fails (tests.test_inference_eval.GateTests.test_float_drift_beyond_tolerance_fails) ... ok
+test_gate_file_must_pass_and_match_identity (tests.test_inference_eval.GateTests.test_gate_file_must_pass_and_match_identity) ... ok
+test_identical_records_pass (tests.test_inference_eval.GateTests.test_identical_records_pass) ... ok
+test_integer_difference_fails (tests.test_inference_eval.GateTests.test_integer_difference_fails) ... ok
+test_na_structure_difference_fails (tests.test_inference_eval.GateTests.test_na_structure_difference_fails) ... ok
+test_normal_percentiles_and_macro_na_are_compared (tests.test_inference_eval.GateTests.test_normal_percentiles_and_macro_na_are_compared) ... ok
+test_per_image_label_and_nonfinite_value_are_rejected (tests.test_inference_eval.GateTests.test_per_image_label_and_nonfinite_value_are_rejected) ... ok
+test_stale_processor_and_unbound_legacy_gates_are_rejected (tests.test_inference_eval.GateTests.test_stale_processor_and_unbound_legacy_gates_are_rejected) ... ok
+test_writes_uint8_mask_and_rejects_non_binary (tests.test_inference_eval.MaskTests.test_writes_uint8_mask_and_rejects_non_binary) ... ok
+test_evaluate_refuses_a_new_output_inside_the_source_run (tests.test_inference_eval.OutputGuardTests.test_evaluate_refuses_a_new_output_inside_the_source_run) ... ok
+test_predict_refuses_even_an_empty_existing_output_before_loading_model (tests.test_inference_eval.OutputGuardTests.test_predict_refuses_even_an_empty_existing_output_before_loading_model) ... ok
+test_test_gate_is_checked_before_dataset_or_test_bytes_are_read (tests.test_inference_eval.OutputGuardTests.test_test_gate_is_checked_before_dataset_or_test_bytes_are_read) ... ok
+test_matches_dataset_sample (tests.test_inference_eval.PreprocessEquivalenceTests.test_matches_dataset_sample) ... E:\桌面\AI\segformer_resources\env\Lib\site-packages\transformers\image_processing_base.py:417: UserWarning: The following named arguments are not valid for `SegformerImageProcessor.__init__` and were ignored: 'feature_extractor_type', 'reduce_labels'
+  image_processor = cls(**image_processor_dict)
+ok
+test_counts_and_reasons_are_kept (tests.test_inference_eval.SelectionTests.test_counts_and_reasons_are_kept) ... ok
+test_rules_are_ordered_and_ties_break_on_image_id (tests.test_inference_eval.SelectionTests.test_rules_are_ordered_and_ties_break_on_image_id) ... ok
+
+----------------------------------------------------------------------
+Ran 19 tests in 3.478s
+
+OK
+test_image_and_gt_bytes_are_both_checked_against_frozen_inventory (tests.test_inference_eval.DataIdentityTests.test_image_and_gt_bytes_are_both_checked_against_frozen_inventory) ... ok
+test_preview_nan_shape_missing_keys_fail_closed (tests.test_inference_eval.DataIdentityTests.test_preview_nan_shape_missing_keys_fail_closed) ... ok
+test_incomplete_run_is_refused (tests.test_inference_eval.FrozenRunGuardTests.test_incomplete_run_is_refused) ... ok
+test_missing_preview_is_refused_before_checkpoint_deserialization (tests.test_inference_eval.FrozenRunGuardTests.test_missing_preview_is_refused_before_checkpoint_deserialization) ... ok
+test_duplicate_rows_cannot_be_hidden_by_image_id_dictionary (tests.test_inference_eval.GateTests.test_duplicate_rows_cannot_be_hidden_by_image_id_dictionary) ... ok
+test_float_drift_beyond_tolerance_fails (tests.test_inference_eval.GateTests.test_float_drift_beyond_tolerance_fails) ... ok
+test_gate_file_must_pass_and_match_identity (tests.test_inference_eval.GateTests.test_gate_file_must_pass_and_match_identity) ... ok
+test_identical_records_pass (tests.test_inference_eval.GateTests.test_identical_records_pass) ... ok
+test_integer_difference_fails (tests.test_inference_eval.GateTests.test_integer_difference_fails) ... ok
+test_na_structure_difference_fails (tests.test_inference_eval.GateTests.test_na_structure_difference_fails) ... ok
+test_normal_percentiles_and_macro_na_are_compared (tests.test_inference_eval.GateTests.test_normal_percentiles_and_macro_na_are_compared) ... ok
+test_per_image_label_and_nonfinite_value_are_rejected (tests.test_inference_eval.GateTests.test_per_image_label_and_nonfinite_value_are_rejected) ... ok
+test_stale_processor_and_unbound_legacy_gates_are_rejected (tests.test_inference_eval.GateTests.test_stale_processor_and_unbound_legacy_gates_are_rejected) ... ok
+test_writes_uint8_mask_and_rejects_non_binary (tests.test_inference_eval.MaskTests.test_writes_uint8_mask_and_rejects_non_binary) ... ok
+test_image_only_cli_writes_original_size_binary_and_float_probability (tests.test_inference_eval.NoGroundTruthPredictionTests.test_image_only_cli_writes_original_size_binary_and_float_probability) ... ok
+test_evaluate_refuses_a_new_output_inside_the_source_run (tests.test_inference_eval.OutputGuardTests.test_evaluate_refuses_a_new_output_inside_the_source_run) ... ok
+test_predict_refuses_even_an_empty_existing_output_before_loading_model (tests.test_inference_eval.OutputGuardTests.test_predict_refuses_even_an_empty_existing_output_before_loading_model) ... ok
+test_test_gate_is_checked_before_dataset_or_test_bytes_are_read (tests.test_inference_eval.OutputGuardTests.test_test_gate_is_checked_before_dataset_or_test_bytes_are_read) ... ok
+test_matches_dataset_sample (tests.test_inference_eval.PreprocessEquivalenceTests.test_matches_dataset_sample) ... E:\桌面\AI\segformer_resources\env\Lib\site-packages\transformers\image_processing_base.py:417: UserWarning: The following named arguments are not valid for `SegformerImageProcessor.__init__` and were ignored: 'feature_extractor_type', 'reduce_labels'
+  image_processor = cls(**image_processor_dict)
+ok
+test_counts_and_reasons_are_kept (tests.test_inference_eval.SelectionTests.test_counts_and_reasons_are_kept) ... ok
+test_rules_are_ordered_and_ties_break_on_image_id (tests.test_inference_eval.SelectionTests.test_rules_are_ordered_and_ties_break_on_image_id) ... ok
+
+----------------------------------------------------------------------
+Ran 21 tests in 3.138s
+
+OK
+  image   : image.png 2x3
+  predict : 6 px >= 0.5 (1.000000 of pixels)
+  identity: best unit-fixture epoch 39
+  wrote   : E:\桌面\AI\segformer_resources\tmp\tmp2zphsirk\out

@@ -1,0 +1,504 @@
+{
+  "schema": "segformer-lab/stage12-13-independent-evidence-audit/1",
+  "audited_at_utc": "2026-11-01T10:12:05.454103+00:00",
+  "method": {
+    "interpreter": "E:\\Anaconda\\python.exe",
+    "python": "3.12.7",
+    "imports": "Python standard library only; no project imports",
+    "input_operations": "Read/hash files, parse persisted JSON/CSV; checkpoint and image files SHA256 bytes only",
+    "no_image_decoding": true,
+    "no_model_inference_training_or_tests": true,
+    "metric_float_atol": 1e-09,
+    "curve_float_atol": 1e-14,
+    "only_file_written": "reports/stage12-13-evidence-audit.json"
+  },
+  "verdict": "PASS for checked original arithmetic, scalar coverage, archive byte identity and deterministic selection; original scored-source body and runtime/temporal limits remain explicit",
+  "checks": {
+    "original_run_entire_inventory_equals_stage11": 1,
+    "manifest_count": 3,
+    "manifest_unique_ids": 3,
+    "manifest_frozen_sha": 3,
+    "manifest_disjoint": 3,
+    "snapshot_size": 3,
+    "snapshot_sha": 3,
+    "snapshot_revision": 1,
+    "snapshot_weights": 1,
+    "epochs_50": 1,
+    "best_epoch_from_50_val_scores": 1,
+    "best_step": 1,
+    "frozen_run_sha": 3,
+    "baseline_config_sha": 1,
+    "exact_manifest_order": 2,
+    "csv_json_count": 2,
+    "coverage_missing": 2,
+    "coverage_duplicates": 2,
+    "split": 2,
+    "row_manifest_label": 574,
+    "row_split": 574,
+    "row_size": 574,
+    "row_confusion_total": 574,
+    "row_gt_pixels": 574,
+    "row_pred_pixels": 574,
+    "row_ignore_pixels": 574,
+    "anomaly_gt_positive": 52,
+    "row_metric_recomputed": 2296,
+    "row_na_reason_exact": 2296,
+    "row_ratio_recomputed": 574,
+    "csv_json_text": 4592,
+    "csv_json_int": 5166,
+    "csv_json_float": 908,
+    "csv_json_na": 1962,
+    "normal_gt_empty": 522,
+    "global_confusion_recomputed": 10,
+    "global_metric_recomputed": 8,
+    "global_na_empty": 2,
+    "anomaly_macro_recomputed": 24,
+    "normal_stat_recomputed": 10,
+    "normal_quantile_recomputed": 6,
+    "image_counts": 2,
+    "selection_rule_recomputed": 10,
+    "selection_diagnostics": 6,
+    "artifact_manifest_entry": 587,
+    "inventory_own_file_excluded": 2,
+    "inventory_count": 2,
+    "inventory_bytes": 2,
+    "portable_exact_raw_bytes": 6,
+    "rules_sha": 2,
+    "threshold": 2,
+    "precision_policy": 2,
+    "precision_no_tf32_record": 2,
+    "precision_no_autocast_record": 2,
+    "meta_identity_file_sha": 12,
+    "meta_config_sha": 2,
+    "meta_splitmeta_sha": 2,
+    "meta_manifest_sha": 6,
+    "prediction_files_complete": 2,
+    "stage13_metrics_exact": 16,
+    "gate_passed": 1,
+    "gate_failed_empty": 1,
+    "gate_checks_29": 1,
+    "gate_record_ok": 29,
+    "gate_left_right": 27,
+    "val_training_best": 3,
+    "val_training_best_macro": 1,
+    "val_training_best_confusion": 1,
+    "test_gate_input": 1,
+    "stage12_confusion": 2,
+    "stage12_global": 2,
+    "stage12_macro": 2,
+    "stage12_normal": 10,
+    "stage12_selection": 8,
+    "curve_count": 1,
+    "curve_value": 997,
+    "curve_na": 3,
+    "failure_order_23": 1,
+    "failure_reasons": 23,
+    "failure_label": 23,
+    "failure_int": 115,
+    "failure_na": 31,
+    "failure_source_sha_bytes": 23,
+    "failure_recorded_xor_zero": 23,
+    "failure_float": 61,
+    "stage13_lists": 3,
+    "stage13_normal_denominator": 1,
+    "stage13_anomaly_denominator": 1,
+    "stage13_recompute_ids": 1,
+    "stage13_recorded_xor_zero": 1,
+    "stage13_recompute_23": 1,
+    "stage13_rules_sha": 1,
+    "phase12_ancestor_phase13": 1,
+    "stage13_figure_exists": 5,
+    "pre_acceptance_source_exact_phase13_bytes": 4,
+    "archived_original_eval_exact_raw_bytes": 9,
+    "archived_original_results_exact_phase13_bytes": 6,
+    "figure_exact_phase13_git_bytes": 5,
+    "saved_processor_protocol": 4
+  },
+  "failed_checks": [],
+  "original_run": {
+    "files": 21,
+    "bytes": 154043135,
+    "exactly_matches_stage11_acceptance": true,
+    "reference": "reports/stage11-acceptance.json historical_evidence.original_formal_files",
+    "best_epoch_from_50_val_scores": 39,
+    "best_successful_step": 10330,
+    "best_checkpoint_sha256": "192c827bef00607f4258e5fadf0f1d97970ca5cc727a0add749be0fba5997485"
+  },
+  "manifests": {
+    "rows": {
+      "train": 530,
+      "val": 132,
+      "test": 442
+    },
+    "sha256": {
+      "train": "f1522eb9b474d0acc1d736a391002f5044153208fa10f51eea3dc7df729f65b0",
+      "val": "60a6c6cbf5ed7f5f9e57fb57bb096a5b57db677af5ee73f4fa140ddceaba6191",
+      "test": "4bdc594148f208c7067a66a8cb3b06fde53ebc1f4ab6fda84f08f80383061284"
+    },
+    "pairwise_disjoint_image_ids": true
+  },
+  "model_snapshot": {
+    "model_id": "nvidia/mit-b0",
+    "revision": "80983a413c30d36a39c20203974ae7807835e2b4",
+    "weights_sha256": "4af8348c2a802bf76115d34797ff5ce1d9f110bb8593c22d9b66d8bd7fa227fc"
+  },
+  "recomputed": {
+    "val": {
+      "images": {
+        "total": 132,
+        "normal": 120,
+        "anomaly": 12
+      },
+      "confusion": {
+        "tp": 279246,
+        "fp": 17894,
+        "fn": 62003,
+        "tn": 197941817,
+        "pixels": 198300960
+      },
+      "global_full_precision": {
+        "foreground_iou": 0.7775342969235096,
+        "foreground_dice": 0.8748459011668435,
+        "precision": 0.9397792286464293,
+        "recall": 0.8183056946687023
+      },
+      "anomaly_macro_full_precision": {
+        "iou": {
+          "mean": 0.5395555277921376,
+          "defined_images": 12,
+          "na_images": 0
+        },
+        "dice": {
+          "mean": 0.6203118681249847,
+          "defined_images": 12,
+          "na_images": 0
+        },
+        "precision": {
+          "mean": 0.7953262383409198,
+          "defined_images": 11,
+          "na_images": 1
+        },
+        "recall": {
+          "mean": 0.6154797087610528,
+          "defined_images": 12,
+          "na_images": 0
+        }
+      },
+      "normal": {
+        "count": 120,
+        "false_positive_pixels": 1495,
+        "total_pixels": 180273600,
+        "images_with_any_false_positive": 11,
+        "fp_pixel_ratio": 8.292950271143417e-06,
+        "linear_quantiles_exact_pixel_ratios": {
+          "median": 0.0,
+          "p95": 3.6278190483797945e-05,
+          "max": 0.00036477886945176667
+        }
+      },
+      "per_image_na_counts": {
+        "iou": 109,
+        "dice": 109,
+        "precision": 110,
+        "recall": 120
+      },
+      "exact_manifest_order": true,
+      "prediction_files_complete": true
+    },
+    "test": {
+      "images": {
+        "total": 442,
+        "normal": 402,
+        "anomaly": 40
+      },
+      "confusion": {
+        "tp": 252227,
+        "fp": 27779,
+        "fn": 89101,
+        "tn": 663638653,
+        "pixels": 664007760
+      },
+      "global_full_precision": {
+        "foreground_iou": 0.6833438542211338,
+        "foreground_dice": 0.8118886138534186,
+        "precision": 0.9007914116126083,
+        "recall": 0.7389578352786762
+      },
+      "anomaly_macro_full_precision": {
+        "iou": {
+          "mean": 0.5248580728050352,
+          "defined_images": 40,
+          "na_images": 0
+        },
+        "dice": {
+          "mean": 0.6350735444497573,
+          "defined_images": 40,
+          "na_images": 0
+        },
+        "precision": {
+          "mean": 0.8070891646348529,
+          "defined_images": 38,
+          "na_images": 2
+        },
+        "recall": {
+          "mean": 0.5831748856538518,
+          "defined_images": 40,
+          "na_images": 0
+        }
+      },
+      "normal": {
+        "count": 402,
+        "false_positive_pixels": 3689,
+        "total_pixels": 603916560,
+        "images_with_any_false_positive": 32,
+        "fp_pixel_ratio": 6.108459751459705e-06,
+        "linear_quantiles_exact_pixel_ratios": {
+          "median": 0.0,
+          "p95": 2.1933328008094354e-05,
+          "max": 0.00038275155097585004
+        }
+      },
+      "per_image_na_counts": {
+        "iou": 370,
+        "dice": 370,
+        "precision": 372,
+        "recall": 402
+      },
+      "exact_manifest_order": true,
+      "prediction_files_complete": true
+    }
+  },
+  "runtime_inventory": {
+    "val": {
+      "listed_files": 139,
+      "listed_bytes": 382752,
+      "actual_files": 140,
+      "unlisted": [
+        "artifact_manifest.json"
+      ]
+    },
+    "test": {
+      "listed_files": 448,
+      "listed_bytes": 1172582,
+      "actual_files": 449,
+      "unlisted": [
+        "artifact_manifest.json"
+      ]
+    }
+  },
+  "portable_exact_byte_copies": [
+    {
+      "path": "reports/stage12_evidence/val_metrics.json",
+      "bytes": 3730,
+      "sha256": "102da5d230750f92c3e54dda4a6ff103855659b30f8715932dc99dd2f89fa474",
+      "decompressed_bytes": 3730,
+      "decompressed_sha256": "102da5d230750f92c3e54dda4a6ff103855659b30f8715932dc99dd2f89fa474",
+      "matches_raw": true
+    },
+    {
+      "path": "reports/stage12_evidence/val_per_image.csv.gz",
+      "bytes": 1965,
+      "sha256": "4eb3b19c0c5e0b33f3ad908dab4a9d364fd92984f8651872e745126594ada7f0",
+      "decompressed_bytes": 34007,
+      "decompressed_sha256": "557ca0f7d587419aed7b21003ef4b3290951e74b65535610876828094d410cdd",
+      "matches_raw": true
+    },
+    {
+      "path": "reports/stage12_evidence/val_gate.json",
+      "bytes": 19081,
+      "sha256": "6df1dfe498a28fda788d4ebb9d4444ddb67a9ae6d40ed9a9131af118293c91c3",
+      "decompressed_bytes": 19081,
+      "decompressed_sha256": "6df1dfe498a28fda788d4ebb9d4444ddb67a9ae6d40ed9a9131af118293c91c3",
+      "matches_raw": true
+    },
+    {
+      "path": "reports/stage12_evidence/test_metrics.json",
+      "bytes": 3735,
+      "sha256": "c341c4e6becc987508a6b55dc0ef81e299f0a74f335ae1428307ea5d568010e9",
+      "decompressed_bytes": 3735,
+      "decompressed_sha256": "c341c4e6becc987508a6b55dc0ef81e299f0a74f335ae1428307ea5d568010e9",
+      "matches_raw": true
+    },
+    {
+      "path": "reports/stage12_evidence/test_per_image.csv.gz",
+      "bytes": 5713,
+      "sha256": "b62556ddfb2854fca41111e73d4ba34fb7e23a8b6288f85e52bc23df390326e2",
+      "decompressed_bytes": 114324,
+      "decompressed_sha256": "0c389e0693b8bbd0087d7b2d3fb6859fdde4ddce06369fa5cf9cbae992772220",
+      "matches_raw": true
+    },
+    {
+      "path": "reports/stage12_evidence/test_selection.json",
+      "bytes": 7123,
+      "sha256": "4257e2b5698553e28860f4642046b91db8daf44eb9b4ecc485dbc13557019955",
+      "decompressed_bytes": 7123,
+      "decompressed_sha256": "4257e2b5698553e28860f4642046b91db8daf44eb9b4ecc485dbc13557019955",
+      "matches_raw": true
+    }
+  ],
+  "source_identity": {
+    "original_eval_vs_current_differences": [
+      {
+        "split": "val",
+        "path": "segformer_lab/inference.py",
+        "recorded_sha256": "b54719362ea7345052453cc332615d4add4934a932234ea26dd4aa4a4ac19026",
+        "current_sha256": "476e8a466561890b76fbcb2abf1564c0788c7d9db02a72320025a65808c0289c"
+      },
+      {
+        "split": "val",
+        "path": "segformer_lab/predict.py",
+        "recorded_sha256": "cccc45ca28171bc13b54101a71505583bc5257f9e6e4b48f57c80ada93bf0166",
+        "current_sha256": "0bacfad75491f0ab25947c5e73dfadca682ef259970d8bfff209a5b52792ed37"
+      },
+      {
+        "split": "test",
+        "path": "segformer_lab/inference.py",
+        "recorded_sha256": "b54719362ea7345052453cc332615d4add4934a932234ea26dd4aa4a4ac19026",
+        "current_sha256": "476e8a466561890b76fbcb2abf1564c0788c7d9db02a72320025a65808c0289c"
+      },
+      {
+        "split": "test",
+        "path": "segformer_lab/predict.py",
+        "recorded_sha256": "cccc45ca28171bc13b54101a71505583bc5257f9e6e4b48f57c80ada93bf0166",
+        "current_sha256": "0bacfad75491f0ab25947c5e73dfadca682ef259970d8bfff209a5b52792ed37"
+      }
+    ],
+    "historical_body_limitation": "Original eval001 val/test metadata records pre-fix inference.py b5471936... and predict.py cccc45ca... hashes. The archived pre-acceptance bodies and phase12/13 commits contain the documented IEEE precision interface fix (stage12 document section 5.2); those old scored-source bodies were not recovered or independently reviewed. These archived bodies must not be claimed identical to original scored inference/predict sources.",
+    "current_source_sha256": {
+      "segformer_lab/audit_data.py": "9ba6cfab71b899fe5cf12fbffd27d567494aae7d05abd0e3eaa09b186ba3fd7d",
+      "segformer_lab/config.py": "b2c981faca6b2222b83ea876c8b3f1cd854ee210f42cd588dce41f20caaaa391",
+      "segformer_lab/data.py": "3eb2117997db7cee7fa720b74f8b5b7df85793f4a65cebdd851943c3025ab9ce",
+      "segformer_lab/dataset_check.py": "cf38ac70fe70b99323f17dff282136081cbe316bdd61f75e272707a12ea8436d",
+      "segformer_lab/download_model.py": "7859b282d709091bbcadcfa3c232a83e6d6c91a854e04459f75ffa420dc760b6",
+      "segformer_lab/env_check.py": "e1f55898b993ade38c7d69e7bd69baa83137faa2231114db0d16b5f047962195",
+      "segformer_lab/evaluate.py": "a77626c25027a89afbaeb83e8cf3d7277d835b4d8a20fdf8bb8b631c09b190a6",
+      "segformer_lab/evaluation.py": "0c30890eb5252d603de73bc792a6ef348fa77c2cf91c5f1b98a7167492787e53",
+      "segformer_lab/full_check.py": "9545119b62af8bee2367acc88e549f3daf0cd717f2bf102c8c841b7afd864f2b",
+      "segformer_lab/geometry.py": "b9e9d823ba91706bea650ccf578fb71f960840c3f8097f7c8687a5850ab4aacb",
+      "segformer_lab/inference.py": "476e8a466561890b76fbcb2abf1564c0788c7d9db02a72320025a65808c0289c",
+      "segformer_lab/losses.py": "e7195880bd49a8f03a9fbb39e9069c1f071010c8f7f96ba2bfac80d3d0ba0327",
+      "segformer_lab/metrics.py": "7d9625fa29eb94221787c80f7bc47dc429958d588207692f2c0ea1a12ecb5787",
+      "segformer_lab/metrics_check.py": "b85a592f561df2d4666d55426ce6536a6d0d39b30165dfb0ec88ad9ca8381f25",
+      "segformer_lab/modeling.py": "318e0b0a5164eafe7c8393adf64caf1aaeea6e5895ab679ba0171c0fc57a59d3",
+      "segformer_lab/model_check.py": "eec04e21011b244d0d44c99a8b801ed258390b770678a36338eda74661f106dc",
+      "segformer_lab/paths.py": "a5d8814ff3adb4b162b96202d2c42d7fd68a1f26442e114f0cfa7f479c80c8b9",
+      "segformer_lab/pilot.py": "28825b9346c4b19677db756a8be7bdf98c56d03c8f9f99cad64c2cab3e9f737c",
+      "segformer_lab/predict.py": "0bacfad75491f0ab25947c5e73dfadca682ef259970d8bfff209a5b52792ed37",
+      "segformer_lab/prepare_data.py": "d98bf2ee7f5a00b3f4aa957c1f10e9e63147ca5fef0f192ece67fc11d271884c",
+      "segformer_lab/preview_data.py": "aecececda8e6a50bfb8c3e67763f464fef9c34b489112f04ed6575c0f2b06681",
+      "segformer_lab/resume_check.py": "506ad9a3188a63ce0f316673a9fc188f4192ba7c302c4715ee0d4ce51d3cff82",
+      "segformer_lab/run_check.py": "257b617527feef4393ffc22c215616de2cad938fd177b1d4efa4b2a124875b62",
+      "segformer_lab/smoke.py": "50c47b2f8b0bb45293c69635d1cb9eee6294a73acee4dcdf0525a1b36c0a45ec",
+      "segformer_lab/subset.py": "11f1831cab544270404a47ba8a721bbaa8b4d72890bb0f5a85b1fad900c16032",
+      "segformer_lab/summarize.py": "9f6ccdcd277254a0d7d6cbceb86727cc22cb57ad9315a422697533d1f8e542a8",
+      "segformer_lab/train.py": "d8721c8012d594293988146cc8acad573361639ca27e241f43e4f16ef8ffc305",
+      "segformer_lab/training.py": "91c829d2447dd849b8a586e4f95dd355789e1a9255bcaf814661b8eaf57bd6f3",
+      "segformer_lab/train_full.py": "2f5214272dddd37060057a163c833f46975d02deca394044caa37ec4bb562bf4",
+      "segformer_lab/__init__.py": "2ec79c144804c61e26f957553f5835f9c42f3aa0010724f48c029c669c576a98"
+    },
+    "pre_acceptance_source_archives": [
+      {
+        "path": "reports/stage12_13_evidence/pre_acceptance_source/inference.py.txt",
+        "sha256": "0ceeae72365fc9b635d67c4e5341a22d6e2e3641b09d6a4886ec7b946b982136",
+        "bytes": 12189,
+        "matches_phase13_git_blob": true
+      },
+      {
+        "path": "reports/stage12_13_evidence/pre_acceptance_source/evaluate.py.txt",
+        "sha256": "a77626c25027a89afbaeb83e8cf3d7277d835b4d8a20fdf8bb8b631c09b190a6",
+        "bytes": 24105,
+        "matches_phase13_git_blob": true
+      },
+      {
+        "path": "reports/stage12_13_evidence/pre_acceptance_source/predict.py.txt",
+        "sha256": "0bacfad75491f0ab25947c5e73dfadca682ef259970d8bfff209a5b52792ed37",
+        "bytes": 5875,
+        "matches_phase13_git_blob": true
+      },
+      {
+        "path": "reports/stage12_13_evidence/pre_acceptance_source/summarize.py.txt",
+        "sha256": "f8575e90af4a5b7ef9827b902eb798a2a04995fe613ec5704df54da60987b5f8",
+        "bytes": 32935,
+        "matches_phase13_git_blob": true
+      }
+    ],
+    "acceptance_workspace_scope": "Current source hashes and original-eval-vs-current differences above are observations from the arithmetic audit time. Source edits during acceptance are expected and are not a historical-evidence failure. The immutable pre_acceptance_source archives were independently checked against phase13 commit 747874245986aa74dedd88ef5438d2af5e7d933f. Fresh verification of final acceptance code belongs to the separate acceptance driver report."
+  },
+  "stage13": {
+    "curve_rows": 50,
+    "curve_columns_checked": 20,
+    "failure_rows": 23,
+    "failure_ids_reasons_metrics_recomputed": true,
+    "source_images_sha256_checked_without_decoding": true,
+    "anomaly_tp_zero": [
+      "pcb1/Data/Images/Anomaly/049.JPG",
+      "pcb1/Data/Images/Anomaly/057.JPG",
+      "pcb1/Data/Images/Anomaly/077.JPG"
+    ],
+    "anomaly_empty_prediction": [
+      "pcb1/Data/Images/Anomaly/049.JPG",
+      "pcb1/Data/Images/Anomaly/057.JPG"
+    ],
+    "normal_any_fp_count": 32,
+    "recorded_23_xor_values_zero": true,
+    "figures": {
+      "anomaly-fixed-6.png": {
+        "bytes": 1252032,
+        "sha256": "408609962ccce97447328b1d6bffd958be4ad276ef6181e86b4da7c8e1756fe3"
+      },
+      "normal-fixed-6.png": {
+        "bytes": 1156638,
+        "sha256": "425b933200875ba25bfb083e9b7ebfcb9eee9f69048cfef0507f6eedb3c33596"
+      },
+      "anomaly-worst-cases.png": {
+        "bytes": 1217151,
+        "sha256": "8a48c89e55095e21b5898b1c39337c406910dd243b35536c106fad31c01564d7"
+      },
+      "normal-worst-fp.png": {
+        "bytes": 926863,
+        "sha256": "38c340df6209b81d1947f1cd34a92faab65b24c06b97fd5afd55a9c66f6bebb1"
+      },
+      "training-curves.png": {
+        "bytes": 129164,
+        "sha256": "14e390f6a50d10850d6fdaac85a68fb761f55325971dbcba55401f68630209b0"
+      }
+    },
+    "figure_validation_scope": "File existence and SHA256 bytes only; no visual/pixel validation"
+  },
+  "git_observation": {
+    "head": "747874245986aa74dedd88ef5438d2af5e7d933f",
+    "phase12": "a80a2dab92b39ff3214b85bf11d4d329c6080fe8",
+    "phase13": "747874245986aa74dedd88ef5438d2af5e7d933f",
+    "local_origin_master": "747874245986aa74dedd88ef5438d2af5e7d933f",
+    "configured_origin": "https://github.com/lrw-666/AI_Try.git",
+    "live_remote_checked": false,
+    "git_mutated": false,
+    "scope": "Pre-acceptance phase12/13 history and local origin/master reference observed during this audit; current acceptance work may add changes afterwards."
+  },
+  "limitations": [
+    "Metrics were recomputed from persisted per-image scalar evidence. GT and prediction pixels were not decoded; this audit cannot independently establish pixel truth, PNG values/shapes, probability correctness or visual quality.",
+    "Stage13 23 XOR values, val probability comparisons, predict equivalence and precision flags are recorded evidence; this audit did not run new forward observations.",
+    "Rules written_before_inference, one-time test use and absence of prior test access cannot be established temporally without an OS access audit. Val display_rules wording also says test split while its split field is val; selection arithmetic matches val rows.",
+    "Runtime file_count and total_bytes exclude artifact_manifest.json itself; each actual val/test directory contains one extra inventory file.",
+    "Local snapshot hashes and revision records were verified; no upstream download was repeated.",
+    "Stage11 resume numerical reproduction remains unaccepted and was not retested.",
+    "origin/master is a local remote-tracking reference; this audit did not fetch, query remote, commit or push."
+  ],
+  "finalized_at_utc": "2026-11-01T10:13:18.711739+00:00",
+  "saved_processor": {
+    "do_resize": false,
+    "do_reduce_labels": false,
+    "do_rescale": true,
+    "do_normalize": true,
+    "image_mean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "image_std": [
+      0.229,
+      0.224,
+      0.225
+    ]
+  }
+}

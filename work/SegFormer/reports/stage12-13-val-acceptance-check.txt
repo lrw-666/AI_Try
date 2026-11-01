@@ -1,0 +1,8 @@
+  split   : val, 132 images (120N+12A)
+  global  : IoU 0.7775342969 Dice 0.8748459012 P 0.9397792286 R 0.8183056947
+  macro   : IoU 0.5395555278 (defined 12)
+  normal  : FP 1495 px, 11/120 images
+  val gate: passed=True failed=[]
+  preview : max|dprob|=0.0 XOR=0
+  wrote   : E:\桌面\AI\segformer_resources\runs\pcb1_b0_v2_seed42_eval_acceptance_20261101\val
+{"mode": "val", "ok": true, "forwards": 132, "elapsed": 20.618}

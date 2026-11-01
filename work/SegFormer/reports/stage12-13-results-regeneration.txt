@@ -1,0 +1,6 @@
+  run     : E:\桌面\AI\segformer_resources\runs\pcb1_b0_v2_seed42
+  eval    : E:\桌面\AI\segformer_resources\runs\pcb1_b0_v2_seed42_eval_acceptance_20261101
+  best    : epoch 39
+  figures : 5 in E:\桌面\AI\segformer_resources\runs\pcb1_b0_v2_seed42_results_acceptance_20261101\figures
+  recompute: 23 masks, XOR vs stage 12 all zero = True
+  wrote   : E:\桌面\AI\segformer_resources\runs\pcb1_b0_v2_seed42_results_acceptance_20261101

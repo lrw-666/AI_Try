@@ -1,0 +1,28 @@
+{
+  "split": "val",
+  "rules": {
+    "fixed_normal": {
+      "k": 6,
+      "rule": "test split, normal rows sorted by image_id ascending, first 6"
+    },
+    "fixed_anomaly": {
+      "k": 6,
+      "rule": "test split, anomaly rows sorted by image_id ascending, first 6"
+    },
+    "worst_iou": {
+      "k": 5,
+      "rule": "anomaly rows sorted by iou ascending (null treated as -1), ties by image_id"
+    },
+    "worst_recall": {
+      "k": 5,
+      "rule": "anomaly rows sorted by recall ascending (null treated as -1), ties by image_id"
+    },
+    "most_normal_fp": {
+      "k": 5,
+      "rule": "normal rows sorted by false-positive pixels descending, ties by image_id"
+    },
+    "notes": "selection lists may overlap; every row keeps its own reason. Rules were written before the first test image was decoded and are hashed into evaluation_meta.json."
+  },
+  "written_at": "2026-11-01T15:22:54+0800",
+  "written_before_inference": true
+}
