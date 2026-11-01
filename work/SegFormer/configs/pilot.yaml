@@ -1,0 +1,80 @@
+# Stage 10 pilot: three epochs over the full grouped split (530 train / 132 val).
+#
+# This is a short-run wiring check on real data, NOT the baseline recipe and NOT
+# a place to tune. The only intentional differences from configs/baseline.yaml
+# are the epoch budget (3 instead of 50) and the schedule that follows from it:
+# the pilot builds a 3-epoch warmup+cosine plan, the 50-epoch baseline must build
+# its own plan. Do not describe the two learning-rate traces as the same.
+#
+# Guards enforced by segformer_lab/pilot.py before a single step runs:
+#   train.flip = random, eval.precision = ieee_fp32, amp = true,
+#   data.train_ids_file = null, gradient_accumulation_steps = 1, workers = 0,
+#   and the split sizes below must match the manifests exactly.
+
+experiment:
+  name: segformer_b0_pcb1_pilot3
+  seed: 42
+  output_root: E:/桌面/AI/segformer_resources/runs
+
+data:
+  root: E:/桌面/AI/segformer_resources/data/visa
+  category: pcb1
+  train_manifest: manifests/train.csv
+  val_manifest: manifests/val.csv
+  test_manifest: manifests/test.csv      # hashed only; no test image is opened
+  split_meta: manifests/split_meta.json  # v2 reviewed same-object risk groups
+  train_ids_file: null                   # full 530 images, no eight-image subset
+  input_size: 512                        # fixed protocol
+  resize_mode: letterbox
+  image_pad_rgb: [124, 116, 104]
+  ignore_index: 255
+  horizontal_flip_p: 0.5                 # training only; one epoch = one set_epoch
+  workers: 0                             # the only loader setting validated so far
+
+model:
+  pretrained_dir: E:/桌面/AI/segformer_resources/models/mit-b0
+  num_labels: 2
+  id2label: {0: background, 1: defect}
+  label2id: {background: 0, defect: 1}
+  train_encoder: true                    # full-network fine-tuning
+
+train:
+  epochs: 3
+  max_steps: null                        # budget is epochs, not update count
+  batch_size: 2
+  gradient_accumulation_steps: 1
+  amp: true
+  precision: fp16_amp
+  flip: random
+  learning_rate: 0.00006                 # baseline LR
+  min_learning_rate: 0.000001            # cosine floor
+  weight_decay: 0.01
+  warmup_ratio: 0.05                     # 0.05 * (3 * 265) -> 40 warmup updates
+  lr_scheduler: warmup_cosine
+  grad_clip_norm: 1.0
+  validate_every_epochs: 1
+  early_stopping: false
+
+loss:
+  ce_weight: 1.0
+  foreground_dice_weight: 0.5
+  dice_epsilon: 0.000001
+
+eval:
+  batch_size: 1                          # evaluation never batches
+  precision: ieee_fp32                   # TF32 and autocast off; training AMP stays on
+  threshold: 0.5
+  metric_space: original
+  postprocess: none
+  selection_metric: foreground_iou_global
+
+pilot:
+  expected_train_images: 530
+  expected_val_images: 132
+  keep_last: true
+  keep_best: true
+
+logging:
+  tensorboard: false                     # three epochs; epochs.jsonl is the record
+  log_every_micro_steps: 1
+  fixed_preview_manifest: manifests/val_preview_ids.txt

@@ -237,7 +237,7 @@ def _optimizer_steps(optimizer: torch.optim.Optimizer) -> dict[int, float]:
             if "step" in state}
 
 
-def _step_optimizer(
+def step_optimizer(
     model: nn.Module,
     optimizer: torch.optim.Optimizer,
     scaler: torch.amp.GradScaler,
@@ -316,6 +316,146 @@ def _step_optimizer(
             "optimizer_steps_unchanged": optimizer_steps_unchanged}
 
 
+# Kept as an alias so stage 08/09 code and the old regression names still work.
+_step_optimizer = step_optimizer
+
+
+def compute_loss_terms(
+    model: nn.Module,
+    pixels: torch.Tensor,
+    labels: torch.Tensor,
+    config: dict[str, Any],
+    *,
+    amp: bool,
+) -> Any:
+    """Forward under autocast plus the one shared loss definition.
+
+    Every entry point (08/09 update loop, 10 epoch loop) calls this so there is
+    exactly one CE + Dice implementation and one set of weights.
+    """
+    with torch.autocast(device_type="cuda", dtype=torch.float16, enabled=amp):
+        logits = model(pixel_values=pixels).logits
+        return segformer_loss(
+            logits,
+            labels,
+            ce_weight=float(config["raw"]["loss"]["ce_weight"]),
+            dice_weight=float(config["raw"]["loss"]["foreground_dice_weight"]),
+            eps=float(config["raw"]["loss"]["dice_epsilon"]),
+        )
+
+
+def train_step(
+    model: nn.Module,
+    batch: dict[str, Any],
+    config: dict[str, Any],
+    device: str,
+    optimizer: torch.optim.Optimizer,
+    scaler: torch.amp.GradScaler,
+    *,
+    grad_clip: float,
+    amp: bool,
+    attempt: int | None = None,
+) -> tuple[Any, dict[str, Any], float]:
+    """One optimiser attempt: forward, loss, backward, clip, step.
+
+    Returns ``(loss_terms, step_evidence, step_ms)``. The caller owns attempt
+    accounting, skip counting, scheduler advancement and logging, which is what
+    lets stage 09 (fixed update budget) and stage 10 (fixed epoch budget) share
+    the arithmetic but not the control flow.
+    """
+    where = "" if attempt is None else f" at attempt {attempt}"
+    pixels = batch["pixel_values"].to(device, non_blocking=False)
+    labels = batch["labels"].to(device, non_blocking=False)
+    optimizer.zero_grad(set_to_none=True)
+    torch.cuda.synchronize(torch.cuda.current_device())
+    tick = time.perf_counter()
+
+    terms = compute_loss_terms(model, pixels, labels, config, amp=amp)
+    loss = terms.total
+    if not _finite(loss):
+        raise RuntimeError(f"non-finite loss{where}: {float(loss.detach())}")
+
+    scaler.scale(loss).backward()
+    evidence = step_optimizer(model, optimizer, scaler, grad_clip)
+    torch.cuda.synchronize(torch.cuda.current_device())
+    return terms, evidence, (time.perf_counter() - tick) * 1000.0
+
+
+@dataclass
+class WarmupCosineLR:
+    """Linear warmup then cosine decay, counted in **real optimizer updates**.
+
+    Off-by-one definition, used by stage 10 and reused by stage 11:
+
+    * ``completed`` is the number of optimizer updates already executed.
+    * the update that runs with ``completed = 0`` uses ``lr_at(0)``;
+    * ``lr_at(k) = base_lr * (k + 1) / warmup_steps`` for ``k < warmup_steps``,
+      so the ``warmup_steps``-th update (``k = warmup_steps - 1``) uses exactly
+      ``base_lr``; no update ever exceeds ``base_lr``;
+    * afterwards ``progress = (k - warmup_steps + 1) / (total_steps - warmup_steps)``,
+      clipped to 1, and ``lr = min_lr + 0.5*(base_lr-min_lr)*(1+cos(pi*progress))``,
+      so the planned last update (``k = total_steps - 1``) uses ``min_lr``.
+
+    ``step()`` must only be called after an optimizer update really happened; a
+    GradScaler skip must not advance it, otherwise the learning rate runs ahead
+    of the weights it is supposed to control.
+    """
+
+    base_lr: float
+    min_lr: float
+    total_steps: int
+    warmup_steps: int
+    completed: int = 0
+
+    def __post_init__(self) -> None:
+        if self.total_steps <= 0:
+            raise ValueError("total_steps must be positive")
+        if not (0 <= self.warmup_steps <= self.total_steps):
+            raise ValueError("warmup_steps must be within [0, total_steps]")
+        if not (0.0 < self.min_lr <= self.base_lr):
+            raise ValueError("require 0 < min_lr <= base_lr")
+
+    def lr_at(self, completed: int) -> float:
+        if completed < 0:
+            raise ValueError("completed must be non-negative")
+        if self.warmup_steps > 0 and completed < self.warmup_steps:
+            return self.base_lr * (completed + 1) / self.warmup_steps
+        span = self.total_steps - self.warmup_steps
+        if span <= 0:
+            return self.base_lr
+        progress = min(1.0, (completed - self.warmup_steps + 1) / span)
+        return self.min_lr + 0.5 * (self.base_lr - self.min_lr) * (1.0 + math.cos(math.pi * progress))
+
+    def apply(self, optimizer: torch.optim.Optimizer) -> float:
+        lr = self.lr_at(self.completed)
+        for group in optimizer.param_groups:
+            group["lr"] = lr
+        return lr
+
+    def step(self, optimizer: torch.optim.Optimizer) -> float:
+        self.completed += 1
+        return self.apply(optimizer)
+
+    def state_dict(self) -> dict[str, Any]:
+        return {"base_lr": self.base_lr, "min_lr": self.min_lr,
+                "total_steps": self.total_steps, "warmup_steps": self.warmup_steps,
+                "completed": self.completed}
+
+    def describe(self) -> dict[str, Any]:
+        return {
+            "class": "WarmupCosineLR",
+            "base_lr": self.base_lr,
+            "min_lr": self.min_lr,
+            "total_steps": self.total_steps,
+            "warmup_steps": self.warmup_steps,
+            "warmup_is": "linear on (completed+1)/warmup_steps; warmup_steps-th update reaches base_lr",
+            "decay_is": "cosine on (completed-warmup_steps+1)/(total_steps-warmup_steps)",
+            "advanced_by": "real optimizer updates only; AMP skips do not advance",
+            "lr_first_update": round(self.lr_at(0), 12),
+            "lr_last_planned_update": round(self.lr_at(max(0, self.total_steps - 1)), 12),
+        }
+
+
 def run_training(
     model: nn.Module,
     loader: Any,
@@ -377,34 +517,14 @@ def run_training(
                 stop = True
                 break
 
-            pixels = batch["pixel_values"].to(device, non_blocking=False)
-            labels = batch["labels"].to(device, non_blocking=False)
             outcome.attempts += 1
             attempt = outcome.attempts
 
-            optimizer.zero_grad(set_to_none=True)
-            torch.cuda.synchronize(device_index)
-            tick = time.perf_counter()
-
-            with torch.autocast(device_type="cuda", dtype=torch.float16, enabled=amp):
-                logits = model(pixel_values=pixels).logits
-                terms = segformer_loss(
-                    logits,
-                    labels,
-                    ce_weight=float(config["raw"]["loss"]["ce_weight"]),
-                    dice_weight=float(config["raw"]["loss"]["foreground_dice_weight"]),
-                    eps=float(config["raw"]["loss"]["dice_epsilon"]),
-                )
-            loss = terms.total
-            if not _finite(loss):
-                raise RuntimeError(f"non-finite loss at attempt {attempt}: {float(loss.detach())}")
-
-            scaler.scale(loss).backward()
-            step = _step_optimizer(model, optimizer, scaler, grad_clip)
+            terms, step, step_ms = train_step(
+                model, batch, config, device, optimizer, scaler,
+                grad_clip=grad_clip, amp=amp, attempt=attempt,
+            )
             skipped = step["skipped"]
-
-            torch.cuda.synchronize(device_index)
-            step_ms = (time.perf_counter() - tick) * 1000.0
             step_times.append(step_ms)
 
             current_lr = float(optimizer.param_groups[0]["lr"])
@@ -413,7 +533,7 @@ def run_training(
                 success=None if skipped else outcome.successful + 1,
                 ce=float(terms.ce.detach()),
                 dice=float(terms.dice.detach()),
-                total=float(loss.detach()),
+                total=float(terms.total.detach()),
                 valid_pixels=terms.valid_pixels,
                 ignored_pixels=terms.ignored_pixels,
                 positive_images=terms.positive_images,

@@ -1,0 +1,542 @@
+{
+  "schema": "segformer-lab/stage10-summary/1",
+  "stage": "10",
+  "not_a_baseline": true,
+  "statement": "3-epoch pilot over the full 530/132 split. It checks that full-data training, augmentation, per-epoch validation, scheduling and saving work together; it is not a baseline score.",
+  "run": {
+    "path": "E:\\桌面\\AI\\segformer_resources\\runs\\pilot_001",
+    "kept_local": true
+  },
+  "config": {
+    "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\configs\\pilot.yaml",
+    "sha256": "74f4c8f1cc4518e8254b7a4782165531fd8c7716bee8f74045ecd7deef531b5d"
+  },
+  "identity": {
+    "git_head_at_start": "0c5f0bd1d6d12d42b5c2ba9ea8c06413a67e3cfd",
+    "git_status_at_start": [
+      "M work/SegFormer/segformer_lab/training.py",
+      "?? work/SegFormer/configs/pilot.yaml",
+      "?? work/SegFormer/reports/stage10-unit-tests.txt",
+      "?? work/SegFormer/segformer_lab/pilot.py",
+      "?? work/SegFormer/tests/test_pilot.py"
+    ],
+    "git_diff_sha256_at_start": "36226bb84e6c65ac867aeb94f2a1a6409f34907d44434740e0fe150427977e1c",
+    "git_head_at_end": "0c5f0bd1d6d12d42b5c2ba9ea8c06413a67e3cfd",
+    "git_diff_sha256_at_end": "36226bb84e6c65ac867aeb94f2a1a6409f34907d44434740e0fe150427977e1c",
+    "source_and_config_unchanged": true,
+    "code_hashes": {
+      "segformer_lab/training.py": "91c829d2447dd849b8a586e4f95dd355789e1a9255bcaf814661b8eaf57bd6f3",
+      "segformer_lab/pilot.py": "52e3aae736fe48ba65ec8036410410e66d0b07d83fee14d72fed7736ac957fe9",
+      "segformer_lab/train.py": "d8721c8012d594293988146cc8acad573361639ca27e241f43e4f16ef8ffc305",
+      "segformer_lab/smoke.py": "50c47b2f8b0bb45293c69635d1cb9eee6294a73acee4dcdf0525a1b36c0a45ec",
+      "segformer_lab/subset.py": "11f1831cab544270404a47ba8a721bbaa8b4d72890bb0f5a85b1fad900c16032",
+      "segformer_lab/losses.py": "e7195880bd49a8f03a9fbb39e9069c1f071010c8f7f96ba2bfac80d3d0ba0327",
+      "segformer_lab/metrics.py": "7d9625fa29eb94221787c80f7bc47dc429958d588207692f2c0ea1a12ecb5787",
+      "segformer_lab/evaluation.py": "0c30890eb5252d603de73bc792a6ef348fa77c2cf91c5f1b98a7167492787e53",
+      "segformer_lab/data.py": "3eb2117997db7cee7fa720b74f8b5b7df85793f4a65cebdd851943c3025ab9ce",
+      "segformer_lab/modeling.py": "318e0b0a5164eafe7c8393adf64caf1aaeea6e5895ab679ba0171c0fc57a59d3",
+      "segformer_lab/config.py": "b2c981faca6b2222b83ea876c8b3f1cd854ee210f42cd588dce41f20caaaa391",
+      "segformer_lab/geometry.py": "b9e9d823ba91706bea650ccf578fb71f960840c3f8097f7c8687a5850ab4aacb",
+      "segformer_lab/run_check.py": "257b617527feef4393ffc22c215616de2cad938fd177b1d4efa4b2a124875b62"
+    },
+    "train_manifest_sha256": "f1522eb9b474d0acc1d736a391002f5044153208fa10f51eea3dc7df729f65b0",
+    "val_manifest_sha256": "60a6c6cbf5ed7f5f9e57fb57bb096a5b57db677af5ee73f4fa140ddceaba6191",
+    "test_manifest_sha256": "4bdc594148f208c7067a66a8cb3b06fde53ebc1f4ab6fda84f08f80383061284",
+    "test_images_read": false,
+    "split_meta_sha256": "7c53a669aabebcbb72cc137f84e7d00ec615e53813396b36e7f3557d6c9d0b49",
+    "preview_ids_sha256": "4f17789dfecc28023003092dddbe3c4683ac781cb469b483e4180c2ebb8f9718"
+  },
+  "data": {
+    "train_images": 530,
+    "train_labels": {
+      "normal": 482,
+      "anomaly": 48
+    },
+    "val_images": 132,
+    "val_labels": {
+      "normal": 120,
+      "anomaly": 12
+    },
+    "train_ids_file": null,
+    "batches_per_epoch": 265,
+    "batch_size": 2,
+    "drop_last": false,
+    "workers": 0,
+    "train_manifests": {
+      "train": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\train.csv",
+        "sha256": "f1522eb9b474d0acc1d736a391002f5044153208fa10f51eea3dc7df729f65b0"
+      },
+      "val": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\val.csv",
+        "sha256": "60a6c6cbf5ed7f5f9e57fb57bb096a5b57db677af5ee73f4fa140ddceaba6191"
+      },
+      "test": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\test.csv",
+        "sha256": "4bdc594148f208c7067a66a8cb3b06fde53ebc1f4ab6fda84f08f80383061284"
+      }
+    },
+    "split_meta_sha256": "7c53a669aabebcbb72cc137f84e7d00ec615e53813396b36e7f3557d6c9d0b49",
+    "test_images_read": false
+  },
+  "parameters": {
+    "total": 3714658,
+    "trainable": 3714658,
+    "encoder": 3319392,
+    "head": 395266
+  },
+  "initial_parameter_digest": {
+    "sum_of_parameters": 6937.768430818599,
+    "tensor_count": 205
+  },
+  "optimizer": {
+    "class": "torch.optim.AdamW",
+    "lr": 6e-05,
+    "weight_decay": 0.01,
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "eps": 1e-08,
+    "decay_tensors": 72,
+    "no_decay_tensors": 133,
+    "decay_examples": [
+      "segformer.encoder.patch_embeddings.0.proj.weight",
+      "segformer.encoder.patch_embeddings.1.proj.weight",
+      "segformer.encoder.patch_embeddings.2.proj.weight"
+    ],
+    "no_decay_examples": [
+      "segformer.encoder.patch_embeddings.0.proj.bias",
+      "segformer.encoder.patch_embeddings.0.layer_norm.weight",
+      "segformer.encoder.patch_embeddings.0.layer_norm.bias"
+    ]
+  },
+  "scheduler": {
+    "class": "WarmupCosineLR",
+    "base_lr": 6e-05,
+    "min_lr": 1e-06,
+    "total_steps": 795,
+    "warmup_steps": 40,
+    "warmup_is": "linear on (completed+1)/warmup_steps; warmup_steps-th update reaches base_lr",
+    "decay_is": "cosine on (completed-warmup_steps+1)/(total_steps-warmup_steps)",
+    "advanced_by": "real optimizer updates only; AMP skips do not advance",
+    "lr_first_update": 1.5e-06,
+    "lr_last_planned_update": 1e-06
+  },
+  "training": {
+    "epochs_planned": 3,
+    "epochs_completed": 3,
+    "planned_updates": 795,
+    "attempts": 795,
+    "successful_updates": 795,
+    "skipped": 0,
+    "final_lr": 1e-06,
+    "scheduler_completed": 795
+  },
+  "timing": {
+    "train_seconds_total": 151.894,
+    "val_seconds_total": 33.524,
+    "preview_seconds_total": 1.643,
+    "save_seconds_total": 5.429
+  },
+  "memory": {
+    "gpu": {
+      "available": true,
+      "device": "NVIDIA GeForce RTX 4070 Laptop GPU",
+      "total_mib": 8187.5,
+      "free_mib": 6082.0,
+      "peak_allocated_mib": 806.3,
+      "peak_reserved_mib": 934.0
+    },
+    "system_ram": {
+      "total_gib": 15.22,
+      "available_gib": 1.73,
+      "load_percent": 88
+    }
+  },
+  "epochs": [
+    {
+      "epoch": 1,
+      "coverage": {
+        "images_seen": 530,
+        "unique_images_seen": 530,
+        "duplicate_visits": 0,
+        "missing_ids": [],
+        "dataset_epoch": 1,
+        "flipped_images": 248,
+        "flip_fraction": 0.467925,
+        "flip_signature_changed_vs_previous_epoch": true
+      },
+      "attempts": 265,
+      "successful": 265,
+      "skipped": 0,
+      "lr_first": 1.5e-06,
+      "lr_last": 4.798828765635965e-05,
+      "scheduler_completed": 265,
+      "loss": {
+        "aggregation": "ce = sum(ce_batch*valid_pixels)/sum(valid_pixels); dice = sum(dice_batch*positive_images)/sum(positive_images)",
+        "batches": 265,
+        "ce": 0.11885719587499241,
+        "dice": 0.9841986509660879,
+        "total": 0.6109565213580364,
+        "valid_pixels": 105830400,
+        "positive_images": 48,
+        "mean_of_batch_means_is_not_used": true
+      },
+      "val": {
+        "confusion": {
+          "tp": 3518,
+          "fp": 0,
+          "fn": 337731,
+          "tn": 197959711,
+          "pixels": 198300960
+        },
+        "global": {
+          "foreground_iou": 0.0103091877,
+          "foreground_dice": 0.0204079857,
+          "precision": 1.0,
+          "recall": 0.0103091877,
+          "na_reasons": {},
+          "aggregation": "sum TP/FP/FN/TN over images, then divide once"
+        },
+        "na_reasons": {},
+        "anomaly_macro_iou": 0.0030822014,
+        "anomaly_macro_dice": 0.0059445357,
+        "normal_fp_pixels": 0,
+        "normal_fp_ratio": 0.0,
+        "normal_images_with_false_positive": 0,
+        "anomaly_images": 12,
+        "anomaly_images_without_any_prediction": 11
+      },
+      "time_seconds": {
+        "train_wall": 61.06,
+        "train_compute_sum_of_steps": 37.473,
+        "loader_and_host_wait": 23.587,
+        "val_full_132": 14.296,
+        "preview_6": 0.656,
+        "save": 1.92
+      },
+      "median_step_ms": 124.3,
+      "is_best": true
+    },
+    {
+      "epoch": 2,
+      "coverage": {
+        "images_seen": 530,
+        "unique_images_seen": 530,
+        "duplicate_visits": 0,
+        "missing_ids": [],
+        "dataset_epoch": 2,
+        "flipped_images": 265,
+        "flip_fraction": 0.5,
+        "flip_signature_changed_vs_previous_epoch": true
+      },
+      "attempts": 265,
+      "successful": 265,
+      "skipped": 0,
+      "lr_first": 4.788928118962328e-05,
+      "lr_last": 1.7189374279595456e-05,
+      "scheduler_completed": 530,
+      "loss": {
+        "aggregation": "ce = sum(ce_batch*valid_pixels)/sum(valid_pixels); dice = sum(dice_batch*positive_images)/sum(positive_images)",
+        "batches": 265,
+        "ce": 0.01763591818370909,
+        "dice": 0.9627489969134331,
+        "total": 0.4990104166404256,
+        "valid_pixels": 105830400,
+        "positive_images": 48,
+        "mean_of_batch_means_is_not_used": true
+      },
+      "val": {
+        "confusion": {
+          "tp": 80880,
+          "fp": 0,
+          "fn": 260369,
+          "tn": 197959711,
+          "pixels": 198300960
+        },
+        "global": {
+          "foreground_iou": 0.2370116836,
+          "foreground_dice": 0.3832003961,
+          "precision": 1.0,
+          "recall": 0.2370116836,
+          "na_reasons": {},
+          "aggregation": "sum TP/FP/FN/TN over images, then divide once"
+        },
+        "na_reasons": {},
+        "anomaly_macro_iou": 0.0655524117,
+        "anomaly_macro_dice": 0.0985163229,
+        "normal_fp_pixels": 0,
+        "normal_fp_ratio": 0.0,
+        "normal_images_with_false_positive": 0,
+        "anomaly_images": 12,
+        "anomaly_images_without_any_prediction": 9
+      },
+      "time_seconds": {
+        "train_wall": 45.204,
+        "train_compute_sum_of_steps": 28.928,
+        "loader_and_host_wait": 16.276,
+        "val_full_132": 9.514,
+        "preview_6": 0.475,
+        "save": 1.845
+      },
+      "median_step_ms": 105.39,
+      "is_best": true
+    },
+    {
+      "epoch": 3,
+      "coverage": {
+        "images_seen": 530,
+        "unique_images_seen": 530,
+        "duplicate_visits": 0,
+        "missing_ids": [],
+        "dataset_epoch": 3,
+        "flipped_images": 265,
+        "flip_fraction": 0.5,
+        "flip_signature_changed_vs_previous_epoch": true
+      },
+      "attempts": 265,
+      "successful": 265,
+      "skipped": 0,
+      "lr_first": 1.7079944529998536e-05,
+      "lr_last": 1e-06,
+      "scheduler_completed": 795,
+      "loss": {
+        "aggregation": "ce = sum(ce_batch*valid_pixels)/sum(valid_pixels); dice = sum(dice_batch*positive_images)/sum(positive_images)",
+        "batches": 265,
+        "ce": 0.012300251234533651,
+        "dice": 0.9111135726173719,
+        "total": 0.4678570375432196,
+        "valid_pixels": 105830400,
+        "positive_images": 48,
+        "mean_of_batch_means_is_not_used": true
+      },
+      "val": {
+        "confusion": {
+          "tp": 230093,
+          "fp": 37131,
+          "fn": 111156,
+          "tn": 197922580,
+          "pixels": 198300960
+        },
+        "global": {
+          "foreground_iou": 0.6081003224,
+          "foreground_dice": 0.7562964996,
+          "precision": 0.8610491573,
+          "recall": 0.6742671773,
+          "na_reasons": {},
+          "aggregation": "sum TP/FP/FN/TN over images, then divide once"
+        },
+        "na_reasons": {},
+        "anomaly_macro_iou": 0.2206849232,
+        "anomaly_macro_dice": 0.2784371263,
+        "normal_fp_pixels": 0,
+        "normal_fp_ratio": 0.0,
+        "normal_images_with_false_positive": 0,
+        "anomaly_images": 12,
+        "anomaly_images_without_any_prediction": 7
+      },
+      "time_seconds": {
+        "train_wall": 45.63,
+        "train_compute_sum_of_steps": 29.24,
+        "loader_and_host_wait": 16.39,
+        "val_full_132": 9.714,
+        "preview_6": 0.512,
+        "save": 1.664
+      },
+      "median_step_ms": 105.36,
+      "is_best": true
+    }
+  ],
+  "best": {
+    "iou": 0.6081003224,
+    "epoch": 3,
+    "iou_at_best": 0.6081003224,
+    "preview_dir": "val_previews/epoch_03"
+  },
+  "anomaly_per_image_at_best_epoch": [
+    {
+      "image": "019.JPG",
+      "gt_pixels": 4050,
+      "predicted_pixels": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 4050,
+      "iou": 0.0
+    },
+    {
+      "image": "033.JPG",
+      "gt_pixels": 2393,
+      "predicted_pixels": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 2393,
+      "iou": 0.0
+    },
+    {
+      "image": "042.JPG",
+      "gt_pixels": 15523,
+      "predicted_pixels": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 15523,
+      "iou": 0.0
+    },
+    {
+      "image": "051.JPG",
+      "gt_pixels": 4335,
+      "predicted_pixels": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 4335,
+      "iou": 0.0
+    },
+    {
+      "image": "081.JPG",
+      "gt_pixels": 6373,
+      "predicted_pixels": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 6373,
+      "iou": 0.0
+    },
+    {
+      "image": "087.JPG",
+      "gt_pixels": 2328,
+      "predicted_pixels": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 2328,
+      "iou": 0.0
+    },
+    {
+      "image": "090.JPG",
+      "gt_pixels": 3860,
+      "predicted_pixels": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 3860,
+      "iou": 0.0
+    },
+    {
+      "image": "010.JPG",
+      "gt_pixels": 5153,
+      "predicted_pixels": 9046,
+      "tp": 3287,
+      "fp": 5759,
+      "fn": 1866,
+      "iou": 0.3012280059
+    },
+    {
+      "image": "016.JPG",
+      "gt_pixels": 3542,
+      "predicted_pixels": 9440,
+      "tp": 3341,
+      "fp": 6099,
+      "fn": 201,
+      "iou": 0.3465408153
+    },
+    {
+      "image": "059.JPG",
+      "gt_pixels": 79992,
+      "predicted_pixels": 35286,
+      "tp": 35286,
+      "fp": 0,
+      "fn": 44706,
+      "iou": 0.4411191119
+    },
+    {
+      "image": "046.JPG",
+      "gt_pixels": 95116,
+      "predicted_pixels": 70529,
+      "tp": 70529,
+      "fp": 0,
+      "fn": 24587,
+      "iou": 0.7415051096
+    },
+    {
+      "image": "045.JPG",
+      "gt_pixels": 118584,
+      "predicted_pixels": 142923,
+      "tp": 117650,
+      "fp": 25273,
+      "fn": 934,
+      "iou": 0.8178260356
+    }
+  ],
+  "reload_check": {
+    "path": "E:\\桌面\\AI\\segformer_resources\\runs\\pilot_001\\reload_check.json",
+    "best_checkpoint_sha256": "d1698b285430e07f125982300cca9d139df5d07324af9acfbbc5c41d1ea9b81c",
+    "best_epoch": 3,
+    "global_step": 795,
+    "strict_load": true,
+    "missing_keys": [],
+    "unexpected_keys": [],
+    "mirror_matches_best": true,
+    "val_confusion_identical": true,
+    "val_global_identical": true,
+    "preview_max_abs_probability_diff": 0.0,
+    "preview_xor_pixels": 0,
+    "preview_total_pixels": 9013680,
+    "elapsed_seconds": 12.93
+  },
+  "artifacts": {
+    "in_run": [
+      "summary.json",
+      "epochs.jsonl",
+      "updates.jsonl",
+      "code_identity_start.json",
+      "code_identity_end.json",
+      "resolved_config.yaml",
+      "model_config.json",
+      "processor/",
+      "checkpoints/{best,last,model_state}.pt",
+      "pre_save_probabilities.npz",
+      "val_previews/epoch_0{1,2,3}/",
+      "reload_check.json"
+    ],
+    "in_git": [
+      "configs/pilot.yaml",
+      "segformer_lab/pilot.py",
+      "tests/test_pilot.py",
+      "reports/stage10-summary.json",
+      "reports/stage10-unit-tests.txt",
+      "docs/stages/10-pilot-design-and-implementation.md"
+    ],
+    "local_only_size_mib_approx": 133.3
+  },
+  "limitations": [
+    "3 epochs of 530 images is a short-run wiring check; the scores are not a baseline.",
+    "7 of 12 val anomaly images have zero predicted pixels at the best epoch: the global IoU of 0.608 is carried by three large defects, and the anomaly macro IoU is only 0.221.",
+    "Zero false positives on 120 normal val images means the model is still conservative (under-prediction), not that it is reliable.",
+    "The schedule covers the 3-epoch pilot budget (795 updates); the 50-epoch baseline must build its own schedule and must not be described as continuing this one.",
+    "Resume across an epoch boundary is not implemented, and the checkpoint is not claimed to be resumable despite carrying optimizer/scaler/scheduler/RNG state.",
+    "workers=0 only; loading waits about 16 s per epoch inside the training wall time.",
+    "No test image, mask, prediction or score was used in this stage."
+  ],
+  "acceptance": {
+    "report": "reports/2026-11-01-stage10-acceptance.md",
+    "fresh_reload_report": "reports/stage10-reload-check.json",
+    "unit_tests": {
+      "passed": 231,
+      "elapsed_seconds": 10.516
+    },
+    "fresh_reload": {
+      "ok": true,
+      "elapsed_seconds": 13.7,
+      "all_val_fields_identical": true,
+      "preview_max_abs_probability_diff": 0.0,
+      "preview_xor": 0,
+      "best_last_optimizer_parameters_each": 205,
+      "optimizer_steps": 795
+    },
+    "historical_run_preserved": true,
+    "recorded_source": "reports/stage10_evidence/recorded_source",
+    "current_code_identity": "reports/stage10-acceptance.json",
+    "limitations": [
+      "Original run did not separately freeze loaded.snapshot/source_sha/encoder_check at start.",
+      "Deterministic augmentation plan matches observed aggregate signatures; no per-sample pixel observation was saved.",
+      "Resume not implemented or exercised; formal stage11 remains unexecuted."
+    ]
+  }
+}

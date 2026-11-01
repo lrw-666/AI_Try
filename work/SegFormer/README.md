@@ -3,10 +3,10 @@
 本目录是 VisA PCB1 high-shot 协议下 SegFormer-B0 单基线实验的工程根目录：代码、配置、清单、阶段文档。
 环境、缓存、数据、模型与运行产物**不在本目录**，统一放在仓库外的 `E:\桌面\AI\segformer_resources`。
 
-- 当前进度：**步骤 1—9 已通过独立验收；完整项目回归 207 项通过。**固定八图拟合证明链路能学，不是留出集或论文基线性能。下一步仅三轮完整数据 pilot，当前尚未启动。
+- 当前进度：**步骤1—10已通过独立验收，完整项目回归231项通过。**三轮pilot为795/795更新、0跳步，val全局IoU 0.6081、异常macro 0.2207，7/12异常图预测空。下一步仅阶段11正式单基线；尚未运行50轮或test评价。
 - 验收记录：[阶段01—02验收与完善](./reports/2026-10-31-stage01-02-acceptance.md)、[第三阶段验收](./reports/2026-10-31-stage03-acceptance.md)、[第四阶段验收](./reports/2026-10-31-stage04-acceptance.md)、[第五阶段模型加载与核验](./reports/2026-10-31-stage05-model-loading-and-check.md)、[第六阶段验收](./reports/2026-10-31-stage06-acceptance.md)
 - 阶段索引：[docs/stages/README.md](./docs/stages/README.md)
-- 最新验收：[第八、九阶段联合验收](./reports/2026-11-01-stage08-09-acceptance.md)；下一步仅按[阶段10交接](./reports/2026-11-01-stage10-execution-handoff.md)实施三轮完整数据试跑，完成后再验收。
+- 最新验收：[第十阶段](./reports/2026-11-01-stage10-acceptance.md)；下一步见[阶段11执行交接](./reports/2026-11-01-stage11-execution-handoff.md)，完成正式单基线后再验收。
 - 主指南：`../../docs/research/2026-10-31-segformer-baseline-end-to-end-guide.md`
 - 环境隔离规范：`../../docs/research/2026-10-31-segformer-environment-isolation-and-stage-docs.md`
 
@@ -70,15 +70,17 @@ work\SegFormer\                       仓库内（Git）
 ├─ segformer_lab\metrics.py           原图恢复、int64 混淆量累计、全局指标
 ├─ segformer_lab\evaluation.py        IEEE FP32 评价精度上下文
 ├─ segformer_lab\metrics_check.py     42 项损失/指标检查 + 真实数据 probe
-├─ segformer_lab\training.py          共享训练基座（AMP、评价、保存、严格重载、AMP 跳步）
+├─ segformer_lab\training.py          共享训练基座（AMP、评价、保存、严格重载、AMP 跳步、调度器）
 ├─ segformer_lab\smoke.py             阶段 08 冒烟入口与重载对照
 ├─ segformer_lab\train.py             阶段 09 8 图过拟合入口
+├─ segformer_lab\pilot.py             阶段 10 完整数据 epoch 入口与新进程复验
 ├─ segformer_lab\subset.py            固定 8 图子集生成与校验
 ├─ configs\baseline.yaml              实验配置（512 letterbox、ignore 255、二类）
 ├─ configs\smoke.yaml                 阶段 08 冒烟配置
 ├─ configs\overfit.yaml               阶段 09 过拟合配置（200 更新、LR 1e-4 无衰减）
+├─ configs\pilot.yaml                 阶段 10 全量三轮配置（530/132、flip random、warmup+cosine）
 ├─ manifests\                         官方 CSV 副本 + train/val/test 清单 + split_meta.json + reviewed_groups.json + val_preview_ids.txt + overfit_train_ids.txt
-├─ tests\                             环境/分组/几何/审计/模型/数据集/损失指标的单元测试（207 项）
+├─ tests\                             环境/分组/几何/审计/模型/数据集/损失指标的单元测试（231 项）
 ├─ reports\environment.json           最新环境报告
 ├─ reports\data_audit\                审计摘要、逐图统计、重复与近重复候选
 ├─ reports\model_*.json               快照下载、加载与运行时核验记录
@@ -86,6 +88,8 @@ work\SegFormer\                       仓库内（Git）
 ├─ reports\overfit_subset.json        8 图子集明细
 ├─ reports\stage08-gates.json         阶段 08 逐项门禁
 ├─ reports\stage09-summary.json       阶段 09 小型汇总（曲线/逐图/跳步/局限）
+├─ reports\stage10-summary.json       阶段 10 小型汇总（三轮覆盖/损失/指标/耗时/复验）
+├─ reports\stage10-unit-tests.txt     阶段 10 最终回归日志（231 项）
 ├─ requirements-lock.txt              pip freeze 原始结果
 ├─ requirements-cu126.txt             仅两个CUDA包的辅助配方与来源记录
 ├─ requirements-runtime.txt           完整44项可移植版本约束（已核对本机版本）
@@ -155,7 +159,8 @@ E:\桌面\AI\segformer_resources\       仓库外（不进 Git）
 | 07 损失与原图尺度指标 | 已通过独立验收 | [07-loss-metrics-design-and-implementation.md](./docs/stages/07-loss-metrics-design-and-implementation.md) |
 | 08 20 步冒烟检查 | 已通过独立验收 | [08-smoke-design-and-implementation.md](./docs/stages/08-smoke-design-and-implementation.md) |
 | 09 8 张训练图过拟合检查 | 已通过独立验收 | [09-overfit-design-and-implementation.md](./docs/stages/09-overfit-design-and-implementation.md) |
-| 10—13 | 未开始 | 见 [阶段索引](./docs/stages/README.md) |
+| 10 完整训练集三轮 pilot | 已通过独立验收 | [10-pilot-design-and-implementation.md](./docs/stages/10-pilot-design-and-implementation.md) |
+| 11—13 | 未开始 | 见 [阶段索引](./docs/stages/README.md) |
 
 ## 5.1 数据现状（2026-10-31）
 
@@ -232,6 +237,21 @@ E:\桌面\AI\segformer_resources\       仓库外（不进 Git）
 - 修正后另跑 `smoke_003_stage09_acceptance`：20/20/0，峰值806.5/934MiB，新进程概率差0.0、XOR0。旧 overfit 未存完整概率，不能声称概率差0；原分数可以严格复算。
 - [联合验收报告](./reports/2026-11-01-stage08-09-acceptance.md)、[阶段09学习文档](./docs/stages/09-overfit-design-and-implementation.md)、[机器复验](./reports/stage09-reload-check.json)、[原件及局限](./reports/stage08_09_evidence/README.md)。三次中断和有效run共429/500次尝试，原文件保留。
 
+## 5.8 完整数据三轮 pilot（阶段 10）
+
+- 入口 `segformer_lab/pilot.py`（新增，824 行，`--config/--out/--verify-run`），**不改阶段 09 的八图边界**；`train_step`/`step_optimizer`/`WarmupCosineLR` 放在 `training.py` 共享，`train.py` 未改。
+- 配置 `configs/pilot.yaml`（SHA `74f4c8f1…`）：`train_ids_file: null`、530 train / 132 val、3 epoch、B2、累积 1、workers 0、seed 42、AMP FP16、`flip: random` + `horizontal_flip_p: 0.5`、LR 6e-5、wd 0.01、clip 1.0、warmup 0.05、minLR 1e-6。
+- run：`segformer_resources\runs\pilot_001`（约 134 MiB：best/last 各 44.8 MiB、`model_state.pt` 14.9 MiB、预览概率 30 MiB、逐轮/逐次日志）。
+- 调度：`total_steps = 3×265 = 795`，`warmup = round(0.05×795) = 40`；第 1 次更新 1.5e-6，第 40 次到 6e-5，第 795 次到 1e-6。**只在 optimizer 真执行后 `step()`**，跳步不推进。
+- 实测：**795 尝试 / 795 成功 / 0 跳步**，`scheduler.completed` 795；每轮覆盖 530/530、重复 0、末批 2 张；翻转 248/265/265 张且指纹逐轮不同。
+- 损失（加权：CE 按有效像素、Dice 按正 GT 图）：0.610957 → 0.499010 → 0.467857。
+- val（132 张、B1 IEEE FP32、原图、阈值 0.5）：IoU 0.0103→0.2370→**0.6081**，Dice 0.0204→0.3832→0.7563，P/R（第 3 轮）0.8610/0.6743，异常宏平均 IoU 0.0031→0.0656→**0.2207**，正常图 FP 三轮全 0，NA 为空。
+- **逐图关键事实**：第 3 轮 12 张异常图里 7 张预测前景为 0；045/046/059 占 val GT 前景 86 %，全局 IoU 由它们撑起。"正常图 0 误报"是欠报而非可靠。
+- 复验：新进程严格加载 `best.pt`（SHA `d1698b28…`，epoch 3，step 795，strict 0/0），全量 val 混淆量与全局指标逐位相同；6 张预览概率最大差 **0.0**、XOR **0 / 9 013 680 px**。
+- 资源：初始化 3.593 s、总计 **208.17 s**；三轮训练 61.06/45.20/45.63 s（读图等待 23.59/16.28/16.39 s）、全量 val 14.30/9.51/9.71 s；单步中位 124.3/105.4/105.4 ms；峰值 allocated **806.3** / reserved **934.0 MiB**。
+- 身份：git HEAD `0c5f0bd` + 未提交改动；起末代码/配置/清单与 `git diff` SHA 一致（`source_and_config_unchanged: true`）。**未实现 resume**，`workers>0` 未验证。
+- 证据：`reports/stage10-summary.json`（小型汇总）、`reports/stage10-unit-tests.txt`（231 项）、`reports/figures/stage10-*.png`（4 张精选）。
+
 ## 6. 常见操作
 
 ```powershell
@@ -286,6 +306,14 @@ Invoke-SegPython -m segformer_lab.smoke --verify-run "$SegResource\runs\smoke_00
 # 阶段 09：8 图过拟合检查（200 次成功更新；输出目录必须为空或不存在）
 Invoke-SegPython -m segformer_lab.train --config 'configs\overfit.yaml' `
   --out "$SegResource\runs\overfit_002"
+
+# 阶段 10：完整数据三轮 pilot（530 train / 132 val；输出目录必须为空或不存在）
+Invoke-SegPython -u -m segformer_lab.pilot --config 'configs\pilot.yaml' `
+  --out "$SegResource\runs\pilot_001"
+
+# 阶段 10：新进程严格加载 best.pt，重算全量 val 与 6 张预览
+Invoke-SegPython -u -m segformer_lab.pilot --verify-run "$SegResource\runs\pilot_001" `
+  --config 'configs\pilot.yaml'
 
 # 数据准备：重新生成三份清单（已存在且内容相同的图不会被覆盖）
 Invoke-SegPython -m segformer_lab.prepare_data `
@@ -354,4 +382,12 @@ Invoke-SegPip list
 
 [联合验收](./reports/2026-11-01-stage08-09-acceptance.md)已完成，原记录、当前207项回归、三个新进程复验与精选图均可追溯。环境、数据、权重和完整概率留仓库外，小型原件在 `reports/stage08_09_evidence`。旧阶段08执行源码SHA与提交不同的历史局限明确保留，不能宣称其准确源码已恢复。
 
-下一步按[阶段10执行交接](./reports/2026-11-01-stage10-execution-handoff.md)做530 train/132 val的三轮pilot，恢复随机翻转和set_epoch，从预训练重新初始化。当前train.py仍是八图入口，不能直接套pilot配置；未启动pilot、50轮训练或test评价。
+以上为阶段09结束时的安排；阶段10现已验收，当前下一步见下节。
+
+## 第十阶段验收与下一步
+
+[第十阶段验收](./reports/2026-11-01-stage10-acceptance.md)已通过：231项回归，新进程完整132张val的逐图/macro/global/NA一致，6张预览概率差0、XOR0；best/last的205个优化器参数step均795，30项产物SHA通过。原三轮日志及源码在 `reports/stage10_evidence`，新复验输出独立JSON，原run保持不变。
+
+验收补强了NaN/shape/XOR、完整保存状态和起止数据身份门槛，修正了配置构造器原地修改、NA解释及产物数。原模型来源未单独冻结开始时snapshot哈希、增强图无逐样本视觉记录等局限如实保留。小目标漏检仍在，不以全局0.608作为论文成绩。
+
+下一步按[阶段11执行交接](./reports/2026-11-01-stage11-execution-handoff.md)补正式入口与epoch边界恢复验证，再从原预训练重新初始化，执行固定50轮单基线。继续workers0、全量val流式评价，不自动改损失/阈值，不自动test；本轮未启动这些工作。

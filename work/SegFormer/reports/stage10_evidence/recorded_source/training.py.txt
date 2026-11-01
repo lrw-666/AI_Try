@@ -1,0 +1,826 @@
+"""Shared training machinery for stage 08 (smoke) and stage 09 (overfit).
+
+Deliberately narrow: one optimiser, CUDA FP16 AMP with ``GradScaler``, honest
+step accounting, a B1 FP32 evaluation path that reuses the stage-07 helpers, and
+a self-contained checkpoint a *new* process can reload with ``strict=True``.
+No scheduler, EMA, distributed training or early stopping -- stages 10/11 will
+add what they actually need.
+
+Two invariants this module exists to protect:
+
+1. **A "successful update" means the optimiser really moved the weights.**
+   ``GradScaler.step()`` returns ``None`` whether or not it skipped, so count
+   actual optimiser calls and retain scale and parameter evidence. A
+   training loop that counts attempts as updates can report "20 steps done" while
+   the model never moved.
+2. **Evaluation is B1 / eval() / inference_mode / IEEE FP32.**
+   ``evaluation_precision`` (stage 07, accepted) disables TF32 and autocast for
+   the duration of the context and restores the backend flags afterwards. Batch
+   composition must not change the numbers, so evaluation never batches.
+"""
+
+from __future__ import annotations
+
+import ctypes
+import json
+import math
+import time
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Any, Sequence
+
+import numpy as np
+import torch
+from torch import nn
+
+from .evaluation import evaluation_precision
+from .losses import segformer_loss
+from .metrics import OriginalSpaceEvaluator
+
+PROBE_ENCODER = "segformer.encoder.patch_embeddings.0.proj.weight"
+PROBE_HEAD = "decode_head.linear_c.0.proj.weight"
+
+
+# ------------------------------------------------------------------ utilities ----
+def sha256_file(path: Path) -> str:
+    import hashlib
+
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for block in iter(lambda: handle.read(1 << 20), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def set_seed(seed: int) -> dict[str, Any]:
+    """Fix every RNG this project touches and report what took effect."""
+    import random
+
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+    return {
+        "seed": int(seed),
+        "python_random": True,
+        "numpy": True,
+        "torch": True,
+        "cuda_all_devices": True,
+        "cudnn_deterministic": bool(torch.backends.cudnn.deterministic),
+        "cudnn_benchmark": bool(torch.backends.cudnn.benchmark),
+        "note": "deterministic cudnn reduces, but does not guarantee, bitwise "
+                "reproducibility across batch shapes or library versions",
+    }
+
+
+def _memory_status() -> dict[str, float]:
+    class _MemoryStatusEx(ctypes.Structure):
+        _fields_ = [
+            ("dwLength", ctypes.c_ulong),
+            ("dwMemoryLoad", ctypes.c_ulong),
+            ("ullTotalPhys", ctypes.c_ulonglong),
+            ("ullAvailPhys", ctypes.c_ulonglong),
+            ("ullTotalPageFile", ctypes.c_ulonglong),
+            ("ullAvailPageFile", ctypes.c_ulonglong),
+            ("ullTotalVirtual", ctypes.c_ulonglong),
+            ("ullAvailVirtual", ctypes.c_ulonglong),
+            ("ullAvailExtendedVirtual", ctypes.c_ulonglong),
+        ]
+
+    status = _MemoryStatusEx()
+    status.dwLength = ctypes.sizeof(_MemoryStatusEx)
+    if not ctypes.windll.kernel32.GlobalMemoryStatusEx(ctypes.byref(status)):
+        return {}
+    return {
+        "total_gib": round(status.ullTotalPhys / 1024 ** 3, 2),
+        "available_gib": round(status.ullAvailPhys / 1024 ** 3, 2),
+        "load_percent": round(status.dwMemoryLoad, 1),
+    }
+
+
+def gpu_memory() -> dict[str, Any]:
+    if not torch.cuda.is_available():
+        return {"available": False}
+    free, total = torch.cuda.mem_get_info()
+    return {
+        "available": True,
+        "device": torch.cuda.get_device_name(0),
+        "total_mib": round(total / 1024 ** 2, 1),
+        "free_mib": round(free / 1024 ** 2, 1),
+        "peak_allocated_mib": round(torch.cuda.max_memory_allocated() / 1024 ** 2, 1),
+        "peak_reserved_mib": round(torch.cuda.max_memory_reserved() / 1024 ** 2, 1),
+    }
+
+
+# ----------------------------------------------------------------- optimizer ----
+def build_optimizer(model: nn.Module, lr: float, weight_decay: float) -> tuple[torch.optim.Optimizer, dict[str, Any]]:
+    """AdamW with no decay on biases and normalisation parameters.
+
+    Decaying a LayerNorm gain or a bias is a standard way to make a short run
+    look worse for no reason; the guide asks for this split explicitly.
+    """
+    decay: list[str] = []
+    no_decay: list[str] = []
+    for name, parameter in model.named_parameters():
+        if not parameter.requires_grad:
+            continue
+        if name.endswith(".bias") or "norm" in name.lower():
+            no_decay.append(name)
+        else:
+            decay.append(name)
+
+    groups = [
+        {"params": [p for n, p in model.named_parameters() if n in set(decay)], "weight_decay": weight_decay},
+        {"params": [p for n, p in model.named_parameters() if n in set(no_decay)], "weight_decay": 0.0},
+    ]
+    optimizer = torch.optim.AdamW(groups, lr=float(lr), betas=(0.9, 0.999), eps=1e-8)
+    info = {
+        "class": "torch.optim.AdamW",
+        "lr": float(lr),
+        "weight_decay": float(weight_decay),
+        "betas": [0.9, 0.999],
+        "eps": 1e-8,
+        "decay_tensors": len(decay),
+        "no_decay_tensors": len(no_decay),
+        "decay_examples": decay[:3],
+        "no_decay_examples": no_decay[:3],
+    }
+    return optimizer, info
+
+
+def trainable_parameter_summary(model: nn.Module) -> dict[str, Any]:
+    total = sum(p.numel() for p in model.parameters())
+    trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
+    encoder = sum(p.numel() for n, p in model.named_parameters() if n.startswith("segformer."))
+    head = sum(p.numel() for n, p in model.named_parameters() if n.startswith("decode_head."))
+    return {"total": total, "trainable": trainable, "encoder": encoder, "head": head}
+
+
+# -------------------------------------------------------------------- result ----
+@dataclass
+class UpdateRecord:
+    attempt: int
+    success: int | None
+    ce: float
+    dice: float
+    total: float
+    valid_pixels: int
+    ignored_pixels: int
+    positive_images: int
+    lr: float
+    grad_norm: float
+    scale_before: float
+    scale_after: float
+    skipped: bool
+    step_ms: float
+    batch_ids: list[str]
+    skip_reason: str | None = None
+    optimizer_step_executed: bool = False
+    parameters_unchanged: bool | None = None
+    optimizer_steps_unchanged: bool | None = None
+
+    def as_dict(self) -> dict[str, Any]:
+        return {
+            "attempt": self.attempt,
+            "success_index": self.success,
+            "ce": round(self.ce, 8),
+            "dice": round(self.dice, 8),
+            "total": round(self.total, 8),
+            "valid_pixels": self.valid_pixels,
+            "ignored_pixels": self.ignored_pixels,
+            "positive_images": self.positive_images,
+            "lr": self.lr,
+            "grad_norm": round(self.grad_norm, 6) if math.isfinite(self.grad_norm) else None,
+            "scale_before": self.scale_before,
+            "scale_after": self.scale_after,
+            "skipped": self.skipped,
+            "skip_reason": self.skip_reason,
+            "optimizer_step_executed": self.optimizer_step_executed,
+            "parameters_unchanged": self.parameters_unchanged,
+            "optimizer_steps_unchanged": self.optimizer_steps_unchanged,
+            "step_ms": round(self.step_ms, 2),
+            "batch_ids": self.batch_ids,
+        }
+
+
+@dataclass
+class TrainOutcome:
+    records: list[UpdateRecord] = field(default_factory=list)
+    successful: int = 0
+    attempts: int = 0
+    skipped: int = 0
+    stopped_reason: str = ""
+    parameter_evidence: dict[str, Any] = field(default_factory=dict)
+    timing: dict[str, Any] = field(default_factory=dict)
+    memory: dict[str, Any] = field(default_factory=dict)
+
+
+# ------------------------------------------------------------------ training ----
+def _batch_ids(batch: dict[str, Any]) -> list[str]:
+    return [str(item).split("/")[-1] for item in batch["image_id"]]
+
+
+def _finite(tensor: torch.Tensor) -> bool:
+    return bool(torch.isfinite(tensor).all())
+
+
+def _all_finite(tensors: Sequence[torch.Tensor]) -> bool:
+    # One host synchronisation for a single-device model, rather than one per
+    # parameter. These checks never change gradients or parameters.
+    return bool(torch.stack([torch.isfinite(tensor).all() for tensor in tensors]).all())
+
+
+def _optimizer_steps(optimizer: torch.optim.Optimizer) -> dict[int, float]:
+    return {id(parameter): float(state["step"]) for parameter, state in optimizer.state.items()
+            if "step" in state}
+
+
+def step_optimizer(
+    model: nn.Module,
+    optimizer: torch.optim.Optimizer,
+    scaler: torch.amp.GradScaler,
+    grad_clip: float,
+) -> dict[str, Any]:
+    """Clip finite gradients and prove whether AdamW actually ran.
+
+    The pinned PyTorch 2.10 scaler caches found_inf at unscale_ time. A later
+    FP32 norm overflow is a separate failure and must not be called an AMP skip.
+    Only the rare, scaler-confirmed overflow branch copies weights for the
+    explicit no-update check; normal training keeps the original arithmetic.
+    """
+    parameters = list(model.parameters())
+    scale_before = float(scaler.get_scale())
+    scaler.unscale_(optimizer)
+    gradients = [parameter.grad for parameter in parameters if parameter.grad is not None]
+    if not gradients:
+        raise RuntimeError("no gradients before optimizer step")
+    gradients_finite = _all_finite(gradients)
+    # This private accessor is tied to the project's pinned torch 2.10 runtime.
+    # Checking the cached decision prevents unscale overflow or norm overflow
+    # from being mistaken for an overflow the scaler will actually skip.
+    found_inf = scaler.is_enabled() and any(
+        float(value) != 0.0 for value in scaler._found_inf_per_device(optimizer).values())
+    if not gradients_finite and not found_inf:
+        raise RuntimeError("non-finite gradient without a GradScaler overflow; stop before optimizer step")
+
+    before_parameters = None
+    before_steps = None
+    if found_inf:
+        grad_norm = float("inf")
+        before_parameters = [parameter.detach().clone() for parameter in parameters]
+        before_steps = _optimizer_steps(optimizer)
+    else:
+        # error_if_nonfinite checks the norm BEFORE clip_grad_norm_ mutates any
+        # gradient. Finite elements can still overflow the FP32 norm reduction.
+        try:
+            grad_norm = float(torch.nn.utils.clip_grad_norm_(
+                parameters, max_norm=grad_clip, error_if_nonfinite=True))
+        except RuntimeError as exc:
+            raise RuntimeError(f"gradient norm check failed before optimizer step: {exc}") from exc
+        if not _all_finite(gradients):
+            raise RuntimeError("non-finite gradient after clipping; stop before optimizer step")
+
+    executed = False
+
+    def mark_executed(*args: Any) -> None:
+        nonlocal executed
+        executed = True
+
+    handle = optimizer.register_step_post_hook(mark_executed)
+    try:
+        scaler.step(optimizer)
+    finally:
+        handle.remove()
+    scaler.update()
+    scale_after = float(scaler.get_scale())
+    if executed == bool(found_inf):
+        raise RuntimeError("optimizer execution disagrees with GradScaler overflow decision")
+
+    parameters_unchanged = None
+    optimizer_steps_unchanged = None
+    if not executed:
+        parameters_unchanged = all(torch.equal(parameter.detach(), before)
+                                   for parameter, before in zip(parameters, before_parameters))
+        optimizer_steps_unchanged = _optimizer_steps(optimizer) == before_steps
+        if not parameters_unchanged or not optimizer_steps_unchanged:
+            raise RuntimeError("GradScaler skip changed parameters or optimizer step counters")
+        if not scale_after < scale_before:
+            raise RuntimeError("GradScaler overflow did not reduce the loss scale")
+    if not _all_finite(parameters):
+        raise RuntimeError("non-finite parameter after optimizer attempt")
+    return {"grad_norm": grad_norm, "scale_before": scale_before, "scale_after": scale_after,
+            "skipped": not executed, "skip_reason": "nonfinite_grad" if not executed else None,
+            "optimizer_step_executed": executed, "parameters_unchanged": parameters_unchanged,
+            "optimizer_steps_unchanged": optimizer_steps_unchanged}
+
+
+# Kept as an alias so stage 08/09 code and the old regression names still work.
+_step_optimizer = step_optimizer
+
+
+def compute_loss_terms(
+    model: nn.Module,
+    pixels: torch.Tensor,
+    labels: torch.Tensor,
+    config: dict[str, Any],
+    *,
+    amp: bool,
+) -> Any:
+    """Forward under autocast plus the one shared loss definition.
+
+    Every entry point (08/09 update loop, 10 epoch loop) calls this so there is
+    exactly one CE + Dice implementation and one set of weights.
+    """
+    with torch.autocast(device_type="cuda", dtype=torch.float16, enabled=amp):
+        logits = model(pixel_values=pixels).logits
+        return segformer_loss(
+            logits,
+            labels,
+            ce_weight=float(config["raw"]["loss"]["ce_weight"]),
+            dice_weight=float(config["raw"]["loss"]["foreground_dice_weight"]),
+            eps=float(config["raw"]["loss"]["dice_epsilon"]),
+        )
+
+
+def train_step(
+    model: nn.Module,
+    batch: dict[str, Any],
+    config: dict[str, Any],
+    device: str,
+    optimizer: torch.optim.Optimizer,
+    scaler: torch.amp.GradScaler,
+    *,
+    grad_clip: float,
+    amp: bool,
+    attempt: int | None = None,
+) -> tuple[Any, dict[str, Any], float]:
+    """One optimiser attempt: forward, loss, backward, clip, step.
+
+    Returns ``(loss_terms, step_evidence, step_ms)``. The caller owns attempt
+    accounting, skip counting, scheduler advancement and logging, which is what
+    lets stage 09 (fixed update budget) and stage 10 (fixed epoch budget) share
+    the arithmetic but not the control flow.
+    """
+    where = "" if attempt is None else f" at attempt {attempt}"
+    pixels = batch["pixel_values"].to(device, non_blocking=False)
+    labels = batch["labels"].to(device, non_blocking=False)
+    optimizer.zero_grad(set_to_none=True)
+    torch.cuda.synchronize(torch.cuda.current_device())
+    tick = time.perf_counter()
+
+    terms = compute_loss_terms(model, pixels, labels, config, amp=amp)
+    loss = terms.total
+    if not _finite(loss):
+        raise RuntimeError(f"non-finite loss{where}: {float(loss.detach())}")
+
+    scaler.scale(loss).backward()
+    evidence = step_optimizer(model, optimizer, scaler, grad_clip)
+    torch.cuda.synchronize(torch.cuda.current_device())
+    return terms, evidence, (time.perf_counter() - tick) * 1000.0
+
+
+@dataclass
+class WarmupCosineLR:
+    """Linear warmup then cosine decay, counted in **real optimizer updates**.
+
+    Off-by-one definition, used by stage 10 and reused by stage 11:
+
+    * ``completed`` is the number of optimizer updates already executed.
+    * the update that runs with ``completed = 0`` uses ``lr_at(0)``;
+    * ``lr_at(k) = base_lr * (k + 1) / warmup_steps`` for ``k < warmup_steps``,
+      so the ``warmup_steps``-th update (``k = warmup_steps - 1``) uses exactly
+      ``base_lr``; no update ever exceeds ``base_lr``;
+    * afterwards ``progress = (k - warmup_steps + 1) / (total_steps - warmup_steps)``,
+      clipped to 1, and ``lr = min_lr + 0.5*(base_lr-min_lr)*(1+cos(pi*progress))``,
+      so the planned last update (``k = total_steps - 1``) uses ``min_lr``.
+
+    ``step()`` must only be called after an optimizer update really happened; a
+    GradScaler skip must not advance it, otherwise the learning rate runs ahead
+    of the weights it is supposed to control.
+    """
+
+    base_lr: float
+    min_lr: float
+    total_steps: int
+    warmup_steps: int
+    completed: int = 0
+
+    def __post_init__(self) -> None:
+        if self.total_steps <= 0:
+            raise ValueError("total_steps must be positive")
+        if not (0 <= self.warmup_steps <= self.total_steps):
+            raise ValueError("warmup_steps must be within [0, total_steps]")
+        if not (0.0 < self.min_lr <= self.base_lr):
+            raise ValueError("require 0 < min_lr <= base_lr")
+
+    def lr_at(self, completed: int) -> float:
+        if completed < 0:
+            raise ValueError("completed must be non-negative")
+        if self.warmup_steps > 0 and completed < self.warmup_steps:
+            return self.base_lr * (completed + 1) / self.warmup_steps
+        span = self.total_steps - self.warmup_steps
+        if span <= 0:
+            return self.base_lr
+        progress = min(1.0, (completed - self.warmup_steps + 1) / span)
+        return self.min_lr + 0.5 * (self.base_lr - self.min_lr) * (1.0 + math.cos(math.pi * progress))
+
+    def apply(self, optimizer: torch.optim.Optimizer) -> float:
+        lr = self.lr_at(self.completed)
+        for group in optimizer.param_groups:
+            group["lr"] = lr
+        return lr
+
+    def step(self, optimizer: torch.optim.Optimizer) -> float:
+        self.completed += 1
+        return self.apply(optimizer)
+
+    def state_dict(self) -> dict[str, Any]:
+        return {"base_lr": self.base_lr, "min_lr": self.min_lr,
+                "total_steps": self.total_steps, "warmup_steps": self.warmup_steps,
+                "completed": self.completed}
+
+    def describe(self) -> dict[str, Any]:
+        return {
+            "class": "WarmupCosineLR",
+            "base_lr": self.base_lr,
+            "min_lr": self.min_lr,
+            "total_steps": self.total_steps,
+            "warmup_steps": self.warmup_steps,
+            "warmup_is": "linear on (completed+1)/warmup_steps; warmup_steps-th update reaches base_lr",
+            "decay_is": "cosine on (completed-warmup_steps+1)/(total_steps-warmup_steps)",
+            "advanced_by": "real optimizer updates only; AMP skips do not advance",
+            "lr_first_update": round(self.lr_at(0), 12),
+            "lr_last_planned_update": round(self.lr_at(max(0, self.total_steps - 1)), 12),
+        }
+
+
+def run_training(
+    model: nn.Module,
+    loader: Any,
+    config: dict[str, Any],
+    device: str,
+    *,
+    target_updates: int,
+    max_attempts: int,
+    lr: float,
+    weight_decay: float,
+    grad_clip: float,
+    amp: bool,
+    accumulation: int = 1,
+    on_update: Any | None = None,
+    should_stop: Any | None = None,
+    log_handle: Any | None = None,
+    log_every: int = 1,
+) -> tuple[TrainOutcome, torch.optim.Optimizer, torch.amp.GradScaler, dict[str, Any]]:
+    """Run until ``target_updates`` successful steps or ``max_attempts`` attempts.
+
+    ``on_update(model, outcome)`` is called after each successful update so the
+    caller can evaluate at fixed update counts without restarting the loop.
+    ``should_stop(model, outcome)`` may return a reason string to halt early --
+    stage 09 uses it for the mandatory "no learning at 100 updates" check instead
+    of blindly running to the cap.
+    """
+    if accumulation != 1:
+        raise ValueError("stages 08/09 fix gradient accumulation at 1")
+    if not math.isfinite(grad_clip) or grad_clip <= 0:
+        raise ValueError("grad_clip must be finite and positive")
+    if not _all_finite(list(model.parameters())):
+        raise RuntimeError("non-finite parameter before training")
+
+    optimizer, optimizer_info = build_optimizer(model, lr, weight_decay)
+    scaler = torch.amp.GradScaler("cuda", enabled=amp)
+
+    probes = {}
+    for name, parameter in model.named_parameters():
+        if name in (PROBE_ENCODER, PROBE_HEAD):
+            probes[name] = parameter.detach().clone()
+    if set(probes) != {PROBE_ENCODER, PROBE_HEAD}:
+        raise RuntimeError(f"probe parameters not found; got {sorted(probes)}")
+
+    outcome = TrainOutcome()
+    torch.cuda.reset_peak_memory_stats()
+    device_index = torch.cuda.current_device()
+    torch.cuda.synchronize(device_index)
+    started = time.perf_counter()
+    step_times: list[float] = []
+    first_update_record: dict[str, Any] = {}
+
+    model.train()
+    stop = False
+    consecutive_skips = 0
+    while not stop:
+        for batch in loader:
+            if outcome.attempts >= max_attempts:
+                outcome.stopped_reason = f"attempt cap reached ({max_attempts})"
+                stop = True
+                break
+
+            outcome.attempts += 1
+            attempt = outcome.attempts
+
+            terms, step, step_ms = train_step(
+                model, batch, config, device, optimizer, scaler,
+                grad_clip=grad_clip, amp=amp, attempt=attempt,
+            )
+            skipped = step["skipped"]
+            step_times.append(step_ms)
+
+            current_lr = float(optimizer.param_groups[0]["lr"])
+            record = UpdateRecord(
+                attempt=attempt,
+                success=None if skipped else outcome.successful + 1,
+                ce=float(terms.ce.detach()),
+                dice=float(terms.dice.detach()),
+                total=float(terms.total.detach()),
+                valid_pixels=terms.valid_pixels,
+                ignored_pixels=terms.ignored_pixels,
+                positive_images=terms.positive_images,
+                lr=current_lr,
+                grad_norm=step["grad_norm"],
+                scale_before=step["scale_before"],
+                scale_after=step["scale_after"],
+                skipped=skipped,
+                step_ms=step_ms,
+                batch_ids=_batch_ids(batch),
+                skip_reason=step["skip_reason"],
+                optimizer_step_executed=step["optimizer_step_executed"],
+                parameters_unchanged=step["parameters_unchanged"],
+                optimizer_steps_unchanged=step["optimizer_steps_unchanged"],
+            )
+            outcome.records.append(record)
+
+            if skipped:
+                outcome.skipped += 1
+                consecutive_skips += 1
+                if log_handle is not None:
+                    log_handle.write(json.dumps({"event": "skipped", **record.as_dict()}, ensure_ascii=False) + "\n")
+                if consecutive_skips >= 3:
+                    raise RuntimeError("three consecutive GradScaler skips; stop and diagnose instead of making up steps")
+                continue
+
+            consecutive_skips = 0
+
+            outcome.successful += 1
+            if not first_update_record:
+                deltas = {}
+                for name, parameter in model.named_parameters():
+                    if name in probes:
+                        deltas[name] = float((parameter.detach() - probes[name]).abs().max())
+                grad_snapshot = {}
+                for name, parameter in model.named_parameters():
+                    if name in probes and parameter.grad is not None:
+                        grad_snapshot[name] = float(parameter.grad.detach().norm())
+                first_update_record = {
+                    "at_success_index": outcome.successful,
+                    "grad_norm_per_tensor": grad_snapshot,
+                    "max_abs_parameter_delta": deltas,
+                    "parameters_changed": all(value > 0.0 for value in deltas.values()),
+                }
+                if (not first_update_record["parameters_changed"] or set(grad_snapshot) != set(probes)
+                        or not all(math.isfinite(value) and value > 0.0 for value in grad_snapshot.values())):
+                    raise RuntimeError("encoder/head probe lacks a finite nonzero gradient or parameter update")
+            if log_handle is not None and (outcome.successful % log_every == 0 or outcome.successful == 1):
+                log_handle.write(json.dumps({"event": "update", **record.as_dict()}, ensure_ascii=False) + "\n")
+
+            if on_update is not None:
+                on_update(model, outcome)
+
+            if should_stop is not None:
+                reason = should_stop(model, outcome)
+                if reason:
+                    outcome.stopped_reason = str(reason)
+                    stop = True
+                    break
+
+            if outcome.successful >= target_updates:
+                outcome.stopped_reason = f"target reached ({target_updates} successful updates)"
+                stop = True
+                break
+
+    torch.cuda.synchronize(device_index)
+    elapsed = time.perf_counter() - started
+    outcome.parameter_evidence = first_update_record
+    warm = step_times[1:] if len(step_times) > 1 else step_times
+    outcome.timing = {
+        "wall_seconds": round(elapsed, 3),
+        "successful_updates": outcome.successful,
+        "attempts": outcome.attempts,
+        "skipped": outcome.skipped,
+        "median_step_ms": round(float(np.median(step_times)), 2) if step_times else None,
+        "median_step_ms_after_first": round(float(np.median(warm)), 2) if warm else None,
+        "first_step_ms": round(step_times[0], 2) if step_times else None,
+        "updates_per_second": round(outcome.successful / elapsed, 4) if elapsed > 0 else None,
+    }
+    outcome.memory = {"gpu": gpu_memory(), "system_ram": _memory_status()}
+    return outcome, optimizer, scaler, optimizer_info
+
+
+# ------------------------------------------------------------------ evaluate ----
+def evaluate_dataset(
+    model: nn.Module,
+    dataset: Any,
+    config: dict[str, Any],
+    device: str,
+    *,
+    indices: Sequence[int] | None = None,
+    threshold: float | None = None,
+    label_of: dict[str, str] | None = None,
+    keep_probabilities: bool = False,
+) -> dict[str, Any]:
+    """B1, eval(), inference_mode, IEEE FP32. Returns metrics plus optional maps."""
+    threshold = float(config["raw"]["eval"]["threshold"]) if threshold is None else float(threshold)
+    was_training = model.training
+    try:
+        model.eval()
+        evaluator = OriginalSpaceEvaluator(threshold=threshold)
+        order = list(range(len(dataset))) if indices is None else list(indices)
+        kept: list[dict[str, Any]] = []
+        forward_ms: list[float] = []
+        device_index = torch.cuda.current_device() if device.startswith("cuda") else None
+
+        precision_record: dict[str, Any] = {}
+        with evaluation_precision(config, device=device) as precision_record:
+            with torch.inference_mode():
+                for index in order:
+                    item = dataset[index]
+                    pixels = item["pixel_values"].unsqueeze(0).to(device)
+                    if device_index is not None:
+                        torch.cuda.synchronize(device_index)
+                    tick = time.perf_counter()
+                    logits = model(pixel_values=pixels).logits
+                    if device_index is not None:
+                        torch.cuda.synchronize(device_index)
+                    forward_ms.append(round((time.perf_counter() - tick) * 1000.0, 2))
+                    logits = logits[0].float().cpu()
+                    label = (label_of or {}).get(item["image_id"])
+                    if label is None:
+                        label = "normal" if "Normal" in item["image_id"] else "anomaly"
+                    evaluator.add_sample(
+                        logits,
+                        item["original_mask"],
+                        item["geometry"],
+                        image_id=item["image_id"],
+                        label=label,
+                        split=dataset.split,
+                        flipped=bool(item["flipped"]),
+                    )
+                    if keep_probabilities:
+                        kept.append({"image_id": item["image_id"], "label": label,
+                                     "logits": logits, "geometry": item["geometry"],
+                                     "original_mask": item["original_mask"]})
+
+        result = evaluator.result()
+        result["evaluation"] = {
+            "batch_size": 1,
+            "mode": "model.eval() + torch.inference_mode()",
+            "precision": "ieee_fp32 (TF32 disabled, autocast disabled)",
+            "precision_record": precision_record,
+            "threshold": threshold,
+            "forward_ms": forward_ms,
+            "median_forward_ms": round(float(np.median(forward_ms)), 2) if forward_ms else None,
+        }
+        result["samples"] = kept
+        return result
+    finally:
+        model.train(was_training)
+
+
+# -------------------------------------------------------------------- saving ----
+def save_run(
+    run_dir: Path,
+    model: nn.Module,
+    processor: Any,
+    config: dict[str, Any],
+    *,
+    optimizer: torch.optim.Optimizer | None,
+    scaler: torch.amp.GradScaler | None,
+    successful_updates: int,
+    attempts: int,
+    skipped: int,
+    extra: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    from transformers import SegformerConfig
+
+    run_dir = Path(run_dir)
+    (run_dir / "checkpoints").mkdir(parents=True, exist_ok=True)
+    processor_dir = run_dir / "processor"
+    processor.save_pretrained(str(processor_dir))
+
+    model_config = model.config.to_dict() if hasattr(model, "config") else SegformerConfig().to_dict()
+    (run_dir / "model_config.json").write_text(json.dumps(model_config, indent=2), encoding="utf-8")
+
+    state = {key: value.detach().cpu() for key, value in model.state_dict().items()}
+    torch.save(state, run_dir / "checkpoints" / "model_state.pt")
+
+    training_state: dict[str, Any] = {
+        "model": state,
+        "successful_updates": int(successful_updates),
+        "attempts": int(attempts),
+        "skipped": int(skipped),
+        "model_config": model_config,
+    }
+    if optimizer is not None:
+        training_state["optimizer"] = optimizer.state_dict()
+    if scaler is not None:
+        training_state["grad_scaler"] = scaler.state_dict()
+    torch.save(training_state, run_dir / "checkpoints" / "training_state.pt")
+    if extra:
+        (run_dir / "run_extra.json").write_text(json.dumps(extra, indent=2, ensure_ascii=False), encoding="utf-8")
+
+    files = {}
+    for path in sorted(run_dir.rglob("*")):
+        if path.is_file():
+            files[path.relative_to(run_dir).as_posix()] = {
+                "bytes": path.stat().st_size,
+                "sha256": sha256_file(path),
+            }
+    manifest = {
+        "run_dir": str(run_dir.resolve()),
+        "successful_updates": int(successful_updates),
+        "attempts": int(attempts),
+        "skipped": int(skipped),
+        "files": files,
+        "model_state_sha256": files["checkpoints/model_state.pt"]["sha256"],
+    }
+    (run_dir / "artifact_manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+    return manifest
+
+
+def load_run_model(run_dir: Path) -> tuple[nn.Module, Any, dict[str, Any]]:
+    """Rebuild the model from the run's own structure + weights, strict=True.
+
+    Deliberately does *not* look at the pretrained snapshot: the point of the
+    reload check is to prove the saved bundle is self-contained.
+    """
+    from transformers import SegformerConfig, SegformerForSemanticSegmentation, SegformerImageProcessor
+
+    run_dir = Path(run_dir)
+    config_data = json.loads((run_dir / "model_config.json").read_text(encoding="utf-8"))
+    model_config = SegformerConfig.from_dict(config_data)
+    model = SegformerForSemanticSegmentation(model_config)
+
+    state = torch.load(run_dir / "checkpoints" / "model_state.pt", map_location="cpu", weights_only=True)
+    missing, unexpected = model.load_state_dict(state, strict=True)
+    if missing or unexpected:
+        raise RuntimeError(f"strict load produced missing={missing} unexpected={unexpected}")
+
+    processor = SegformerImageProcessor.from_pretrained(
+        str(run_dir / "processor"), local_files_only=True,
+        do_resize=False, do_reduce_labels=False, do_rescale=True, do_normalize=True,
+    )
+    info = {
+        "model_config_source": str((run_dir / "model_config.json").resolve()),
+        "model_state_sha256": sha256_file(run_dir / "checkpoints" / "model_state.pt"),
+        "strict": True,
+        "missing_keys": list(missing),
+        "unexpected_keys": list(unexpected),
+        "parameter_count": sum(p.numel() for p in model.parameters()),
+        "processor_flags": {
+            "do_resize": bool(processor.do_resize),
+            "do_reduce_labels": bool(processor.do_reduce_labels),
+            "do_rescale": bool(processor.do_rescale),
+            "do_normalize": bool(processor.do_normalize),
+        },
+    }
+    return model, processor, info
+
+
+def parameter_digest(model: nn.Module) -> dict[str, Any]:
+    """Cheap identity for "did the weights change" checks across processes."""
+    total = 0.0
+    for parameter in model.parameters():
+        total += float(parameter.detach().double().sum())
+    return {
+        "sum_of_parameters": total,
+        "tensor_count": sum(1 for _ in model.parameters()),
+    }
+
+
+# ------------------------------------------------------------------ plotting ----
+def render_row_strip(
+    image_rgb: np.ndarray,
+    gt: np.ndarray,
+    probability: np.ndarray,
+    threshold: float,
+    title: str,
+) -> Any:
+    """Three columns: source+GT outline, probability, overlay with zoom."""
+    import matplotlib.pyplot as plt
+
+    figure, axes = plt.subplots(1, 3, figsize=(9.6, 3.0), dpi=100)
+    axes[0].imshow(image_rgb)
+    axes[0].set_title("source + GT", fontsize=8)
+    axes[1].imshow(probability, cmap="magma", vmin=0.0, vmax=1.0)
+    axes[1].set_title("defect prob", fontsize=8)
+    axes[2].imshow(image_rgb)
+    overlay = np.ma.masked_where(probability < threshold, probability)
+    axes[2].imshow(overlay, cmap="autumn", alpha=0.45, vmin=0.0, vmax=1.0)
+    axes[2].set_title(f"pred >= {threshold}", fontsize=8)
+    for axis in axes:
+        axis.set_xticks([])
+        axis.set_yticks([])
+    figure.suptitle(title, fontsize=9)
+    figure.tight_layout()
+    return figure

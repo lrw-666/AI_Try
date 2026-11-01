@@ -1,0 +1,2 @@
+# Keep the captured historical log byte-exact, including native stderr spacing.
+original-unit-tests.txt -whitespace

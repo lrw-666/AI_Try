@@ -21,7 +21,7 @@
 | 07 | 损失与指标 | 已通过独立验收 | [07-loss-metrics-design-and-implementation.md](./07-loss-metrics-design-and-implementation.md) | [验收报告](../../reports/2026-11-01-stage07-acceptance.md)；`loss_metrics_check.json`（42 项）；`stage07-unit-tests.txt`（186 项）；`stage07-acceptance.json`；归档恢复图 |
 | 08 | 20 步冒烟检查 | 已通过独立验收 | [08-smoke-design-and-implementation.md](./08-smoke-design-and-implementation.md) | `reports\stage08-gates.json`（5/5 技术门禁）；`runs\smoke_001\summary.json`、`updates.jsonl`、`reload_check.json`；`audit\stage08-*.log` |
 | 09 | 8 张训练图过拟合检查 | 已通过独立验收 | [09-overfit-design-and-implementation.md](./09-overfit-design-and-implementation.md) | `runs\overfit_002\summary.json`、`evaluation_curve.json`、`eval\*`（仓库外）；`reports\stage09-summary.json`（仓库）；崩溃现场 `runs\overfit_001` 与 `runs\archive\overfit_001_attempt{1,2}_*`；回归 `runs\smoke_002_stage09_regression` |
-| 10 | 完整训练集短程试跑 | 未开始 | — | — |
+| 10 | 完整训练集短程试跑 | 已通过独立验收 | [10-pilot-design-and-implementation.md](./10-pilot-design-and-implementation.md) | `runs\pilot_001\summary.json`、`epochs.jsonl`、`updates.jsonl`、`reload_check.json`（仓库外）；`reports\stage10-summary.json`、`reports\stage10-unit-tests.txt`、`reports\figures\stage10-*.png`（仓库） |
 | 11 | 正式训练与可靠保存 | 未开始 | — | — |
 | 12 | 独立推理与原图评价 | 未开始 | — | — |
 | 13 | 结果可视化、失败分析与实验卡 | 未开始 | — | — |
@@ -29,6 +29,21 @@
 ## 当前状态一句话
 
 步骤01—09已通过独立验收；最终完整项目回归207项通过。第09阶段200/201/1跳步，固定训练子集全局IoU 0.008250→0.945710、异常macro 0.014414→0.760745、正常FP 873,511→85。该结果不代表泛化性能；完整val或test尚未评价。新进程保存物复验及当前代码smoke均通过，详见[联合验收](../../reports/2026-11-01-stage08-09-acceptance.md)。
+
+**第10阶段已通过独立验收**：795/795更新、0跳步；最终231项回归通过，新进程完整132图的逐图/macro/global/NA一致，预览概率差0、XOR0。val全局IoU0.6081、异常macro0.2207，仍有7/12异常图预测空，不能当正式基线成绩。[验收入口](../../reports/2026-11-01-stage10-acceptance.md)。
+
+## 阶段 10 关键结论
+
+- 入口：新增 `segformer_lab/pilot.py`（`--config/--out/--verify-run`），不修改阶段 09 的八图边界；`train_step` 与 `step_optimizer` 从 `training.py` 抽出共享，`train.py` 一行未改。
+- 数据：`train_ids_file: null`，train 530（482N+48A）/ val 132（120N+12A）；每轮 265 个 B2 batch、末批 2 张，覆盖审计 530/530、重复 0、缺失 0；翻转 248/265/265 张，翻转指纹逐轮不同，`dataset.epoch` 1/2/3。
+- 计数与调度：795 尝试 / 795 成功 / 0 跳步，`scheduler.completed` 795；warmup 40 步（0.05×795），LR 1.5e-6 → 第 40 步 6e-5 → 第 795 步 **1e-6**。调度只在 optimizer 真执行后前进，单测覆盖跳过分支。
+- 损失（加权）：CE 0.118857→0.017636→0.012300；Dice 项 0.984199→0.962749→0.911114；总 0.610957→0.499010→0.467857。CE 是逐像素均值（前景仅 0.17 %），低 CE 不等于分割好。
+- 验证（132 张、B1 IEEE FP32、原图、阈值 0.5）：IoU 0.0103→0.2370→**0.6081**；Dice 0.0204→0.3832→0.7563；P/R 第 3 轮 0.8610/0.6743；异常宏平均 IoU 0.0031→0.0656→0.2207，宏平均 Dice 0.0059→0.0985→0.2784；正常图 FP 三轮全 0；NA 为空。
+- 逐图（第 3 轮）：12 张异常图中 **7 张预测前景为 0**（第 1、2 轮为 11、9 张）；045/046/059 三张占 val GT 前景 86 %，全局 IoU 由它们撑起，宏平均才 0.2207。"正常图 0 误报"是欠报，不是可靠。
+- 保存与复验：best=epoch 3，`best.pt` SHA `d1698b28…`，strict 0/0，`model_state.pt` 与 best 逐张量相等；新进程全量 val 混淆量与全局指标逐位相同，6 张预览概率最大差 **0.0**、XOR **0 / 9 013 680 px**。
+- 资源：初始化 3.593 s，脚本总计 **208.17 s**；三轮训练墙钟 61.06/45.20/45.63 s（其中读图等待 23.59/16.28/16.39 s），全量 val 14.30/9.51/9.71 s；单步中位 124.30/105.39/105.36 ms；峰值 allocated **806.3** / reserved **934.0 MiB**；主机 RAM 15.22 GiB、可用 1.73 GiB。
+- 身份：git HEAD `0c5f0bd` + 工作区未提交改动（`training.py` `91c829d2…`、`pilot.py` `52e3aae7…`）；起末代码/配置/清单 SHA 与 `git diff` SHA 一致（`source_and_config_unchanged: true`）。
+- **未实现 resume**（checkpoint 含 optimizer/scaler/scheduler/epoch/RNG，但没有在 epoch 边界实测恢复），`workers>0` 仍未验证；未读 test 图像、未做测试推理、未启动正式训练。
 
 ## 阶段 09 关键结论
 
@@ -78,7 +93,7 @@
 
 ## 下一步
 
-仅按[阶段10执行交接](../../reports/2026-11-01-stage10-execution-handoff.md)实现并运行三轮530 train/132 val的pilot。移除八图子集，恢复随机增强与每轮set_epoch；保持B1 IEEE FP32原图评价，流式处理避免RAM堆积，从原预训练重新初始化。当前专用八图入口不可直接套配置。三轮结束再验收，不自动启动正式训练或test推理。
+仅按[阶段11执行交接](../../reports/2026-11-01-stage11-execution-handoff.md)完成正式入口与epoch边界恢复对照，再从原预训练重新初始化执行50轮固定单基线。train530/val132，workers0，保持原损失/增强/原图IEEE评价；重建13250/662学习率计划，不接pilot权重或其795步计划。完成后再次验收，不自动test。本轮未启动11。
 
 ## 维护约定
 

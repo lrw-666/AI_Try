@@ -1,0 +1,4 @@
+  best.pt : epoch 3, step 795, strict load ok
+  val     : full summary identical=True (IoU 0.6081003224)
+  preview : max|dprob|=0.000e+00, XOR=0
+  wrote   : E:\桌面\AI\AI_Try\work\SegFormer\reports\stage10-reload-check.json
