@@ -1,0 +1,162 @@
+{
+  "mode": "frozen_epoch1_boundary",
+  "checkpoint": "E:\\桌面\\AI\\segformer_resources\\runs\\resume_acceptance_boundary_20261101\\epoch1-last.pt",
+  "checkpoint_sha256": "24782698b47c33b86dfdd9245353cb811be4eb04f582d632d2edd819c5c6665b",
+  "checkpoint_epoch": 1,
+  "step": {
+    "successful": 6,
+    "attempts": 6,
+    "skipped": 0
+  },
+  "scheduler": {
+    "base_lr": 6e-05,
+    "min_lr": 1e-06,
+    "total_steps": 18,
+    "warmup_steps": 1,
+    "completed": 6
+  },
+  "checks_before_loader_iteration": {
+    "model": true,
+    "optimizer_including_param_groups": true,
+    "scaler": true,
+    "scheduler": true,
+    "all_group_lr": true,
+    "step": true,
+    "best": true,
+    "next_epoch": true,
+    "model_train_mode": true,
+    "loader_generator": true,
+    "loader_settings": true,
+    "saved_processor_is_actual_dataset_processor": true,
+    "rng_python": true,
+    "rng_numpy": true,
+    "rng_torch": true,
+    "rng_cuda": true
+  },
+  "state_at_load_ok": true,
+  "checkpoint_unchanged": true,
+  "processor": {
+    "path": "E:\\桌面\\AI\\segformer_resources\\runs\\resume_acceptance_B_20261101\\processor",
+    "class": "SegformerImageProcessor",
+    "sha256": "7854b1307bdd3737b1106ad604bbd8f90308cfce8d46609e6d5d88a1face9f58",
+    "instance_used_for_decoding": true
+  },
+  "next_epoch": 2,
+  "actual_batches": [
+    {
+      "batch_ids": [
+        "0010.JPG",
+        "011.JPG"
+      ],
+      "flipped_ids": [
+        "011.JPG"
+      ]
+    },
+    {
+      "batch_ids": [
+        "007.JPG",
+        "0007.JPG"
+      ],
+      "flipped_ids": [
+        "0007.JPG"
+      ]
+    },
+    {
+      "batch_ids": [
+        "006.JPG",
+        "009.JPG"
+      ],
+      "flipped_ids": []
+    },
+    {
+      "batch_ids": [
+        "005.JPG",
+        "0003.JPG"
+      ],
+      "flipped_ids": [
+        "0003.JPG"
+      ]
+    },
+    {
+      "batch_ids": [
+        "0004.JPG",
+        "0000.JPG"
+      ],
+      "flipped_ids": [
+        "0004.JPG",
+        "0000.JPG"
+      ]
+    },
+    {
+      "batch_ids": [
+        "004.JPG",
+        "0006.JPG"
+      ],
+      "flipped_ids": [
+        "0006.JPG"
+      ]
+    }
+  ],
+  "control_batches": [
+    {
+      "batch_ids": [
+        "0010.JPG",
+        "011.JPG"
+      ],
+      "flipped_ids": [
+        "011.JPG"
+      ]
+    },
+    {
+      "batch_ids": [
+        "007.JPG",
+        "0007.JPG"
+      ],
+      "flipped_ids": [
+        "0007.JPG"
+      ]
+    },
+    {
+      "batch_ids": [
+        "006.JPG",
+        "009.JPG"
+      ],
+      "flipped_ids": []
+    },
+    {
+      "batch_ids": [
+        "005.JPG",
+        "0003.JPG"
+      ],
+      "flipped_ids": [
+        "0003.JPG"
+      ]
+    },
+    {
+      "batch_ids": [
+        "0004.JPG",
+        "0000.JPG"
+      ],
+      "flipped_ids": [
+        "0004.JPG",
+        "0000.JPG"
+      ]
+    },
+    {
+      "batch_ids": [
+        "004.JPG",
+        "0006.JPG"
+      ],
+      "flipped_ids": [
+        "0006.JPG"
+      ]
+    }
+  ],
+  "next_epoch_order_and_flip_ok": true,
+  "structural_ok": true,
+  "scope": "Exact frozen epoch-1 load state before iteration, then six CPU loader batches; no model forward or update.",
+  "schema": "segformer-lab/resume-check/1",
+  "helper_sha256": "506ad9a3188a63ce0f316673a9fc188f4192ba7c302c4715ee0d4ce51d3cff82",
+  "no_training": true,
+  "exit_policy": "structural failure nonzero; numerical tolerance failure remains diagnostic"
+}

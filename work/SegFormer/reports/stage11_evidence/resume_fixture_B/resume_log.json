@@ -1,0 +1,27 @@
+{
+  "at": "2026-11-01T13:15:19+0800",
+  "checkpoint": "E:\\桌面\\AI\\segformer_resources\\runs\\resume_fixture_B\\checkpoints\\last.pt",
+  "restore": {
+    "epoch_completed": 1,
+    "next_epoch": 2,
+    "scheduler_completed": 6,
+    "scheduler_total_steps": 18,
+    "scheduler_warmup_steps": 1,
+    "lr_restored": 4.3649281495407884e-05,
+    "step": {
+      "successful": 6,
+      "attempts": 6,
+      "skipped": 0
+    },
+    "best": {
+      "iou": 0.0,
+      "epoch": 1
+    },
+    "scaler_scale": 65536.0,
+    "optimizer_state_entries": 205,
+    "rng_restored": true,
+    "loader_generator_restored": true,
+    "rng_sha256": "386998d045eed6fd82cbff4bb22299cb259af4352822b053c796572f339d69ab",
+    "loader_generator_set_state": true
+  }
+}

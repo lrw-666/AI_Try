@@ -1,0 +1,86 @@
+# Stage-11 resume fixture ONLY. Never a baseline, never inherited by the formal run.
+#
+# Purpose: prove that a complete-epoch checkpoint can be restored in a new process
+# and continue with exactly the same weights, optimizer/scaler/scheduler state,
+# RNG, data order and augmentation pattern.
+#
+# 12 fixed training images (6 normal + 6 anomaly) -> 6 batches per epoch.
+# 3 epochs -> 18 planned updates, warmup max(1, round(18 * 0.05)) = 1.
+# Validation uses the same fixed 6 preview images so probabilities can be compared
+# directly between the uninterrupted run and the resumed run.
+
+stage:
+  kind: fixture
+  schema: segformer-lab/resume-fixture/1
+  resume_scope: complete_epoch_boundary
+
+experiment:
+  name: pcb1_b0_resume_fixture
+  seed: 42
+  output_root: E:/桌面/AI/segformer_resources/runs
+
+data:
+  root: E:/桌面/AI/segformer_resources/data/visa
+  category: pcb1
+  train_manifest: manifests/train.csv
+  val_manifest: manifests/val.csv
+  test_manifest: manifests/test.csv
+  split_meta: manifests/split_meta.json
+  train_ids_file: manifests/resume_fixture_train_ids.txt
+  eval_ids_file: manifests/val_preview_ids.txt
+  input_size: 512
+  resize_mode: letterbox
+  image_pad_rgb: [124, 116, 104]
+  ignore_index: 255
+  horizontal_flip_p: 0.5
+  workers: 0
+  shuffle: true
+  drop_last: false
+
+model:
+  pretrained_dir: E:/桌面/AI/segformer_resources/models/mit-b0
+  num_labels: 2
+  id2label: {0: background, 1: defect}
+  label2id: {background: 0, defect: 1}
+  train_encoder: true
+
+train:
+  epochs: 3
+  max_steps: null
+  batch_size: 2
+  gradient_accumulation_steps: 1
+  amp: true
+  precision: fp16_amp
+  flip: random
+  learning_rate: 0.00006
+  min_learning_rate: 0.000001
+  weight_decay: 0.01
+  warmup_ratio: 0.05
+  lr_scheduler: warmup_cosine
+  grad_clip_norm: 1.0
+  validate_every_epochs: 1
+  early_stopping: false
+
+loss:
+  ce_weight: 1.0
+  foreground_dice_weight: 0.5
+  dice_epsilon: 0.000001
+
+eval:
+  batch_size: 1
+  precision: ieee_fp32
+  threshold: 0.5
+  metric_space: original
+  postprocess: none
+  selection_metric: foreground_iou_global
+
+checkpoint:
+  keep_last: true
+  keep_best: true
+  save_model_state: true
+
+logging:
+  tensorboard: false
+  log_every_micro_steps: 1
+  fixed_preview_manifest: manifests/val_preview_ids.txt
+  preview_at_best_only: true

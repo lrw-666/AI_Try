@@ -22,15 +22,28 @@
 | 08 | 20 步冒烟检查 | 已通过独立验收 | [08-smoke-design-and-implementation.md](./08-smoke-design-and-implementation.md) | `reports\stage08-gates.json`（5/5 技术门禁）；`runs\smoke_001\summary.json`、`updates.jsonl`、`reload_check.json`；`audit\stage08-*.log` |
 | 09 | 8 张训练图过拟合检查 | 已通过独立验收 | [09-overfit-design-and-implementation.md](./09-overfit-design-and-implementation.md) | `runs\overfit_002\summary.json`、`evaluation_curve.json`、`eval\*`（仓库外）；`reports\stage09-summary.json`（仓库）；崩溃现场 `runs\overfit_001` 与 `runs\archive\overfit_001_attempt{1,2}_*`；回归 `runs\smoke_002_stage09_regression` |
 | 10 | 完整训练集短程试跑 | 已通过独立验收 | [10-pilot-design-and-implementation.md](./10-pilot-design-and-implementation.md) | `runs\pilot_001\summary.json`、`epochs.jsonl`、`updates.jsonl`、`reload_check.json`（仓库外）；`reports\stage10-summary.json`、`reports\stage10-unit-tests.txt`、`reports\figures\stage10-*.png`（仓库） |
-| 11 | 正式训练与可靠保存 | 未开始 | — | — |
-| 12 | 独立推理与原图评价 | 未开始 | — | — |
+| 11 | 正式训练与可靠保存 | 正式训练及保存模型已验收；恢复数值复现未通过原容差 | [11-training-design-and-implementation.md](./11-training-design-and-implementation.md) | [验收](../../reports/2026-11-01-stage11-acceptance.md)；`reports/stage11-acceptance.json`、`stage11-reload-check.json`、`stage11-resume-fixture.json`、263项回归、`stage11_evidence`原件；权重留仓库外 |
+| 12 | 独立推理与原图评价 | 未开始，已有执行交接 | — | [阶段12执行交接](../../reports/2026-11-01-stage12-execution-handoff.md) |
 | 13 | 结果可视化、失败分析与实验卡 | 未开始 | — | — |
 
 ## 当前状态一句话
 
-步骤01—09已通过独立验收；最终完整项目回归207项通过。第09阶段200/201/1跳步，固定训练子集全局IoU 0.008250→0.945710、异常macro 0.014414→0.760745、正常FP 873,511→85。该结果不代表泛化性能；完整val或test尚未评价。新进程保存物复验及当前代码smoke均通过，详见[联合验收](../../reports/2026-11-01-stage08-09-acceptance.md)。
+历史阶段09验收：步骤01—09通过，当时完整项目回归207项通过。第09阶段200/201/1跳步，固定训练子集全局IoU 0.008250→0.945710、异常macro 0.014414→0.760745、正常FP 873,511→85。该结果不代表泛化性能；当时完整val或test尚未评价。新进程保存物复验及当前代码smoke均通过，详见[联合验收](../../reports/2026-11-01-stage08-09-acceptance.md)。
 
 **第10阶段已通过独立验收**：795/795更新、0跳步；最终231项回归通过，新进程完整132图的逐图/macro/global/NA一致，预览概率差0、XOR0。val全局IoU0.6081、异常macro0.2207，仍有7/12异常图预测空，不能当正式基线成绩。[验收入口](../../reports/2026-11-01-stage10-acceptance.md)。
+
+**第11阶段正式训练与保存模型已验收，恢复数值复现有明确限制**：50轮，13250尝试 / 13243成功 / 7次AMP跳步；best39，val全局IoU0.7775、异常macro0.5396。当前263项回归，新进程完整132张val与6张预览通过；未读取test图像或执行阶段12。[验收记录](../../reports/2026-11-01-stage11-acceptance.md)。
+
+## 阶段 11 关键结论
+
+- 协议与覆盖：530 train / 132 val、B2、FP16AMP、workers0、随机水平翻转；每轮530唯一图、26500访次。预算13250、warmup662、cosine跨度12588，跳步不推进调度。
+- 末次实际更新LR1.000045016763374e-6，更新后保存LR1.0000330735426696e-6。warmup在第3轮已达到base LR，未验证其与前3轮全背景的因果。
+- best39：TP279246 / FP17894 / FN62003 / TN197941817；global IoU0.7775342969、Dice0.8748459012；异常macro IoU0.5395555278、Dice0.6203118681；正常1495FP像素、11/120张有FP。051预测空，042 TP0，081仅命中67/6373，不能只报global。
+- 保存物：best/last/mirror、完整optimizer/scaler/scheduler/RNG状态核准；实际138次B1 CUDA IEEE FP32前向，完整逐图/macro/global/normal/NA相等，预览概率差0.0、XOR0。原run21文件大小/SHA不变。
+- 代码修复：真实路径/身份与processor绑定、日志一致性与尾日志拒绝、完整优化器slot、重复resume事件和manifest自引用；新增完整只读复验器及真实边界/last检查器。当前263项回归，含21项正式训练、5项保存复验、6项恢复证据检查测试。
+- 旧恢复证据范围已纠正，原报告/源码/记录未覆盖；新A/B共36次更新，真正epoch1载入16项状态及下一轮数据/翻转通过，但epoch3 last概率最大差1.5032291e-4、XOR33，**未通过1e-5/XOR0门槛**。前缀也有差异，严格确定性原因未定位，不提供数值续训保证。
+- 正式50轮连续完成，没有用resume，可进入阶段12。旧checkpoint缺新恢复身份字段且源码不同，不能直接续训，保存best推理仍通过。workers>0未验证，单seed/12异常val不能支撑泛化结论。
+- [学习文档](./11-training-design-and-implementation.md)、[机器摘要](../../reports/stage11-acceptance.json)、[独立复验](../../reports/stage11-reload-check.json)、[原件](../../reports/stage11_evidence/README.md)及精选图保存在Git；权重、概率、环境和数据留仓库外。
 
 ## 阶段 10 关键结论
 
@@ -93,7 +106,9 @@
 
 ## 下一步
 
-仅按[阶段11执行交接](../../reports/2026-11-01-stage11-execution-handoff.md)完成正式入口与epoch边界恢复对照，再从原预训练重新初始化执行50轮固定单基线。train530/val132，workers0，保持原损失/增强/原图IEEE评价；重建13250/662学习率计划，不接pilot权重或其795步计划。完成后再次验收，不自动test。本轮未启动11。
+只做[阶段12执行交接](../../reports/2026-11-01-stage12-execution-handoff.md)：冻结best39与保存结构/processor，新进程先对齐完整132图val，再评价442图test（402正常+40异常）。固定原图还原、0.5、B1 IEEE FP32；不能依据test选择权重/阈值/后处理。必要技术复核须同协议并保留原因和全部结果，不按成绩择优。
+
+本轮未实施12或读取test图像。跨机器另行复制训练best及processor并核SHA。恢复数值限制与workers>0未验证如实带入后续；042/051/081的失败归因留阶段13。
 
 ## 维护约定
 

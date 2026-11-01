@@ -1,0 +1,82 @@
+{
+  "run_dir": "E:\\\u684c\u9762\\AI\\segformer_resources\\runs\\resume_acceptance_A_20261101",
+  "files": {
+    "checkpoints/best.pt": {
+      "bytes": 44849099,
+      "sha256": "d24fdf04a121306b41d8829dd85b7dab176573afc6673e6c533930d64e181164"
+    },
+    "checkpoints/last.pt": {
+      "bytes": 44849099,
+      "sha256": "07903db3e523368e5fc32bdc83f69247a95e3e9a584342c1b84e95af79026ad6"
+    },
+    "checkpoints/model_state.pt": {
+      "bytes": 14927903,
+      "sha256": "6f228ce4c8b1ce7a36bf01705d2e0fa9f9431b20cf884d947edef18cb4522c93"
+    },
+    "code_identity_end.json": {
+      "bytes": 40184,
+      "sha256": "2a59b78537d7a96ec04c6c41486dc6e12bf4fcf984a1dc487d90d74ac54dc5ad"
+    },
+    "code_identity_start.json": {
+      "bytes": 40186,
+      "sha256": "e2f8eb18bd17cefe34e9a0bcc8735adfdd15a36a7fd10503a218749273034e12"
+    },
+    "curves.png": {
+      "bytes": 54173,
+      "sha256": "cb5979ffa63bb5703d7ba981a48b14dfed49de07a398b3f206ef4a415e9481ea"
+    },
+    "epochs.jsonl": {
+      "bytes": 17641,
+      "sha256": "34db271865b540f0c64011d902ddaf6624d9c9cf7ccf4c70fb02845884089560"
+    },
+    "model_config.json": {
+      "bytes": 2601,
+      "sha256": "a2648c94cd17508f41b3fbf7451a2815ef2443192ed3c2388fb33288d4fd1bac"
+    },
+    "pre_save_probabilities.npz": {
+      "bytes": 28431624,
+      "sha256": "47cccb49ba0d7a275d6b41e361cdf2173010230b450a7123dc0e0cace126e2b4"
+    },
+    "processor/preprocessor_config.json": {
+      "bytes": 396,
+      "sha256": "7854b1307bdd3737b1106ad604bbd8f90308cfce8d46609e6d5d88a1face9f58"
+    },
+    "resolved_config.yaml": {
+      "bytes": 2808,
+      "sha256": "9dbd3c85514bafc57fb5be412dbf21c8c214294caeeefd284bdda2ddd2d22042"
+    },
+    "summary.json": {
+      "bytes": 56531,
+      "sha256": "ee722b9ed5083f728875c8f83dd45787a339010562e274e1b9ead1c32bab298f"
+    },
+    "updates.jsonl": {
+      "bytes": 8177,
+      "sha256": "bf24afd571aa845e92c5250b926460825961c4f19ee889b2a7abccc63b4d0ca5"
+    },
+    "val_previews/best/anomaly_010.png": {
+      "bytes": 140050,
+      "sha256": "24ffaa0a2e61da4de36428cf4723a8665f38ac85458bb5364e95ae0d2c0bda6d"
+    },
+    "val_previews/best/anomaly_045.png": {
+      "bytes": 137591,
+      "sha256": "cb5921625a713776d6487c2b4de5289f85ab8d715f724fae525826fc1e917ff3"
+    },
+    "val_previews/best/anomaly_087.png": {
+      "bytes": 143773,
+      "sha256": "e43a6dca8e0d91e0632090cae17cd0bc8ff20c58890368e12af333af64e6b83c"
+    },
+    "val_previews/best/normal_0011.png": {
+      "bytes": 144510,
+      "sha256": "5aaf54abd0c82534a9450e1a9246a96897d971577de194b612c1fe1caf6bbce5"
+    },
+    "val_previews/best/normal_0455.png": {
+      "bytes": 145376,
+      "sha256": "2fe19d050ce1dd5befd76c595a5bf23a1292ed5841c81ef96127a5b4da34c641"
+    },
+    "val_previews/best/normal_0983.png": {
+      "bytes": 139576,
+      "sha256": "1af2a4e37dc4a98382a2f78fb112c7547b474e104b9fbe9ab83aecae0f840e8b"
+    }
+  },
+  "file_count": 19
+}

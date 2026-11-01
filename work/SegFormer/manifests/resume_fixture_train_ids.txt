@@ -1,0 +1,15 @@
+# Stage-11 resume fixture only: 12 fixed training images (6 normal + 6 anomaly).
+# Taken in manifest order from manifests/train.csv; never used by the formal run.
+# Do not edit: the fixture comparison in reports/stage11-resume-fixture.json depends on it.
+pcb1/Data/Images/Normal/0000.JPG
+pcb1/Data/Images/Normal/0003.JPG
+pcb1/Data/Images/Normal/0004.JPG
+pcb1/Data/Images/Normal/0006.JPG
+pcb1/Data/Images/Normal/0007.JPG
+pcb1/Data/Images/Normal/0010.JPG
+pcb1/Data/Images/Anomaly/004.JPG
+pcb1/Data/Images/Anomaly/005.JPG
+pcb1/Data/Images/Anomaly/006.JPG
+pcb1/Data/Images/Anomaly/007.JPG
+pcb1/Data/Images/Anomaly/009.JPG
+pcb1/Data/Images/Anomaly/011.JPG

@@ -1,0 +1,141 @@
+{
+  "schema": "segformer-lab/stage11-resume-fixture/2",
+  "purpose": "prove a complete-epoch checkpoint restores in a new process with exact state, and characterise the numerical guarantee of the continuation; not a baseline",
+  "fixture": {
+    "config": "configs/resume_fixture.yaml",
+    "train_images": 12,
+    "val_images": 6,
+    "epochs": 3,
+    "planned_updates": 18,
+    "warmup_steps": 1,
+    "train_ids_sha256": "2d243d414e214341a070b3134115f883e356dd356c170c2e9be7d5bb26d1f1a1"
+  },
+  "declared_tolerances": {
+    "state_at_load": "bitwise equality of model/optimizer/scaler/scheduler/LR/counters/RNG/generator",
+    "batch_order_and_flip": "exact sequence equality",
+    "lr_and_loss_after_boundary": "lr exact; loss differences reported, not gated",
+    "model_after_control": "bitwise preferred; otherwise report max|diff| and the first divergent step",
+    "preview_probabilities": "max|diff| <= 1e-5 and XOR == 0"
+  },
+  "state_at_load": {
+    "checkpoint": "E:\\桌面\\AI\\segformer_resources\\runs\\resume_fixture_B\\checkpoints\\last.pt",
+    "model_bitwise_equal": true,
+    "model": {
+      "max_abs_diff": 0.0,
+      "worst_tensor": null,
+      "tensors": 208
+    },
+    "optimizer_equal": true,
+    "optimizer_note": "identical",
+    "scaler_equal": true,
+    "scheduler_equal": true,
+    "lr_equal": true,
+    "step_equal": true,
+    "epoch_and_best_equal": true,
+    "rng_restored_equals_payload": true,
+    "all_exact": true
+  },
+  "control_end_to_end": {
+    "runs": {
+      "uninterrupted": "E:\\桌面\\AI\\segformer_resources\\runs\\resume_fixture_A",
+      "interrupted_then_resumed": "E:\\桌面\\AI\\segformer_resources\\runs\\resume_fixture_B"
+    },
+    "trajectory_after_boundary": {
+      "rows": 12,
+      "batch_order_identical": true,
+      "flip_identical": true,
+      "lr_identical": true,
+      "max_loss_abs_diff": 4.685000000004269e-05,
+      "loss_identical": false
+    },
+    "first_update_loss": [
+      0.64164841,
+      0.64164835
+    ],
+    "final_model": {
+      "max_abs_diff": 0.0003610849380493164,
+      "worst_tensor": "segformer.encoder.block.3.1.attention.self.key.bias",
+      "tensors": 208
+    },
+    "preview_probabilities": {
+      "images": [
+        "pcb1_Data_Images_Anomaly_010.JPG",
+        "pcb1_Data_Images_Anomaly_045.JPG",
+        "pcb1_Data_Images_Anomaly_087.JPG",
+        "pcb1_Data_Images_Normal_0011.JPG",
+        "pcb1_Data_Images_Normal_0455.JPG",
+        "pcb1_Data_Images_Normal_0983.JPG"
+      ],
+      "max_abs_diff": 0.00010448694229125977,
+      "xor_pixels": 0,
+      "total_pixels": 9013680,
+      "within_tolerance": false
+    }
+  },
+  "control_same_checkpoint": {
+    "runs": {
+      "resume_one": "E:\\桌面\\AI\\segformer_resources\\runs\\resume_fixture_D",
+      "resume_two": "E:\\桌面\\AI\\segformer_resources\\runs\\resume_fixture_E"
+    },
+    "note": "D and E are byte-identical copies of the same epoch-1 run; each was resumed in its own new process from the same last.pt",
+    "trajectory_after_boundary": {
+      "rows": 12,
+      "batch_order_identical": true,
+      "flip_identical": true,
+      "lr_identical": true,
+      "max_loss_abs_diff": 1.7169999999955277e-05,
+      "loss_identical": false
+    },
+    "final_model": {
+      "max_abs_diff": 0.00012102723121643066,
+      "worst_tensor": "decode_head.batch_norm.running_mean",
+      "tensors": 208
+    },
+    "optimizer_equal": [
+      false,
+      "0.exp_avg"
+    ],
+    "preview_probabilities": {
+      "images": [
+        "pcb1_Data_Images_Anomaly_010.JPG",
+        "pcb1_Data_Images_Anomaly_045.JPG",
+        "pcb1_Data_Images_Anomaly_087.JPG",
+        "pcb1_Data_Images_Normal_0011.JPG",
+        "pcb1_Data_Images_Normal_0455.JPG",
+        "pcb1_Data_Images_Normal_0983.JPG"
+      ],
+      "max_abs_diff": 0.0,
+      "xor_pixels": 0,
+      "total_pixels": 9013680,
+      "within_tolerance": true
+    }
+  },
+  "verdict": {
+    "state_restored_bitwise": true,
+    "counters_lr_scheduler_best_exact": true,
+    "data_order_and_augmentation_restored": true,
+    "resume_logic_verified": true,
+    "bitwise_reproduction_across_processes": false,
+    "numerical_evidence": {
+      "two_fresh_processes_first_update_gap": 5.999999996841865e-08,
+      "two_resumes_same_checkpoint": {
+        "steps": 12,
+        "max_loss_abs_diff": 1.7169999999955277e-05,
+        "final_model_max_abs_diff": 0.00012102723121643066,
+        "optimizer_identical": false,
+        "lr_identical": true,
+        "batch_order_identical": true
+      },
+      "uninterrupted_vs_resumed": {
+        "steps": 12,
+        "max_loss_abs_diff": 4.685000000004269e-05,
+        "final_model_max_abs_diff": 0.0003610849380493164,
+        "preview_probability_max_abs_diff": 0.00010448694229125977,
+        "preview_xor_pixels": 0
+      }
+    },
+    "guarantee": "exact for restored state, counters, LR, scheduler, best, batch order and flip pattern; the floating-point continuation is reproducible only within a process, because even two resumes from the same checkpoint differ after 12 steps and two fresh runs already differ at their first update",
+    "explanation": "Restored objects are bitwise equal to the checkpoint (208/208 tensors, optimizer, scaler, scheduler, LR, counters, RNG). Two independent resumes from the same epoch-1 checkpoint agree on data order, flip pattern, LR and counters, but their weights drift by 1.210e-04 after 12 steps, and two fresh runs already differ at their first update (0.641648410 vs 0.641648350, gap 6.0e-08). That jitter is the cross-process GPU/fp16 non-determinism documented since stage 07, not a boundary error: the checkpoint neither loses state nor reorders data.",
+    "scope": "complete epoch boundary; last.pt only; the 13250/662 plan is preserved by the same code path"
+  }
+}

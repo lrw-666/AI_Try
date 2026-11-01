@@ -1,0 +1,26 @@
+test_apply_then_record_matches_the_used_lr (tests.test_train_full.BudgetTests.test_apply_then_record_matches_the_used_lr) ... ok
+test_cosine_is_monotone_and_ends_at_the_floor (tests.test_train_full.BudgetTests.test_cosine_is_monotone_and_ends_at_the_floor) ... ok
+test_first_step_lr_is_the_documented_value (tests.test_train_full.BudgetTests.test_first_step_lr_is_the_documented_value) ... ok
+test_formal_plan_matches_the_declared_protocol (tests.test_train_full.BudgetTests.test_formal_plan_matches_the_declared_protocol) ... ok
+test_warmup_reaches_base_on_the_662nd_update (tests.test_train_full.BudgetTests.test_warmup_reaches_base_on_the_662nd_update) ... ok
+test_baseline_config_passes_the_formal_guards (tests.test_train_full.GuardTests.test_baseline_config_passes_the_formal_guards) ... ok
+test_fixture_config_passes_only_the_fixture_guards (tests.test_train_full.GuardTests.test_fixture_config_passes_only_the_fixture_guards) ... ok
+test_formal_rejects_a_subset_and_a_wrong_epoch_budget (tests.test_train_full.GuardTests.test_formal_rejects_a_subset_and_a_wrong_epoch_budget) ... ok
+test_formal_rejects_implicit_scheduler_or_precision_fields (tests.test_train_full.GuardTests.test_formal_rejects_implicit_scheduler_or_precision_fields) ... ok
+test_pilot_still_owns_three_epochs (tests.test_train_full.GuardTests.test_pilot_still_owns_three_epochs) ... ok
+test_unknown_stage_kind_is_rejected (tests.test_train_full.GuardTests.test_unknown_stage_kind_is_rejected) ... ok
+test_corrupt_budget_counters_loader_and_rng_are_rejected (tests.test_train_full.ResumeSafetyTests.test_corrupt_budget_counters_loader_and_rng_are_rejected) ... ok
+test_final_artifact_inventories_never_hash_themselves (tests.test_train_full.ResumeSafetyTests.test_final_artifact_inventories_never_hash_themselves) ... ok
+test_identity_rejects_changed_eval_ids_processor_or_code_paths (tests.test_train_full.ResumeSafetyTests.test_identity_rejects_changed_eval_ids_processor_or_code_paths) ... ok
+test_missing_committed_epoch_or_duplicated_attempt_refuses_resume (tests.test_train_full.ResumeSafetyTests.test_missing_committed_epoch_or_duplicated_attempt_refuses_resume) ... ok
+test_optimizer_slots_cannot_silently_disappear (tests.test_train_full.ResumeSafetyTests.test_optimizer_slots_cannot_silently_disappear) ... ok
+test_real_cpu_checkpoint_restores_optimizer_rng_and_preserves_config (tests.test_train_full.ResumeSafetyTests.test_real_cpu_checkpoint_restores_optimizer_rng_and_preserves_config) ... ok
+test_same_basename_in_another_parent_is_not_the_same_run (tests.test_train_full.ResumeSafetyTests.test_same_basename_in_another_parent_is_not_the_same_run) ... ok
+test_saved_processor_is_bound_to_all_datasets (tests.test_train_full.ResumeSafetyTests.test_saved_processor_is_bound_to_all_datasets) ... ok
+test_second_resume_filters_event_rows_from_epoch_history (tests.test_train_full.ResumeSafetyTests.test_second_resume_filters_event_rows_from_epoch_history) ... ok
+test_uncommitted_updates_and_partial_json_fail_without_rewriting (tests.test_train_full.ResumeSafetyTests.test_uncommitted_updates_and_partial_json_fail_without_rewriting) ... ok
+
+----------------------------------------------------------------------
+Ran 21 tests in 3.339s
+
+OK

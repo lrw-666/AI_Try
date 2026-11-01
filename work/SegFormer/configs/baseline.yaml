@@ -1,14 +1,20 @@
-# SegFormer-B0 / PCB1 baseline configuration.
+# SegFormer-B0 / PCB1 v2 grouped split -- the single formal baseline (stage 11).
 #
-# Relative paths are resolved against the experiment project root
-# (E:\桌面\AI\AI_Try\work\SegFormer), never against the shell working directory.
-# The resolved absolute form used by a run is written to reports/resolved_config.yaml.
+# Relative paths resolve against the project root (E:\桌面\AI\AI_Try\work\SegFormer),
+# never against the shell working directory. The run writes the absolute form to
+# resolved_config.yaml so no protocol value is left to an implicit default.
 #
-# Values marked "fixed protocol" come from the end-to-end guide and from
-# manifests/split_meta.json; changing them changes the experiment identity.
+# Every protocol number below is repeated in `expected` / `protocol` blocks and is
+# re-checked by segformer_lab.train_full before the first batch runs. Editing a
+# value without editing its guard makes the entry point refuse to start.
+
+stage:
+  kind: formal                 # formal | fixture  (fixture = resume test only)
+  schema: segformer-lab/full-training/1
+  resume_scope: complete_epoch_boundary
 
 experiment:
-  name: segformer_b0_pcb1_v2_grouped
+  name: pcb1_b0_v2_seed42
   seed: 42
   output_root: E:/桌面/AI/segformer_resources/runs
 
@@ -17,33 +23,47 @@ data:
   category: pcb1
   train_manifest: manifests/train.csv
   val_manifest: manifests/val.csv
-  test_manifest: manifests/test.csv
-  split_meta: manifests/split_meta.json  # reviewed same-object risk group, protocol v2
-  train_ids_file: null
-  input_size: 512            # fixed protocol
-  resize_mode: letterbox     # keep aspect ratio, then centre pad
+  test_manifest: manifests/test.csv      # hashed only; never decoded in this stage
+  split_meta: manifests/split_meta.json  # v2 reviewed same-object risk groups
+  train_ids_file: null                   # null = full split, no subset
+  input_size: 512                        # fixed protocol
+  resize_mode: letterbox                 # fixed protocol
   image_pad_rgb: [124, 116, 104]
-  ignore_index: 255          # padding must never be counted as background
-  horizontal_flip_p: 0.5     # training only; never applied in audit/preview
-  workers: 0                 # Windows first run
+  ignore_index: 255                      # padding is never background
+  horizontal_flip_p: 0.5                 # training only, synchronised with the mask
+  workers: 0                             # the only loader setting validated on this host
+  shuffle: true                          # train loader shuffles once per epoch
+  drop_last: false                       # 530/2 = 265 exact batches anyway
+  eval_ids_file: null                    # full 132-image validation set
+
+expected:
+  train_images: 530
+  train_normal: 482
+  train_anomaly: 48
+  val_images: 132
+  val_normal: 120
+  val_anomaly: 12
 
 model:
   pretrained_dir: E:/桌面/AI/segformer_resources/models/mit-b0
-  num_labels: 2              # background + defect
+  num_labels: 2
   id2label: {0: background, 1: defect}
   label2id: {background: 0, defect: 1}
-  train_encoder: true
+  train_encoder: true                    # full-network fine-tuning
 
 train:
   epochs: 50
-  max_steps: null
+  max_steps: null                        # budget is epochs, not update count
   batch_size: 2
   gradient_accumulation_steps: 1
   amp: true
+  precision: fp16_amp                    # CUDA FP16 autocast + GradScaler
+  flip: random
   learning_rate: 0.00006
-  min_learning_rate: 0.000001
+  min_learning_rate: 0.000001            # cosine end point only, not a warmup floor
   weight_decay: 0.01
   warmup_ratio: 0.05
+  lr_scheduler: warmup_cosine
   grad_clip_norm: 1.0
   validate_every_epochs: 1
   early_stopping: false
@@ -54,14 +74,20 @@ loss:
   dice_epsilon: 0.000001
 
 eval:
-  batch_size: 1
-  precision: ieee_fp32        # evaluation: disable TF32 + autocast; train.amp stays independent
+  batch_size: 1                          # evaluation never batches
+  precision: ieee_fp32                   # TF32 + autocast off; training AMP independent
   threshold: 0.5
   metric_space: original
   postprocess: none
   selection_metric: foreground_iou_global
 
+checkpoint:
+  keep_last: true
+  keep_best: true
+  save_model_state: true                 # inference-only mirror of best
+
 logging:
-  tensorboard: true
-  log_every_micro_steps: 20
+  tensorboard: false                     # epochs.jsonl + curves.png are the record
+  log_every_micro_steps: 1
   fixed_preview_manifest: manifests/val_preview_ids.txt
+  preview_at_best_only: true

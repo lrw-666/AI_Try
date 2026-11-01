@@ -146,6 +146,8 @@ class ConfigGuardTests(unittest.TestCase):
             (("raw", "train", "gradient_accumulation_steps"), 2),
             (("raw", "data", "workers"), 4),
             (("raw", "train", "epochs"), 0),
+            (("raw", "train", "epochs"), 4),
+            (("raw", "train", "epochs"), 50),
             (("raw", "train", "grad_clip_norm"), 0.0),
         ]
         for path, value in cases:

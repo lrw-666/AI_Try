@@ -1,0 +1,102 @@
+{
+  "schema": "segformer-lab/stage11-resume-fixture/3",
+  "scope": "Corrected acceptance: immutable epoch1 load plus actual epoch3 last continuation; not a formal baseline",
+  "historical_report": "reports/stage11_evidence/original-resume-report.json",
+  "historical_scope_corrections": [
+    "Old NPZ represented epoch1 best, not final resumed last.",
+    "Old state_at_load loaded overwritten epoch3 B.last and did not compare every claimed RNG/generator field.",
+    "Independent prefixes differed before resume; divergence cannot be attributed solely to the boundary or a specific GPU kernel."
+  ],
+  "new_fixture": {
+    "control": "E:/桌面/AI/segformer_resources/runs/resume_acceptance_A_20261101",
+    "resumed": "E:/桌面/AI/segformer_resources/runs/resume_acceptance_B_20261101",
+    "updates_total_across_both_runs": 36,
+    "config": "configs/resume_fixture.yaml",
+    "train_images": 12,
+    "val_images": 6,
+    "epochs_each": 3,
+    "formal_50epoch_retrained": false
+  },
+  "declared_tolerance": {
+    "probability_atol": 1e-05,
+    "threshold": 0.5,
+    "required_xor": 0,
+    "per_image_metrics": "exact with identical GT and threshold masks",
+    "model_optimizer": "differences reported; no acceptance bound claimed"
+  },
+  "boundary": {
+    "report": "reports/stage11-new-resume-boundary.json",
+    "checkpoint": "E:\\桌面\\AI\\segformer_resources\\runs\\resume_acceptance_boundary_20261101\\epoch1-last.pt",
+    "checkpoint_sha256": "24782698b47c33b86dfdd9245353cb811be4eb04f582d632d2edd819c5c6665b",
+    "epoch": 1,
+    "state_at_load_ok": true,
+    "all_checks_before_loader_iteration": {
+      "model": true,
+      "optimizer_including_param_groups": true,
+      "scaler": true,
+      "scheduler": true,
+      "all_group_lr": true,
+      "step": true,
+      "best": true,
+      "next_epoch": true,
+      "model_train_mode": true,
+      "loader_generator": true,
+      "loader_settings": true,
+      "saved_processor_is_actual_dataset_processor": true,
+      "rng_python": true,
+      "rng_numpy": true,
+      "rng_torch": true,
+      "rng_cuda": true
+    },
+    "next_epoch_order_and_flip_ok": true,
+    "checkpoint_unchanged": true
+  },
+  "continuation": {
+    "report": "reports/stage11-new-resume-continuation.json",
+    "compared_actual_checkpoint_kind": "last",
+    "epochs": [
+      3,
+      3
+    ],
+    "post_boundary_rows": [
+      12,
+      12
+    ],
+    "counts_scheduler_lr_equal": true,
+    "trajectory_equal": {
+      "batch_ids": true,
+      "flipped_ids": true,
+      "lr": true,
+      "attempt": true,
+      "success_index": true,
+      "scheduler_completed": true,
+      "skipped": true
+    },
+    "model": {
+      "exact": false,
+      "tensor_keys_shapes_equal": true,
+      "tensors": 208,
+      "max_abs_diff": 0.00047183409333229065,
+      "worst_tensor": "/decode_head.batch_norm.running_mean"
+    },
+    "optimizer": {
+      "exact": false,
+      "tensor_keys_shapes_equal": true,
+      "tensors": 615,
+      "max_abs_diff": 4.727346822619438e-05,
+      "worst_tensor": "/state/73/exp_avg"
+    },
+    "probability_max_abs_diff": 0.00015032291412353516,
+    "xor_pixels": 33,
+    "per_image_metrics_identical": false,
+    "numeric_continuation_within_tolerance": false,
+    "prefix_max_logged_loss_diff": 3.2660000000017675e-05
+  },
+  "verdict": {
+    "state_and_data_order_restoration_verified": true,
+    "numerical_continuation_reproduction_verified": false,
+    "full_numerical_pass": false,
+    "interpretation": "Exact loading of complete frozen boundary state and data order verified; actual last-model continuation exceeds declared probability tolerance and has33mask differences. No bitwise or bounded-numerical continuation guarantee. Formal run completed uninterrupted and is verified separately."
+  },
+  "resume_scope": "Last complete ordered epoch only; matching paths/config/source/processor/logs required; incomplete trailing logs refused and preserved."
+}

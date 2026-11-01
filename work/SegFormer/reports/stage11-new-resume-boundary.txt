@@ -1,0 +1,1 @@
+{"out": "reports\\stage11-new-resume-boundary.json", "structural_ok": true, "numeric_continuation_within_tolerance": null}

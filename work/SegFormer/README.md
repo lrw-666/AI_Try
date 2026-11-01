@@ -3,10 +3,10 @@
 本目录是 VisA PCB1 high-shot 协议下 SegFormer-B0 单基线实验的工程根目录：代码、配置、清单、阶段文档。
 环境、缓存、数据、模型与运行产物**不在本目录**，统一放在仓库外的 `E:\桌面\AI\segformer_resources`。
 
-- 当前进度：**步骤1—10已通过独立验收，完整项目回归231项通过。**三轮pilot为795/795更新、0跳步，val全局IoU 0.6081、异常macro 0.2207，7/12异常图预测空。下一步仅阶段11正式单基线；尚未运行50轮或test评价。
+- 当前进度：**步骤1—10已验收；第11阶段正式训练与保存模型通过独立验收，恢复数值复现保留限制，可进入阶段12。**50轮完成：13250尝试 / 13243成功 / 7次AMP跳步；best=epoch39，val全局IoU **0.7775**、异常macro IoU **0.5396**。当前**263项回归通过**，新进程完整val与预览复验一致。真正epoch1恢复状态与下一轮数据顺序通过，但最终last概率差约1.503e-4、XOR33，未通过1e-5/XOR0门槛。正式run连续完成，未使用resume；**本轮未执行test或阶段12**。
 - 验收记录：[阶段01—02验收与完善](./reports/2026-10-31-stage01-02-acceptance.md)、[第三阶段验收](./reports/2026-10-31-stage03-acceptance.md)、[第四阶段验收](./reports/2026-10-31-stage04-acceptance.md)、[第五阶段模型加载与核验](./reports/2026-10-31-stage05-model-loading-and-check.md)、[第六阶段验收](./reports/2026-10-31-stage06-acceptance.md)
 - 阶段索引：[docs/stages/README.md](./docs/stages/README.md)
-- 最新验收：[第十阶段](./reports/2026-11-01-stage10-acceptance.md)；下一步见[阶段11执行交接](./reports/2026-11-01-stage11-execution-handoff.md)，完成正式单基线后再验收。
+- 最新验收：[第十一阶段](./reports/2026-11-01-stage11-acceptance.md)、[机器摘要](./reports/stage11-acceptance.json)、[阶段学习文档](./docs/stages/11-training-design-and-implementation.md)。下一步按[阶段12执行交接](./reports/2026-11-01-stage12-execution-handoff.md)进行独立推理与冻结协议测试。
 - 主指南：`../../docs/research/2026-10-31-segformer-baseline-end-to-end-guide.md`
 - 环境隔离规范：`../../docs/research/2026-10-31-segformer-environment-isolation-and-stage-docs.md`
 
@@ -74,13 +74,17 @@ work\SegFormer\                       仓库内（Git）
 ├─ segformer_lab\smoke.py             阶段 08 冒烟入口与重载对照
 ├─ segformer_lab\train.py             阶段 09 8 图过拟合入口
 ├─ segformer_lab\pilot.py             阶段 10 完整数据 epoch 入口与新进程复验
+├─ segformer_lab\train_full.py        阶段 11 正式 50 轮入口、checkpoint 与 epoch 边界恢复
+├─ segformer_lab\full_check.py        完整保存状态、全量val与预览只读复验
+├─ segformer_lab\resume_check.py      冻结恢复边界及真正last数值对照
 ├─ segformer_lab\subset.py            固定 8 图子集生成与校验
-├─ configs\baseline.yaml              实验配置（512 letterbox、ignore 255、二类）
+├─ configs\baseline.yaml              阶段 11 正式协议（显式 50 轮、13250/662、ieee_fp32）
 ├─ configs\smoke.yaml                 阶段 08 冒烟配置
 ├─ configs\overfit.yaml               阶段 09 过拟合配置（200 更新、LR 1e-4 无衰减）
 ├─ configs\pilot.yaml                 阶段 10 全量三轮配置（530/132、flip random、warmup+cosine）
-├─ manifests\                         官方 CSV 副本 + train/val/test 清单 + split_meta.json + reviewed_groups.json + val_preview_ids.txt + overfit_train_ids.txt
-├─ tests\                             环境/分组/几何/审计/模型/数据集/损失指标的单元测试（231 项）
+├─ configs\resume_fixture.yaml        阶段 11 恢复 fixture（12/6 图、3 轮、仅用于续训对照）
+├─ manifests\                         官方 CSV 副本 + train/val/test 清单 + split_meta.json + reviewed_groups.json + val_preview_ids.txt + overfit_train_ids.txt + resume_fixture_train_ids.txt
+├─ tests\                             环境/分组/几何/审计/模型/数据集/损失指标/训练入口的单元测试（263 项）
 ├─ reports\environment.json           最新环境报告
 ├─ reports\data_audit\                审计摘要、逐图统计、重复与近重复候选
 ├─ reports\model_*.json               快照下载、加载与运行时核验记录
@@ -160,7 +164,8 @@ E:\桌面\AI\segformer_resources\       仓库外（不进 Git）
 | 08 20 步冒烟检查 | 已通过独立验收 | [08-smoke-design-and-implementation.md](./docs/stages/08-smoke-design-and-implementation.md) |
 | 09 8 张训练图过拟合检查 | 已通过独立验收 | [09-overfit-design-and-implementation.md](./docs/stages/09-overfit-design-and-implementation.md) |
 | 10 完整训练集三轮 pilot | 已通过独立验收 | [10-pilot-design-and-implementation.md](./docs/stages/10-pilot-design-and-implementation.md) |
-| 11—13 | 未开始 | 见 [阶段索引](./docs/stages/README.md) |
+| 11 50 轮正式单基线 | 正式训练与保存模型已验收；恢复数值复现未通过 | [11-training-design-and-implementation.md](./docs/stages/11-training-design-and-implementation.md) |
+| 12—13 | 未开始 | 见 [阶段索引](./docs/stages/README.md) |
 
 ## 5.1 数据现状（2026-10-31）
 
@@ -252,6 +257,18 @@ E:\桌面\AI\segformer_resources\       仓库外（不进 Git）
 - 身份：git HEAD `0c5f0bd` + 未提交改动；起末代码/配置/清单与 `git diff` SHA 一致（`source_and_config_unchanged: true`）。**未实现 resume**，`workers>0` 未验证。
 - 证据：`reports/stage10-summary.json`（小型汇总）、`reports/stage10-unit-tests.txt`（231 项）、`reports/figures/stage10-*.png`（4 张精选）。
 
+## 5.9 50 轮正式单基线（阶段 11，已验收并声明恢复限制）
+
+- 协议：`stage.kind: formal`，530 train / 132 val，50轮、B2、累积1、workers0、FP16 AMP、同步随机水平翻转；评价B1 IEEE FP32、原图GT、阈值0.5。损失与数据划分不变。
+- 预算：13250次计划更新、warmup662（`round(662.5)` ties-to-even）、cosine跨度12588；首步LR9.06344411e-8。实际13250尝试 / **13243成功** / 7跳步，逐轮530唯一图、共26500访次。最后实际更新LR为1.000045016763374e-6；更新后保存LR为1.0000330735426696e-6，二者含义不同。
+- best=**epoch39**：完整val全局IoU **0.7775342969**、Dice **0.8748459012**、P0.9397792286、R0.8183056947；异常12图macro IoU **0.5395555278**、Dice0.6203118681；120张正常图1495个FP像素，11张有任意FP。这是验证选模结果，不是test成绩。
+- 失败例：051预测空；042虽预测47像素但TP0；081命中67/6373。大缺陷主导全局分数，必须同时报告macro。warmup已在第3轮达到base LR，不能用“第4轮才达到”解释前3轮全背景；best与last差约2e-4，未据此计算噪声或置信区间。
+- **263项回归通过**；新进程138次实际CUDA B1 FP32前向，132图逐图/macro/global/normal/NA全部对齐，6张预览概率差0.0、XOR0；best/last/mirror、205个优化器状态及计数核准，原run21个文件字节/SHA不变。
+- 恢复修复：实际路径与配置/源码/快照/processor/数据身份严格绑定；保存processor实际使用；日志只接受与last匹配的完整epoch边界，破损/未提交尾日志保留并拒绝；优化器缺slot拒绝；修复重复resume事件与manifest自引用。旧正式checkpoint缺新身份字段且源码不同，当前代码不允许直接续训；只读推理不受影响。
+- 恢复证据纠正：旧fixture拿epoch1 best概率及被覆盖的epoch3边界比较，旧“全状态相等”范围不充分，原件已归档。新A/B共36次更新，先冻结真正epoch1状态，16项状态和下一轮6批顺序/翻转通过；真正epoch3 last概率差**0.00015032291412353516**、XOR**33**，**未通过原定1e-5/XOR0门槛**。独立前缀也不同，未确定唯一原因，不提供逐位或该容差内续训保证。
+- 正式run未用resume，故可用已复验best进入阶段12。训练2609.179s（计算1711.191s、loader等待897.991s）、验证533.355s、保存8.053s；GPU峰值allocated/reserved806.3/934MiB。workers>0未验证，不改环境或包。
+- [验收报告](./reports/2026-11-01-stage11-acceptance.md)、[完整复验](./reports/stage11-reload-check.json)、[纠正后恢复汇总](./reports/stage11-resume-fixture.json)、[原件归档](./reports/stage11_evidence/README.md)、[阶段学习文档](./docs/stages/11-training-design-and-implementation.md)。正式日志无损gzip与原运行源码可追溯；权重/概率/批量输出留仓库外。
+
 ## 6. 常见操作
 
 ```powershell
@@ -314,6 +331,15 @@ Invoke-SegPython -u -m segformer_lab.pilot --config 'configs\pilot.yaml' `
 # 阶段 10：新进程严格加载 best.pt，重算全量 val 与 6 张预览
 Invoke-SegPython -u -m segformer_lab.pilot --verify-run "$SegResource\runs\pilot_001" `
   --config 'configs\pilot.yaml'
+
+# 阶段 11：已完成；当前只需按需进行只读复验，不要重跑正式50轮
+# 输出报告在原训练run之外；默认输出到同级pcb1_b0_v2_seed42-reload-check.json
+Invoke-SegPython -u -m segformer_lab.train_full --verify-run "$SegResource\runs\pcb1_b0_v2_seed42" `
+  --config 'configs\baseline.yaml' --report 'reports\stage11-reload-check.json'
+
+# 新实验的训练/恢复命令见阶段11学习文档；必须选择新目录。
+# 历史resume_fixture_A/B及正式run均保留，不覆盖。
+# 当前正式run已跑满50轮；旧checkpoint不满足新增身份字段，不能直接resume。
 
 # 数据准备：重新生成三份清单（已存在且内容相同的图不会被覆盖）
 Invoke-SegPython -m segformer_lab.prepare_data `
@@ -390,4 +416,12 @@ Invoke-SegPip list
 
 验收补强了NaN/shape/XOR、完整保存状态和起止数据身份门槛，修正了配置构造器原地修改、NA解释及产物数。原模型来源未单独冻结开始时snapshot哈希、增强图无逐样本视觉记录等局限如实保留。小目标漏检仍在，不以全局0.608作为论文成绩。
 
-下一步按[阶段11执行交接](./reports/2026-11-01-stage11-execution-handoff.md)补正式入口与epoch边界恢复验证，再从原预训练重新初始化，执行固定50轮单基线。继续workers0、全量val流式评价，不自动改损失/阈值，不自动test；本轮未启动这些工作。
+以上为第十阶段验收时的历史安排，正式训练现已完成；当前下一步见下节。
+
+## 第十一阶段验收与下一步
+
+[正式训练与保存模型已验收](./reports/2026-11-01-stage11-acceptance.md)：263项回归，完整val与固定预览新进程复验通过。冻结best39，SHA `192c827bef00607f4258e5fadf0f1d97970ca5cc727a0add749be0fba5997485`；原训练文件保持不变。恢复状态与顺序已确认，最终last数值对照未通过原容差，限制详见验收记录；不影响连续完成的正式模型评价。
+
+下一步只做[阶段12](./reports/2026-11-01-stage12-execution-handoff.md)：从保存best、模型结构及processor独立推理，先通过完整132图val门禁，再在冻结协议下评价442图test（402正常+40异常）。固定阈值0.5、B1 IEEE FP32、原图尺度还原；不能依据test选参。必要技术复核可按同一协议重跑并保留原因与所有结果，不按分数挑选。本轮未执行阶段12或test。
+
+跨机器需另外复制已训练best、结构和processor并核SHA；Git不包含大权重，重下MiT-B0不能替代已训练best。

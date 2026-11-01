@@ -1,0 +1,3790 @@
+{
+  "schema": "segformer-lab/stage11-independent-evidence-audit/1",
+  "audit_date": "2026-11-01T06:30:04.890884+00:00",
+  "method": {
+    "python": "3.12.0rc3",
+    "imports": "Python standard library only",
+    "no_torch_import": true,
+    "no_gpu": true,
+    "no_training_inference_or_tests": true,
+    "original_files_unchanged": true,
+    "test_manifest_operation": "SHA256 bytes only; no test image or mask opened"
+  },
+  "run": "pcb1_b0_v2_seed42",
+  "verdict": "Formal run arithmetic, log coverage, metrics, selection and artifact hashes pass independent read-only recomputation. Resume data order/LR/counters have direct fixture evidence; full numerical/all-object boundary equivalence remains insufficiently demonstrated.",
+  "checks": {
+    "train_basenames_unique": 1,
+    "val_ids_unique": 1,
+    "train_val_disjoint": 1,
+    "update_attempt_sequence": 13250,
+    "update_scheduler_completed_before_update": 13250,
+    "update_exact_schedule": 13250,
+    "flipped_is_subset": 13250,
+    "batch_size_2": 13250,
+    "optimizer_step_flag": 13250,
+    "event_matches_skip": 13250,
+    "finite_logged_losses_lr_scale": 13250,
+    "positive_image_count_from_manifest": 13250,
+    "success_index_sequence": 13243,
+    "skip_success_index_null": 7,
+    "skip_scale_decreased": 7,
+    "epoch_sequence": 1,
+    "formal_totals": 1,
+    "skip_stopping_threshold": 1,
+    "epoch_exact_train_coverage": 50,
+    "epoch_coverage_against_updates": 50,
+    "epoch_counters_against_updates": 300,
+    "epoch_scheduler_count": 50,
+    "epoch_lr_endpoints": 50,
+    "epoch_weighted_loss_with_8dp_rounding": 150,
+    "epoch_loss_denominators": 50,
+    "epoch_exact_val_coverage": 50,
+    "val_only_rows": 50,
+    "val_global_confusion_recalculated": 50,
+    "val_global_metric_recalculated": 200,
+    "val_label_counts": 50,
+    "val_per_image_metric_recalculated": 33000,
+    "val_per_image_na_reason_present": 26400,
+    "val_per_image_pixel_identities": 6600,
+    "val_anomaly_macro_recalculated": 200,
+    "val_normal_fp_recalculated": 50,
+    "val_normal_quantiles_recalculated": 150,
+    "anomaly_empty_diagnostics_recalculated": 50,
+    "best_selection_and_earliest_ties": 50,
+    "portable_epoch_fields": 500,
+    "portable_loss_fields": 150,
+    "portable_epoch_val_fields": 50,
+    "resource_summary_epoch_equals_jsonl": 50,
+    "final_best_selection": 1,
+    "portable_training_fields": 1,
+    "portable_best_fields": 1,
+    "portable_best_diagnostics": 1,
+    "start_end_identity_fields_unchanged": 1,
+    "start_end_git_unchanged": 1,
+    "recorded_diff_digest": 1,
+    "snapshot_revision_matches": 1,
+    "snapshot_actual_weight_sha_matches": 1,
+    "artifact_manifest_entry": 19,
+    "git_archive_original_bytes": 3,
+    "recorded_reload_val_metrics_equal": 1,
+    "reload_bound_to_actual_best_sha": 1,
+    "logged_batch_total_with_float32_and_decimal_rounding": 13250
+  },
+  "failed_checks": [],
+  "warnings": [
+    "Weighted losses independently recomputed from updates rounded to 8 decimal places; exact original unrounded loss numerators are not persisted. Denominators are persisted. Reported rounding bounds apply.",
+    "Flip count/signature is recomputed from per-update basenames resolved uniquely through the train manifest. NumPy PCG flip decisions themselves were not regenerated in this standard-library audit.",
+    "The run froze hashes of untracked sources but the recorded Git diff excludes their bodies. Start/end equality proves recorded identities unchanged; reproducibility also requires preserving the matching source bodies.",
+    "Artifact manifest predates reload_check.json and cannot include its own hash. summary.artifacts was constructed before summary.json. These inventories are not exhaustive final directory manifests.",
+    "test_images_read=false is self-reported. The inspected formal train/eval construction and per-image logs contain only train/val; there is no OS-level file-access audit proving that no test file was opened by any process.",
+    "Fixture artifact_manifest.json includes a hash of its prior version when the run was resumed; the self-entry is stale. Other fixture listed entries were checked independently and mismatches are listed explicitly.",
+    "Historical resumed fixture B is not byte-identical in model/optimizer to D/E at epoch 1. The D/E mutual shared state was verified separately; no assumption that D/E derive from B is required."
+  ],
+  "training": {
+    "epochs": 50,
+    "train_visits": 26500,
+    "attempts": 13250,
+    "successful_updates": 13243,
+    "skipped": 7,
+    "max_consecutive_skips": 1,
+    "skip_records": [
+      {
+        "attempt": 592,
+        "epoch": 3,
+        "scheduler_completed": 591,
+        "lr": 5.3655589123867074e-05,
+        "scale_before": 65536.0,
+        "scale_after": 32768.0,
+        "skip_reason": "nonfinite_grad",
+        "batch_ids": [
+          "041.JPG",
+          "0322.JPG"
+        ]
+      },
+      {
+        "attempt": 654,
+        "epoch": 3,
+        "scheduler_completed": 652,
+        "lr": 5.918429003021148e-05,
+        "scale_before": 32768.0,
+        "scale_after": 16384.0,
+        "skip_reason": "nonfinite_grad",
+        "batch_ids": [
+          "0652.JPG",
+          "043.JPG"
+        ]
+      },
+      {
+        "attempt": 3135,
+        "epoch": 12,
+        "scheduler_completed": 3132,
+        "lr": 5.456604278754898e-05,
+        "scale_before": 32768.0,
+        "scale_after": 16384.0,
+        "skip_reason": "nonfinite_grad",
+        "batch_ids": [
+          "096.JPG",
+          "0473.JPG"
+        ]
+      },
+      {
+        "attempt": 3517,
+        "epoch": 14,
+        "scheduler_completed": 3513,
+        "lr": 5.283751069399231e-05,
+        "scale_before": 16384.0,
+        "scale_after": 8192.0,
+        "skip_reason": "nonfinite_grad",
+        "batch_ids": [
+          "0596.JPG",
+          "053.JPG"
+        ]
+      },
+      {
+        "attempt": 7745,
+        "epoch": 30,
+        "scheduler_completed": 7740,
+        "lr": 2.4757472558933516e-05,
+        "scale_before": 32768.0,
+        "scale_after": 16384.0,
+        "skip_reason": "nonfinite_grad",
+        "batch_ids": [
+          "0434.JPG",
+          "084.JPG"
+        ]
+      },
+      {
+        "attempt": 12442,
+        "epoch": 47,
+        "scheduler_completed": 12436,
+        "lr": 1.605158212276684e-06,
+        "scale_before": 65536.0,
+        "scale_after": 32768.0,
+        "skip_reason": "nonfinite_grad",
+        "batch_ids": [
+          "0739.JPG",
+          "096.JPG"
+        ]
+      },
+      {
+        "attempt": 12689,
+        "epoch": 48,
+        "scheduler_completed": 12682,
+        "lr": 1.2948625375593827e-06,
+        "scale_before": 32768.0,
+        "scale_after": 16384.0,
+        "skip_reason": "nonfinite_grad",
+        "batch_ids": [
+          "052.JPG",
+          "0707.JPG"
+        ]
+      }
+    ],
+    "planned_updates": 13250,
+    "warmup_steps": 662,
+    "cosine_span": 12588,
+    "first_update_lr": 9.063444108761329e-08,
+    "last_used_lr": 1.000045016763374e-06,
+    "post_final_update_lr": 1.0000330735426696e-06,
+    "max_abs_weighted_loss_difference_from_rounded_updates": {
+      "ce": 4.454458995672289e-10,
+      "dice": 1.069993954549986e-09,
+      "total": 7.94693963412918e-10
+    },
+    "epoch_details": [
+      {
+        "epoch": 1,
+        "train_images": 530,
+        "flipped_images": 248,
+        "flip_signature_sha256": "c8a411b6c72b00708455bb6d7ae85b18cebbd30f682123b2efb9e4374d565aa6",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.31125355305660374,
+          "dice": 0.9835545312499999,
+          "total": 0.8030308186816038,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.0,
+          "foreground_dice": 0.0,
+          "precision": null,
+          "recall": 0.0
+        },
+        "anomaly_macro": {
+          "iou": 0.0,
+          "dice": 0.0,
+          "precision": null,
+          "recall": 0.0
+        },
+        "normal_fp_pixels": 0,
+        "normal_any_fp": 0,
+        "empty_anomaly_ids": [
+          "010.JPG",
+          "016.JPG",
+          "019.JPG",
+          "033.JPG",
+          "042.JPG",
+          "045.JPG",
+          "046.JPG",
+          "051.JPG",
+          "059.JPG",
+          "081.JPG",
+          "087.JPG",
+          "090.JPG"
+        ]
+      },
+      {
+        "epoch": 2,
+        "train_images": 530,
+        "flipped_images": 265,
+        "flip_signature_sha256": "559bf9e6ef52d511aa2897f9c9997ce13eb7f3fc39f86e51122724a0da1a5b13",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.05357447366037736,
+          "dice": 0.9866826108333333,
+          "total": 0.546915779077044,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.0,
+          "foreground_dice": 0.0,
+          "precision": null,
+          "recall": 0.0
+        },
+        "anomaly_macro": {
+          "iou": 0.0,
+          "dice": 0.0,
+          "precision": null,
+          "recall": 0.0
+        },
+        "normal_fp_pixels": 0,
+        "normal_any_fp": 0,
+        "empty_anomaly_ids": [
+          "010.JPG",
+          "016.JPG",
+          "019.JPG",
+          "033.JPG",
+          "042.JPG",
+          "045.JPG",
+          "046.JPG",
+          "051.JPG",
+          "059.JPG",
+          "081.JPG",
+          "087.JPG",
+          "090.JPG"
+        ]
+      },
+      {
+        "epoch": 3,
+        "train_images": 530,
+        "flipped_images": 265,
+        "flip_signature_sha256": "2bf98cabb750d5995720dfb8d819f54e040c86f972cd236be1460ea46bd90410",
+        "success": 263,
+        "skipped": 2,
+        "weighted_loss": {
+          "ce": 0.018738319320754718,
+          "dice": 0.9534664245833334,
+          "total": 0.4954715316124214,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.0,
+          "foreground_dice": 0.0,
+          "precision": null,
+          "recall": 0.0
+        },
+        "anomaly_macro": {
+          "iou": 0.0,
+          "dice": 0.0,
+          "precision": null,
+          "recall": 0.0
+        },
+        "normal_fp_pixels": 0,
+        "normal_any_fp": 0,
+        "empty_anomaly_ids": [
+          "010.JPG",
+          "016.JPG",
+          "019.JPG",
+          "033.JPG",
+          "042.JPG",
+          "045.JPG",
+          "046.JPG",
+          "051.JPG",
+          "059.JPG",
+          "081.JPG",
+          "087.JPG",
+          "090.JPG"
+        ]
+      },
+      {
+        "epoch": 4,
+        "train_images": 530,
+        "flipped_images": 270,
+        "flip_signature_sha256": "a325d93d7228d77a6743608f47904ec4ad0a9dd70f09d930d932f87e23ce5628",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.010873303056603773,
+          "dice": 0.9235453083333334,
+          "total": 0.47264595722327046,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.3513649376320633,
+          "foreground_dice": 0.520014879545039,
+          "precision": 0.9193368605653479,
+          "recall": 0.3625417217339831
+        },
+        "anomaly_macro": {
+          "iou": 0.17189717735047738,
+          "dice": 0.23752381096281427,
+          "precision": 0.7366027359069994,
+          "recall": 0.2463192414628589
+        },
+        "normal_fp_pixels": 60,
+        "normal_any_fp": 1,
+        "empty_anomaly_ids": [
+          "033.JPG",
+          "042.JPG",
+          "051.JPG",
+          "081.JPG",
+          "087.JPG",
+          "090.JPG"
+        ]
+      },
+      {
+        "epoch": 5,
+        "train_images": 530,
+        "flipped_images": 250,
+        "flip_signature_sha256": "de012ed592e230192c1916b3b3cc1ddde872afa046794b702b94245cbde4007b",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.005597842452830189,
+          "dice": 0.7206693402083334,
+          "total": 0.3659325125569969,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.5637783061021464,
+          "foreground_dice": 0.7210463323377505,
+          "precision": 0.9321914975674809,
+          "recall": 0.5878874370327826
+        },
+        "anomaly_macro": {
+          "iou": 0.3226665036392749,
+          "dice": 0.4187636794188592,
+          "precision": 0.7478527050610939,
+          "recall": 0.41161461368011204
+        },
+        "normal_fp_pixels": 1590,
+        "normal_any_fp": 3,
+        "empty_anomaly_ids": [
+          "042.JPG",
+          "051.JPG",
+          "081.JPG"
+        ]
+      },
+      {
+        "epoch": 6,
+        "train_images": 530,
+        "flipped_images": 267,
+        "flip_signature_sha256": "bf1bd26c2f02b6c057e6e4673a3aa3aa873e8e28820d27dac8cf805de8871cc9",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.004204720264150944,
+          "dice": 0.630327396875,
+          "total": 0.3193684187016509,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.5868378435602658,
+          "foreground_dice": 0.739631772637364,
+          "precision": 0.9613178098371721,
+          "recall": 0.6010303326896196
+        },
+        "anomaly_macro": {
+          "iou": 0.34921136574558403,
+          "dice": 0.4368597297439796,
+          "precision": 0.8573279626323052,
+          "recall": 0.3890522934148408
+        },
+        "normal_fp_pixels": 410,
+        "normal_any_fp": 3,
+        "empty_anomaly_ids": [
+          "042.JPG",
+          "051.JPG",
+          "081.JPG",
+          "087.JPG"
+        ]
+      },
+      {
+        "epoch": 7,
+        "train_images": 530,
+        "flipped_images": 255,
+        "flip_signature_sha256": "00c8c2b58cb759ea8a2e8cd86436de304cd806d9b12611b95eab19eeec4335c8",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.003590986754716981,
+          "dice": 0.5000834554166667,
+          "total": 0.2536327144630503,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.350911914876354,
+          "foreground_dice": 0.5195185726205874,
+          "precision": 0.969195185197042,
+          "recall": 0.3548699043806722
+        },
+        "anomaly_macro": {
+          "iou": 0.34654379598452684,
+          "dice": 0.447503478413719,
+          "precision": 0.853351732935203,
+          "recall": 0.3717129015243912
+        },
+        "normal_fp_pixels": 893,
+        "normal_any_fp": 9,
+        "empty_anomaly_ids": [
+          "042.JPG",
+          "051.JPG",
+          "081.JPG"
+        ]
+      },
+      {
+        "epoch": 8,
+        "train_images": 530,
+        "flipped_images": 291,
+        "flip_signature_sha256": "68f8381a8d03e98f58131e034de60420b8c0f4fde402bf9feb556ca1bb699328",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.0028262909433962266,
+          "dice": 0.4235887472916667,
+          "total": 0.21462066458922957,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.6135155563324626,
+          "foreground_dice": 0.7604705810546875,
+          "precision": 0.7933214691621752,
+          "recall": 0.7302321765045465
+        },
+        "anomaly_macro": {
+          "iou": 0.442333406144418,
+          "dice": 0.5415974381284547,
+          "precision": 0.7328871544747858,
+          "recall": 0.5003564768022366
+        },
+        "normal_fp_pixels": 1895,
+        "normal_any_fp": 14,
+        "empty_anomaly_ids": [
+          "042.JPG",
+          "051.JPG"
+        ]
+      },
+      {
+        "epoch": 9,
+        "train_images": 530,
+        "flipped_images": 271,
+        "flip_signature_sha256": "7e3ea85f331a04c2f3c979d64b52cab929bdd4bed0a2de4933a4620035875803",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.002290822490566038,
+          "dice": 0.38491583229166665,
+          "total": 0.19474873863639935,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.6746629441512995,
+          "foreground_dice": 0.8057298294054164,
+          "precision": 0.9132118197342045,
+          "recall": 0.7208841637631173
+        },
+        "anomaly_macro": {
+          "iou": 0.4334529461811722,
+          "dice": 0.5283319658195389,
+          "precision": 0.8383599065498103,
+          "recall": 0.47183088575646104
+        },
+        "normal_fp_pixels": 299,
+        "normal_any_fp": 7,
+        "empty_anomaly_ids": [
+          "042.JPG",
+          "051.JPG",
+          "081.JPG"
+        ]
+      },
+      {
+        "epoch": 10,
+        "train_images": 530,
+        "flipped_images": 276,
+        "flip_signature_sha256": "610bbfad1ec0c6837295da401650d1ddeccdc43987e4567a01588e57e46ed50c",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.001869610641509434,
+          "dice": 0.36048375791666665,
+          "total": 0.18211148959984275,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.5604525690349899,
+          "foreground_dice": 0.7183205438683512,
+          "precision": 0.9509122774829929,
+          "recall": 0.5771504092319685
+        },
+        "anomaly_macro": {
+          "iou": 0.4404168956573646,
+          "dice": 0.5432945099608885,
+          "precision": 0.8612803906859159,
+          "recall": 0.4922935570505628
+        },
+        "normal_fp_pixels": 944,
+        "normal_any_fp": 9,
+        "empty_anomaly_ids": [
+          "042.JPG",
+          "051.JPG",
+          "081.JPG"
+        ]
+      },
+      {
+        "epoch": 11,
+        "train_images": 530,
+        "flipped_images": 280,
+        "flip_signature_sha256": "b67c1698a4b04d43a2c9e28566938e830310c58e31849241faf9a9d73081d40d",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.0016142826792452832,
+          "dice": 0.3288901797916667,
+          "total": 0.16605937257507863,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.4158469169979932,
+          "foreground_dice": 0.5874179079751214,
+          "precision": 0.9723734460063379,
+          "recall": 0.42081881558627277
+        },
+        "anomaly_macro": {
+          "iou": 0.3881751625835072,
+          "dice": 0.5007259235289435,
+          "precision": 0.882357286239138,
+          "recall": 0.4255664089138583
+        },
+        "normal_fp_pixels": 790,
+        "normal_any_fp": 10,
+        "empty_anomaly_ids": [
+          "042.JPG",
+          "051.JPG",
+          "081.JPG"
+        ]
+      },
+      {
+        "epoch": 12,
+        "train_images": 530,
+        "flipped_images": 282,
+        "flip_signature_sha256": "ccbbf5d02b531f038c1c67ab7ac13be6c950b24f5cbf7fbfafbb9d0ef61aaaa5",
+        "success": 264,
+        "skipped": 1,
+        "weighted_loss": {
+          "ce": 0.0015800223396226416,
+          "dice": 0.34608631729166667,
+          "total": 0.17462318098545598,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.5929786019971469,
+          "foreground_dice": 0.7444903544262536,
+          "precision": 0.9573863374637247,
+          "recall": 0.6090537994250532
+        },
+        "anomaly_macro": {
+          "iou": 0.39506381528003054,
+          "dice": 0.48780236683990424,
+          "precision": 0.8703092689430805,
+          "recall": 0.4107013094092184
+        },
+        "normal_fp_pixels": 812,
+        "normal_any_fp": 9,
+        "empty_anomaly_ids": [
+          "042.JPG",
+          "051.JPG",
+          "081.JPG"
+        ]
+      },
+      {
+        "epoch": 13,
+        "train_images": 530,
+        "flipped_images": 290,
+        "flip_signature_sha256": "b5e8143faa5510424a84fb42d45af28629c885dc8f65a96f23bf614ca5b7903f",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.0015588765283018867,
+          "dice": 0.3369622860416666,
+          "total": 0.1700400195491352,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.6561876863134398,
+          "foreground_dice": 0.7924073964999324,
+          "precision": 0.9691097768191969,
+          "recall": 0.6702056269761962
+        },
+        "anomaly_macro": {
+          "iou": 0.47716578153441014,
+          "dice": 0.5731184354749437,
+          "precision": 0.7771423681911012,
+          "recall": 0.5247243802026756
+        },
+        "normal_fp_pixels": 914,
+        "normal_any_fp": 8,
+        "empty_anomaly_ids": [
+          "051.JPG",
+          "081.JPG"
+        ]
+      },
+      {
+        "epoch": 14,
+        "train_images": 530,
+        "flipped_images": 258,
+        "flip_signature_sha256": "464d4f903666ac4a63445622e1efa8b36126dd87439b1656cf519f1bc428a6fd",
+        "success": 264,
+        "skipped": 1,
+        "weighted_loss": {
+          "ce": 0.001130893962264151,
+          "dice": 0.28338573791666666,
+          "total": 0.14282376292059748,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.6287231725213244,
+          "foreground_dice": 0.7720442407017976,
+          "precision": 0.9663136657180867,
+          "recall": 0.6428121401088355
+        },
+        "anomaly_macro": {
+          "iou": 0.4892586118564645,
+          "dice": 0.5843600651419453,
+          "precision": 0.7582256668072463,
+          "recall": 0.5686849568335698
+        },
+        "normal_fp_pixels": 1468,
+        "normal_any_fp": 9,
+        "empty_anomaly_ids": [
+          "051.JPG",
+          "081.JPG"
+        ]
+      },
+      {
+        "epoch": 15,
+        "train_images": 530,
+        "flipped_images": 274,
+        "flip_signature_sha256": "c1e99453e12cec032534ba2f77aa86b3df201eeac582c43040a4a1273b3cb768",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.0009911004528301887,
+          "dice": 0.26925043770833335,
+          "total": 0.13561631930699686,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.6948566203834049,
+          "foreground_dice": 0.8199591776987208,
+          "precision": 0.9344559740882917,
+          "recall": 0.7304578181914086
+        },
+        "anomaly_macro": {
+          "iou": 0.4702128479540855,
+          "dice": 0.5634063816430285,
+          "precision": 0.8590748974748813,
+          "recall": 0.5087598774335214
+        },
+        "normal_fp_pixels": 1265,
+        "normal_any_fp": 13,
+        "empty_anomaly_ids": [
+          "042.JPG",
+          "051.JPG",
+          "081.JPG"
+        ]
+      },
+      {
+        "epoch": 16,
+        "train_images": 530,
+        "flipped_images": 283,
+        "flip_signature_sha256": "a3b385521614ee46f29224af63e744dbebfffdbde6ea3e7ac076dc4b065ba367",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.001276111886792453,
+          "dice": 0.276676215,
+          "total": 0.13961421938679244,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.6787018777330018,
+          "foreground_dice": 0.8086032269762549,
+          "precision": 0.9648899687946951,
+          "recall": 0.6958877535172264
+        },
+        "anomaly_macro": {
+          "iou": 0.44508911556851166,
+          "dice": 0.548289032654903,
+          "precision": 0.9050159692266234,
+          "recall": 0.49059683360072115
+        },
+        "normal_fp_pixels": 1127,
+        "normal_any_fp": 9,
+        "empty_anomaly_ids": [
+          "042.JPG",
+          "051.JPG"
+        ]
+      },
+      {
+        "epoch": 17,
+        "train_images": 530,
+        "flipped_images": 269,
+        "flip_signature_sha256": "66bb29c4bafa35ff1c238e5a3782674417d75e2938399d555b74e6335c7c3f73",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.0008472363018867925,
+          "dice": 0.25318761125,
+          "total": 0.1274410419268868,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.6834909968316966,
+          "foreground_dice": 0.8119924586683455,
+          "precision": 0.9472055876527874,
+          "recall": 0.7105603239862974
+        },
+        "anomaly_macro": {
+          "iou": 0.5362381221766652,
+          "dice": 0.6447614166583588,
+          "precision": 0.7764965872740156,
+          "recall": 0.6309280897129104
+        },
+        "normal_fp_pixels": 3187,
+        "normal_any_fp": 17,
+        "empty_anomaly_ids": []
+      },
+      {
+        "epoch": 18,
+        "train_images": 530,
+        "flipped_images": 270,
+        "flip_signature_sha256": "31ec85cefa6f2c81697f87ef7d4c1e737be31c8d6c10b115b02ae51ef7ba78bf",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.0008612210188679245,
+          "dice": 0.249220909375,
+          "total": 0.1254716757063679,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.6936570712365212,
+          "foreground_dice": 0.8191234022718537,
+          "precision": 0.8469579041914294,
+          "recall": 0.7930601994438079
+        },
+        "anomaly_macro": {
+          "iou": 0.48685329256525084,
+          "dice": 0.5873417052975679,
+          "precision": 0.8105075341274518,
+          "recall": 0.5581911567281083
+        },
+        "normal_fp_pixels": 1028,
+        "normal_any_fp": 10,
+        "empty_anomaly_ids": [
+          "051.JPG"
+        ]
+      },
+      {
+        "epoch": 19,
+        "train_images": 530,
+        "flipped_images": 296,
+        "flip_signature_sha256": "61130ac91d6eb92ef12f62a884827497165559c6aa3690fe26f54b841b74b55d",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.0007430030188679245,
+          "dice": 0.22587254479166666,
+          "total": 0.11367927541470126,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.6686242662014055,
+          "foreground_dice": 0.8014078180985791,
+          "precision": 0.7900874220463023,
+          "recall": 0.8130573276405205
+        },
+        "anomaly_macro": {
+          "iou": 0.5099968508057632,
+          "dice": 0.5997542310743096,
+          "precision": 0.6937389281927068,
+          "recall": 0.6131188048258909
+        },
+        "normal_fp_pixels": 2730,
+        "normal_any_fp": 17,
+        "empty_anomaly_ids": []
+      },
+      {
+        "epoch": 20,
+        "train_images": 530,
+        "flipped_images": 268,
+        "flip_signature_sha256": "3a96fdb851c378cfd8174c75e465fb04445e6d8422ad0ced0fbf2e3f260e220a",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.0007997260000000001,
+          "dice": 0.24124479270833332,
+          "total": 0.12142212235416666,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.6749076372734915,
+          "foreground_dice": 0.8059043045169272,
+          "precision": 0.8024298625576308,
+          "recall": 0.8094089653009973
+        },
+        "anomaly_macro": {
+          "iou": 0.4939923889632561,
+          "dice": 0.5903127128316494,
+          "precision": 0.773757853522131,
+          "recall": 0.5968410846732161
+        },
+        "normal_fp_pixels": 1544,
+        "normal_any_fp": 15,
+        "empty_anomaly_ids": [
+          "051.JPG"
+        ]
+      },
+      {
+        "epoch": 21,
+        "train_images": 530,
+        "flipped_images": 269,
+        "flip_signature_sha256": "6394791deaacb655c94b8693664dede26bcca6f0a7f80457224b371f1f1b1cfc",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.0010715593584905661,
+          "dice": 0.24287288854166666,
+          "total": 0.1225080036293239,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.7426366036969327,
+          "foreground_dice": 0.852313789485954,
+          "precision": 0.9214808053215803,
+          "recall": 0.7928052536417689
+        },
+        "anomaly_macro": {
+          "iou": 0.5242254698373188,
+          "dice": 0.614952116769463,
+          "precision": 0.8666180427662284,
+          "recall": 0.5925503138065129
+        },
+        "normal_fp_pixels": 1801,
+        "normal_any_fp": 14,
+        "empty_anomaly_ids": [
+          "042.JPG",
+          "051.JPG"
+        ]
+      },
+      {
+        "epoch": 22,
+        "train_images": 530,
+        "flipped_images": 253,
+        "flip_signature_sha256": "2b07135d9ad3b489b7d730170e584a3cf5a58ec4901b470d0706b955980274d5",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.0008835898113207547,
+          "dice": 0.220117180625,
+          "total": 0.11094218012382075,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.7555813494023511,
+          "foreground_dice": 0.8607762319411425,
+          "precision": 0.922357252440258,
+          "recall": 0.8069034634533727
+        },
+        "anomaly_macro": {
+          "iou": 0.5157930791194204,
+          "dice": 0.6016105855906462,
+          "precision": 0.7719604913742503,
+          "recall": 0.5802871322242972
+        },
+        "normal_fp_pixels": 1333,
+        "normal_any_fp": 13,
+        "empty_anomaly_ids": [
+          "051.JPG",
+          "081.JPG"
+        ]
+      },
+      {
+        "epoch": 23,
+        "train_images": 530,
+        "flipped_images": 272,
+        "flip_signature_sha256": "3dc0e9f48a14f2684586b1467525370728b54d51a7c4c2adec4e10f9f18aad59",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.0006063925660377359,
+          "dice": 0.20889084229166666,
+          "total": 0.10505181371187107,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.6943920945460766,
+          "foreground_dice": 0.8196356637654197,
+          "precision": 0.857512372830353,
+          "recall": 0.784963472420432
+        },
+        "anomaly_macro": {
+          "iou": 0.5052699883223936,
+          "dice": 0.5964373194520736,
+          "precision": 0.7858360766716831,
+          "recall": 0.5790045066749677
+        },
+        "normal_fp_pixels": 1579,
+        "normal_any_fp": 12,
+        "empty_anomaly_ids": [
+          "051.JPG"
+        ]
+      },
+      {
+        "epoch": 24,
+        "train_images": 530,
+        "flipped_images": 284,
+        "flip_signature_sha256": "b6bfda9e0bc72a32c5f315409839406f13b7035a8ba19950c7b5d41c8745cc7c",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.0007736163396226415,
+          "dice": 0.21742482770833335,
+          "total": 0.10948603019378932,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.7252871328786785,
+          "foreground_dice": 0.8407726679889178,
+          "precision": 0.8882257790996491,
+          "recall": 0.7981327417809283
+        },
+        "anomaly_macro": {
+          "iou": 0.5173556652469127,
+          "dice": 0.6085196472195954,
+          "precision": 0.7960064447163533,
+          "recall": 0.5835757873758748
+        },
+        "normal_fp_pixels": 1525,
+        "normal_any_fp": 13,
+        "empty_anomaly_ids": [
+          "051.JPG"
+        ]
+      },
+      {
+        "epoch": 25,
+        "train_images": 530,
+        "flipped_images": 282,
+        "flip_signature_sha256": "64b2962dc63ac7ef26353054d62e6eacbcc8447c7af3673067599dfa1bbc9426",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.0005822558867924529,
+          "dice": 0.18713394583333332,
+          "total": 0.0941492288034591,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.7346957148001441,
+          "foreground_dice": 0.847060044631273,
+          "precision": 0.9140780916952903,
+          "recall": 0.7891979170634932
+        },
+        "anomaly_macro": {
+          "iou": 0.5175762623347734,
+          "dice": 0.6133622752414243,
+          "precision": 0.8528950031997166,
+          "recall": 0.5813717988005
+        },
+        "normal_fp_pixels": 1726,
+        "normal_any_fp": 11,
+        "empty_anomaly_ids": [
+          "051.JPG"
+        ]
+      },
+      {
+        "epoch": 26,
+        "train_images": 530,
+        "flipped_images": 274,
+        "flip_signature_sha256": "ca5a8fd4fc9b738167766d446e87a61425e94b1e9d5913eaf79518143935ea20",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.0008088352452830189,
+          "dice": 0.19934253437500002,
+          "total": 0.10048010243278303,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.7237922398833189,
+          "foreground_dice": 0.8397673723514515,
+          "precision": 0.852452285640106,
+          "recall": 0.8274544394269288
+        },
+        "anomaly_macro": {
+          "iou": 0.5216110633899558,
+          "dice": 0.6148752422999643,
+          "precision": 0.7784167809231254,
+          "recall": 0.6132152911158071
+        },
+        "normal_fp_pixels": 2058,
+        "normal_any_fp": 15,
+        "empty_anomaly_ids": [
+          "051.JPG"
+        ]
+      },
+      {
+        "epoch": 27,
+        "train_images": 530,
+        "flipped_images": 263,
+        "flip_signature_sha256": "ab997cb922ca25b0cea885e1ea60c2d86613c772924475e69b8f9171f5edfd8c",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.0005591377358490566,
+          "dice": 0.1809588708333333,
+          "total": 0.09103857315251572,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.7317326600887927,
+          "foreground_dice": 0.845087324334778,
+          "precision": 0.9692724191144967,
+          "recall": 0.7491098875015019
+        },
+        "anomaly_macro": {
+          "iou": 0.5116372259895039,
+          "dice": 0.6010429770453738,
+          "precision": 0.7328520728624229,
+          "recall": 0.5739053021118196
+        },
+        "normal_fp_pixels": 1874,
+        "normal_any_fp": 13,
+        "empty_anomaly_ids": []
+      },
+      {
+        "epoch": 28,
+        "train_images": 530,
+        "flipped_images": 257,
+        "flip_signature_sha256": "b334b88cdf6da2288852ac9b2e4abc38bcb7cf551b43722dd537930d8bf9b359",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.0005055090188679246,
+          "dice": 0.174402268125,
+          "total": 0.08770664308136793,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.7552058962780022,
+          "foreground_dice": 0.8605325425119097,
+          "precision": 0.9319145446904756,
+          "recall": 0.7993078367995218
+        },
+        "anomaly_macro": {
+          "iou": 0.5173711851188252,
+          "dice": 0.6026928164826074,
+          "precision": 0.8027298059583482,
+          "recall": 0.5783633450976583
+        },
+        "normal_fp_pixels": 1851,
+        "normal_any_fp": 14,
+        "empty_anomaly_ids": [
+          "051.JPG"
+        ]
+      },
+      {
+        "epoch": 29,
+        "train_images": 530,
+        "flipped_images": 275,
+        "flip_signature_sha256": "95c8b73bacaf88c07362b169d7b2521ed141344a43203667158215285625ce4c",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.0005146090943396227,
+          "dice": 0.17942743604166667,
+          "total": 0.09022832711517295,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.7298720280802078,
+          "foreground_dice": 0.8438451125083645,
+          "precision": 0.890418937606768,
+          "recall": 0.801901250992677
+        },
+        "anomaly_macro": {
+          "iou": 0.5129572356604287,
+          "dice": 0.6011941916824202,
+          "precision": 0.7230834368735565,
+          "recall": 0.5890236949331603
+        },
+        "normal_fp_pixels": 1126,
+        "normal_any_fp": 11,
+        "empty_anomaly_ids": []
+      },
+      {
+        "epoch": 30,
+        "train_images": 530,
+        "flipped_images": 249,
+        "flip_signature_sha256": "c76ef719e435730f2c1e732764aa19cc00361cb8d84049d81d2b2c1515ee567f",
+        "success": 264,
+        "skipped": 1,
+        "weighted_loss": {
+          "ce": 0.000535650037735849,
+          "dice": 0.19302615104166668,
+          "total": 0.0970487255585692,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.7315962781945895,
+          "foreground_dice": 0.8449963624978128,
+          "precision": 0.8871403848570886,
+          "recall": 0.8066748913549929
+        },
+        "anomaly_macro": {
+          "iou": 0.5195819630027619,
+          "dice": 0.6056959881590852,
+          "precision": 0.762897590546261,
+          "recall": 0.5972993274553731
+        },
+        "normal_fp_pixels": 2216,
+        "normal_any_fp": 20,
+        "empty_anomaly_ids": [
+          "051.JPG",
+          "081.JPG"
+        ]
+      },
+      {
+        "epoch": 31,
+        "train_images": 530,
+        "flipped_images": 274,
+        "flip_signature_sha256": "4c06d65b6bda52d0ade5d50ed77ffe4ba8dea9b2b895fb739ecb74de5a05f558",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.0005147054716981133,
+          "dice": 0.172618491875,
+          "total": 0.08682395140919812,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.7751202572920789,
+          "foreground_dice": 0.8733157701377529,
+          "precision": 0.9405963698345221,
+          "recall": 0.8150177729458548
+        },
+        "anomaly_macro": {
+          "iou": 0.5332035216586059,
+          "dice": 0.6144315940668414,
+          "precision": 0.7731257604789997,
+          "recall": 0.6077129218350102
+        },
+        "normal_fp_pixels": 1534,
+        "normal_any_fp": 14,
+        "empty_anomaly_ids": [
+          "051.JPG",
+          "081.JPG"
+        ]
+      },
+      {
+        "epoch": 32,
+        "train_images": 530,
+        "flipped_images": 285,
+        "flip_signature_sha256": "35045f42d6f128fe938ab2a6beef31cbf7961fc80b9ee7ae24b5e300e1139849",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.0005083758490566038,
+          "dice": 0.165233675625,
+          "total": 0.0831252136615566,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.7708476061051899,
+          "foreground_dice": 0.8705973381872149,
+          "precision": 0.9484986992527181,
+          "recall": 0.8045210388894912
+        },
+        "anomaly_macro": {
+          "iou": 0.5198432121510029,
+          "dice": 0.6043431023725901,
+          "precision": 0.7876411181457856,
+          "recall": 0.5754045879830407
+        },
+        "normal_fp_pixels": 1055,
+        "normal_any_fp": 9,
+        "empty_anomaly_ids": [
+          "051.JPG",
+          "081.JPG"
+        ]
+      },
+      {
+        "epoch": 33,
+        "train_images": 530,
+        "flipped_images": 263,
+        "flip_signature_sha256": "5b81b2c0d1a8cd2eb0106944f2f63b9ae8e5ea3768ac1d7e256874f6a23730d8",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.00047956577358490565,
+          "dice": 0.171556361875,
+          "total": 0.08625774671108491,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.7547436596745237,
+          "foreground_dice": 0.8602323826769277,
+          "precision": 0.886723015327375,
+          "recall": 0.8352786381791595
+        },
+        "anomaly_macro": {
+          "iou": 0.5337267976739859,
+          "dice": 0.6225247297562163,
+          "precision": 0.8553922987136331,
+          "recall": 0.6130026131724269
+        },
+        "normal_fp_pixels": 1622,
+        "normal_any_fp": 14,
+        "empty_anomaly_ids": [
+          "051.JPG"
+        ]
+      },
+      {
+        "epoch": 34,
+        "train_images": 530,
+        "flipped_images": 266,
+        "flip_signature_sha256": "dc2bad830af325b152b98f0bcc6b1c9f69e984fa6b770277591e949e8c2fb8e4",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.0004714056981132076,
+          "dice": 0.16450249020833332,
+          "total": 0.08272265080227988,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.7529076307180242,
+          "foreground_dice": 0.8590385682896696,
+          "precision": 0.9093408931693041,
+          "recall": 0.8140097113837697
+        },
+        "anomaly_macro": {
+          "iou": 0.5268889785205828,
+          "dice": 0.6109228471037761,
+          "precision": 0.8620013510172669,
+          "recall": 0.6014410639746512
+        },
+        "normal_fp_pixels": 1576,
+        "normal_any_fp": 14,
+        "empty_anomaly_ids": [
+          "042.JPG",
+          "051.JPG",
+          "081.JPG"
+        ]
+      },
+      {
+        "epoch": 35,
+        "train_images": 530,
+        "flipped_images": 280,
+        "flip_signature_sha256": "36e8d3d1345bb92f07bd13ff43849fcbbaef7218a7b86b02affc89f7a73a3396",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.0004074770566037736,
+          "dice": 0.16063248416666667,
+          "total": 0.08072371913993712,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.7749261361293958,
+          "foreground_dice": 0.8731925462760801,
+          "precision": 0.9258050428666651,
+          "recall": 0.8262383186470876
+        },
+        "anomaly_macro": {
+          "iou": 0.5478518099230663,
+          "dice": 0.6284884924909329,
+          "precision": 0.866894625451561,
+          "recall": 0.6297944719180075
+        },
+        "normal_fp_pixels": 1997,
+        "normal_any_fp": 14,
+        "empty_anomaly_ids": [
+          "042.JPG",
+          "051.JPG"
+        ]
+      },
+      {
+        "epoch": 36,
+        "train_images": 530,
+        "flipped_images": 271,
+        "flip_signature_sha256": "875a63f8892dfce3b2c94afd8ff3fc967e82ae57f8f5fed61741b01f63bdaa88",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.000500923358490566,
+          "dice": 0.15734695104166666,
+          "total": 0.0791743988793239,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.7734324993344247,
+          "foreground_dice": 0.8722435160342404,
+          "precision": 0.9584817715005739,
+          "recall": 0.8002426380736647
+        },
+        "anomaly_macro": {
+          "iou": 0.5403012434679445,
+          "dice": 0.6222996401867019,
+          "precision": 0.8004118964084039,
+          "recall": 0.6124047021669999
+        },
+        "normal_fp_pixels": 1753,
+        "normal_any_fp": 13,
+        "empty_anomaly_ids": [
+          "051.JPG"
+        ]
+      },
+      {
+        "epoch": 37,
+        "train_images": 530,
+        "flipped_images": 270,
+        "flip_signature_sha256": "49a39514c2fcee241cfd15889cde1035f95ca853ab84e24b1db354600b2eb38e",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.0004289987924528302,
+          "dice": 0.15008629020833333,
+          "total": 0.07547214389661949,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.7740436359220889,
+          "foreground_dice": 0.8726320145104738,
+          "precision": 0.9299959880237536,
+          "recall": 0.8219335441276019
+        },
+        "anomaly_macro": {
+          "iou": 0.5373134343357341,
+          "dice": 0.6176732627889389,
+          "precision": 0.7721095231049256,
+          "recall": 0.6133784517740003
+        },
+        "normal_fp_pixels": 1644,
+        "normal_any_fp": 13,
+        "empty_anomaly_ids": [
+          "051.JPG",
+          "081.JPG"
+        ]
+      },
+      {
+        "epoch": 38,
+        "train_images": 530,
+        "flipped_images": 276,
+        "flip_signature_sha256": "f2c18f1241dac8ebda59571d59641b8f24d4c9071eb3ca8304683dd2e9d41e3b",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.000425438679245283,
+          "dice": 0.1637857425,
+          "total": 0.08231830992924528,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.7696578969026913,
+          "foreground_dice": 0.8698380610735779,
+          "precision": 0.9234354479294556,
+          "recall": 0.8221210904647339
+        },
+        "anomaly_macro": {
+          "iou": 0.5304287907804149,
+          "dice": 0.616470109078196,
+          "precision": 0.801623960335256,
+          "recall": 0.5965096521140044
+        },
+        "normal_fp_pixels": 1555,
+        "normal_any_fp": 13,
+        "empty_anomaly_ids": [
+          "051.JPG"
+        ]
+      },
+      {
+        "epoch": 39,
+        "train_images": 530,
+        "flipped_images": 293,
+        "flip_signature_sha256": "b0aa0220afaa8ec8d14a93002ba34cb56d2b25609bb2e70e7bbff0e442604683",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.0003927789433962264,
+          "dice": 0.15718350354166666,
+          "total": 0.07898453071422956,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.7775342969235096,
+          "foreground_dice": 0.8748459011668435,
+          "precision": 0.9397792286464293,
+          "recall": 0.8183056946687023
+        },
+        "anomaly_macro": {
+          "iou": 0.5395555277921376,
+          "dice": 0.6203118681249847,
+          "precision": 0.7953262383409198,
+          "recall": 0.6154797087610528
+        },
+        "normal_fp_pixels": 1495,
+        "normal_any_fp": 11,
+        "empty_anomaly_ids": [
+          "051.JPG"
+        ]
+      },
+      {
+        "epoch": 40,
+        "train_images": 530,
+        "flipped_images": 272,
+        "flip_signature_sha256": "43b9b579f2f2a3283a175bf0356d29a94caa250d406efe52a03b967e257fc970",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.0003986778113207547,
+          "dice": 0.14225176354166666,
+          "total": 0.07152455958215409,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.7753867924006832,
+          "foreground_dice": 0.8734849168864244,
+          "precision": 0.9316795350767954,
+          "recall": 0.8221328121108047
+        },
+        "anomaly_macro": {
+          "iou": 0.5309804606945621,
+          "dice": 0.6138038803411837,
+          "precision": 0.8026474971308031,
+          "recall": 0.5950844567737154
+        },
+        "normal_fp_pixels": 1302,
+        "normal_any_fp": 10,
+        "empty_anomaly_ids": [
+          "051.JPG"
+        ]
+      },
+      {
+        "epoch": 41,
+        "train_images": 530,
+        "flipped_images": 274,
+        "flip_signature_sha256": "958886299edad5e13d10ca00a47adf0ed04dca0a953a336c42ff0eb13b82e99f",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.00040534890566037735,
+          "dice": 0.14011932916666667,
+          "total": 0.07046501348899371,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.7615216017426616,
+          "foreground_dice": 0.8646179541474749,
+          "precision": 0.9024872196937825,
+          "recall": 0.8297987686410803
+        },
+        "anomaly_macro": {
+          "iou": 0.5399312589724621,
+          "dice": 0.6233485037483094,
+          "precision": 0.8241811386658567,
+          "recall": 0.6198241411381545
+        },
+        "normal_fp_pixels": 1786,
+        "normal_any_fp": 13,
+        "empty_anomaly_ids": [
+          "051.JPG"
+        ]
+      },
+      {
+        "epoch": 42,
+        "train_images": 530,
+        "flipped_images": 268,
+        "flip_signature_sha256": "d65e7d6848ba08c41b39910f71a283fd6dba1e75c1e97d06527c7293f79f595c",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.0003988928679245283,
+          "dice": 0.14862086770833333,
+          "total": 0.07470932672209118,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.7730301158258374,
+          "foreground_dice": 0.8719875753106172,
+          "precision": 0.9339819993506646,
+          "recall": 0.8177108211306113
+        },
+        "anomaly_macro": {
+          "iou": 0.5336166299931285,
+          "dice": 0.6166015443516512,
+          "precision": 0.7996268551203003,
+          "recall": 0.6044201086589195
+        },
+        "normal_fp_pixels": 1344,
+        "normal_any_fp": 12,
+        "empty_anomaly_ids": [
+          "051.JPG"
+        ]
+      },
+      {
+        "epoch": 43,
+        "train_images": 530,
+        "flipped_images": 269,
+        "flip_signature_sha256": "fe5605983720c6e982288646f752ebfd7df15cde1a8554a01d69176b2f2aadef",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.00038786200000000005,
+          "dice": 0.13825181020833333,
+          "total": 0.06951376710416667,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.7722251432050253,
+          "foreground_dice": 0.8714752142704344,
+          "precision": 0.9327461728725183,
+          "recall": 0.8177577077148944
+        },
+        "anomaly_macro": {
+          "iou": 0.5298127375643995,
+          "dice": 0.6172802498882668,
+          "precision": 0.8652454495716912,
+          "recall": 0.5923502902157407
+        },
+        "normal_fp_pixels": 1273,
+        "normal_any_fp": 12,
+        "empty_anomaly_ids": [
+          "051.JPG"
+        ]
+      },
+      {
+        "epoch": 44,
+        "train_images": 530,
+        "flipped_images": 243,
+        "flip_signature_sha256": "1af0f6f7af5c53d1c1893da5ff20399717a4dddc4e3fa00a3f58763748d9a309",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.00038628664150943396,
+          "dice": 0.14944882583333333,
+          "total": 0.07511069955817609,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.7758242307735046,
+          "foreground_dice": 0.8737624110867943,
+          "precision": 0.9371707192665722,
+          "recall": 0.8183906766027154
+        },
+        "anomaly_macro": {
+          "iou": 0.5340776996023253,
+          "dice": 0.6188960422998941,
+          "precision": 0.8535390783381135,
+          "recall": 0.5997390437190714
+        },
+        "normal_fp_pixels": 1290,
+        "normal_any_fp": 12,
+        "empty_anomaly_ids": [
+          "051.JPG"
+        ]
+      },
+      {
+        "epoch": 45,
+        "train_images": 530,
+        "flipped_images": 273,
+        "flip_signature_sha256": "3250502480cee76b9322c9a0bf5b7ff1d92260e5f70f75308c95183bd3349cb3",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.0003679528679245283,
+          "dice": 0.13680285958333332,
+          "total": 0.06876938265959119,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.7756793478260869,
+          "foreground_dice": 0.8736705180197414,
+          "precision": 0.9351757752430365,
+          "recall": 0.8197562483699586
+        },
+        "anomaly_macro": {
+          "iou": 0.5370954870504011,
+          "dice": 0.6218915112441482,
+          "precision": 0.8658345178303879,
+          "recall": 0.6047447476248722
+        },
+        "normal_fp_pixels": 1318,
+        "normal_any_fp": 12,
+        "empty_anomaly_ids": [
+          "051.JPG"
+        ]
+      },
+      {
+        "epoch": 46,
+        "train_images": 530,
+        "flipped_images": 254,
+        "flip_signature_sha256": "348d9c50b1f454b6498bd69b6d71afcc912aedda5840d024ded1e70a63604a03",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.00037861932075471696,
+          "dice": 0.13663909395833332,
+          "total": 0.06869816629992137,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.7752637097242702,
+          "foreground_dice": 0.8734068132837373,
+          "precision": 0.9326783550993784,
+          "recall": 0.8212185237172857
+        },
+        "anomaly_macro": {
+          "iou": 0.5372891305114488,
+          "dice": 0.6228911171642669,
+          "precision": 0.8723595237318108,
+          "recall": 0.6050696114575829
+        },
+        "normal_fp_pixels": 1487,
+        "normal_any_fp": 13,
+        "empty_anomaly_ids": [
+          "051.JPG"
+        ]
+      },
+      {
+        "epoch": 47,
+        "train_images": 530,
+        "flipped_images": 271,
+        "flip_signature_sha256": "8bfeebc40603181f680d012d21a7ad44f965826c5e4924e981e6d2eeb0d5f99f",
+        "success": 264,
+        "skipped": 1,
+        "weighted_loss": {
+          "ce": 0.0004182037735849056,
+          "dice": 0.14562707375,
+          "total": 0.07323174064858491,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.7732685149850951,
+          "foreground_dice": 0.8721392258990113,
+          "precision": 0.932079157097573,
+          "recall": 0.8194426943375658
+        },
+        "anomaly_macro": {
+          "iou": 0.5352866773033064,
+          "dice": 0.6206976891879871,
+          "precision": 0.8682451180466303,
+          "recall": 0.6020762058391339
+        },
+        "normal_fp_pixels": 1358,
+        "normal_any_fp": 12,
+        "empty_anomaly_ids": [
+          "051.JPG"
+        ]
+      },
+      {
+        "epoch": 48,
+        "train_images": 530,
+        "flipped_images": 284,
+        "flip_signature_sha256": "630fea51684dec6f20fef6a426f4ae0ac07a761c836c100ae08f0847b3dc4cd3",
+        "success": 264,
+        "skipped": 1,
+        "weighted_loss": {
+          "ce": 0.00037940879245283016,
+          "dice": 0.14843877270833333,
+          "total": 0.07459879514661949,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.7768696031497472,
+          "foreground_dice": 0.8744250020064932,
+          "precision": 0.9443655077705413,
+          "recall": 0.8141298582559949
+        },
+        "anomaly_macro": {
+          "iou": 0.530228563949093,
+          "dice": 0.6146934343007926,
+          "precision": 0.8690557205725014,
+          "recall": 0.5915797571727427
+        },
+        "normal_fp_pixels": 1166,
+        "normal_any_fp": 11,
+        "empty_anomaly_ids": [
+          "051.JPG"
+        ]
+      },
+      {
+        "epoch": 49,
+        "train_images": 530,
+        "flipped_images": 262,
+        "flip_signature_sha256": "0c3f8be8f7046ec3320a7f0927917772a8dc4b377ae3a83faaaf19a8a744a212",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.0004319588301886792,
+          "dice": 0.14109760291666668,
+          "total": 0.07098076028852202,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.7762960363416583,
+          "foreground_dice": 0.874061553321333,
+          "precision": 0.940008161696014,
+          "recall": 0.81676136779888
+        },
+        "anomaly_macro": {
+          "iou": 0.53359620023296,
+          "dice": 0.6177775956171905,
+          "precision": 0.8623300874483689,
+          "recall": 0.597972393661251
+        },
+        "normal_fp_pixels": 1324,
+        "normal_any_fp": 12,
+        "empty_anomaly_ids": [
+          "051.JPG"
+        ]
+      },
+      {
+        "epoch": 50,
+        "train_images": 530,
+        "flipped_images": 259,
+        "flip_signature_sha256": "b00d48740e0dd8fc2d1b00d7dcfa8b1f041b2faf4d4f22d17da869483c72c8d4",
+        "success": 265,
+        "skipped": 0,
+        "weighted_loss": {
+          "ce": 0.00040018566037735854,
+          "dice": 0.15383014604166667,
+          "total": 0.0773152586812107,
+          "valid_pixels": 105830400,
+          "positive_images": 48
+        },
+        "val_global": {
+          "foreground_iou": 0.7773430009421194,
+          "foreground_dice": 0.8747248004803483,
+          "precision": 0.9377177014083752,
+          "recall": 0.8196624752013926
+        },
+        "anomaly_macro": {
+          "iou": 0.5371655903638733,
+          "dice": 0.6209286873275984,
+          "precision": 0.8539435750628553,
+          "recall": 0.6050413533400977
+        },
+        "normal_fp_pixels": 1448,
+        "normal_any_fp": 13,
+        "empty_anomaly_ids": [
+          "051.JPG"
+        ]
+      }
+    ],
+    "batch_total_max_abs_algebraic_delta": 5.99999999129075e-08,
+    "batch_total_rounding_bound": "1.25e-8 decimal rounding plus abs(total)*2^-24 float32 addition half-ulp upper bound"
+  },
+  "validation": {
+    "per_image_rows_recomputed": 6600,
+    "best_epoch": 39,
+    "best_global_iou_unrounded_from_counts": 0.7775342969235096,
+    "best_global": {
+      "foreground_iou": 0.7775342969235096,
+      "foreground_dice": 0.8748459011668435,
+      "precision": 0.9397792286464293,
+      "recall": 0.8183056946687023
+    },
+    "best_anomaly_macro": {
+      "iou": 0.5395555277921376,
+      "dice": 0.6203118681249847,
+      "precision": 0.7953262383409198,
+      "recall": 0.6154797087610528
+    },
+    "best_confusion": {
+      "tp": 279246,
+      "fp": 17894,
+      "fn": 62003,
+      "tn": 197941817,
+      "pixels": 198300960
+    },
+    "best_normal": {
+      "count": 120,
+      "false_positive_pixels": 1495,
+      "total_pixels": 180273600,
+      "fp_pixel_ratio": 8.292950271143417e-06,
+      "na_reasons": {},
+      "predicted_foreground_ratio": {
+        "median": 0.0,
+        "p95": 3.62782e-05,
+        "max": 0.0003647789,
+        "percentile_method": "numpy linear interpolation over per-image ratios"
+      },
+      "images_with_any_false_positive": 11,
+      "worst_offenders": [
+        {
+          "image_id": "pcb1/Data/Images/Normal/0245.JPG",
+          "predicted_foreground_pixels": 548,
+          "predicted_foreground_ratio": 0.0003647789
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0737.JPG",
+          "predicted_foreground_pixels": 397,
+          "predicted_foreground_ratio": 0.000264265
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0684.JPG",
+          "predicted_foreground_pixels": 134,
+          "predicted_foreground_ratio": 8.91978e-05
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0271.JPG",
+          "predicted_foreground_pixels": 104,
+          "predicted_foreground_ratio": 6.92281e-05
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0200.JPG",
+          "predicted_foreground_pixels": 80,
+          "predicted_foreground_ratio": 5.32524e-05
+        }
+      ]
+    },
+    "best_empty_anomaly_ids": [
+      "051.JPG"
+    ],
+    "last_global": {
+      "foreground_iou": 0.7773430009421194,
+      "foreground_dice": 0.8747248004803483,
+      "precision": 0.9377177014083752,
+      "recall": 0.8196624752013926
+    },
+    "metric_rounding_tolerance": 5.1e-11,
+    "global_area_weighted_limitation": true,
+    "anomaly_val_sample_size": 12
+  },
+  "identity": {
+    "start_end_match": true,
+    "git_head": "18eadb8dc19a53fa6c98b6ec25558508838a60bb",
+    "recorded_diff_sha256": "bbcf140efb4a795640fb43883cff62bd78613183d3ad869d924421b5ed67683a",
+    "recorded_source_file_count": 14,
+    "current_source": {
+      "segformer_lab/training.py": {
+        "recorded_sha256": "91c829d2447dd849b8a586e4f95dd355789e1a9255bcaf814661b8eaf57bd6f3",
+        "current_sha256": "91c829d2447dd849b8a586e4f95dd355789e1a9255bcaf814661b8eaf57bd6f3",
+        "matches": true
+      },
+      "segformer_lab/pilot.py": {
+        "recorded_sha256": "28825b9346c4b19677db756a8be7bdf98c56d03c8f9f99cad64c2cab3e9f737c",
+        "current_sha256": "28825b9346c4b19677db756a8be7bdf98c56d03c8f9f99cad64c2cab3e9f737c",
+        "matches": true
+      },
+      "segformer_lab/train.py": {
+        "recorded_sha256": "d8721c8012d594293988146cc8acad573361639ca27e241f43e4f16ef8ffc305",
+        "current_sha256": "d8721c8012d594293988146cc8acad573361639ca27e241f43e4f16ef8ffc305",
+        "matches": true
+      },
+      "segformer_lab/smoke.py": {
+        "recorded_sha256": "50c47b2f8b0bb45293c69635d1cb9eee6294a73acee4dcdf0525a1b36c0a45ec",
+        "current_sha256": "50c47b2f8b0bb45293c69635d1cb9eee6294a73acee4dcdf0525a1b36c0a45ec",
+        "matches": true
+      },
+      "segformer_lab/subset.py": {
+        "recorded_sha256": "11f1831cab544270404a47ba8a721bbaa8b4d72890bb0f5a85b1fad900c16032",
+        "current_sha256": "11f1831cab544270404a47ba8a721bbaa8b4d72890bb0f5a85b1fad900c16032",
+        "matches": true
+      },
+      "segformer_lab/losses.py": {
+        "recorded_sha256": "e7195880bd49a8f03a9fbb39e9069c1f071010c8f7f96ba2bfac80d3d0ba0327",
+        "current_sha256": "e7195880bd49a8f03a9fbb39e9069c1f071010c8f7f96ba2bfac80d3d0ba0327",
+        "matches": true
+      },
+      "segformer_lab/metrics.py": {
+        "recorded_sha256": "7d9625fa29eb94221787c80f7bc47dc429958d588207692f2c0ea1a12ecb5787",
+        "current_sha256": "7d9625fa29eb94221787c80f7bc47dc429958d588207692f2c0ea1a12ecb5787",
+        "matches": true
+      },
+      "segformer_lab/evaluation.py": {
+        "recorded_sha256": "0c30890eb5252d603de73bc792a6ef348fa77c2cf91c5f1b98a7167492787e53",
+        "current_sha256": "0c30890eb5252d603de73bc792a6ef348fa77c2cf91c5f1b98a7167492787e53",
+        "matches": true
+      },
+      "segformer_lab/data.py": {
+        "recorded_sha256": "3eb2117997db7cee7fa720b74f8b5b7df85793f4a65cebdd851943c3025ab9ce",
+        "current_sha256": "3eb2117997db7cee7fa720b74f8b5b7df85793f4a65cebdd851943c3025ab9ce",
+        "matches": true
+      },
+      "segformer_lab/modeling.py": {
+        "recorded_sha256": "318e0b0a5164eafe7c8393adf64caf1aaeea6e5895ab679ba0171c0fc57a59d3",
+        "current_sha256": "318e0b0a5164eafe7c8393adf64caf1aaeea6e5895ab679ba0171c0fc57a59d3",
+        "matches": true
+      },
+      "segformer_lab/config.py": {
+        "recorded_sha256": "b2c981faca6b2222b83ea876c8b3f1cd854ee210f42cd588dce41f20caaaa391",
+        "current_sha256": "b2c981faca6b2222b83ea876c8b3f1cd854ee210f42cd588dce41f20caaaa391",
+        "matches": true
+      },
+      "segformer_lab/geometry.py": {
+        "recorded_sha256": "b9e9d823ba91706bea650ccf578fb71f960840c3f8097f7c8687a5850ab4aacb",
+        "current_sha256": "b9e9d823ba91706bea650ccf578fb71f960840c3f8097f7c8687a5850ab4aacb",
+        "matches": true
+      },
+      "segformer_lab/run_check.py": {
+        "recorded_sha256": "257b617527feef4393ffc22c215616de2cad938fd177b1d4efa4b2a124875b62",
+        "current_sha256": "257b617527feef4393ffc22c215616de2cad938fd177b1d4efa4b2a124875b62",
+        "matches": true
+      },
+      "segformer_lab/train_full.py": {
+        "recorded_sha256": "9be0f385b634d2a9fe6ab831e64ad1f0ae56e955a88254cd16cb50a0b7a31114",
+        "current_sha256": "9be0f385b634d2a9fe6ab831e64ad1f0ae56e955a88254cd16cb50a0b7a31114",
+        "matches": true
+      }
+    },
+    "current_other": {
+      "train_manifest": {
+        "sha256": "f1522eb9b474d0acc1d736a391002f5044153208fa10f51eea3dc7df729f65b0",
+        "matches": true
+      },
+      "val_manifest": {
+        "sha256": "60a6c6cbf5ed7f5f9e57fb57bb096a5b57db677af5ee73f4fa140ddceaba6191",
+        "matches": true
+      },
+      "test_manifest": {
+        "sha256": "4bdc594148f208c7067a66a8cb3b06fde53ebc1f4ab6fda84f08f80383061284",
+        "matches": true
+      },
+      "config": {
+        "sha256": "7fbea4eca4309a2e3565f7651f661895791dc94248f711cc9c2659377e2bbe47",
+        "matches": true
+      },
+      "split_meta": {
+        "sha256": "7c53a669aabebcbb72cc137f84e7d00ec615e53813396b36e7f3557d6c9d0b49",
+        "matches": true
+      },
+      "preview_ids": {
+        "sha256": "4f17789dfecc28023003092dddbe3c4683ac781cb469b483e4180c2ebb8f9718",
+        "matches": true
+      }
+    },
+    "snapshot": {
+      "revision": "80983a413c30d36a39c20203974ae7807835e2b4",
+      "files": [
+        {
+          "path": "config.json",
+          "sha256": "e2378ac7c7a6981d6bdd1d9ccf29b611264c382afce89c561f39c9291164ff91",
+          "recorded_sha256": "e2378ac7c7a6981d6bdd1d9ccf29b611264c382afce89c561f39c9291164ff91",
+          "matches": true
+        },
+        {
+          "path": "preprocessor_config.json",
+          "sha256": "d96ab2cb112985c19d5ea32f1d1f2369104fc78b1379f5ce26e33ca8646202a7",
+          "recorded_sha256": "d96ab2cb112985c19d5ea32f1d1f2369104fc78b1379f5ce26e33ca8646202a7",
+          "matches": true
+        },
+        {
+          "path": "pytorch_model.bin",
+          "sha256": "4af8348c2a802bf76115d34797ff5ce1d9f110bb8593c22d9b66d8bd7fa227fc",
+          "recorded_sha256": "4af8348c2a802bf76115d34797ff5ce1d9f110bb8593c22d9b66d8bd7fa227fc",
+          "matches": true
+        }
+      ]
+    }
+  },
+  "artifacts": {
+    "inventory": [
+      {
+        "path": "artifact_manifest.json",
+        "bytes": 2993,
+        "sha256": "0f04aeab51d2eff238124768b17d3741f1bbda46d9274942fe3d534a3823b1f4"
+      },
+      {
+        "path": "checkpoints/best.pt",
+        "bytes": 44876363,
+        "sha256": "192c827bef00607f4258e5fadf0f1d97970ca5cc727a0add749be0fba5997485"
+      },
+      {
+        "path": "checkpoints/last.pt",
+        "bytes": 44876363,
+        "sha256": "b1e61f29d46e501cc015a5650abf362d456045b061c0c9a57f5a930313a59877"
+      },
+      {
+        "path": "checkpoints/model_state.pt",
+        "bytes": 14927903,
+        "sha256": "eb27b1375b28e106151e871e8eb9e7b12823f67062331cfea12441a8691cf304"
+      },
+      {
+        "path": "code_identity_end.json",
+        "bytes": 12899,
+        "sha256": "795c579e380d2fc18a93ebf0296829ccf7fe06415ecea222243a73715786a9bf"
+      },
+      {
+        "path": "code_identity_start.json",
+        "bytes": 12901,
+        "sha256": "c8ec16a7d168637a022e4b2f7151f7c640c99c49afd44c3bdff343e9fcd7579e"
+      },
+      {
+        "path": "curves.png",
+        "bytes": 73236,
+        "sha256": "13568de3816975411775a2a135351e619fe9e7f83c6975bae8418bb5233fea90"
+      },
+      {
+        "path": "epochs.jsonl",
+        "bytes": 3708600,
+        "sha256": "5b29a04d02c816ba85557143f4f76496a98ac1abc18d5c10b7e0ed608ab1b4c1"
+      },
+      {
+        "path": "model_config.json",
+        "bytes": 2601,
+        "sha256": "a2648c94cd17508f41b3fbf7451a2815ef2443192ed3c2388fb33288d4fd1bac"
+      },
+      {
+        "path": "pre_save_probabilities.npz",
+        "bytes": 32596044,
+        "sha256": "cf24b2f260970185a692ceb9201c3cb8e4658d83fe11b021fca727a96f987e14"
+      },
+      {
+        "path": "processor/preprocessor_config.json",
+        "bytes": 396,
+        "sha256": "7854b1307bdd3737b1106ad604bbd8f90308cfce8d46609e6d5d88a1face9f58"
+      },
+      {
+        "path": "reload_check.json",
+        "bytes": 197782,
+        "sha256": "e58a82ad4ed75e6055dac147ad076649bbb1dcf91eedf0d73f9c9a2008ce09fb"
+      },
+      {
+        "path": "resolved_config.yaml",
+        "bytes": 2813,
+        "sha256": "90a279b1d2e0b7c6d86ab3237024ed8b250a174e6a737430cd1529bfffa292e0"
+      },
+      {
+        "path": "summary.json",
+        "bytes": 5768668,
+        "sha256": "a66f06167b3469a247d040713870419b8f04232ca6ff76e970f8f135270e86a5"
+      },
+      {
+        "path": "updates.jsonl",
+        "bytes": 6116346,
+        "sha256": "bcef54666f379d386b7a6b2a01f3cd52f73785f7dd6a95f8ea87d1c8864cf0ff"
+      },
+      {
+        "path": "val_previews/best/anomaly_010.png",
+        "bytes": 141582,
+        "sha256": "3d3740d1f6a7c7c0a336ea0642ce9b29f7d332f8d370ccad1273d1813d065003"
+      },
+      {
+        "path": "val_previews/best/anomaly_045.png",
+        "bytes": 150386,
+        "sha256": "0a78682d86e8d92e1d2c51df312787c3cd1505a0f7fd0fa6740c947158ef57a0"
+      },
+      {
+        "path": "val_previews/best/anomaly_087.png",
+        "bytes": 145148,
+        "sha256": "5e8f509cf827bb2abcd8aed5c9da2a0b1ee3cb8b6d7550d4a1a1cb4f4c1aa3e0"
+      },
+      {
+        "path": "val_previews/best/normal_0011.png",
+        "bytes": 144915,
+        "sha256": "e21a0a0b31af26299d71769f885d8ed686f3039d31b22972136301ad40139b64"
+      },
+      {
+        "path": "val_previews/best/normal_0455.png",
+        "bytes": 145610,
+        "sha256": "7f96525c8eb4026510d2bd1fa86f731e8312ccfcc03c59c3c81775b3006a22bd"
+      },
+      {
+        "path": "val_previews/best/normal_0983.png",
+        "bytes": 139586,
+        "sha256": "0509cd01b5d51316eb70627ebb2aa33956821c590a0813c83981c2ba3714979f"
+      }
+    ],
+    "manifest_entries": [
+      {
+        "path": "checkpoints/best.pt",
+        "bytes": 44876363,
+        "sha256": "192c827bef00607f4258e5fadf0f1d97970ca5cc727a0add749be0fba5997485",
+        "matches_manifest": true
+      },
+      {
+        "path": "checkpoints/last.pt",
+        "bytes": 44876363,
+        "sha256": "b1e61f29d46e501cc015a5650abf362d456045b061c0c9a57f5a930313a59877",
+        "matches_manifest": true
+      },
+      {
+        "path": "checkpoints/model_state.pt",
+        "bytes": 14927903,
+        "sha256": "eb27b1375b28e106151e871e8eb9e7b12823f67062331cfea12441a8691cf304",
+        "matches_manifest": true
+      },
+      {
+        "path": "code_identity_end.json",
+        "bytes": 12899,
+        "sha256": "795c579e380d2fc18a93ebf0296829ccf7fe06415ecea222243a73715786a9bf",
+        "matches_manifest": true
+      },
+      {
+        "path": "code_identity_start.json",
+        "bytes": 12901,
+        "sha256": "c8ec16a7d168637a022e4b2f7151f7c640c99c49afd44c3bdff343e9fcd7579e",
+        "matches_manifest": true
+      },
+      {
+        "path": "curves.png",
+        "bytes": 73236,
+        "sha256": "13568de3816975411775a2a135351e619fe9e7f83c6975bae8418bb5233fea90",
+        "matches_manifest": true
+      },
+      {
+        "path": "epochs.jsonl",
+        "bytes": 3708600,
+        "sha256": "5b29a04d02c816ba85557143f4f76496a98ac1abc18d5c10b7e0ed608ab1b4c1",
+        "matches_manifest": true
+      },
+      {
+        "path": "model_config.json",
+        "bytes": 2601,
+        "sha256": "a2648c94cd17508f41b3fbf7451a2815ef2443192ed3c2388fb33288d4fd1bac",
+        "matches_manifest": true
+      },
+      {
+        "path": "pre_save_probabilities.npz",
+        "bytes": 32596044,
+        "sha256": "cf24b2f260970185a692ceb9201c3cb8e4658d83fe11b021fca727a96f987e14",
+        "matches_manifest": true
+      },
+      {
+        "path": "processor/preprocessor_config.json",
+        "bytes": 396,
+        "sha256": "7854b1307bdd3737b1106ad604bbd8f90308cfce8d46609e6d5d88a1face9f58",
+        "matches_manifest": true
+      },
+      {
+        "path": "resolved_config.yaml",
+        "bytes": 2813,
+        "sha256": "90a279b1d2e0b7c6d86ab3237024ed8b250a174e6a737430cd1529bfffa292e0",
+        "matches_manifest": true
+      },
+      {
+        "path": "summary.json",
+        "bytes": 5768668,
+        "sha256": "a66f06167b3469a247d040713870419b8f04232ca6ff76e970f8f135270e86a5",
+        "matches_manifest": true
+      },
+      {
+        "path": "updates.jsonl",
+        "bytes": 6116346,
+        "sha256": "bcef54666f379d386b7a6b2a01f3cd52f73785f7dd6a95f8ea87d1c8864cf0ff",
+        "matches_manifest": true
+      },
+      {
+        "path": "val_previews/best/anomaly_010.png",
+        "bytes": 141582,
+        "sha256": "3d3740d1f6a7c7c0a336ea0642ce9b29f7d332f8d370ccad1273d1813d065003",
+        "matches_manifest": true
+      },
+      {
+        "path": "val_previews/best/anomaly_045.png",
+        "bytes": 150386,
+        "sha256": "0a78682d86e8d92e1d2c51df312787c3cd1505a0f7fd0fa6740c947158ef57a0",
+        "matches_manifest": true
+      },
+      {
+        "path": "val_previews/best/anomaly_087.png",
+        "bytes": 145148,
+        "sha256": "5e8f509cf827bb2abcd8aed5c9da2a0b1ee3cb8b6d7550d4a1a1cb4f4c1aa3e0",
+        "matches_manifest": true
+      },
+      {
+        "path": "val_previews/best/normal_0011.png",
+        "bytes": 144915,
+        "sha256": "e21a0a0b31af26299d71769f885d8ed686f3039d31b22972136301ad40139b64",
+        "matches_manifest": true
+      },
+      {
+        "path": "val_previews/best/normal_0455.png",
+        "bytes": 145610,
+        "sha256": "7f96525c8eb4026510d2bd1fa86f731e8312ccfcc03c59c3c81775b3006a22bd",
+        "matches_manifest": true
+      },
+      {
+        "path": "val_previews/best/normal_0983.png",
+        "bytes": 139586,
+        "sha256": "0509cd01b5d51316eb70627ebb2aa33956821c590a0813c83981c2ba3714979f",
+        "matches_manifest": true
+      }
+    ],
+    "unlisted_in_final_artifact_manifest": [
+      "artifact_manifest.json",
+      "reload_check.json"
+    ],
+    "portable_gzip_archive_checks": [
+      {
+        "path": "reports/stage11_evidence/formal/summary.json.gz",
+        "uncompressed_sha256": "a66f06167b3469a247d040713870419b8f04232ca6ff76e970f8f135270e86a5",
+        "matches_resource_original": true
+      },
+      {
+        "path": "reports/stage11_evidence/formal/epochs.jsonl.gz",
+        "uncompressed_sha256": "5b29a04d02c816ba85557143f4f76496a98ac1abc18d5c10b7e0ed608ab1b4c1",
+        "matches_resource_original": true
+      },
+      {
+        "path": "reports/stage11_evidence/formal/updates.jsonl.gz",
+        "uncompressed_sha256": "bcef54666f379d386b7a6b2a01f3cd52f73785f7dd6a95f8ea87d1c8864cf0ff",
+        "matches_resource_original": true
+      }
+    ]
+  },
+  "reload": {
+    "best_checkpoint": {
+      "path": "E:\\\u684c\u9762\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42\\checkpoints\\best.pt",
+      "sha256": "192c827bef00607f4258e5fadf0f1d97970ca5cc727a0add749be0fba5997485",
+      "epoch_completed": 39,
+      "global_step": 10330,
+      "scheduler": {
+        "base_lr": 6e-05,
+        "min_lr": 1e-06,
+        "total_steps": 13250,
+        "warmup_steps": 662,
+        "completed": 10330
+      },
+      "strict": true,
+      "missing_keys": [],
+      "unexpected_keys": [],
+      "mirror_matches_best": true
+    },
+    "val_confusion_identical": true,
+    "val_global_identical": true,
+    "preview_probability_comparison": {
+      "tolerance_atol": 1e-05,
+      "max_abs_probability_diff": 0.0,
+      "xor_pixels_total": 0,
+      "total_pixels": 9013680,
+      "within_tolerance": true,
+      "per_image": [
+        {
+          "image_id": "pcb1/Data/Images/Normal/0011.JPG",
+          "max_abs_probability_diff": 0.0,
+          "xor_pixels": 0,
+          "total_pixels": 1502280
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0455.JPG",
+          "max_abs_probability_diff": 0.0,
+          "xor_pixels": 0,
+          "total_pixels": 1502280
+        },
+        {
+          "image_id": "pcb1/Data/Images/Normal/0983.JPG",
+          "max_abs_probability_diff": 0.0,
+          "xor_pixels": 0,
+          "total_pixels": 1502280
+        },
+        {
+          "image_id": "pcb1/Data/Images/Anomaly/087.JPG",
+          "max_abs_probability_diff": 0.0,
+          "xor_pixels": 0,
+          "total_pixels": 1502280
+        },
+        {
+          "image_id": "pcb1/Data/Images/Anomaly/010.JPG",
+          "max_abs_probability_diff": 0.0,
+          "xor_pixels": 0,
+          "total_pixels": 1502280
+        },
+        {
+          "image_id": "pcb1/Data/Images/Anomaly/045.JPG",
+          "max_abs_probability_diff": 0.0,
+          "xor_pixels": 0,
+          "total_pixels": 1502280
+        }
+      ]
+    },
+    "scope": "Existing verification record checked for internal agreement and best SHA; this audit did not execute inference."
+  },
+  "checkpoint_metadata": {
+    "method": "Restricted stdlib pickle parser admits only inert tensor/storage descriptors, OrderedDict, inert numpy descriptors, string encoding; reads ZIP data.pkl without importing torch or numpy. Tensor comparison reads contiguous raw little-endian storage bytes.",
+    "runs": {
+      "pcb1_b0_v2_seed42": {
+        "best": {
+          "schema": "segformer-lab/full-checkpoint/1",
+          "kind": "best",
+          "epoch_completed": 39,
+          "next_epoch": 40,
+          "step": {
+            "successful": 10330,
+            "attempts": 10335,
+            "skipped": 5
+          },
+          "scheduler": {
+            "base_lr": 6e-05,
+            "min_lr": 1e-06,
+            "total_steps": 13250,
+            "warmup_steps": 662,
+            "completed": 10330
+          },
+          "scheduler_plan": {
+            "total_steps": 13250,
+            "warmup_steps": 662
+          },
+          "lr": 8.487794373008304e-06,
+          "best": {
+            "iou": 0.7775342969,
+            "epoch": 39
+          },
+          "required_fields_present": true,
+          "model_tensors": 208,
+          "optimizer_state_entries": 205,
+          "optimizer_groups": [
+            {
+              "weight_decay": 0.01,
+              "lr": 8.487794373008304e-06,
+              "tensors": 72
+            },
+            {
+              "weight_decay": 0.0,
+              "lr": 8.487794373008304e-06,
+              "tensors": 133
+            }
+          ],
+          "grad_scaler": {
+            "scale": 32768.0,
+            "growth_factor": 2.0,
+            "backoff_factor": 0.5,
+            "growth_interval": 2000,
+            "_growth_tracker": 590
+          },
+          "rng_keys": [
+            "python",
+            "numpy",
+            "torch",
+            "cuda"
+          ],
+          "loader": {
+            "generator_state": {
+              "dtype": "ByteStorage",
+              "shape": [
+                5056
+              ],
+              "sha256": "16853f2a1976b2338df377f42c9d04ca4e481360c781d2a82b866a9c6c03b181"
+            },
+            "batch_size": 2,
+            "shuffle": true,
+            "num_workers": 0,
+            "drop_last": false,
+            "dataset_epoch": 39
+          },
+          "metrics_epoch": 39,
+          "resume_scope": "complete_epoch_boundary"
+        },
+        "last": {
+          "schema": "segformer-lab/full-checkpoint/1",
+          "kind": "last",
+          "epoch_completed": 50,
+          "next_epoch": 51,
+          "step": {
+            "successful": 13243,
+            "attempts": 13250,
+            "skipped": 7
+          },
+          "scheduler": {
+            "base_lr": 6e-05,
+            "min_lr": 1e-06,
+            "total_steps": 13250,
+            "warmup_steps": 662,
+            "completed": 13243
+          },
+          "scheduler_plan": {
+            "total_steps": 13250,
+            "warmup_steps": 662
+          },
+          "lr": 1.0000330735426696e-06,
+          "best": {
+            "iou": 0.7775342969,
+            "epoch": 39
+          },
+          "required_fields_present": true,
+          "model_tensors": 208,
+          "optimizer_state_entries": 205,
+          "optimizer_groups": [
+            {
+              "weight_decay": 0.01,
+              "lr": 1.0000330735426696e-06,
+              "tensors": 72
+            },
+            {
+              "weight_decay": 0.0,
+              "lr": 1.0000330735426696e-06,
+              "tensors": 133
+            }
+          ],
+          "grad_scaler": {
+            "scale": 16384.0,
+            "growth_factor": 2.0,
+            "backoff_factor": 0.5,
+            "growth_interval": 2000,
+            "_growth_tracker": 561
+          },
+          "rng_keys": [
+            "python",
+            "numpy",
+            "torch",
+            "cuda"
+          ],
+          "loader": {
+            "generator_state": {
+              "dtype": "ByteStorage",
+              "shape": [
+                5056
+              ],
+              "sha256": "4e276f27d9d20bd15d8fd33147a5300e1a0f9bda53fa038608eac1882d364bdf"
+            },
+            "batch_size": 2,
+            "shuffle": true,
+            "num_workers": 0,
+            "drop_last": false,
+            "dataset_epoch": 50
+          },
+          "metrics_epoch": 50,
+          "resume_scope": "complete_epoch_boundary"
+        }
+      },
+      "resume_fixture_A": {
+        "best": {
+          "schema": "segformer-lab/full-checkpoint/1",
+          "kind": "best",
+          "epoch_completed": 1,
+          "next_epoch": 2,
+          "step": {
+            "successful": 6,
+            "attempts": 6,
+            "skipped": 0
+          },
+          "scheduler": {
+            "base_lr": 6e-05,
+            "min_lr": 1e-06,
+            "total_steps": 18,
+            "warmup_steps": 1,
+            "completed": 6
+          },
+          "scheduler_plan": {
+            "total_steps": 18,
+            "warmup_steps": 1
+          },
+          "lr": 4.3649281495407884e-05,
+          "best": {
+            "iou": 0.0,
+            "epoch": 1
+          },
+          "required_fields_present": true,
+          "model_tensors": 208,
+          "optimizer_state_entries": 205,
+          "optimizer_groups": [
+            {
+              "weight_decay": 0.01,
+              "lr": 4.3649281495407884e-05,
+              "tensors": 72
+            },
+            {
+              "weight_decay": 0.0,
+              "lr": 4.3649281495407884e-05,
+              "tensors": 133
+            }
+          ],
+          "grad_scaler": {
+            "scale": 65536.0,
+            "growth_factor": 2.0,
+            "backoff_factor": 0.5,
+            "growth_interval": 2000,
+            "_growth_tracker": 6
+          },
+          "rng_keys": [
+            "python",
+            "numpy",
+            "torch",
+            "cuda"
+          ],
+          "loader": {
+            "generator_state": {
+              "dtype": "ByteStorage",
+              "shape": [
+                5056
+              ],
+              "sha256": "b56c0a975b3df10e7cbda9e7db6a1029a3c97d442d6c81b3b50fa51e6ebf81b7"
+            },
+            "batch_size": 2,
+            "shuffle": true,
+            "num_workers": 0,
+            "drop_last": false,
+            "dataset_epoch": 1
+          },
+          "metrics_epoch": 1,
+          "resume_scope": "complete_epoch_boundary"
+        },
+        "last": {
+          "schema": "segformer-lab/full-checkpoint/1",
+          "kind": "last",
+          "epoch_completed": 3,
+          "next_epoch": 4,
+          "step": {
+            "successful": 18,
+            "attempts": 18,
+            "skipped": 0
+          },
+          "scheduler": {
+            "base_lr": 6e-05,
+            "min_lr": 1e-06,
+            "total_steps": 18,
+            "warmup_steps": 1,
+            "completed": 18
+          },
+          "scheduler_plan": {
+            "total_steps": 18,
+            "warmup_steps": 1
+          },
+          "lr": 1e-06,
+          "best": {
+            "iou": 0.0,
+            "epoch": 1
+          },
+          "required_fields_present": true,
+          "model_tensors": 208,
+          "optimizer_state_entries": 205,
+          "optimizer_groups": [
+            {
+              "weight_decay": 0.01,
+              "lr": 1e-06,
+              "tensors": 72
+            },
+            {
+              "weight_decay": 0.0,
+              "lr": 1e-06,
+              "tensors": 133
+            }
+          ],
+          "grad_scaler": {
+            "scale": 65536.0,
+            "growth_factor": 2.0,
+            "backoff_factor": 0.5,
+            "growth_interval": 2000,
+            "_growth_tracker": 18
+          },
+          "rng_keys": [
+            "python",
+            "numpy",
+            "torch",
+            "cuda"
+          ],
+          "loader": {
+            "generator_state": {
+              "dtype": "ByteStorage",
+              "shape": [
+                5056
+              ],
+              "sha256": "c869dca6a39f1cee735c214cbe6cebd2b609e90d17fdc0a2f233560cb45cdafe"
+            },
+            "batch_size": 2,
+            "shuffle": true,
+            "num_workers": 0,
+            "drop_last": false,
+            "dataset_epoch": 3
+          },
+          "metrics_epoch": 3,
+          "resume_scope": "complete_epoch_boundary"
+        }
+      },
+      "resume_fixture_B": {
+        "best": {
+          "schema": "segformer-lab/full-checkpoint/1",
+          "kind": "best",
+          "epoch_completed": 1,
+          "next_epoch": 2,
+          "step": {
+            "successful": 6,
+            "attempts": 6,
+            "skipped": 0
+          },
+          "scheduler": {
+            "base_lr": 6e-05,
+            "min_lr": 1e-06,
+            "total_steps": 18,
+            "warmup_steps": 1,
+            "completed": 6
+          },
+          "scheduler_plan": {
+            "total_steps": 18,
+            "warmup_steps": 1
+          },
+          "lr": 4.3649281495407884e-05,
+          "best": {
+            "iou": 0.0,
+            "epoch": 1
+          },
+          "required_fields_present": true,
+          "model_tensors": 208,
+          "optimizer_state_entries": 205,
+          "optimizer_groups": [
+            {
+              "weight_decay": 0.01,
+              "lr": 4.3649281495407884e-05,
+              "tensors": 72
+            },
+            {
+              "weight_decay": 0.0,
+              "lr": 4.3649281495407884e-05,
+              "tensors": 133
+            }
+          ],
+          "grad_scaler": {
+            "scale": 65536.0,
+            "growth_factor": 2.0,
+            "backoff_factor": 0.5,
+            "growth_interval": 2000,
+            "_growth_tracker": 6
+          },
+          "rng_keys": [
+            "python",
+            "numpy",
+            "torch",
+            "cuda"
+          ],
+          "loader": {
+            "generator_state": {
+              "dtype": "ByteStorage",
+              "shape": [
+                5056
+              ],
+              "sha256": "b56c0a975b3df10e7cbda9e7db6a1029a3c97d442d6c81b3b50fa51e6ebf81b7"
+            },
+            "batch_size": 2,
+            "shuffle": true,
+            "num_workers": 0,
+            "drop_last": false,
+            "dataset_epoch": 1
+          },
+          "metrics_epoch": 1,
+          "resume_scope": "complete_epoch_boundary"
+        },
+        "last": {
+          "schema": "segformer-lab/full-checkpoint/1",
+          "kind": "last",
+          "epoch_completed": 3,
+          "next_epoch": 4,
+          "step": {
+            "successful": 18,
+            "attempts": 18,
+            "skipped": 0
+          },
+          "scheduler": {
+            "base_lr": 6e-05,
+            "min_lr": 1e-06,
+            "total_steps": 18,
+            "warmup_steps": 1,
+            "completed": 18
+          },
+          "scheduler_plan": {
+            "total_steps": 18,
+            "warmup_steps": 1
+          },
+          "lr": 1e-06,
+          "best": {
+            "iou": 0.0,
+            "epoch": 1
+          },
+          "required_fields_present": true,
+          "model_tensors": 208,
+          "optimizer_state_entries": 205,
+          "optimizer_groups": [
+            {
+              "weight_decay": 0.01,
+              "lr": 1e-06,
+              "tensors": 72
+            },
+            {
+              "weight_decay": 0.0,
+              "lr": 1e-06,
+              "tensors": 133
+            }
+          ],
+          "grad_scaler": {
+            "scale": 65536.0,
+            "growth_factor": 2.0,
+            "backoff_factor": 0.5,
+            "growth_interval": 2000,
+            "_growth_tracker": 18
+          },
+          "rng_keys": [
+            "python",
+            "numpy",
+            "torch",
+            "cuda"
+          ],
+          "loader": {
+            "generator_state": {
+              "dtype": "ByteStorage",
+              "shape": [
+                5056
+              ],
+              "sha256": "c869dca6a39f1cee735c214cbe6cebd2b609e90d17fdc0a2f233560cb45cdafe"
+            },
+            "batch_size": 2,
+            "shuffle": true,
+            "num_workers": 0,
+            "drop_last": false,
+            "dataset_epoch": 3
+          },
+          "metrics_epoch": 3,
+          "resume_scope": "complete_epoch_boundary"
+        }
+      },
+      "resume_fixture_D": {
+        "best": {
+          "schema": "segformer-lab/full-checkpoint/1",
+          "kind": "best",
+          "epoch_completed": 1,
+          "next_epoch": 2,
+          "step": {
+            "successful": 6,
+            "attempts": 6,
+            "skipped": 0
+          },
+          "scheduler": {
+            "base_lr": 6e-05,
+            "min_lr": 1e-06,
+            "total_steps": 18,
+            "warmup_steps": 1,
+            "completed": 6
+          },
+          "scheduler_plan": {
+            "total_steps": 18,
+            "warmup_steps": 1
+          },
+          "lr": 4.3649281495407884e-05,
+          "best": {
+            "iou": 0.0,
+            "epoch": 1
+          },
+          "required_fields_present": true,
+          "model_tensors": 208,
+          "optimizer_state_entries": 205,
+          "optimizer_groups": [
+            {
+              "weight_decay": 0.01,
+              "lr": 4.3649281495407884e-05,
+              "tensors": 72
+            },
+            {
+              "weight_decay": 0.0,
+              "lr": 4.3649281495407884e-05,
+              "tensors": 133
+            }
+          ],
+          "grad_scaler": {
+            "scale": 65536.0,
+            "growth_factor": 2.0,
+            "backoff_factor": 0.5,
+            "growth_interval": 2000,
+            "_growth_tracker": 6
+          },
+          "rng_keys": [
+            "python",
+            "numpy",
+            "torch",
+            "cuda"
+          ],
+          "loader": {
+            "generator_state": {
+              "dtype": "ByteStorage",
+              "shape": [
+                5056
+              ],
+              "sha256": "b56c0a975b3df10e7cbda9e7db6a1029a3c97d442d6c81b3b50fa51e6ebf81b7"
+            },
+            "batch_size": 2,
+            "shuffle": true,
+            "num_workers": 0,
+            "drop_last": false,
+            "dataset_epoch": 1
+          },
+          "metrics_epoch": 1,
+          "resume_scope": "complete_epoch_boundary"
+        },
+        "last": {
+          "schema": "segformer-lab/full-checkpoint/1",
+          "kind": "last",
+          "epoch_completed": 3,
+          "next_epoch": 4,
+          "step": {
+            "successful": 18,
+            "attempts": 18,
+            "skipped": 0
+          },
+          "scheduler": {
+            "base_lr": 6e-05,
+            "min_lr": 1e-06,
+            "total_steps": 18,
+            "warmup_steps": 1,
+            "completed": 18
+          },
+          "scheduler_plan": {
+            "total_steps": 18,
+            "warmup_steps": 1
+          },
+          "lr": 1e-06,
+          "best": {
+            "iou": 0.0,
+            "epoch": 1
+          },
+          "required_fields_present": true,
+          "model_tensors": 208,
+          "optimizer_state_entries": 205,
+          "optimizer_groups": [
+            {
+              "weight_decay": 0.01,
+              "lr": 1e-06,
+              "tensors": 72
+            },
+            {
+              "weight_decay": 0.0,
+              "lr": 1e-06,
+              "tensors": 133
+            }
+          ],
+          "grad_scaler": {
+            "scale": 65536.0,
+            "growth_factor": 2.0,
+            "backoff_factor": 0.5,
+            "growth_interval": 2000,
+            "_growth_tracker": 18
+          },
+          "rng_keys": [
+            "python",
+            "numpy",
+            "torch",
+            "cuda"
+          ],
+          "loader": {
+            "generator_state": {
+              "dtype": "ByteStorage",
+              "shape": [
+                5056
+              ],
+              "sha256": "c869dca6a39f1cee735c214cbe6cebd2b609e90d17fdc0a2f233560cb45cdafe"
+            },
+            "batch_size": 2,
+            "shuffle": true,
+            "num_workers": 0,
+            "drop_last": false,
+            "dataset_epoch": 3
+          },
+          "metrics_epoch": 3,
+          "resume_scope": "complete_epoch_boundary"
+        }
+      },
+      "resume_fixture_E": {
+        "best": {
+          "schema": "segformer-lab/full-checkpoint/1",
+          "kind": "best",
+          "epoch_completed": 1,
+          "next_epoch": 2,
+          "step": {
+            "successful": 6,
+            "attempts": 6,
+            "skipped": 0
+          },
+          "scheduler": {
+            "base_lr": 6e-05,
+            "min_lr": 1e-06,
+            "total_steps": 18,
+            "warmup_steps": 1,
+            "completed": 6
+          },
+          "scheduler_plan": {
+            "total_steps": 18,
+            "warmup_steps": 1
+          },
+          "lr": 4.3649281495407884e-05,
+          "best": {
+            "iou": 0.0,
+            "epoch": 1
+          },
+          "required_fields_present": true,
+          "model_tensors": 208,
+          "optimizer_state_entries": 205,
+          "optimizer_groups": [
+            {
+              "weight_decay": 0.01,
+              "lr": 4.3649281495407884e-05,
+              "tensors": 72
+            },
+            {
+              "weight_decay": 0.0,
+              "lr": 4.3649281495407884e-05,
+              "tensors": 133
+            }
+          ],
+          "grad_scaler": {
+            "scale": 65536.0,
+            "growth_factor": 2.0,
+            "backoff_factor": 0.5,
+            "growth_interval": 2000,
+            "_growth_tracker": 6
+          },
+          "rng_keys": [
+            "python",
+            "numpy",
+            "torch",
+            "cuda"
+          ],
+          "loader": {
+            "generator_state": {
+              "dtype": "ByteStorage",
+              "shape": [
+                5056
+              ],
+              "sha256": "b56c0a975b3df10e7cbda9e7db6a1029a3c97d442d6c81b3b50fa51e6ebf81b7"
+            },
+            "batch_size": 2,
+            "shuffle": true,
+            "num_workers": 0,
+            "drop_last": false,
+            "dataset_epoch": 1
+          },
+          "metrics_epoch": 1,
+          "resume_scope": "complete_epoch_boundary"
+        },
+        "last": {
+          "schema": "segformer-lab/full-checkpoint/1",
+          "kind": "last",
+          "epoch_completed": 3,
+          "next_epoch": 4,
+          "step": {
+            "successful": 18,
+            "attempts": 18,
+            "skipped": 0
+          },
+          "scheduler": {
+            "base_lr": 6e-05,
+            "min_lr": 1e-06,
+            "total_steps": 18,
+            "warmup_steps": 1,
+            "completed": 18
+          },
+          "scheduler_plan": {
+            "total_steps": 18,
+            "warmup_steps": 1
+          },
+          "lr": 1e-06,
+          "best": {
+            "iou": 0.0,
+            "epoch": 1
+          },
+          "required_fields_present": true,
+          "model_tensors": 208,
+          "optimizer_state_entries": 205,
+          "optimizer_groups": [
+            {
+              "weight_decay": 0.01,
+              "lr": 1e-06,
+              "tensors": 72
+            },
+            {
+              "weight_decay": 0.0,
+              "lr": 1e-06,
+              "tensors": 133
+            }
+          ],
+          "grad_scaler": {
+            "scale": 65536.0,
+            "growth_factor": 2.0,
+            "backoff_factor": 0.5,
+            "growth_interval": 2000,
+            "_growth_tracker": 18
+          },
+          "rng_keys": [
+            "python",
+            "numpy",
+            "torch",
+            "cuda"
+          ],
+          "loader": {
+            "generator_state": {
+              "dtype": "ByteStorage",
+              "shape": [
+                5056
+              ],
+              "sha256": "c869dca6a39f1cee735c214cbe6cebd2b609e90d17fdc0a2f233560cb45cdafe"
+            },
+            "batch_size": 2,
+            "shuffle": true,
+            "num_workers": 0,
+            "drop_last": false,
+            "dataset_epoch": 3
+          },
+          "metrics_epoch": 3,
+          "resume_scope": "complete_epoch_boundary"
+        }
+      }
+    },
+    "raw_storage_comparisons": {
+      "A_last_vs_B_last": {
+        "tensors": 208,
+        "bitwise_equal": false,
+        "different_tensors": 207,
+        "max_abs_diff": 0.0003610849380493164,
+        "worst_tensor": "segformer.encoder.block.3.1.attention.self.key.bias"
+      },
+      "D_last_vs_E_last": {
+        "tensors": 208,
+        "bitwise_equal": false,
+        "different_tensors": 207,
+        "max_abs_diff": 0.00012102723121643066,
+        "worst_tensor": "decode_head.batch_norm.running_mean"
+      },
+      "D_best_vs_E_best": {
+        "tensors": 208,
+        "bitwise_equal": true,
+        "different_tensors": 0,
+        "max_abs_diff": 0.0,
+        "worst_tensor": null
+      },
+      "A_last_B_last_optimizer_equal": false,
+      "D_last_E_last_optimizer_equal": false,
+      "A_best_epoch1_vs_B_best_epoch1": {
+        "tensors": 208,
+        "different_tensors": 207,
+        "bitwise_equal": false,
+        "max_abs_diff": 0.0002574324607849121,
+        "worst_tensor": "segformer.encoder.block.3.1.attention.self.key.bias"
+      }
+    },
+    "formal_consistency": {
+      "model_state_matches_best": {
+        "tensors": 208,
+        "different_tensors": 0,
+        "bitwise_equal": true,
+        "max_abs_diff": 0,
+        "worst_tensor": null
+      },
+      "best_metrics_match_epoch39": true,
+      "last_metrics_match_epoch50": true,
+      "best_step": {
+        "successful": 10330,
+        "attempts": 10335,
+        "skipped": 5
+      },
+      "last_step": {
+        "successful": 13243,
+        "attempts": 13250,
+        "skipped": 7
+      },
+      "best_rng_state_sizes": {
+        "torch": 5056,
+        "cuda": [
+          16
+        ],
+        "loader_generator": 5056
+      },
+      "best_config_matches_model_config_json_after_JSON_key_normalization": true,
+      "model_config_comparison_note": "Checkpoint int id2label dictionary keys become strings in JSON; comparison canonicalizes through JSON before equality."
+    },
+    "shared_epoch1_checkpoint_state_B_D_E": {
+      "model": false,
+      "optimizer": false,
+      "optimizer_groups": true,
+      "grad_scaler": true,
+      "scheduler": true,
+      "lr": true,
+      "step": true,
+      "best": true,
+      "rng": true,
+      "loader": true
+    },
+    "shared_epoch1_checkpoint_state_D_E": {
+      "model": true,
+      "optimizer": true,
+      "optimizer_groups": true,
+      "grad_scaler": true,
+      "scheduler": true,
+      "lr": true,
+      "step": true,
+      "best": true,
+      "rng": true,
+      "loader": true
+    }
+  },
+  "resume_fixture": {
+    "existing_report_sha256": "5e206dbcc5e2750f92b505a59451da6a30c22fef30fb90c30b25a040ed5100d5",
+    "original_comparison_script_path": "E:\\\u684c\u9762\\AI\\tmp\\resume_evidence.py",
+    "original_comparison_script_sha256": "1f4aae57f15b4bccea9bb7bf014278ab9430584c7044a6821d0aff8fa2e37f21",
+    "run_details": {
+      "resume_fixture_A": {
+        "best": {
+          "iou": 0.0,
+          "epoch": 1
+        },
+        "best_preview_epoch": 1,
+        "training": {
+          "epochs_planned": 3,
+          "epochs_completed": 3,
+          "epochs_this_process": 3,
+          "planned_updates": 18,
+          "attempts": 18,
+          "successful_updates": 18,
+          "skipped": 0,
+          "final_lr": 1e-06,
+          "scheduler_completed": 18,
+          "stopped_early": false
+        },
+        "epoch_val_global": [
+          [
+            1,
+            {
+              "foreground_iou": 0.0,
+              "foreground_dice": 0.0,
+              "precision": null,
+              "recall": 0.0,
+              "na_reasons": {
+                "precision": "model predicted no foreground pixel at all"
+              },
+              "aggregation": "sum TP/FP/FN/TN over images, then divide once"
+            }
+          ],
+          [
+            2,
+            {
+              "foreground_iou": 0.0,
+              "foreground_dice": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "na_reasons": {},
+              "aggregation": "sum TP/FP/FN/TN over images, then divide once"
+            }
+          ],
+          [
+            3,
+            {
+              "foreground_iou": 0.0,
+              "foreground_dice": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "na_reasons": {},
+              "aggregation": "sum TP/FP/FN/TN over images, then divide once"
+            }
+          ]
+        ],
+        "resume_log": null
+      },
+      "resume_fixture_B": {
+        "best": {
+          "iou": 0.0,
+          "epoch": 1
+        },
+        "best_preview_epoch": 1,
+        "training": {
+          "epochs_planned": 3,
+          "epochs_completed": 3,
+          "epochs_this_process": 2,
+          "planned_updates": 18,
+          "attempts": 18,
+          "successful_updates": 18,
+          "skipped": 0,
+          "final_lr": 1e-06,
+          "scheduler_completed": 18,
+          "stopped_early": false
+        },
+        "epoch_val_global": [
+          [
+            1,
+            {
+              "foreground_iou": 0.0,
+              "foreground_dice": 0.0,
+              "precision": null,
+              "recall": 0.0,
+              "na_reasons": {
+                "precision": "model predicted no foreground pixel at all"
+              },
+              "aggregation": "sum TP/FP/FN/TN over images, then divide once"
+            }
+          ],
+          [
+            2,
+            {
+              "foreground_iou": 0.0,
+              "foreground_dice": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "na_reasons": {},
+              "aggregation": "sum TP/FP/FN/TN over images, then divide once"
+            }
+          ],
+          [
+            3,
+            {
+              "foreground_iou": 0.0,
+              "foreground_dice": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "na_reasons": {},
+              "aggregation": "sum TP/FP/FN/TN over images, then divide once"
+            }
+          ]
+        ],
+        "resume_log": {
+          "at": "2026-11-01T13:15:19+0800",
+          "checkpoint": "E:\\\u684c\u9762\\AI\\segformer_resources\\runs\\resume_fixture_B\\checkpoints\\last.pt",
+          "restore": {
+            "epoch_completed": 1,
+            "next_epoch": 2,
+            "scheduler_completed": 6,
+            "scheduler_total_steps": 18,
+            "scheduler_warmup_steps": 1,
+            "lr_restored": 4.3649281495407884e-05,
+            "step": {
+              "successful": 6,
+              "attempts": 6,
+              "skipped": 0
+            },
+            "best": {
+              "iou": 0.0,
+              "epoch": 1
+            },
+            "scaler_scale": 65536.0,
+            "optimizer_state_entries": 205,
+            "rng_restored": true,
+            "loader_generator_restored": true,
+            "rng_sha256": "386998d045eed6fd82cbff4bb22299cb259af4352822b053c796572f339d69ab",
+            "loader_generator_set_state": true
+          }
+        }
+      },
+      "resume_fixture_D": {
+        "best": {
+          "iou": 0.0,
+          "epoch": 1
+        },
+        "best_preview_epoch": 1,
+        "training": {
+          "epochs_planned": 3,
+          "epochs_completed": 3,
+          "epochs_this_process": 2,
+          "planned_updates": 18,
+          "attempts": 18,
+          "successful_updates": 18,
+          "skipped": 0,
+          "final_lr": 1e-06,
+          "scheduler_completed": 18,
+          "stopped_early": false
+        },
+        "epoch_val_global": [
+          [
+            1,
+            {
+              "foreground_iou": 0.0,
+              "foreground_dice": 0.0,
+              "precision": null,
+              "recall": 0.0,
+              "na_reasons": {
+                "precision": "model predicted no foreground pixel at all"
+              },
+              "aggregation": "sum TP/FP/FN/TN over images, then divide once"
+            }
+          ],
+          [
+            2,
+            {
+              "foreground_iou": 0.0,
+              "foreground_dice": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "na_reasons": {},
+              "aggregation": "sum TP/FP/FN/TN over images, then divide once"
+            }
+          ],
+          [
+            3,
+            {
+              "foreground_iou": 0.0,
+              "foreground_dice": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "na_reasons": {},
+              "aggregation": "sum TP/FP/FN/TN over images, then divide once"
+            }
+          ]
+        ],
+        "resume_log": {
+          "at": "2026-11-01T13:17:25+0800",
+          "checkpoint": "E:\\\u684c\u9762\\AI\\segformer_resources\\runs\\resume_fixture_D\\checkpoints\\last.pt",
+          "restore": {
+            "epoch_completed": 1,
+            "next_epoch": 2,
+            "scheduler_completed": 6,
+            "scheduler_total_steps": 18,
+            "scheduler_warmup_steps": 1,
+            "lr_restored": 4.3649281495407884e-05,
+            "step": {
+              "successful": 6,
+              "attempts": 6,
+              "skipped": 0
+            },
+            "best": {
+              "iou": 0.0,
+              "epoch": 1
+            },
+            "scaler_scale": 65536.0,
+            "optimizer_state_entries": 205,
+            "rng_restored": true,
+            "loader_generator_restored": true,
+            "rng_sha256": "386998d045eed6fd82cbff4bb22299cb259af4352822b053c796572f339d69ab",
+            "loader_generator_set_state": true
+          }
+        }
+      },
+      "resume_fixture_E": {
+        "best": {
+          "iou": 0.0,
+          "epoch": 1
+        },
+        "best_preview_epoch": 1,
+        "training": {
+          "epochs_planned": 3,
+          "epochs_completed": 3,
+          "epochs_this_process": 2,
+          "planned_updates": 18,
+          "attempts": 18,
+          "successful_updates": 18,
+          "skipped": 0,
+          "final_lr": 1e-06,
+          "scheduler_completed": 18,
+          "stopped_early": false
+        },
+        "epoch_val_global": [
+          [
+            1,
+            {
+              "foreground_iou": 0.0,
+              "foreground_dice": 0.0,
+              "precision": null,
+              "recall": 0.0,
+              "na_reasons": {
+                "precision": "model predicted no foreground pixel at all"
+              },
+              "aggregation": "sum TP/FP/FN/TN over images, then divide once"
+            }
+          ],
+          [
+            2,
+            {
+              "foreground_iou": 0.0,
+              "foreground_dice": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "na_reasons": {},
+              "aggregation": "sum TP/FP/FN/TN over images, then divide once"
+            }
+          ],
+          [
+            3,
+            {
+              "foreground_iou": 0.0,
+              "foreground_dice": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "na_reasons": {},
+              "aggregation": "sum TP/FP/FN/TN over images, then divide once"
+            }
+          ]
+        ],
+        "resume_log": {
+          "at": "2026-11-01T13:17:51+0800",
+          "checkpoint": "E:\\\u684c\u9762\\AI\\segformer_resources\\runs\\resume_fixture_E\\checkpoints\\last.pt",
+          "restore": {
+            "epoch_completed": 1,
+            "next_epoch": 2,
+            "scheduler_completed": 6,
+            "scheduler_total_steps": 18,
+            "scheduler_warmup_steps": 1,
+            "lr_restored": 4.3649281495407884e-05,
+            "step": {
+              "successful": 6,
+              "attempts": 6,
+              "skipped": 0
+            },
+            "best": {
+              "iou": 0.0,
+              "epoch": 1
+            },
+            "scaler_scale": 65536.0,
+            "optimizer_state_entries": 205,
+            "rng_restored": true,
+            "loader_generator_restored": true,
+            "rng_sha256": "386998d045eed6fd82cbff4bb22299cb259af4352822b053c796572f339d69ab",
+            "loader_generator_set_state": true
+          }
+        }
+      }
+    },
+    "independent_logged_trajectory_A_B": {
+      "rows": 12,
+      "compared_epochs": [
+        2,
+        3
+      ],
+      "batch_ids_identical": true,
+      "flipped_ids_identical": true,
+      "lr_identical": true,
+      "attempt_identical": true,
+      "success_index_identical": true,
+      "scheduler_completed_identical": true,
+      "skipped_identical": true,
+      "max_loss_abs_diff": 4.685000000004269e-05,
+      "first_logged_loss_divergent_attempt": 7
+    },
+    "independent_logged_trajectory_D_E": {
+      "rows": 12,
+      "compared_epochs": [
+        2,
+        3
+      ],
+      "batch_ids_identical": true,
+      "flipped_ids_identical": true,
+      "lr_identical": true,
+      "attempt_identical": true,
+      "success_index_identical": true,
+      "scheduler_completed_identical": true,
+      "skipped_identical": true,
+      "max_loss_abs_diff": 1.7169999999955277e-05,
+      "first_logged_loss_divergent_attempt": 8
+    },
+    "independent_best_epoch1_probability_comparison_A_B": {
+      "images": [
+        {
+          "array": "pcb1_Data_Images_Anomaly_010.JPG.npy",
+          "shape": [
+            1070,
+            1404
+          ],
+          "max_abs_diff": 8.368492126464844e-05,
+          "xor_pixels": 0
+        },
+        {
+          "array": "pcb1_Data_Images_Anomaly_045.JPG.npy",
+          "shape": [
+            1070,
+            1404
+          ],
+          "max_abs_diff": 9.277462959289551e-05,
+          "xor_pixels": 0
+        },
+        {
+          "array": "pcb1_Data_Images_Anomaly_087.JPG.npy",
+          "shape": [
+            1070,
+            1404
+          ],
+          "max_abs_diff": 9.685754776000977e-05,
+          "xor_pixels": 0
+        },
+        {
+          "array": "pcb1_Data_Images_Normal_0011.JPG.npy",
+          "shape": [
+            1070,
+            1404
+          ],
+          "max_abs_diff": 5.981326103210449e-05,
+          "xor_pixels": 0
+        },
+        {
+          "array": "pcb1_Data_Images_Normal_0455.JPG.npy",
+          "shape": [
+            1070,
+            1404
+          ],
+          "max_abs_diff": 8.496642112731934e-05,
+          "xor_pixels": 0
+        },
+        {
+          "array": "pcb1_Data_Images_Normal_0983.JPG.npy",
+          "shape": [
+            1070,
+            1404
+          ],
+          "max_abs_diff": 0.00010448694229125977,
+          "xor_pixels": 0
+        }
+      ],
+      "total_pixels": 9013680,
+      "max_abs_diff": 0.00010448694229125977,
+      "xor_pixels": 0,
+      "array_format": "little-endian float32 NPY streamed from NPZ using stdlib",
+      "within_recorded_1e-5_tolerance": false
+    },
+    "independent_best_epoch1_probability_comparison_D_E": {
+      "images": [
+        {
+          "array": "pcb1_Data_Images_Anomaly_010.JPG.npy",
+          "shape": [
+            1070,
+            1404
+          ],
+          "max_abs_diff": 0.0,
+          "xor_pixels": 0
+        },
+        {
+          "array": "pcb1_Data_Images_Anomaly_045.JPG.npy",
+          "shape": [
+            1070,
+            1404
+          ],
+          "max_abs_diff": 0.0,
+          "xor_pixels": 0
+        },
+        {
+          "array": "pcb1_Data_Images_Anomaly_087.JPG.npy",
+          "shape": [
+            1070,
+            1404
+          ],
+          "max_abs_diff": 0.0,
+          "xor_pixels": 0
+        },
+        {
+          "array": "pcb1_Data_Images_Normal_0011.JPG.npy",
+          "shape": [
+            1070,
+            1404
+          ],
+          "max_abs_diff": 0.0,
+          "xor_pixels": 0
+        },
+        {
+          "array": "pcb1_Data_Images_Normal_0455.JPG.npy",
+          "shape": [
+            1070,
+            1404
+          ],
+          "max_abs_diff": 0.0,
+          "xor_pixels": 0
+        },
+        {
+          "array": "pcb1_Data_Images_Normal_0983.JPG.npy",
+          "shape": [
+            1070,
+            1404
+          ],
+          "max_abs_diff": 0.0,
+          "xor_pixels": 0
+        }
+      ],
+      "total_pixels": 9013680,
+      "max_abs_diff": 0.0,
+      "xor_pixels": 0,
+      "array_format": "little-endian float32 NPY streamed from NPZ using stdlib",
+      "within_recorded_1e-5_tolerance": true
+    },
+    "scope_issues": [
+      {
+        "severity": "material_scope_gap",
+        "finding": "Persisted pre_save_probabilities.npz is generated from best.pt; all fixture best previews select epoch 1. It does not compare post-boundary epoch-3 model probabilities. D/E preview equality compares their shared pre-resume epoch-1 best model.",
+        "evidence": "Each fixture summary best_preview.epoch=1 and best.epoch=1; _best_preview loads best_path in train_full.py."
+      },
+      {
+        "severity": "declared_tolerance_failed",
+        "finding": "A/B persisted preview probability max abs diff exceeds the declared 1e-5 threshold. Threshold masks happen to match, and this is an epoch-1 best comparison.",
+        "max_abs_diff": 0.00010448694229125977,
+        "declared_absolute_limit": 1e-05,
+        "xor_pixels": 0
+      },
+      {
+        "severity": "material_scope_gap",
+        "finding": "state_at_load reads the current B last.pt after training has reached epoch 3. It is a round-trip restore at epoch 3, not an independent state comparison at the actual epoch-1 interruption boundary.",
+        "actual_checkpoint_epoch": 3
+      },
+      {
+        "severity": "overstated_state_check",
+        "finding": "Original resume_evidence.py state check explicitly compares Torch CPU/CUDA RNG but does not compare Python/NumPy RNG or DataLoader generator. all_exact excludes RNG, step and best flags, and optimizer_equal checks optimizer state but does not compare param_groups. Source restore code saves/sets additional objects, but the report boolean does not independently prove them."
+      },
+      {
+        "severity": "causal_limit",
+        "finding": "D/E final model and optimizer differ despite equal logged order/LR/counters. This supports numerical nondeterminism in the observed setup, but does not identify GPU/fp16 as the exclusive cause or prove within-process reproducibility. No numerical acceptance bound for final model relative error or metrics, and no boundary-conditioned final probability comparison, is preserved."
+      },
+      {
+        "severity": "limited_transfer",
+        "finding": "Fixture uses 12 training, 6 validation, 18 updates and 1 warmup step. It demonstrates complete-epoch loader/LR/counter continuation in a small fixture. The same source path preserves a scheduler plan; actual interrupted-resumed 13250/662 formal trajectory has not been exercised (formal run resume.used=false)."
+      },
+      {
+        "severity": "confounded_uninterrupted_control",
+        "finding": "A and B already have different epoch-1 best model values before the interrupted continuation. The control is not conditioned on an identical boundary model. Independently inspected D/E epoch-1 checkpoints share model/optimizer/scaler/scheduler/counters/RNG/loader state, which isolates observed divergence more cleanly.",
+        "epoch1_model_max_abs_diff": 0.0002574324607849121
+      }
+    ],
+    "limited_positive_findings": [
+      "All 12 post-boundary update rows for A/B and D/E have identical batches, flips, LR, counters and skip flags.",
+      "Current checkpoint archives actually contain model/optimizer/scaler/scheduler/RNG/loader state and next-epoch counters.",
+      "Independent raw storage final-model differences reproduce the existing reported A/B and D/E max absolute differences."
+    ],
+    "not_verified": [
+      "Exact all-object state equivalence at the original epoch-1 interruption boundary",
+      "Post-resume epoch-3 validation probability agreement against predeclared tolerances",
+      "Cross-process bitwise or bounded numerical equivalence of model/optimizer trajectory",
+      "Interrupted formal 13250/662 trajectory"
+    ],
+    "artifact_manifest_validation": {
+      "resume_fixture_A": {
+        "listed": 19,
+        "mismatches": [],
+        "unlisted": [
+          "artifact_manifest.json"
+        ]
+      },
+      "resume_fixture_B": {
+        "listed": 21,
+        "mismatches": [
+          {
+            "path": "artifact_manifest.json",
+            "recorded": {
+              "bytes": 2984,
+              "sha256": "ed75bae80740946cb99615ec03f1aee7d1dcbc19d11c845bfd071a3619816845"
+            },
+            "actual": {
+              "bytes": 3271,
+              "sha256": "6b430f78a14184194861bd5d33d8e96d82e02ec506555b0c89fc51b971335443"
+            }
+          }
+        ],
+        "unlisted": []
+      },
+      "resume_fixture_D": {
+        "listed": 21,
+        "mismatches": [
+          {
+            "path": "artifact_manifest.json",
+            "recorded": {
+              "bytes": 2984,
+              "sha256": "4a38f9bc49c4add5c5ad30e02dac1e0ef58339e5ab45394ce53b012a028f3549"
+            },
+            "actual": {
+              "bytes": 3271,
+              "sha256": "86950cd50f75e67fb941fac04f4c5876c1ce1f660d29bc24e82f8f1abafce997"
+            }
+          }
+        ],
+        "unlisted": []
+      },
+      "resume_fixture_E": {
+        "listed": 21,
+        "mismatches": [
+          {
+            "path": "artifact_manifest.json",
+            "recorded": {
+              "bytes": 2984,
+              "sha256": "4a38f9bc49c4add5c5ad30e02dac1e0ef58339e5ab45394ce53b012a028f3549"
+            },
+            "actual": {
+              "bytes": 3271,
+              "sha256": "61585b951ce4d883a5f2dc7a4367e540defadc8fc7cd93bad1cb5be7b09a8321"
+            }
+          }
+        ],
+        "unlisted": []
+      }
+    },
+    "scope": "Historical resume_fixture_A/B/D/E only. This audit does not describe any subsequent fixtures, retraining or verification."
+  },
+  "portable_summary_consistency": {
+    "exact_shared_fields": {
+      "stage": true,
+      "statement": true,
+      "config": true,
+      "data": true,
+      "parameters": true,
+      "initial_parameter_digest": true,
+      "encoder_check": true,
+      "optimizer": true,
+      "scheduler": true,
+      "training": true,
+      "resume": true,
+      "timing": true,
+      "memory": true,
+      "best": true,
+      "best_preview": true,
+      "curves": true,
+      "limitations": true
+    },
+    "schema_is_distinct_by_design": true,
+    "epoch_mappings_and_best_diagnostics": "Recomputed all 50 compact entries and full best diagnostics against raw logs; no discrepancies.",
+    "identity": "Recorded code/manifests/snapshot hashes were independently checked against actual files; start/end originals preserved."
+  }
+}

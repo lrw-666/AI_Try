@@ -1,0 +1,177 @@
+{
+  "label": "end",
+  "at": "2026-11-01T14:40:04+0800",
+  "config": {
+    "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\configs\\resume_fixture.yaml",
+    "sha256": "37e3aeca8d5d64c9f0fe63c9526acdfdcf6db14cf900a5707148b7c6967d3104"
+  },
+  "manifests": {
+    "train": {
+      "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\train.csv",
+      "sha256": "f1522eb9b474d0acc1d736a391002f5044153208fa10f51eea3dc7df729f65b0"
+    },
+    "val": {
+      "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\val.csv",
+      "sha256": "60a6c6cbf5ed7f5f9e57fb57bb096a5b57db677af5ee73f4fa140ddceaba6191"
+    },
+    "test": {
+      "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\test.csv",
+      "sha256": "4bdc594148f208c7067a66a8cb3b06fde53ebc1f4ab6fda84f08f80383061284"
+    }
+  },
+  "split_meta_sha256": "7c53a669aabebcbb72cc137f84e7d00ec615e53813396b36e7f3557d6c9d0b49",
+  "preview_ids_sha256": "4f17789dfecc28023003092dddbe3c4683ac781cb469b483e4180c2ebb8f9718",
+  "train_ids_file": {
+    "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\resume_fixture_train_ids.txt",
+    "sha256": "2d243d414e214341a070b3134115f883e356dd356c170c2e9be7d5bb26d1f1a1"
+  },
+  "snapshot": {
+    "model_id": "nvidia/mit-b0",
+    "revision": "80983a413c30d36a39c20203974ae7807835e2b4",
+    "weights_sha256": "4af8348c2a802bf76115d34797ff5ce1d9f110bb8593c22d9b66d8bd7fa227fc"
+  },
+  "code": {
+    "segformer_lab/training.py": "91c829d2447dd849b8a586e4f95dd355789e1a9255bcaf814661b8eaf57bd6f3",
+    "segformer_lab/pilot.py": "28825b9346c4b19677db756a8be7bdf98c56d03c8f9f99cad64c2cab3e9f737c",
+    "segformer_lab/train.py": "d8721c8012d594293988146cc8acad573361639ca27e241f43e4f16ef8ffc305",
+    "segformer_lab/smoke.py": "50c47b2f8b0bb45293c69635d1cb9eee6294a73acee4dcdf0525a1b36c0a45ec",
+    "segformer_lab/subset.py": "11f1831cab544270404a47ba8a721bbaa8b4d72890bb0f5a85b1fad900c16032",
+    "segformer_lab/losses.py": "e7195880bd49a8f03a9fbb39e9069c1f071010c8f7f96ba2bfac80d3d0ba0327",
+    "segformer_lab/metrics.py": "7d9625fa29eb94221787c80f7bc47dc429958d588207692f2c0ea1a12ecb5787",
+    "segformer_lab/evaluation.py": "0c30890eb5252d603de73bc792a6ef348fa77c2cf91c5f1b98a7167492787e53",
+    "segformer_lab/data.py": "3eb2117997db7cee7fa720b74f8b5b7df85793f4a65cebdd851943c3025ab9ce",
+    "segformer_lab/modeling.py": "318e0b0a5164eafe7c8393adf64caf1aaeea6e5895ab679ba0171c0fc57a59d3",
+    "segformer_lab/config.py": "b2c981faca6b2222b83ea876c8b3f1cd854ee210f42cd588dce41f20caaaa391",
+    "segformer_lab/geometry.py": "b9e9d823ba91706bea650ccf578fb71f960840c3f8097f7c8687a5850ab4aacb",
+    "segformer_lab/run_check.py": "257b617527feef4393ffc22c215616de2cad938fd177b1d4efa4b2a124875b62",
+    "segformer_lab/train_full.py": "2f5214272dddd37060057a163c833f46975d02deca394044caa37ec4bb562bf4",
+    "segformer_lab/paths.py": "a5d8814ff3adb4b162b96202d2c42d7fd68a1f26442e114f0cfa7f479c80c8b9",
+    "segformer_lab/download_model.py": "7859b282d709091bbcadcfa3c232a83e6d6c91a854e04459f75ffa420dc760b6"
+  },
+  "git": {
+    "head": "18eadb8dc19a53fa6c98b6ec25558508838a60bb",
+    "status_porcelain": "M work/SegFormer/README.md\n M work/SegFormer/configs/baseline.yaml\n M work/SegFormer/docs/stages/README.md\n M work/SegFormer/segformer_lab/pilot.py\n M work/SegFormer/tests/test_pilot.py\n?? work/SegFormer/configs/resume_fixture.yaml\n?? work/SegFormer/docs/stages/11-training-design-and-implementation.md\n?? work/SegFormer/manifests/resume_fixture_train_ids.txt\n?? work/SegFormer/reports/2026-11-01-stage12-execution-handoff.md\n?? work/SegFormer/reports/figures/stage11-best-anomaly-045.png\n?? work/SegFormer/reports/figures/stage11-best-anomaly-087.png\n?? work/SegFormer/reports/figures/stage11-best-normal-0011.png\n?? work/SegFormer/reports/figures/stage11-curves.png\n?? work/SegFormer/reports/stage11-evidence-audit.json\n?? work/SegFormer/reports/stage11-new-fixture-A.txt\n?? work/SegFormer/reports/stage11-resume-fixture.json\n?? work/SegFormer/reports/stage11-resume-safety-tests.txt\n?? work/SegFormer/reports/stage11-summary.json\n?? work/SegFormer/reports/stage11-unit-tests.txt\n?? work/SegFormer/reports/stage11_evidence/\n?? work/SegFormer/segformer_lab/full_check.py\n?? work/SegFormer/segformer_lab/resume_check.py\n?? work/SegFormer/segformer_lab/train_full.py\n?? work/SegFormer/tests/test_full_check.py\n?? work/SegFormer/tests/test_resume_check.py\n?? work/SegFormer/tests/test_train_full.py",
+    "diff_sha256": "6ddea7ca78cfaa141cd98f57f8d02f0f395f20a0e139bdcf0cef30a1e6749822",
+    "diff_text": "diff --git a/work/SegFormer/README.md b/work/SegFormer/README.md\nindex 8e5f801..f42a422 100644\n--- a/work/SegFormer/README.md\n+++ b/work/SegFormer/README.md\n@@ -3,10 +3,10 @@\n 本目录是 VisA PCB1 high-shot 协议下 SegFormer-B0 单基线实验的工程根目录：代码、配置、清单、阶段文档。\n 环境、缓存、数据、模型与运行产物**不在本目录**，统一放在仓库外的 `E:\\桌面\\AI\\segformer_resources`。\n \n-- 当前进度：**步骤1—10已通过独立验收，完整项目回归231项通过。**三轮pilot为795/795更新、0跳步，val全局IoU 0.6081、异常macro 0.2207，7/12异常图预测空。下一步仅阶段11正式单基线；尚未运行50轮或test评价。\n+- 当前进度：**步骤1—10已通过独立验收；第11阶段50轮正式单基线已执行完成（待验收）。**`pcb1_b0_v2_seed42` 跑满 50 轮：13 250 尝试 / **13 243 成功** / 7 次 AMP 跳步，3 161.61 s；best=**epoch 39**，val 全局前景 IoU **0.7775**、异常 12 张 macro IoU **0.5396**，正常图 FP 比 8.29e-06。epoch 边界恢复经独立 fixture 实测（状态逐位一致、顺序/翻转一致；跨进程浮点不复现）。完整回归 242 项通过；**未解码 test、未做测试推理**。\n - 验收记录：[阶段01—02验收与完善](./reports/2026-10-31-stage01-02-acceptance.md)、[第三阶段验收](./reports/2026-10-31-stage03-acceptance.md)、[第四阶段验收](./reports/2026-10-31-stage04-acceptance.md)、[第五阶段模型加载与核验](./reports/2026-10-31-stage05-model-loading-and-check.md)、[第六阶段验收](./reports/2026-10-31-stage06-acceptance.md)\n - 阶段索引：[docs/stages/README.md](./docs/stages/README.md)\n-- 最新验收：[第十阶段](./reports/2026-11-01-stage10-acceptance.md)；下一步见[阶段11执行交接](./reports/2026-11-01-stage11-execution-handoff.md)，完成正式单基线后再验收。\n+- 最新验收：[第十阶段](./reports/2026-11-01-stage10-acceptance.md)；第 11 阶段结果见[第十一阶段文档](./docs/stages/11-training-design-and-implementation.md)、`reports/stage11-summary.json` 与 `reports/stage11-resume-fixture.json`，等待验收后再决定阶段 12。\n - 主指南：`../../docs/research/2026-10-31-segformer-baseline-end-to-end-guide.md`\n - 环境隔离规范：`../../docs/research/2026-10-31-segformer-environment-isolation-and-stage-docs.md`\n \n@@ -74,13 +74,15 @@ work\\SegFormer\\                       仓库内（Git）\n ├─ segformer_lab\\smoke.py             阶段 08 冒烟入口与重载对照\n ├─ segformer_lab\\train.py             阶段 09 8 图过拟合入口\n ├─ segformer_lab\\pilot.py             阶段 10 完整数据 epoch 入口与新进程复验\n+├─ segformer_lab\\train_full.py        阶段 11 正式 50 轮入口、checkpoint 与 epoch 边界恢复\n ├─ segformer_lab\\subset.py            固定 8 图子集生成与校验\n-├─ configs\\baseline.yaml              实验配置（512 letterbox、ignore 255、二类）\n+├─ configs\\baseline.yaml              阶段 11 正式协议（显式 50 轮、13250/662、ieee_fp32）\n ├─ configs\\smoke.yaml                 阶段 08 冒烟配置\n ├─ configs\\overfit.yaml               阶段 09 过拟合配置（200 更新、LR 1e-4 无衰减）\n ├─ configs\\pilot.yaml                 阶段 10 全量三轮配置（530/132、flip random、warmup+cosine）\n-├─ manifests\\                         官方 CSV 副本 + train/val/test 清单 + split_meta.json + reviewed_groups.json + val_preview_ids.txt + overfit_train_ids.txt\n-├─ tests\\                             环境/分组/几何/审计/模型/数据集/损失指标的单元测试（231 项）\n+├─ configs\\resume_fixture.yaml        阶段 11 恢复 fixture（12/6 图、3 轮、仅用于续训对照）\n+├─ manifests\\                         官方 CSV 副本 + train/val/test 清单 + split_meta.json + reviewed_groups.json + val_preview_ids.txt + overfit_train_ids.txt + resume_fixture_train_ids.txt\n+├─ tests\\                             环境/分组/几何/审计/模型/数据集/损失指标/训练入口的单元测试（242 项）\n ├─ reports\\environment.json           最新环境报告\n ├─ reports\\data_audit\\                审计摘要、逐图统计、重复与近重复候选\n ├─ reports\\model_*.json               快照下载、加载与运行时核验记录\n@@ -160,7 +162,8 @@ E:\\桌面\\AI\\segformer_resources\\       仓库外（不进 Git）\n | 08 20 步冒烟检查 | 已通过独立验收 | [08-smoke-design-and-implementation.md](./docs/stages/08-smoke-design-and-implementation.md) |\n | 09 8 张训练图过拟合检查 | 已通过独立验收 | [09-overfit-design-and-implementation.md](./docs/stages/09-overfit-design-and-implementation.md) |\n | 10 完整训练集三轮 pilot | 已通过独立验收 | [10-pilot-design-and-implementation.md](./docs/stages/10-pilot-design-and-implementation.md) |\n-| 11—13 | 未开始 | 见 [阶段索引](./docs/stages/README.md) |\n+| 11 50 轮正式单基线 | 已完成执行（待独立验收） | [11-training-design-and-implementation.md](./docs/stages/11-training-design-and-implementation.md) |\n+| 12—13 | 未开始 | 见 [阶段索引](./docs/stages/README.md) |\n \n ## 5.1 数据现状（2026-10-31）\n \n@@ -252,6 +255,21 @@ E:\\桌面\\AI\\segformer_resources\\       仓库外（不进 Git）\n - 身份：git HEAD `0c5f0bd` + 未提交改动；起末代码/配置/清单与 `git diff` SHA 一致（`source_and_config_unchanged: true`）。**未实现 resume**，`workers>0` 未验证。\n - 证据：`reports/stage10-summary.json`（小型汇总）、`reports/stage10-unit-tests.txt`（231 项）、`reports/figures/stage10-*.png`（4 张精选）。\n \n+## 5.9 50 轮正式单基线（阶段 11）\n+\n+- 入口 `segformer_lab/train_full.py`（1062 行，`9be0f385…`）：`--config --out [--resume] [--verify-run]`；`stage.kind: formal|fixture` 双模式，`formal_failures()` 37 项守卫，运行时再核对 530=482+48 / 132=120+12。`train.py`（8 图）与 `pilot.py`（3 轮，本轮补 `epochs == 3` 守卫）边界保留。\n+- 配置 `configs/baseline.yaml`（93 行，`7fbea4ec…`）：显式写出 50 epoch、`max_steps: null`、B2、累积 1、workers 0、shuffle true、drop_last false、`fp16_amp`、`warmup_cosine`、`flip: random` p=0.5、LR 6e-5 / min 1e-6 / wd 0.01 / clip 1.0、`eval.precision: ieee_fp32`、`selection_metric: foreground_iou_global`。\n+- 预算：`50 × 265 = 13 250`；`warmup = max(1, int(round(662.5))) = 662`（ties-to-even），余弦跨度 12 588；首步 **9.06344411e-8**、第 662 步 6e-5、计划末步 1e-6。调度只在 optimizer 真执行后推进。\n+- run：`segformer_resources\\runs\\pcb1_b0_v2_seed42`（147 MiB）。实测 **13 250 尝试 / 13 243 成功 / 7 跳步**（全部 `nonfinite_grad`，从未连续），`scheduler.completed` 13 243，末步 LR **1.0000330735426696e-6**（跳步导致未到 floor，未补偿）；每轮 530/530 覆盖、重复 0。总计 3 161.61 s。\n+- 曲线：前 3 轮全背景（IoU 0、P 为 NA、12/12 空预测），**第 4 轮 LR 站上 6e-5 后 IoU 立即 0.3514**；第 20 轮后平台 0.73—0.78。best=**epoch 39**（IoU 0.7775）与末轮 0.7773 只差 2e-4。\n+- 最佳轮次：全局 IoU **0.7775342969**、Dice 0.8748459012、P 0.9397792286、R 0.8183056947；TP 279 246 / FP 17 894 / FN 62 003 / TN 197 941 817；异常 12 张 macro IoU **0.5395555278**、macro Dice 0.6203、macro P 0.7953（11 张有定义）、macro R 0.6155；正常图 11/120 张有任意 FP（共 1 495 px，比 8.29e-06）；空预测异常图 1 张（051）。\n+- 逐图：019 0.613、033 0.855、087 0.428、090 0.640（pilot 全漏的几张被救回）；**042（15 523 px）、051 仍为 0**，081 仅 0.0105。045+046 占 val GT 前景 62.6 %，全局 IoU 由它们主导，macro 才是\"每张一票\"。\n+- 资源：训练 2 609.18 s（其中单步合计 1 711.19 s、读图等待 897.99 s）、验证 533.36 s、保存 8.05 s；单步中位 131.23 ms；峰值 allocated **806.3** / reserved **934.0 MiB**；主机 RAM 可用 2.51 GiB。\n+- 恢复：独立 fixture（12 图/6 图/3 轮，18 更新）四 run 对照。载入瞬间 208 张量、优化器、scaler、scheduler、LR、计数、RNG **逐位相等**；边界后 batch 顺序与翻转一致；但同检查点两次续训 12 步后权相差 1.2e-4、两个全新进程第 1 步就差 6.0e-8 → **跨进程浮点不可复现**，保证范围见 `reports/stage11-resume-fixture.json`。\n+- 复验：新进程 strict 加载 `best.pt`（SHA `192c827b…`，epoch 39、step 10 330），全量 val 混淆量与全局指标逐位相同、6 张预览概率差 **0.0**、XOR **0 / 9 013 680 px**；`model_state.pt` 与 best 逐张量相等。\n+- 身份：git HEAD `18eadb8` + 未提交改动，14 个源文件哈希起末一致（`source_and_config_unchanged: true`）；快照 `80983a41…` / 权重 `4af8348c…` 未变，编码器 192/194 精确相等，初始参数和 6 937.768430818599。\n+- 证据：`reports/stage11-summary.json`（84 KB）、`reports/stage11-resume-fixture.json`（5.9 KB）、`reports/stage11-unit-tests.txt`（242 项）、`reports/figures/stage11-curves.png` + 3 张预览。\n+\n ## 6. 常见操作\n \n ```powershell\n@@ -315,6 +333,27 @@ Invoke-SegPython -u -m segformer_lab.pilot --config 'configs\\pilot.yaml' `\n Invoke-SegPython -u -m segformer_lab.pilot --verify-run \"$SegResource\\runs\\pilot_001\" `\n   --config 'configs\\pilot.yaml'\n \n+# 阶段 11：恢复 fixture（仅 12/6 图、3 轮；先跑 A，再跑 B 的两段）\n+Invoke-SegPython -u -m segformer_lab.train_full --config 'configs\\resume_fixture.yaml' `\n+  --out \"$SegResource\\runs\\resume_fixture_A\"\n+Invoke-SegPython -u -m segformer_lab.train_full --config 'configs\\resume_fixture.yaml' `\n+  --out \"$SegResource\\runs\\resume_fixture_B\" --stop-after-epoch 1\n+Invoke-SegPython -u -m segformer_lab.train_full --config 'configs\\resume_fixture.yaml' `\n+  --resume \"$SegResource\\runs\\resume_fixture_B\\checkpoints\\last.pt\" --out \"$SegResource\\runs\\resume_fixture_B\"\n+\n+# 阶段 11：50 轮正式单基线（新目录；输出目录必须为空或不存在）\n+Invoke-SegPython -u -m segformer_lab.train_full --config 'configs\\baseline.yaml' `\n+  --out \"$SegResource\\runs\\pcb1_b0_v2_seed42\"\n+\n+# 阶段 11：新进程严格加载 best.pt，重算全量 val 与 6 张预览\n+Invoke-SegPython -u -m segformer_lab.train_full --verify-run \"$SegResource\\runs\\pcb1_b0_v2_seed42\" `\n+  --config 'configs\\baseline.yaml'\n+\n+# 阶段 11：仅在正式 run 真实中断后，从其最后完整 epoch 续训\n+Invoke-SegPython -u -m segformer_lab.train_full --config 'configs\\baseline.yaml' `\n+  --resume \"$SegResource\\runs\\pcb1_b0_v2_seed42\\checkpoints\\last.pt\" `\n+  --out \"$SegResource\\runs\\pcb1_b0_v2_seed42\"\n+\n # 数据准备：重新生成三份清单（已存在且内容相同的图不会被覆盖）\n Invoke-SegPython -m segformer_lab.prepare_data `\n   --archive '..\\..\\docs\\dataset\\VisA\\VisA_20220922.tar' `\n@@ -391,3 +430,15 @@ Invoke-SegPip list\n 验收补强了NaN/shape/XOR、完整保存状态和起止数据身份门槛，修正了配置构造器原地修改、NA解释及产物数。原模型来源未单独冻结开始时snapshot哈希、增强图无逐样本视觉记录等局限如实保留。小目标漏检仍在，不以全局0.608作为论文成绩。\n \n 下一步按[阶段11执行交接](./reports/2026-11-01-stage11-execution-handoff.md)补正式入口与epoch边界恢复验证，再从原预训练重新初始化，执行固定50轮单基线。继续workers0、全量val流式评价，不自动改损失/阈值，不自动test；本轮未启动这些工作。\n+\n+## 第十一阶段执行结果与下一步\n+\n+正式单基线已按上文交接执行完成：新增 `segformer_lab/train_full.py`、重写 `configs/baseline.yaml`（显式协议 + 37 项守卫）、新增恢复 fixture 配置与 `tests/test_train_full.py`；`pilot.py` 补上 `epochs == 3` 守卫并把 `snapshot`/`extra_sources` 加进身份。`pcb1_b0_v2_seed42` 从原 MiT-B0 快照重新初始化（编码器 192/194 精确、初始参数和 6 937.768430818599），跑满 50 轮：**13 250 次尝试 / 13 243 次成功 / 7 次 AMP 跳步**，3 161.61 s（训练 2 609 s、验证 533 s、保存 8 s）。\n+\n+验证集（132 张、原图尺度、IEEE FP32、阈值 0.5）best=**epoch 39**：全局 IoU **0.7775**、Dice 0.8748、P 0.9398、R 0.8183，TP/FP/FN/TN = 279 246 / 17 894 / 62 003 / 197 941 817；异常 12 张 macro IoU **0.5396**、macro Dice 0.6203；正常图 11/120 张有任意 FP（1 495 px，比 8.29e-06）。**必须同时说明**：前 3 轮模型完全无预测（IoU 0，P 为 NA），是 662 步 warmup 使 LR 在第 4 轮才站上 6e-5；042（15 523 px）与 051 仍全漏、081 仅 0.0105，而 045+046 占 val GT 前景 62.6 %，全局 IoU 由大缺陷主导。best 与末轮（0.7773）只差 2e-4，属 12 张异常图的噪声量级。\n+\n+恢复能力另行实测（fixture 12/6 图、3 轮、18 更新，四 run 对照）：载入瞬间 208 个张量、优化器、scaler、scheduler、LR、计数与 RNG **逐位相等**，边界后的 batch 顺序与翻转图案完全一致；但同检查点两次续训 12 步后权相差 1.2e-4、两个全新进程第 1 步就差 6.0e-8，说明**跨进程浮点不可复现**，恢复保证范围已写进 `reports/stage11-resume-fixture.json`，不夸大为\"逐位续训\"。\n+\n+保存与复验：`best.pt`（SHA `192c827b…`，epoch 39、step 10 330）在新进程 strict 加载 0/0，全量 val 混淆量与全局指标逐位相同、6 张预览概率差 **0.0**、XOR 0 / 9 013 680 px；`model_state.pt` 与 best 逐张量相等。峰值 allocated 806.3 / reserved 934.0 MiB，单步中位 131.23 ms，读图等待占训练墙钟 34 %（`workers=0` 未改）。\n+\n+下一步：等待阶段 11 验收；通过后再单独授权阶段 12（用 best + run 内 processor 在新进程重建、先对齐 132 张 val，再**一次性**评价 test 402+40，同一阈值与还原函数，不得用于选参）。本轮未解码 test、未做测试推理、未进入阶段 12。\ndiff --git a/work/SegFormer/configs/baseline.yaml b/work/SegFormer/configs/baseline.yaml\nindex e0793ad..7edc9e3 100644\n--- a/work/SegFormer/configs/baseline.yaml\n+++ b/work/SegFormer/configs/baseline.yaml\n@@ -1,14 +1,20 @@\n-# SegFormer-B0 / PCB1 baseline configuration.\n+# SegFormer-B0 / PCB1 v2 grouped split -- the single formal baseline (stage 11).\n #\n-# Relative paths are resolved against the experiment project root\n-# (E:\\桌面\\AI\\AI_Try\\work\\SegFormer), never against the shell working directory.\n-# The resolved absolute form used by a run is written to reports/resolved_config.yaml.\n+# Relative paths resolve against the project root (E:\\桌面\\AI\\AI_Try\\work\\SegFormer),\n+# never against the shell working directory. The run writes the absolute form to\n+# resolved_config.yaml so no protocol value is left to an implicit default.\n #\n-# Values marked \"fixed protocol\" come from the end-to-end guide and from\n-# manifests/split_meta.json; changing them changes the experiment identity.\n+# Every protocol number below is repeated in `expected` / `protocol` blocks and is\n+# re-checked by segformer_lab.train_full before the first batch runs. Editing a\n+# value without editing its guard makes the entry point refuse to start.\n+\n+stage:\n+  kind: formal                 # formal | fixture  (fixture = resume test only)\n+  schema: segformer-lab/full-training/1\n+  resume_scope: complete_epoch_boundary\n \n experiment:\n-  name: segformer_b0_pcb1_v2_grouped\n+  name: pcb1_b0_v2_seed42\n   seed: 42\n   output_root: E:/桌面/AI/segformer_resources/runs\n \n@@ -17,33 +23,47 @@ data:\n   category: pcb1\n   train_manifest: manifests/train.csv\n   val_manifest: manifests/val.csv\n-  test_manifest: manifests/test.csv\n-  split_meta: manifests/split_meta.json  # reviewed same-object risk group, protocol v2\n-  train_ids_file: null\n-  input_size: 512            # fixed protocol\n-  resize_mode: letterbox     # keep aspect ratio, then centre pad\n+  test_manifest: manifests/test.csv      # hashed only; never decoded in this stage\n+  split_meta: manifests/split_meta.json  # v2 reviewed same-object risk groups\n+  train_ids_file: null                   # null = full split, no subset\n+  input_size: 512                        # fixed protocol\n+  resize_mode: letterbox                 # fixed protocol\n   image_pad_rgb: [124, 116, 104]\n-  ignore_index: 255          # padding must never be counted as background\n-  horizontal_flip_p: 0.5     # training only; never applied in audit/preview\n-  workers: 0                 # Windows first run\n+  ignore_index: 255                      # padding is never background\n+  horizontal_flip_p: 0.5                 # training only, synchronised with the mask\n+  workers: 0                             # the only loader setting validated on this host\n+  shuffle: true                          # train loader shuffles once per epoch\n+  drop_last: false                       # 530/2 = 265 exact batches anyway\n+  eval_ids_file: null                    # full 132-image validation set\n+\n+expected:\n+  train_images: 530\n+  train_normal: 482\n+  train_anomaly: 48\n+  val_images: 132\n+  val_normal: 120\n+  val_anomaly: 12\n \n model:\n   pretrained_dir: E:/桌面/AI/segformer_resources/models/mit-b0\n-  num_labels: 2              # background + defect\n+  num_labels: 2\n   id2label: {0: background, 1: defect}\n   label2id: {background: 0, defect: 1}\n-  train_encoder: true\n+  train_encoder: true                    # full-network fine-tuning\n \n train:\n   epochs: 50\n-  max_steps: null\n+  max_steps: null                        # budget is epochs, not update count\n   batch_size: 2\n   gradient_accumulation_steps: 1\n   amp: true\n+  precision: fp16_amp                    # CUDA FP16 autocast + GradScaler\n+  flip: random\n   learning_rate: 0.00006\n-  min_learning_rate: 0.000001\n+  min_learning_rate: 0.000001            # cosine end point only, not a warmup floor\n   weight_decay: 0.01\n   warmup_ratio: 0.05\n+  lr_scheduler: warmup_cosine\n   grad_clip_norm: 1.0\n   validate_every_epochs: 1\n   early_stopping: false\n@@ -54,14 +74,20 @@ loss:\n   dice_epsilon: 0.000001\n \n eval:\n-  batch_size: 1\n-  precision: ieee_fp32        # evaluation: disable TF32 + autocast; train.amp stays independent\n+  batch_size: 1                          # evaluation never batches\n+  precision: ieee_fp32                   # TF32 + autocast off; training AMP independent\n   threshold: 0.5\n   metric_space: original\n   postprocess: none\n   selection_metric: foreground_iou_global\n \n+checkpoint:\n+  keep_last: true\n+  keep_best: true\n+  save_model_state: true                 # inference-only mirror of best\n+\n logging:\n-  tensorboard: true\n-  log_every_micro_steps: 20\n+  tensorboard: false                     # epochs.jsonl + curves.png are the record\n+  log_every_micro_steps: 1\n   fixed_preview_manifest: manifests/val_preview_ids.txt\n+  preview_at_best_only: true\ndiff --git a/work/SegFormer/docs/stages/README.md b/work/SegFormer/docs/stages/README.md\nindex 9928e90..de67927 100644\n--- a/work/SegFormer/docs/stages/README.md\n+++ b/work/SegFormer/docs/stages/README.md\n@@ -22,7 +22,7 @@\n | 08 | 20 步冒烟检查 | 已通过独立验收 | [08-smoke-design-and-implementation.md](./08-smoke-design-and-implementation.md) | `reports\\stage08-gates.json`（5/5 技术门禁）；`runs\\smoke_001\\summary.json`、`updates.jsonl`、`reload_check.json`；`audit\\stage08-*.log` |\n | 09 | 8 张训练图过拟合检查 | 已通过独立验收 | [09-overfit-design-and-implementation.md](./09-overfit-design-and-implementation.md) | `runs\\overfit_002\\summary.json`、`evaluation_curve.json`、`eval\\*`（仓库外）；`reports\\stage09-summary.json`（仓库）；崩溃现场 `runs\\overfit_001` 与 `runs\\archive\\overfit_001_attempt{1,2}_*`；回归 `runs\\smoke_002_stage09_regression` |\n | 10 | 完整训练集短程试跑 | 已通过独立验收 | [10-pilot-design-and-implementation.md](./10-pilot-design-and-implementation.md) | `runs\\pilot_001\\summary.json`、`epochs.jsonl`、`updates.jsonl`、`reload_check.json`（仓库外）；`reports\\stage10-summary.json`、`reports\\stage10-unit-tests.txt`、`reports\\figures\\stage10-*.png`（仓库） |\n-| 11 | 正式训练与可靠保存 | 未开始 | — | — |\n+| 11 | 正式训练与可靠保存 | 已完成执行（待独立验收） | [11-training-design-and-implementation.md](./11-training-design-and-implementation.md) | `runs\\pcb1_b0_v2_seed42\\summary.json`、`epochs.jsonl`、`updates.jsonl`、`checkpoints\\{best,last}.pt`、`reload_check.json`（仓库外）；`reports\\stage11-summary.json`、`stage11-resume-fixture.json`、`stage11-unit-tests.txt`、`figures\\stage11-*.png`（仓库）；fixture `runs\\resume_fixture_{A,B,D,E}` |\n | 12 | 独立推理与原图评价 | 未开始 | — | — |\n | 13 | 结果可视化、失败分析与实验卡 | 未开始 | — | — |\n \n@@ -32,6 +32,23 @@\n \n **第10阶段已通过独立验收**：795/795更新、0跳步；最终231项回归通过，新进程完整132图的逐图/macro/global/NA一致，预览概率差0、XOR0。val全局IoU0.6081、异常macro0.2207，仍有7/12异常图预测空，不能当正式基线成绩。[验收入口](../../reports/2026-11-01-stage10-acceptance.md)。\n \n+**第11阶段已执行完成（待独立验收）**：`pcb1_b0_v2_seed42` 跑满 **50 轮**，13 250 次尝试 / **13 243 次成功** / 7 次 AMP 跳步，3 161.61 s；best=**epoch 39**，val 全局前景 IoU **0.7775**、Dice 0.8748、P 0.9398、R 0.8183，异常 12 张 macro IoU **0.5396**，正常图 FP 比 8.29e-06。epoch 边界恢复经独立 fixture 实测：载入状态逐位一致、数据顺序与翻转一致；跨进程浮点不复现。回归 242 项通过。**未做 test 推理，未进入阶段 12。**\n+\n+## 阶段 11 关键结论\n+\n+- 入口：新增 `segformer_lab/train_full.py`（1062 行，`9be0f385…`）；`pilot.py` 加 `extra_sources`/`snapshot` 身份与 **epochs 必须为 3** 的守卫；`train.py`（8 图）与 `pilot.py`（3 轮）边界保留，`tests/test_train_full.py` 11 项覆盖。\n+- 配置：`configs/baseline.yaml` 重写为显式协议（`stage.kind: formal`、`expected` 530=482+48 / 132=120+12、50 epoch、`max_steps: null`、B2、累积 1、workers 0、shuffle true、drop_last false、`fp16_amp`、`warmup_cosine`、`flip: random` p=0.5、`ieee_fp32`）；`formal_failures()` 37 项守卫，运行时再核对实际类别计数。\n+- 预算：`50 × 265 = 13 250`；`warmup = max(1, int(round(662.5))) = 662`（ties-to-even）；余弦跨度 12 588；首步 **9.06344411e-8**，第 662 步 6e-5，计划末步 1e-6。调度只在 optimizer 真执行后推进。\n+- 计数：13 250 尝试 / **13 243 成功** / **7 跳步**（全部 `nonfinite_grad`、从未连续、scale 每次只降一档）；`scheduler.completed` 13 243；末步 LR **1.0000330735426696e-6**（因 7 次跳步未到 floor，未做补偿）。每轮 530/530 覆盖、重复 0。\n+- 曲线：前 3 轮全背景（IoU 0、P 为 NA、12/12 空预测），第 4 轮 LR 站上 6e-5 后 IoU 立即 0.3514；第 20 轮后平台 0.73—0.78。best 0.7775（e39）与末轮 0.7773（e50）只差 2e-4。\n+- 最佳轮次：TP 279 246 / FP 17 894 / FN 62 003 / TN 197 941 817；macro Dice 0.6203 / P 0.7953（11 张有定义）/ R 0.6155；正常图 120 张中 11 张有任意 FP（共 1 495 px）；空预测异常图 1 张（051）。\n+- 逐图：019 0.613、033 0.855、087 0.428、090 0.640（pilot 全漏的几张被救回）；**042（15 523 px）与 051 仍为 0**，081 仅 0.0105。045+046 占 val GT 前景 62.6 %，全局 IoU 由它们主导。\n+- 恢复：fixture 四 run（A/B/D/E）；载入瞬间 208 张量、优化器、scaler、scheduler、LR、计数、RNG 全逐位相等；边界后 batch 顺序与翻转一致；**同检查点两次续训 12 步后差 1.2e-4，两个全新进程第 1 步就差 6.0e-8** → 跨进程浮点不可复现，保证范围见 `reports/stage11-resume-fixture.json`。\n+- 资源：3 161.61 s（训练 2 609.18 s，其中读图等待 897.99 s；验证 533.36 s；保存 8.05 s）；单步中位 131.23 ms；峰值 allocated 806.3 / reserved **934.0 MiB**；主机 RAM 可用 2.51 GiB。\n+- 保存与复验：`best.pt` SHA `192c827b…`（epoch 39、step 10 330），strict 0/0，`model_state.pt` 与 best 逐张量相等；新进程全量 val 混淆量与全局指标逐位相同、6 张预览概率差 **0.0**、XOR **0 / 9 013 680 px**。\n+- 身份：git HEAD `18eadb8` + 未提交改动（14 个源文件哈希起末一致，`source_and_config_unchanged: true`）；快照 `80983a41…`/权重 `4af8348c…` 未变，编码器 192/194 精确相等。\n+- 局限：只有 12 张异常验证图、面积加权；`workers=0` 未变；未做 `use_deterministic_algorithms` 对照；test 未解码、未推理。\n+\n ## 阶段 10 关键结论\n \n - 入口：新增 `segformer_lab/pilot.py`（`--config/--out/--verify-run`），不修改阶段 09 的八图边界；`train_step` 与 `step_optimizer` 从 `training.py` 抽出共享，`train.py` 一行未改。\n@@ -93,7 +110,9 @@\n \n ## 下一步\n \n-仅按[阶段11执行交接](../../reports/2026-11-01-stage11-execution-handoff.md)完成正式入口与epoch边界恢复对照，再从原预训练重新初始化执行50轮固定单基线。train530/val132，workers0，保持原损失/增强/原图IEEE评价；重建13250/662学习率计划，不接pilot权重或其795步计划。完成后再次验收，不自动test。本轮未启动11。\n+第 11 阶段已执行完成（50 轮、13 243/13 250、best epoch 39、val IoU 0.7775），文档与小型证据齐备，**等待独立验收**。验收通过后再单独授权阶段 12：用 `checkpoints/best.pt` + run 内 `processor/` 在新进程重建、先复算 132 张 val 与本阶段数字对齐，再**一次性**评价 test（402 正常 + 40 异常），同一套 `restore_defect_probability`、阈值 0.5、B1、IEEE FP32；test 只能评价一次，不得用于选参或调阈值。本轮未解码 test、未做测试推理、未进入阶段 12。\n+\n+第 11 阶段遗留三项带进 12/后续：跨进程浮点不可复现（已声明保证范围）、`workers>0` 未验证（读图占训练墙钟 34 %）、042/051/081 三张小缺陷仍近乎全漏的失败归因（属阶段 13）。\n \n ## 维护约定\n \ndiff --git a/work/SegFormer/segformer_lab/pilot.py b/work/SegFormer/segformer_lab/pilot.py\nindex 2e4986c..b39a516 100644\n--- a/work/SegFormer/segformer_lab/pilot.py\n+++ b/work/SegFormer/segformer_lab/pilot.py\n@@ -117,7 +117,7 @@ def sha256_file_text(text: str) -> str:\n     return hashlib.sha256(text.encode(\"utf-8\")).hexdigest()\n \n \n-def _code_identity() -> dict[str, str]:\n+def _code_identity(extra_sources: tuple[str, ...] = ()) -> dict[str, str]:\n     files = [\n         \"segformer_lab/training.py\", \"segformer_lab/pilot.py\", \"segformer_lab/train.py\",\n         \"segformer_lab/smoke.py\", \"segformer_lab/subset.py\", \"segformer_lab/losses.py\",\n@@ -126,14 +126,23 @@ def _code_identity() -> dict[str, str]:\n         \"segformer_lab/run_check.py\",\n     ]\n     out: dict[str, str] = {}\n-    for name in files:\n+    for name in list(files) + [item for item in extra_sources if item not in files]:\n         path = paths.PROJECT_ROOT / name\n         out[name] = sha256_file(path) if path.is_file() else \"\"\n     return out\n \n \n-def freeze_identity(config: dict[str, Any], *, label: str) -> dict[str, Any]:\n-    \"\"\"Snapshot everything that would invalidate the run if it changed.\"\"\"\n+def freeze_identity(config: dict[str, Any], *, label: str,\n+                    extra_sources: tuple[str, ...] = ()) -> dict[str, Any]:\n+    \"\"\"Snapshot everything that would invalidate the run if it changed.\n+\n+    ``extra_sources`` lets a later entry point (stage 11's ``train_full.py``) add\n+    its own module to the frozen code identity without forking this helper.\n+    \"\"\"\n+    ids_file = config[\"paths\"].get(\"data.train_ids_file\")\n+    model_dir = Path(config[\"paths\"][\"model.pretrained_dir\"])\n+    source = json.loads((model_dir / \"source.json\").read_text(encoding=\"utf-8\"))\n+    weights = next(item[\"sha256\"] for item in source[\"files\"] if item[\"path\"] == \"pytorch_model.bin\")\n     payload = {\n         \"label\": label,\n         \"at\": time.strftime(\"%Y-%m-%dT%H:%M:%S%z\"),\n@@ -144,8 +153,11 @@ def freeze_identity(config: dict[str, Any], *, label: str) -> dict[str, Any]:\n                       for split in (\"train\", \"val\", \"test\")},\n         \"split_meta_sha256\": sha256_file(Path(config[\"paths\"][\"data.split_meta\"])),\n         \"preview_ids_sha256\": sha256_file(Path(config[\"paths\"][\"logging.fixed_preview_manifest\"])),\n-        \"train_ids_file\": None,\n-        \"code\": _code_identity(),\n+        \"train_ids_file\": (None if ids_file is None\n+                           else {\"path\": str(ids_file), \"sha256\": sha256_file(Path(ids_file))}),\n+        \"snapshot\": {\"model_id\": source.get(\"model_id\"), \"revision\": source.get(\"revision\"),\n+                     \"weights_sha256\": weights},\n+        \"code\": _code_identity(extra_sources),\n         \"git\": _git_identity(),\n         \"versions\": {\"python\": sys.version.split()[0], \"torch\": torch.__version__,\n                      \"cuda_build\": torch.version.cuda},\n@@ -172,7 +184,7 @@ def config_failures(config: dict[str, Any]) -> list[str]:\n         \"data.train_ids_file must be null (full split)\": config[\"paths\"].get(\"data.train_ids_file\") is None,\n         \"gradient_accumulation_steps must be 1\": int(raw[\"train\"][\"gradient_accumulation_steps\"]) == 1,\n         \"data.workers must be 0\": int(raw[\"data\"][\"workers\"]) == 0,\n-        \"epochs must be a positive integer\": int(raw[\"train\"][\"epochs\"]) >= 1,\n+        \"epochs must be exactly 3 (pilot protocol)\": int(raw[\"train\"][\"epochs\"]) == 3,\n         \"grad_clip_norm must be finite and positive\": math.isfinite(float(raw[\"train\"][\"grad_clip_norm\"]))\n         and float(raw[\"train\"][\"grad_clip_norm\"]) > 0,\n     }\ndiff --git a/work/SegFormer/tests/test_pilot.py b/work/SegFormer/tests/test_pilot.py\nindex 56d2928..6857caf 100644\n--- a/work/SegFormer/tests/test_pilot.py\n+++ b/work/SegFormer/tests/test_pilot.py\n@@ -146,6 +146,8 @@ class ConfigGuardTests(unittest.TestCase):\n             ((\"raw\", \"train\", \"gradient_accumulation_steps\"), 2),\n             ((\"raw\", \"data\", \"workers\"), 4),\n             ((\"raw\", \"train\", \"epochs\"), 0),\n+            ((\"raw\", \"train\", \"epochs\"), 4),\n+            ((\"raw\", \"train\", \"epochs\"), 50),\n             ((\"raw\", \"train\", \"grad_clip_norm\"), 0.0),\n         ]\n         for path, value in cases:\n",
+    "diff_bytes": 30627
+  },
+  "versions": {
+    "python": "3.12.16",
+    "torch": "2.10.0+cu126",
+    "cuda_build": "12.6",
+    "numpy": "2.5.4"
+  },
+  "snapshot_source_sha256": "8e57fa70638ae7aad076ea9ad9603f4e4a87da54e09d2cb698ea26328beb8650",
+  "snapshot_files": {
+    "config.json": "e2378ac7c7a6981d6bdd1d9ccf29b611264c382afce89c561f39c9291164ff91",
+    "preprocessor_config.json": "d96ab2cb112985c19d5ea32f1d1f2369104fc78b1379f5ce26e33ca8646202a7",
+    "pytorch_model.bin": "4af8348c2a802bf76115d34797ff5ce1d9f110bb8593c22d9b66d8bd7fa227fc"
+  },
+  "eval_ids_file": {
+    "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\val_preview_ids.txt",
+    "sha256": "4f17789dfecc28023003092dddbe3c4683ac781cb469b483e4180c2ebb8f9718"
+  },
+  "resolved_paths": {
+    "data.root": "E:\\桌面\\AI\\segformer_resources\\data\\visa",
+    "data.train_manifest": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\train.csv",
+    "data.val_manifest": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\val.csv",
+    "data.test_manifest": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\test.csv",
+    "data.split_meta": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\split_meta.json",
+    "data.train_ids_file": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\resume_fixture_train_ids.txt",
+    "experiment.output_root": "E:\\桌面\\AI\\segformer_resources\\runs",
+    "model.pretrained_dir": "E:\\桌面\\AI\\segformer_resources\\models\\mit-b0",
+    "logging.fixed_preview_manifest": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\val_preview_ids.txt",
+    "data.eval_ids_file": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\val_preview_ids.txt"
+  },
+  "resolved_config": {
+    "stage": {
+      "kind": "fixture",
+      "schema": "segformer-lab/resume-fixture/1",
+      "resume_scope": "complete_epoch_boundary"
+    },
+    "experiment": {
+      "name": "pcb1_b0_resume_fixture",
+      "seed": 42,
+      "output_root": "E:/桌面/AI/segformer_resources/runs"
+    },
+    "data": {
+      "root": "E:/桌面/AI/segformer_resources/data/visa",
+      "category": "pcb1",
+      "train_manifest": "manifests/train.csv",
+      "val_manifest": "manifests/val.csv",
+      "test_manifest": "manifests/test.csv",
+      "split_meta": "manifests/split_meta.json",
+      "train_ids_file": "manifests/resume_fixture_train_ids.txt",
+      "eval_ids_file": "manifests/val_preview_ids.txt",
+      "input_size": 512,
+      "resize_mode": "letterbox",
+      "image_pad_rgb": [
+        124,
+        116,
+        104
+      ],
+      "ignore_index": 255,
+      "horizontal_flip_p": 0.5,
+      "workers": 0,
+      "shuffle": true,
+      "drop_last": false
+    },
+    "model": {
+      "pretrained_dir": "E:/桌面/AI/segformer_resources/models/mit-b0",
+      "num_labels": 2,
+      "id2label": {
+        "0": "background",
+        "1": "defect"
+      },
+      "label2id": {
+        "background": 0,
+        "defect": 1
+      },
+      "train_encoder": true
+    },
+    "train": {
+      "epochs": 3,
+      "max_steps": null,
+      "batch_size": 2,
+      "gradient_accumulation_steps": 1,
+      "amp": true,
+      "precision": "fp16_amp",
+      "flip": "random",
+      "learning_rate": 6e-05,
+      "min_learning_rate": 1e-06,
+      "weight_decay": 0.01,
+      "warmup_ratio": 0.05,
+      "lr_scheduler": "warmup_cosine",
+      "grad_clip_norm": 1.0,
+      "validate_every_epochs": 1,
+      "early_stopping": false
+    },
+    "loss": {
+      "ce_weight": 1.0,
+      "foreground_dice_weight": 0.5,
+      "dice_epsilon": 1e-06
+    },
+    "eval": {
+      "batch_size": 1,
+      "precision": "ieee_fp32",
+      "threshold": 0.5,
+      "metric_space": "original",
+      "postprocess": "none",
+      "selection_metric": "foreground_iou_global"
+    },
+    "checkpoint": {
+      "keep_last": true,
+      "keep_best": true,
+      "save_model_state": true
+    },
+    "logging": {
+      "tensorboard": false,
+      "log_every_micro_steps": 1,
+      "fixed_preview_manifest": "manifests/val_preview_ids.txt",
+      "preview_at_best_only": true
+    }
+  },
+  "saved_processor": {
+    "preprocessor_config.json": "7854b1307bdd3737b1106ad604bbd8f90308cfce8d46609e6d5d88a1face9f58"
+  }
+}

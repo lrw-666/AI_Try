@@ -1,0 +1,304 @@
+test_changed_group_source_is_rejected (tests.test_audit_groups.AuditGroupTests.test_changed_group_source_is_rejected) ... ok
+test_hash_consistent_cross_split_group_is_rejected (tests.test_audit_groups.AuditGroupTests.test_hash_consistent_cross_split_group_is_rejected) ... ok
+test_component_identity_is_not_truncated_to_uint8_or_confused_with_padding (tests.test_data_audit.ComponentRetentionTests.test_component_identity_is_not_truncated_to_uint8_or_confused_with_padding) ... ok
+test_count_decrease_can_be_a_merge_without_any_lost_component (tests.test_data_audit.ComponentRetentionTests.test_count_decrease_can_be_a_merge_without_any_lost_component) ... ok
+test_disappearance_can_be_hidden_by_another_component_splitting (tests.test_data_audit.ComponentRetentionTests.test_disappearance_can_be_hidden_by_another_component_splitting) ... ok
+test_diagonal_touch_is_not_connected (tests.test_data_audit.ComponentTests.test_diagonal_touch_is_not_connected) ... ok
+test_empty_mask (tests.test_data_audit.ComponentTests.test_empty_mask) ... ok
+test_single_blob (tests.test_data_audit.ComponentTests.test_single_blob) ... ok
+test_two_separated_blobs (tests.test_data_audit.ComponentTests.test_two_separated_blobs) ... ok
+test_u_shape_is_one_component (tests.test_data_audit.ComponentTests.test_u_shape_is_one_component) ... ok
+test_baseline_config_loads (tests.test_data_audit.ConfigTests.test_baseline_config_loads) ... ok
+test_missing_section_is_rejected (tests.test_data_audit.ConfigTests.test_missing_section_is_rejected) ... ok
+test_protocol_drift_is_rejected (tests.test_data_audit.ConfigTests.test_protocol_drift_is_rejected) ... ok
+test_different_images_differ (tests.test_data_audit.HashTests.test_different_images_differ) ... ok
+test_hamming_matrix_diagonal_is_zero (tests.test_data_audit.HashTests.test_hamming_matrix_diagonal_is_zero) ... ok
+test_hamming_matrix_matches_manual_popcount (tests.test_data_audit.HashTests.test_hamming_matrix_matches_manual_popcount) ... ok
+test_same_image_same_hash (tests.test_data_audit.HashTests.test_same_image_same_hash) ... ok
+test_binarize_merges_all_non_zero_ids (tests.test_data_audit.LabelTests.test_binarize_merges_all_non_zero_ids) ... ok
+test_letterbox_image_shape_and_pad_colour (tests.test_data_audit.LabelTests.test_letterbox_image_shape_and_pad_colour) ... ok
+test_letterbox_label_keeps_zero (tests.test_data_audit.LabelTests.test_letterbox_label_keeps_zero) ... ok
+test_letterbox_label_uses_255_for_padding (tests.test_data_audit.LabelTests.test_letterbox_label_uses_255_for_padding) ... ok
+test_padding_never_exceeds_canvas (tests.test_data_audit.LetterboxTests.test_padding_never_exceeds_canvas) ... ok
+test_pcb1_image (tests.test_data_audit.LetterboxTests.test_pcb1_image) ... ok
+test_portrait_image_pads_horizontally (tests.test_data_audit.LetterboxTests.test_portrait_image_pads_horizontally) ... ok
+test_square_image_has_no_padding (tests.test_data_audit.LetterboxTests.test_square_image_has_no_padding) ... ok
+test_even_indices_covers_both_ends (tests.test_data_audit.SelectionTests.test_even_indices_covers_both_ends) ... ok
+test_even_indices_is_unique_and_sorted (tests.test_data_audit.SelectionTests.test_even_indices_is_unique_and_sorted) ... ok
+test_even_indices_when_fewer_items_than_wanted (tests.test_data_audit.SelectionTests.test_even_indices_when_fewer_items_than_wanted) ... ok
+test_collate_stacks_tensors_and_keeps_lists (tests.test_dataset.CollateTests.test_collate_stacks_tensors_and_keeps_lists) ... ok
+test_empty_batch_rejected (tests.test_dataset.CollateTests.test_empty_batch_rejected) ... ok
+test_mixed_original_mask_presence_is_rejected_in_both_orders (tests.test_dataset.CollateTests.test_mixed_original_mask_presence_is_rejected_in_both_orders) ... ok
+test_anomaly_ids_merged_before_padding (tests.test_dataset.DatasetTests.test_anomaly_ids_merged_before_padding) ... ok
+test_configured_train_ids_are_used_only_for_train (tests.test_dataset.DatasetTests.test_configured_train_ids_are_used_only_for_train) ... ok
+test_custom_processor_protocol_flags_are_checked (tests.test_dataset.DatasetTests.test_custom_processor_protocol_flags_are_checked) ... ok
+test_custom_processor_statistics_are_checked (tests.test_dataset.DatasetTests.test_custom_processor_statistics_are_checked) ... ok
+test_default_seed_comes_from_config_with_explicit_override (tests.test_dataset.DatasetTests.test_default_seed_comes_from_config_with_explicit_override) ... ok
+test_empty_ids_file_is_rejected (tests.test_dataset.DatasetTests.test_empty_ids_file_is_rejected) ... ok
+test_evaluation_rejects_all_flips (tests.test_dataset.DatasetTests.test_evaluation_rejects_all_flips) ... ok
+test_explicit_ids_override_configured_train_ids (tests.test_dataset.DatasetTests.test_explicit_ids_override_configured_train_ids) ... ok
+test_force_flip_keeps_image_and_mask_aligned (tests.test_dataset.DatasetTests.test_force_flip_keeps_image_and_mask_aligned) ... ok
+test_ids_file_filters_and_validates (tests.test_dataset.DatasetTests.test_ids_file_filters_and_validates) ... ok
+test_invalid_flip_probability_rejected_at_construction (tests.test_dataset.DatasetTests.test_invalid_flip_probability_rejected_at_construction) ... ok
+test_invalid_split_rejected (tests.test_dataset.DatasetTests.test_invalid_split_rejected) ... ok
+test_loader_default_shuffle_seed_follows_dataset (tests.test_dataset.DatasetTests.test_loader_default_shuffle_seed_follows_dataset) ... ok
+test_loader_rejects_negative_seed (tests.test_dataset.DatasetTests.test_loader_rejects_negative_seed) ... ok
+test_negative_seed_and_epoch_rejected_at_construction (tests.test_dataset.DatasetTests.test_negative_seed_and_epoch_rejected_at_construction) ... ok
+test_normal_has_zero_mask_and_geometry (tests.test_dataset.DatasetTests.test_normal_has_zero_mask_and_geometry) ... ok
+test_numpy_processor_statistics_are_supported (tests.test_dataset.DatasetTests.test_numpy_processor_statistics_are_supported) ... ok
+test_random_flip_rejected_for_validation (tests.test_dataset.DatasetTests.test_random_flip_rejected_for_validation) ... ok
+test_set_epoch_rejects_negative_without_changing_state (tests.test_dataset.DatasetTests.test_set_epoch_rejects_negative_without_changing_state) ... ok
+test_wrong_axis_would_not_match (tests.test_dataset.DatasetTests.test_wrong_axis_would_not_match)
+Guards the earlier bug: flipping the height axis must not look like a horizontal flip. ... ok
+test_epoch_changes_pattern (tests.test_dataset.FlipDecisionTests.test_epoch_changes_pattern) ... ok
+test_none_and_force (tests.test_dataset.FlipDecisionTests.test_none_and_force) ... ok
+test_probability_bounds (tests.test_dataset.FlipDecisionTests.test_probability_bounds) ... ok
+test_random_is_deterministic (tests.test_dataset.FlipDecisionTests.test_random_is_deterministic) ... ok
+test_unknown_mode_rejected (tests.test_dataset.FlipDecisionTests.test_unknown_mode_rejected) ... ok
+test_bad_manifest_is_rejected_before_processor_or_sample_reads (tests.test_dataset_check.AcceptanceTests.test_bad_manifest_is_rejected_before_processor_or_sample_reads) ... ok
+test_forced_figure_source_gt_matches_source_rgb (tests.test_dataset_check.AcceptanceTests.test_forced_figure_source_gt_matches_source_rgb) ... ok
+test_geometry_checks_every_item_not_only_first (tests.test_dataset_check.AcceptanceTests.test_geometry_checks_every_item_not_only_first) ... ok
+test_manifest_verifier_preserves_reviewed_group_checks (tests.test_dataset_check.AcceptanceTests.test_manifest_verifier_preserves_reviewed_group_checks) ... ok
+test_skip_model_never_claims_full_stage (tests.test_dataset_check.AcceptanceTests.test_skip_model_never_claims_full_stage) ... E:\桌面\AI\segformer_resources\env\Lib\site-packages\transformers\image_processing_base.py:417: UserWarning: The following named arguments are not valid for `SegformerImageProcessor.__init__` and were ignored: 'feature_extractor_type', 'reduce_labels'
+  image_processor = cls(**image_processor_dict)
+ok
+test_cli_never_logs_proxy_credentials (tests.test_download_model.DownloadTests.test_cli_never_logs_proxy_credentials) ... ok
+test_complete_snapshot_passes (tests.test_download_model.DownloadTests.test_complete_snapshot_passes) ... ok
+test_existing_identity_changes_and_corruption_fail_without_network_or_write (tests.test_download_model.DownloadTests.test_existing_identity_changes_and_corruption_fail_without_network_or_write) ... ok
+test_existing_manifest_cannot_be_reblessed_against_source_record (tests.test_download_model.DownloadTests.test_existing_manifest_cannot_be_reblessed_against_source_record) ... ok
+test_existing_snapshot_reused_without_network (tests.test_download_model.DownloadTests.test_existing_snapshot_reused_without_network) ... ok
+test_explicit_different_sha_cannot_hide_in_requested_revision (tests.test_download_model.DownloadTests.test_explicit_different_sha_cannot_hide_in_requested_revision) ... ok
+test_explicit_proxy_clears_all_proxy_and_matches_no_proxy (tests.test_download_model.DownloadTests.test_explicit_proxy_clears_all_proxy_and_matches_no_proxy) ... ok
+test_failed_hub_request_does_not_echo_proxy_credentials (tests.test_download_model.DownloadTests.test_failed_hub_request_does_not_echo_proxy_credentials) ... ok
+test_new_directory_defaults_to_pinned_commit (tests.test_download_model.DownloadTests.test_new_directory_defaults_to_pinned_commit) ... ok
+test_rejects_lfs_pointer_even_with_matching_hash (tests.test_download_model.DownloadTests.test_rejects_lfs_pointer_even_with_matching_hash) ... ok
+test_rejects_malformed_identity_and_manifest (tests.test_download_model.DownloadTests.test_rejects_malformed_identity_and_manifest) ... ok
+test_rejects_unrecorded_shadow_weights_and_other_files (tests.test_download_model.DownloadTests.test_rejects_unrecorded_shadow_weights_and_other_files) ... ok
+test_rejects_unsafe_paths_and_invalid_hashes (tests.test_download_model.DownloadTests.test_rejects_unsafe_paths_and_invalid_hashes) ... ok
+test_source_record_hash_mismatch_never_creates_source (tests.test_download_model.DownloadTests.test_source_record_hash_mismatch_never_creates_source) ... ok
+test_source_record_restores_exact_commit_and_hashes (tests.test_download_model.DownloadTests.test_source_record_restores_exact_commit_and_hashes) ... ok
+test_available_dependencies_and_project_prefix_pass (tests.test_env_check.EnvironmentAcceptanceTests.test_available_dependencies_and_project_prefix_pass) ... ok
+test_failed_required_cache_inventory_cannot_pass (tests.test_env_check.EnvironmentAcceptanceTests.test_failed_required_cache_inventory_cannot_pass) ... ok
+test_missing_required_package_cannot_pass (tests.test_env_check.EnvironmentAcceptanceTests.test_missing_required_package_cannot_pass) ... ok
+test_user_site_enabled_cannot_pass (tests.test_env_check.EnvironmentAcceptanceTests.test_user_site_enabled_cannot_pass) ... ok
+test_wrong_prefix_cannot_pass_even_with_no_external_site_packages (tests.test_env_check.EnvironmentAcceptanceTests.test_wrong_prefix_cannot_pass_even_with_no_external_site_packages) ... ok
+test_backend_state_is_restored_after_failure (tests.test_evaluation.EvaluationPrecisionTests.test_backend_state_is_restored_after_failure) ... ok
+test_disables_tf32_and_outer_autocast_then_restores_both (tests.test_evaluation.EvaluationPrecisionTests.test_disables_tf32_and_outer_autocast_then_restores_both) ... ok
+test_missing_or_other_precision_policy_fails_without_mutation (tests.test_evaluation.EvaluationPrecisionTests.test_missing_or_other_precision_policy_fails_without_mutation) ... ok
+test_full_schema_dict_counters_do_not_mutate_saved_payload (tests.test_full_check.FullCheckTests.test_full_schema_dict_counters_do_not_mutate_saved_payload) ... ok
+test_observed_forward_rejects_cpu_even_when_report_claims_cuda (tests.test_full_check.FullCheckTests.test_observed_forward_rejects_cpu_even_when_report_claims_cuda) ... ok
+test_rejects_half_model_and_wrong_optimizer_moment_shape (tests.test_full_check.FullCheckTests.test_rejects_half_model_and_wrong_optimizer_moment_shape) ... ok
+test_rejects_inconsistent_full_boundary (tests.test_full_check.FullCheckTests.test_rejects_inconsistent_full_boundary) ... ok
+test_report_path_cannot_overwrite_input_or_unrelated_report (tests.test_full_check.FullCheckTests.test_report_path_cannot_overwrite_input_or_unrelated_report) ... ok
+test_group_check_rejects_cross_split_or_missing_members (tests.test_group_split.ReviewedGroupSplitTests.test_group_check_rejects_cross_split_or_missing_members) ... ok
+test_group_members_stay_together_with_exact_quotas (tests.test_group_split.ReviewedGroupSplitTests.test_group_members_stay_together_with_exact_quotas) ... ok
+test_indivisible_groups_cannot_silently_change_validation_quota (tests.test_group_split.ReviewedGroupSplitTests.test_indivisible_groups_cannot_silently_change_validation_quota) ... ok
+test_invalid_or_ambiguous_group_members_are_rejected (tests.test_group_split.ReviewedGroupSplitTests.test_invalid_or_ambiguous_group_members_are_rejected) ... ok
+test_official_test_manifest_bytes_do_not_change (tests.test_group_split.ReviewedGroupSplitTests.test_official_test_manifest_bytes_do_not_change) ... ok
+test_row_and_group_order_do_not_change_assignment (tests.test_group_split.ReviewedGroupSplitTests.test_row_and_group_order_do_not_change_assignment) ... ok
+test_ungrouped_protocol_keeps_recorded_v1_csv_bytes (tests.test_group_split.ReviewedGroupSplitTests.test_ungrouped_protocol_keeps_recorded_v1_csv_bytes) ... ok
+test_definition_records_runtime_parameters (tests.test_loss_metric_acceptance.LossAcceptanceTests.test_definition_records_runtime_parameters) ... ok
+test_half_logits_without_autocast_have_finite_ce_and_gradient (tests.test_loss_metric_acceptance.LossAcceptanceTests.test_half_logits_without_autocast_have_finite_ce_and_gradient) ... ok
+test_loss_input_contract (tests.test_loss_metric_acceptance.LossAcceptanceTests.test_loss_input_contract) ... ok
+test_two_positive_images_are_averaged_without_normal_image (tests.test_loss_metric_acceptance.LossAcceptanceTests.test_two_positive_images_are_averaged_without_normal_image) ... ok
+test_valid_images_and_zero_dice_graph (tests.test_loss_metric_acceptance.LossAcceptanceTests.test_valid_images_and_zero_dice_graph) ... ok
+test_geometry_validation (tests.test_loss_metric_acceptance.MetricAcceptanceTests.test_geometry_validation) ... ok
+test_ignored_pixels_are_excluded_from_confusion_and_normal_area (tests.test_loss_metric_acceptance.MetricAcceptanceTests.test_ignored_pixels_are_excluded_from_confusion_and_normal_area) ... ok
+test_integer_accumulation_past_int32_and_per_image_percentiles (tests.test_loss_metric_acceptance.MetricAcceptanceTests.test_integer_accumulation_past_int32_and_per_image_percentiles) ... ok
+test_mask_validation_and_all_ignore_are_atomic (tests.test_loss_metric_acceptance.MetricAcceptanceTests.test_mask_validation_and_all_ignore_are_atomic) ... ok
+test_na_reasons_and_no_numpy_torch_mixing_warning (tests.test_loss_metric_acceptance.MetricAcceptanceTests.test_na_reasons_and_no_numpy_torch_mixing_warning) ... ok
+test_threshold_logits_and_label_validation (tests.test_loss_metric_acceptance.MetricAcceptanceTests.test_threshold_logits_and_label_validation) ... ok
+test_all_normal_batch_returns_graph_connected_zero (tests.test_losses_metrics.LossDefinitionTests.test_all_normal_batch_returns_graph_connected_zero) ... ok
+test_ce_matches_hand_computation (tests.test_losses_metrics.LossDefinitionTests.test_ce_matches_hand_computation) ... ok
+test_definition_is_explicit (tests.test_losses_metrics.LossDefinitionTests.test_definition_is_explicit) ... ok
+test_dice_uses_pixel_intersection_not_scalar_product (tests.test_losses_metrics.LossDefinitionTests.test_dice_uses_pixel_intersection_not_scalar_product) ... ok
+test_fully_ignored_batch_is_rejected (tests.test_losses_metrics.LossDefinitionTests.test_fully_ignored_batch_is_rejected) ... ok
+test_invalid_label_values_are_rejected (tests.test_losses_metrics.LossDefinitionTests.test_invalid_label_values_are_rejected) ... ok
+test_low_resolution_padding_rows_do_not_leak (tests.test_losses_metrics.LossDefinitionTests.test_low_resolution_padding_rows_do_not_leak) ... ok
+test_padding_logits_do_not_move_the_loss (tests.test_losses_metrics.LossDefinitionTests.test_padding_logits_do_not_move_the_loss) ... ok
+test_perfect_prediction_has_near_zero_dice (tests.test_losses_metrics.LossDefinitionTests.test_perfect_prediction_has_near_zero_dice) ... ok
+test_upsample_is_skipped_when_sizes_match (tests.test_losses_metrics.LossDefinitionTests.test_upsample_is_skipped_when_sizes_match) ... ok
+test_all_background_prediction_scores_zero (tests.test_losses_metrics.MetricTests.test_all_background_prediction_scores_zero) ... ok
+test_batch_layout_cannot_change_the_result (tests.test_losses_metrics.MetricTests.test_batch_layout_cannot_change_the_result) ... ok
+test_flipped_evaluation_sample_is_rejected (tests.test_losses_metrics.MetricTests.test_flipped_evaluation_sample_is_rejected) ... ok
+test_global_is_not_mean_of_images (tests.test_losses_metrics.MetricTests.test_global_is_not_mean_of_images) ... ok
+test_hand_computed_2x2 (tests.test_losses_metrics.MetricTests.test_hand_computed_2x2) ... ok
+test_mask_size_must_match_geometry (tests.test_losses_metrics.MetricTests.test_mask_size_must_match_geometry) ... ok
+test_normal_empty_prediction_is_na_not_one (tests.test_losses_metrics.MetricTests.test_normal_empty_prediction_is_na_not_one) ... ok
+test_normal_false_positive_counts (tests.test_losses_metrics.MetricTests.test_normal_false_positive_counts) ... ok
+test_padding_is_dropped_before_upscaling (tests.test_losses_metrics.RestoreTests.test_padding_is_dropped_before_upscaling) ... ok
+test_restore_shape_is_original (tests.test_losses_metrics.RestoreTests.test_restore_shape_is_original) ... ok
+test_single_original_pixel_that_512_sampling_drops (tests.test_losses_metrics.RestoreTests.test_single_original_pixel_that_512_sampling_drops) ... ok
+test_skipping_the_crop_shifts_the_prediction (tests.test_losses_metrics.RestoreTests.test_skipping_the_crop_shifts_the_prediction) ... ok
+test_bad_identity_stops_before_fixture_or_model_reads (tests.test_metrics_check.AcceptanceTests.test_bad_identity_stops_before_fixture_or_model_reads) ... ok
+test_baseline_declares_ieee_fp32_evaluation_without_disabling_training_amp (tests.test_metrics_check.AcceptanceTests.test_baseline_declares_ieee_fp32_evaluation_without_disabling_training_amp) ... ok
+test_cpu_stub_probe_uses_one_seeded_eval_model_and_paired_caches (tests.test_metrics_check.AcceptanceTests.test_cpu_stub_probe_uses_one_seeded_eval_model_and_paired_caches) ... ok
+test_eval_batch_size_must_be_one_before_probe (tests.test_metrics_check.AcceptanceTests.test_eval_batch_size_must_be_one_before_probe) ... ok
+test_identity_reuses_group_and_official_csv_audit (tests.test_metrics_check.AcceptanceTests.test_identity_reuses_group_and_official_csv_audit) ... ok
+test_metric_fixtures_include_ignore_and_na_reasons (tests.test_metrics_check.AcceptanceTests.test_metric_fixtures_include_ignore_and_na_reasons) ... ok
+test_offline_snapshot_failure_is_part_of_identity_preflight (tests.test_metrics_check.AcceptanceTests.test_offline_snapshot_failure_is_part_of_identity_preflight) ... ok
+test_same_logits_check_compares_per_image_and_prediction_identity (tests.test_metrics_check.AcceptanceTests.test_same_logits_check_compares_per_image_and_prediction_identity) ... ok
+test_skip_model_is_fixtures_only_with_null_checks_and_no_model_load (tests.test_metrics_check.AcceptanceTests.test_skip_model_is_fixtures_only_with_null_checks_and_no_model_load) ... ok
+test_equal_aggregate_counts_cannot_pass_large_probability_changes (tests.test_metrics_check.ForwardComparisonTests.test_equal_aggregate_counts_cannot_pass_large_probability_changes) ... ok
+test_fp32_protocol_is_explicit (tests.test_metrics_check.ForwardComparisonTests.test_fp32_protocol_is_explicit) ... ok
+test_identical_predictions_do_not_hide_large_probability_changes (tests.test_metrics_check.ForwardComparisonTests.test_identical_predictions_do_not_hide_large_probability_changes) ... ok
+test_no_changes_have_null_margin_statistics (tests.test_metrics_check.ForwardComparisonTests.test_no_changes_have_null_margin_statistics) ... ok
+test_nonfinite_outputs_are_rejected (tests.test_metrics_check.ForwardComparisonTests.test_nonfinite_outputs_are_rejected) ... ok
+test_opposite_flips_do_not_cancel_when_confusion_is_equal (tests.test_metrics_check.ForwardComparisonTests.test_opposite_flips_do_not_cancel_when_confusion_is_equal) ... ok
+test_positive_gt_flip_is_counted_once_not_once_each_for_tp_and_fn (tests.test_metrics_check.ForwardComparisonTests.test_positive_gt_flip_is_counted_once_not_once_each_for_tp_and_fn) ... ok
+test_256_label_uses_scaled_letterbox_and_has_defect (tests.test_model_acceptance.ModelAcceptanceTests.test_256_label_uses_scaled_letterbox_and_has_defect) ... ok
+test_input_size_override_cannot_bypass_fixed_config (tests.test_model_acceptance.ModelAcceptanceTests.test_input_size_override_cannot_bypass_fixed_config) ... ok
+test_load_rejects_missing_source_before_transformers (tests.test_model_acceptance.ModelAcceptanceTests.test_load_rejects_missing_source_before_transformers) ... ok
+test_load_rejects_nonbinary_head_or_wrong_processor (tests.test_model_acceptance.ModelAcceptanceTests.test_load_rejects_nonbinary_head_or_wrong_processor) ... ok
+test_load_rejects_wrong_pinned_identity_before_transformers (tests.test_model_acceptance.ModelAcceptanceTests.test_load_rejects_wrong_pinned_identity_before_transformers) ... ok
+test_loading_unknown_unexpected_is_rejected (tests.test_model_acceptance.ModelAcceptanceTests.test_loading_unknown_unexpected_is_rejected) ... ok
+test_manifest_hash_failure_is_rejected_before_processor (tests.test_model_acceptance.ModelAcceptanceTests.test_manifest_hash_failure_is_rejected_before_processor) ... ok
+test_rejects_changed_encoder_even_below_old_tolerance (tests.test_model_acceptance.ModelAcceptanceTests.test_rejects_changed_encoder_even_below_old_tolerance) ... ok
+test_runtime_gate_rejects_bad_shape_nonfinite_loss_and_missing_gradient (tests.test_model_acceptance.ModelAcceptanceTests.test_runtime_gate_rejects_bad_shape_nonfinite_loss_and_missing_gradient) ... ok
+test_unused_checkpoint_keys_are_complete_and_rejected (tests.test_model_acceptance.ModelAcceptanceTests.test_unused_checkpoint_keys_are_complete_and_rejected) ... ok
+test_binary_weights_are_not_flagged (tests.test_modeling.LfsPointerTests.test_binary_weights_are_not_flagged) ... ok
+test_pointer_is_detected (tests.test_modeling.LfsPointerTests.test_pointer_is_detected) ... ok
+test_head_only_missing_is_acceptable (tests.test_modeling.LoadingKeyTests.test_head_only_missing_is_acceptable) ... ok
+test_mismatched_encoder_key_is_not_acceptable (tests.test_modeling.LoadingKeyTests.test_mismatched_encoder_key_is_not_acceptable) ... ok
+test_missing_encoder_key_is_not_acceptable (tests.test_modeling.LoadingKeyTests.test_missing_encoder_key_is_not_acceptable) ... ok
+test_unexpected_keys_do_not_break_encoder (tests.test_modeling.LoadingKeyTests.test_unexpected_keys_do_not_break_encoder) ... ok
+test_hash_change_is_reported (tests.test_modeling.SnapshotVerificationTests.test_hash_change_is_reported) ... ok
+test_intact_snapshot_passes (tests.test_modeling.SnapshotVerificationTests.test_intact_snapshot_passes) ... ok
+test_missing_file_is_reported (tests.test_modeling.SnapshotVerificationTests.test_missing_file_is_reported) ... ok
+test_size_change_is_reported (tests.test_modeling.SnapshotVerificationTests.test_size_change_is_reported) ... ok
+test_batch_is_deterministic (tests.test_modeling.SyntheticBatchTests.test_batch_is_deterministic) ... ok
+test_padding_rows_are_255 (tests.test_modeling.SyntheticBatchTests.test_padding_rows_are_255) ... ok
+test_shapes_and_label_values (tests.test_modeling.SyntheticBatchTests.test_shapes_and_label_values) ... ok
+test_valid_region_has_no_ignore_value (tests.test_modeling.SyntheticBatchTests.test_valid_region_has_no_ignore_value) ... ok
+test_transformers_constructor_preserves_saved_configuration (tests.test_pilot.CheckpointConfigurationTests.test_transformers_constructor_preserves_saved_configuration) ... ok
+test_clean_pilot_config_passes (tests.test_pilot.ConfigGuardTests.test_clean_pilot_config_passes) ... ok
+test_each_boundary_is_enforced (tests.test_pilot.ConfigGuardTests.test_each_boundary_is_enforced) ... ok
+test_ce_is_weighted_by_valid_pixels_not_by_batch (tests.test_pilot.LossAggregationTests.test_ce_is_weighted_by_valid_pixels_not_by_batch) ... ok
+test_dice_is_weighted_by_positive_images_only (tests.test_pilot.LossAggregationTests.test_dice_is_weighted_by_positive_images_only) ... ok
+test_total_uses_the_shared_weights (tests.test_pilot.LossAggregationTests.test_total_uses_the_shared_weights) ... ok
+test_checkpoint_gate_checks_every_optimizer_parameter_step (tests.test_pilot.ReloadGateTests.test_checkpoint_gate_checks_every_optimizer_parameter_step) ... ok
+test_checkpoint_gate_rejects_missing_rng_and_nonfinite_model (tests.test_pilot.ReloadGateTests.test_checkpoint_gate_rejects_missing_rng_and_nonfinite_model) ... ok
+test_checkpoint_gate_rejects_optimizer_group_drift (tests.test_pilot.ReloadGateTests.test_checkpoint_gate_rejects_optimizer_group_drift) ... ok
+test_identity_gate_detects_manifest_drift (tests.test_pilot.ReloadGateTests.test_identity_gate_detects_manifest_drift) ... ok
+test_inventory_rejects_modified_bytes_and_conflicting_summary (tests.test_pilot.ReloadGateTests.test_inventory_rejects_modified_bytes_and_conflicting_summary) ... ok
+test_metrics_gate_detects_per_image_change_with_same_global (tests.test_pilot.ReloadGateTests.test_metrics_gate_detects_per_image_change_with_same_global) ... ok
+test_probability_gate_accepts_identical_original_size_maps (tests.test_pilot.ReloadGateTests.test_probability_gate_accepts_identical_original_size_maps) ... ok
+test_probability_gate_rejects_broadcast_shape_and_extra_keys (tests.test_pilot.ReloadGateTests.test_probability_gate_rejects_broadcast_shape_and_extra_keys) ... ok
+test_probability_gate_rejects_nan_even_after_a_clean_sample (tests.test_pilot.ReloadGateTests.test_probability_gate_rejects_nan_even_after_a_clean_sample) ... ok
+test_probability_gate_rejects_threshold_crossing_within_atol (tests.test_pilot.ReloadGateTests.test_probability_gate_rejects_threshold_crossing_within_atol) ... ok
+test_val_summary_preserves_global_na_reasons (tests.test_pilot.ReloadGateTests.test_val_summary_preserves_global_na_reasons) ... ok
+test_real_update_advances_by_exactly_one (tests.test_pilot.ScheduleAdvanceTests.test_real_update_advances_by_exactly_one) ... ok
+test_skip_does_not_advance_the_schedule_or_the_lr (tests.test_pilot.ScheduleAdvanceTests.test_skip_does_not_advance_the_schedule_or_the_lr) ... ok
+test_cosine_decays_monotonically_and_ends_at_min_lr (tests.test_pilot.WarmupCosineTests.test_cosine_decays_monotonically_and_ends_at_min_lr) ... ok
+test_rejects_inconsistent_budgets (tests.test_pilot.WarmupCosineTests.test_rejects_inconsistent_budgets) ... ok
+test_single_epoch_budget_also_works (tests.test_pilot.WarmupCosineTests.test_single_epoch_budget_also_works) ... ok
+test_state_dict_round_trip_keeps_the_step (tests.test_pilot.WarmupCosineTests.test_state_dict_round_trip_keeps_the_step) ... ok
+test_warmup_reaches_base_exactly_and_never_exceeds_it (tests.test_pilot.WarmupCosineTests.test_warmup_reaches_base_exactly_and_never_exceeds_it) ... ok
+test_cli_rejects_different_protocol_before_accessing_sources (tests.test_prepare_data.PreparationWriteSafetyTests.test_cli_rejects_different_protocol_before_accessing_sources) ... usage: python.exe -m unittest [-h] --archive ARCHIVE --source-zip SOURCE_ZIP
+                              [--data-root DATA_ROOT] [--out OUT]
+                              [--category CATEGORY] [--seed SEED]
+                              [--val-normal VAL_NORMAL]
+                              [--val-anomaly VAL_ANOMALY]
+                              [--reviewed-groups REVIEWED_GROUPS]
+                              [--expect-csv-sha256 EXPECT_CSV_SHA256]
+                              [--force-overwrite] [--rewrite-extraction]
+                              [--skip-extraction]
+python.exe -m unittest: error: this entry point implements the fixed PCB1 protocol: category=pcb1, seed=42, val-normal=120, val-anomaly=12; use a separately reviewed protocol for alternatives
+usage: python.exe -m unittest [-h] --archive ARCHIVE --source-zip SOURCE_ZIP
+                              [--data-root DATA_ROOT] [--out OUT]
+                              [--category CATEGORY] [--seed SEED]
+                              [--val-normal VAL_NORMAL]
+                              [--val-anomaly VAL_ANOMALY]
+                              [--reviewed-groups REVIEWED_GROUPS]
+                              [--expect-csv-sha256 EXPECT_CSV_SHA256]
+                              [--force-overwrite] [--rewrite-extraction]
+                              [--skip-extraction]
+python.exe -m unittest: error: this entry point implements the fixed PCB1 protocol: category=pcb1, seed=42, val-normal=120, val-anomaly=12; use a separately reviewed protocol for alternatives
+ok
+test_conflicting_existing_manifest_is_preserved (tests.test_prepare_data.PreparationWriteSafetyTests.test_conflicting_existing_manifest_is_preserved) ... ok
+test_failed_audit_does_not_publish_or_replace_manifests (tests.test_prepare_data.PreparationWriteSafetyTests.test_failed_audit_does_not_publish_or_replace_manifests) ...   RESULT: FAILED - fixed manifests unchanged; see E:\桌面\AI\segformer_resources\tmp\segformer-write-safety-42421ye_\manifests\preparation-failure.json
+ok
+test_regular_archive_part_filename_is_not_used_as_scratch (tests.test_prepare_data.PreparationWriteSafetyTests.test_regular_archive_part_filename_is_not_used_as_scratch) ... ok
+test_rewrite_identical_does_not_authorize_different_content (tests.test_prepare_data.PreparationWriteSafetyTests.test_rewrite_identical_does_not_authorize_different_content) ... ok
+test_accepts_relative_member (tests.test_prepare_data.SafeMemberTargetTests.test_accepts_relative_member) ... ok
+test_rejects_absolute_path (tests.test_prepare_data.SafeMemberTargetTests.test_rejects_absolute_path) ... ok
+test_rejects_alternate_data_stream (tests.test_prepare_data.SafeMemberTargetTests.test_rejects_alternate_data_stream) ... ok
+test_rejects_backslash_traversal (tests.test_prepare_data.SafeMemberTargetTests.test_rejects_backslash_traversal) ... ok
+test_rejects_parent_traversal (tests.test_prepare_data.SafeMemberTargetTests.test_rejects_parent_traversal) ... ok
+test_rejects_windows_drive (tests.test_prepare_data.SafeMemberTargetTests.test_rejects_windows_drive) ... ok
+test_input_row_order_does_not_change_membership (tests.test_prepare_data.SplitTests.test_input_row_order_does_not_change_membership) ... ok
+test_is_deterministic (tests.test_prepare_data.SplitTests.test_is_deterministic) ... ok
+test_manifest_rows_are_sorted_and_mask_empty_for_normal (tests.test_prepare_data.SplitTests.test_manifest_rows_are_sorted_and_mask_empty_for_normal) ... ok
+test_matches_reference_permutation (tests.test_prepare_data.SplitTests.test_matches_reference_permutation)
+The documented algorithm must be reproduced exactly, not approximately. ... ok
+test_negative_quota_is_rejected (tests.test_prepare_data.SplitTests.test_negative_quota_is_rejected) ... ok
+test_quota_and_disjoint (tests.test_prepare_data.SplitTests.test_quota_and_disjoint) ... ok
+test_quota_exceeding_available_rows_fails (tests.test_prepare_data.SplitTests.test_quota_exceeding_available_rows_fails) ... ok
+test_duplicate_and_out_of_split_ids_fail (tests.test_preview_ids.FixedPreviewIdsTests.test_duplicate_and_out_of_split_ids_fail) ... ok
+test_existing_file_cannot_be_replaced (tests.test_preview_ids.FixedPreviewIdsTests.test_existing_file_cannot_be_replaced) ... ok
+test_existing_ids_are_reused_without_cli_counts (tests.test_preview_ids.FixedPreviewIdsTests.test_existing_ids_are_reused_without_cli_counts) ... ok
+test_explicit_count_conflict_fails_without_reselection (tests.test_preview_ids.FixedPreviewIdsTests.test_explicit_count_conflict_fails_without_reselection) ... ok
+test_boundary_requires_frozen_epoch_one_last (tests.test_resume_check.EvidenceChecks.test_boundary_requires_frozen_epoch_one_last) ... ok
+test_continuation_requires_actual_final_last_path_and_epoch (tests.test_resume_check.EvidenceChecks.test_continuation_requires_actual_final_last_path_and_epoch) ... ok
+test_output_guard_refuses_existing_files_and_run_descendants (tests.test_resume_check.EvidenceChecks.test_output_guard_refuses_existing_files_and_run_descendants) ... ok
+test_probability_comparison_refuses_nonfinite_or_shape_mismatch (tests.test_resume_check.EvidenceChecks.test_probability_comparison_refuses_nonfinite_or_shape_mismatch) ... ok
+test_probability_limit_cannot_turn_a_large_difference_into_success (tests.test_resume_check.EvidenceChecks.test_probability_limit_cannot_turn_a_large_difference_into_success) ... ok
+test_state_equal_checks_nested_tensor_dtype_keys_and_numpy (tests.test_resume_check.EvidenceChecks.test_state_equal_checks_nested_tensor_dtype_keys_and_numpy) ... ok
+test_error_report_cannot_overwrite_a_protected_input (tests.test_run_check.ArtifactTests.test_error_report_cannot_overwrite_a_protected_input) ... ok
+test_every_listed_byte_is_checked_and_summary_must_agree (tests.test_run_check.ArtifactTests.test_every_listed_byte_is_checked_and_summary_must_agree) ... ok
+test_manifest_path_traversal_is_rejected_before_read (tests.test_run_check.ArtifactTests.test_manifest_path_traversal_is_rejected_before_read) ... ok
+test_report_and_figures_cannot_overwrite_source_run (tests.test_run_check.ArtifactTests.test_report_and_figures_cannot_overwrite_source_run) ... ok
+test_all_metrics_na_and_per_image_counts_are_checked (tests.test_run_check.EvaluationComparisonTests.test_all_metrics_na_and_per_image_counts_are_checked) ... ok
+test_legacy_split_is_explicitly_corrected_without_editing_input (tests.test_run_check.EvaluationComparisonTests.test_legacy_split_is_explicitly_corrected_without_editing_input) ... ok
+test_missing_probability_evidence_is_never_zero (tests.test_run_check.EvaluationComparisonTests.test_missing_probability_evidence_is_never_zero) ... ok
+test_timing_only_is_excluded (tests.test_run_check.EvaluationComparisonTests.test_timing_only_is_excluded) ... ok
+test_changed_model_configuration_value_is_still_rejected (tests.test_run_check.ModelConfigTests.test_changed_model_configuration_value_is_still_rejected) ... ok
+test_integer_label_keys_survive_the_torch_to_json_boundary (tests.test_run_check.ModelConfigTests.test_integer_label_keys_survive_the_torch_to_json_boundary) ... ok
+test_apply_then_record_matches_the_used_lr (tests.test_train_full.BudgetTests.test_apply_then_record_matches_the_used_lr) ... ok
+test_cosine_is_monotone_and_ends_at_the_floor (tests.test_train_full.BudgetTests.test_cosine_is_monotone_and_ends_at_the_floor) ... ok
+test_first_step_lr_is_the_documented_value (tests.test_train_full.BudgetTests.test_first_step_lr_is_the_documented_value) ... ok
+test_formal_plan_matches_the_declared_protocol (tests.test_train_full.BudgetTests.test_formal_plan_matches_the_declared_protocol) ... ok
+test_warmup_reaches_base_on_the_662nd_update (tests.test_train_full.BudgetTests.test_warmup_reaches_base_on_the_662nd_update) ... ok
+test_baseline_config_passes_the_formal_guards (tests.test_train_full.GuardTests.test_baseline_config_passes_the_formal_guards) ... ok
+test_fixture_config_passes_only_the_fixture_guards (tests.test_train_full.GuardTests.test_fixture_config_passes_only_the_fixture_guards) ... ok
+test_formal_rejects_a_subset_and_a_wrong_epoch_budget (tests.test_train_full.GuardTests.test_formal_rejects_a_subset_and_a_wrong_epoch_budget) ... ok
+test_formal_rejects_implicit_scheduler_or_precision_fields (tests.test_train_full.GuardTests.test_formal_rejects_implicit_scheduler_or_precision_fields) ... ok
+test_pilot_still_owns_three_epochs (tests.test_train_full.GuardTests.test_pilot_still_owns_three_epochs) ... ok
+test_unknown_stage_kind_is_rejected (tests.test_train_full.GuardTests.test_unknown_stage_kind_is_rejected) ... ok
+test_corrupt_budget_counters_loader_and_rng_are_rejected (tests.test_train_full.ResumeSafetyTests.test_corrupt_budget_counters_loader_and_rng_are_rejected) ... ok
+test_final_artifact_inventories_never_hash_themselves (tests.test_train_full.ResumeSafetyTests.test_final_artifact_inventories_never_hash_themselves) ... ok
+test_identity_rejects_changed_eval_ids_processor_or_code_paths (tests.test_train_full.ResumeSafetyTests.test_identity_rejects_changed_eval_ids_processor_or_code_paths) ... ok
+test_missing_committed_epoch_or_duplicated_attempt_refuses_resume (tests.test_train_full.ResumeSafetyTests.test_missing_committed_epoch_or_duplicated_attempt_refuses_resume) ... ok
+test_optimizer_slots_cannot_silently_disappear (tests.test_train_full.ResumeSafetyTests.test_optimizer_slots_cannot_silently_disappear) ... ok
+test_real_cpu_checkpoint_restores_optimizer_rng_and_preserves_config (tests.test_train_full.ResumeSafetyTests.test_real_cpu_checkpoint_restores_optimizer_rng_and_preserves_config) ... ok
+test_same_basename_in_another_parent_is_not_the_same_run (tests.test_train_full.ResumeSafetyTests.test_same_basename_in_another_parent_is_not_the_same_run) ... ok
+test_saved_processor_is_bound_to_all_datasets (tests.test_train_full.ResumeSafetyTests.test_saved_processor_is_bound_to_all_datasets) ... ok
+test_second_resume_filters_event_rows_from_epoch_history (tests.test_train_full.ResumeSafetyTests.test_second_resume_filters_event_rows_from_epoch_history) ... ok
+test_uncommitted_updates_and_partial_json_fail_without_rewriting (tests.test_train_full.ResumeSafetyTests.test_uncommitted_updates_and_partial_json_fail_without_rewriting) ... ok
+test_evaluation_failure_restores_callers_mode (tests.test_training.EvaluationModeTests.test_evaluation_failure_restores_callers_mode) ... ok
+test_evaluation_restores_callers_mode_and_uses_the_actual_split (tests.test_training.EvaluationModeTests.test_evaluation_restores_callers_mode_and_uses_the_actual_split) ... ok
+test_a_success_resets_consecutive_skip_count (tests.test_training.TrainingStepTests.test_a_success_resets_consecutive_skip_count) ... ok
+test_amp_infinite_gradient_skips_without_mutating_weights_or_adam_state (tests.test_training.TrainingStepTests.test_amp_infinite_gradient_skips_without_mutating_weights_or_adam_state) ... ok
+test_disabled_amp_rejects_nonfinite_gradients_before_optimizer (tests.test_training.TrainingStepTests.test_disabled_amp_rejects_nonfinite_gradients_before_optimizer) ... ok
+test_finite_gradient_elements_with_overflowing_norm_stop_before_optimizer (tests.test_training.TrainingStepTests.test_finite_gradient_elements_with_overflowing_norm_stop_before_optimizer) ... ok
+test_finite_updates_still_match_two_adam_updates (tests.test_training.TrainingStepTests.test_finite_updates_still_match_two_adam_updates) ... ok
+test_first_step_with_unmoved_probes_is_rejected (tests.test_training.TrainingStepTests.test_first_step_with_unmoved_probes_is_rejected) ... ok
+test_nonfinite_parameter_after_step_stops_before_evaluation_callback (tests.test_training.TrainingStepTests.test_nonfinite_parameter_after_step_stops_before_evaluation_callback) ... ok
+test_overflow_created_by_unscale_is_not_a_scaler_confirmed_skip (tests.test_training.TrainingStepTests.test_overflow_created_by_unscale_is_not_a_scaler_confirmed_skip) ... ok
+test_three_consecutive_skips_stop_without_a_fourth_batch (tests.test_training.TrainingStepTests.test_three_consecutive_skips_stop_without_a_fourth_batch) ... ok
+
+----------------------------------------------------------------------
+Ran 263 tests in 11.006s
+
+OK
+SegFormer stage 6: dataset check
+  config : E:\桌面\AI\AI_Try\work\SegFormer\configs\baseline.yaml
+  data   : E:\桌面\AI\segformer_resources\data\visa
+  figures: E:\桌面\AI\segformer_resources\tmp\tmpx_tpkt1a\figures
+  resolved nvidia/mit-b0@80983a413c30d36a39c20203974ae7807835e2b4 -> 80983a413c30d36a39c20203974ae7807835e2b4
+  resolved nvidia/mit-b0@80983a413c30d36a39c20203974ae7807835e2b4 -> 80983a413c30d36a39c20203974ae7807835e2b4
+  resolved nvidia/mit-b0@80983a413c30d36a39c20203974ae7807835e2b4 -> 80983a413c30d36a39c20203974ae7807835e2b4
+  resolved nvidia/mit-b0@80983a413c30d36a39c20203974ae7807835e2b4 -> 80983a413c30d36a39c20203974ae7807835e2b4
+stage 7: loss and metrics check
+  config : configs/baseline.yaml
+  eval precision: IEEE FP32; cuDNN TF32=false, matmul TF32=false, autocast=false

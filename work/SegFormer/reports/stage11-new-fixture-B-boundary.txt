@@ -1,0 +1,13 @@
+E:\桌面\AI\segformer_resources\env\Lib\site-packages\transformers\image_processing_base.py:417: UserWarning: The following named arguments are not valid for `SegformerImageProcessor.__init__` and were ignored: 'feature_extractor_type', 'reduce_labels'
+  image_processor = cls(**image_processor_dict)
+Some weights of SegformerForSemanticSegmentation were not initialized from the model checkpoint at E:\桌面\AI\segformer_resources\models\mit-b0 and are newly initialized: ['decode_head.batch_norm.bias', 'decode_head.batch_norm.num_batches_tracked', 'decode_head.batch_norm.running_mean', 'decode_head.batch_norm.running_var', 'decode_head.batch_norm.weight', 'decode_head.classifier.bias', 'decode_head.classifier.weight', 'decode_head.linear_c.0.proj.bias', 'decode_head.linear_c.0.proj.weight', 'decode_head.linear_c.1.proj.bias', 'decode_head.linear_c.1.proj.weight', 'decode_head.linear_c.2.proj.bias', 'decode_head.linear_c.2.proj.weight', 'decode_head.linear_c.3.proj.bias', 'decode_head.linear_c.3.proj.weight', 'decode_head.linear_fuse.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+  run     : E:\桌面\AI\segformer_resources\runs\resume_acceptance_B_20261101  [fixture]
+  data    : train 12 (6N+6A) / val 6 (3N+3A)
+  budget  : 3 epoch x 6 batch = 18 updates, warmup 1, cosine span 17
+  lr      : first 6.00000000e-05 -> base 6e-05 at step 1 -> floor 1e-06
+  epoch 1/3: 6/6 upd (skip 0), lr 6.000e-05->4.828e-05, loss 1.0273 | val IoU 0.0 macro 0.0 empty 3/3 [best] | 4.7s + 0.5s
+  stop    : --stop-after-epoch 1 (fixture hook)
+  best    : epoch 1 val IoU 0.0
+  totals  : 6/6 updates, skipped 0, 15.41 s, peak reserved 934.0 MiB
+  source  : unchanged during run = True

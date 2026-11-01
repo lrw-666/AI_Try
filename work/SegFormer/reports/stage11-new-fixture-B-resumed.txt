@@ -1,0 +1,10 @@
+  run     : E:\桌面\AI\segformer_resources\runs\resume_acceptance_B_20261101  [fixture]
+  data    : train 12 (6N+6A) / val 6 (3N+3A)
+  budget  : 3 epoch x 6 batch = 18 updates, warmup 1, cosine span 17
+  lr      : first 6.00000000e-05 -> base 6e-05 at step 1 -> floor 1e-06
+  resume  : from epoch 1 -> 2, step 6/6, lr 4.36492815e-05
+  epoch 2/3: 6/6 upd (skip 0), lr 4.365e-05->1.735e-05, loss 0.8899 | val IoU 0.0 macro 0.0 empty 2/3 | 4.3s + 0.5s
+  epoch 3/3: 6/6 upd (skip 0), lr 1.272e-05->1.000e-06, loss 0.8733 | val IoU 0.0 macro 0.0 empty 0/3 | 1.0s + 0.4s
+  best    : epoch 1 val IoU 0.0
+  totals  : 18/18 updates, skipped 0, 15.74 s, peak reserved 934.0 MiB
+  source  : unchanged during run = True

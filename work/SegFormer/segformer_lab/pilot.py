@@ -117,7 +117,7 @@ def sha256_file_text(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
-def _code_identity() -> dict[str, str]:
+def _code_identity(extra_sources: tuple[str, ...] = ()) -> dict[str, str]:
     files = [
         "segformer_lab/training.py", "segformer_lab/pilot.py", "segformer_lab/train.py",
         "segformer_lab/smoke.py", "segformer_lab/subset.py", "segformer_lab/losses.py",
@@ -126,14 +126,23 @@ def _code_identity() -> dict[str, str]:
         "segformer_lab/run_check.py",
     ]
     out: dict[str, str] = {}
-    for name in files:
+    for name in list(files) + [item for item in extra_sources if item not in files]:
         path = paths.PROJECT_ROOT / name
         out[name] = sha256_file(path) if path.is_file() else ""
     return out
 
 
-def freeze_identity(config: dict[str, Any], *, label: str) -> dict[str, Any]:
-    """Snapshot everything that would invalidate the run if it changed."""
+def freeze_identity(config: dict[str, Any], *, label: str,
+                    extra_sources: tuple[str, ...] = ()) -> dict[str, Any]:
+    """Snapshot everything that would invalidate the run if it changed.
+
+    ``extra_sources`` lets a later entry point (stage 11's ``train_full.py``) add
+    its own module to the frozen code identity without forking this helper.
+    """
+    ids_file = config["paths"].get("data.train_ids_file")
+    model_dir = Path(config["paths"]["model.pretrained_dir"])
+    source = json.loads((model_dir / "source.json").read_text(encoding="utf-8"))
+    weights = next(item["sha256"] for item in source["files"] if item["path"] == "pytorch_model.bin")
     payload = {
         "label": label,
         "at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
@@ -144,8 +153,11 @@ def freeze_identity(config: dict[str, Any], *, label: str) -> dict[str, Any]:
                       for split in ("train", "val", "test")},
         "split_meta_sha256": sha256_file(Path(config["paths"]["data.split_meta"])),
         "preview_ids_sha256": sha256_file(Path(config["paths"]["logging.fixed_preview_manifest"])),
-        "train_ids_file": None,
-        "code": _code_identity(),
+        "train_ids_file": (None if ids_file is None
+                           else {"path": str(ids_file), "sha256": sha256_file(Path(ids_file))}),
+        "snapshot": {"model_id": source.get("model_id"), "revision": source.get("revision"),
+                     "weights_sha256": weights},
+        "code": _code_identity(extra_sources),
         "git": _git_identity(),
         "versions": {"python": sys.version.split()[0], "torch": torch.__version__,
                      "cuda_build": torch.version.cuda},
@@ -172,7 +184,7 @@ def config_failures(config: dict[str, Any]) -> list[str]:
         "data.train_ids_file must be null (full split)": config["paths"].get("data.train_ids_file") is None,
         "gradient_accumulation_steps must be 1": int(raw["train"]["gradient_accumulation_steps"]) == 1,
         "data.workers must be 0": int(raw["data"]["workers"]) == 0,
-        "epochs must be a positive integer": int(raw["train"]["epochs"]) >= 1,
+        "epochs must be exactly 3 (pilot protocol)": int(raw["train"]["epochs"]) == 3,
         "grad_clip_norm must be finite and positive": math.isfinite(float(raw["train"]["grad_clip_norm"]))
         and float(raw["train"]["grad_clip_norm"]) > 0,
     }

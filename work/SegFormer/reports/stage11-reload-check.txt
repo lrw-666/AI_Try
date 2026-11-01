@@ -1,0 +1,3 @@
+E:\桌面\AI\segformer_resources\env\Lib\site-packages\torch\nn\modules\module.py:1882: UserWarning: For backward hooks to be called, module output should be a Tensor or a tuple of Tensors but received <class 'transformers.modeling_outputs.SemanticSegmenterOutput'>
+  return inner()
+full acceptance ok=True; wrote E:\桌面\AI\AI_Try\work\SegFormer\reports\stage11-reload-check.json

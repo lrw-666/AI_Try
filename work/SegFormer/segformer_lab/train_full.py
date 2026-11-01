@@ -1,0 +1,1189 @@
+"""Stage 11: the formal 50-epoch single baseline, with epoch-boundary resume.
+
+Why yet another entry point: ``train.py`` is *defined* by the stage-09 eight-image
+subset, and ``pilot.py`` is *defined* by three epochs over the full split. Neither
+can be pointed at ``configs/baseline.yaml`` and called a formal baseline without
+quietly dropping the boundary that gave the earlier stages their meaning. This
+module owns the formal contract (50 epochs, 50x265 = 13250 planned updates, warmup
+662, cosine to 1e-6) and adds the one capability the earlier entries do not have:
+a checkpoint that a *new process* can restore at a complete-epoch boundary.
+
+Shared, not re-implemented: ``data`` (dataset/collate/loader), ``losses`` (CE +
+0.5 per-image Dice), ``metrics``/``evaluation`` (original-space IEEE FP32), and
+``training.train_step`` / ``step_optimizer`` / ``WarmupCosineLR`` / ``build_optimizer``.
+The accounting helpers come from ``pilot`` (loss tally, val summary, preview npz,
+atomic writes, identity freeze) so the three entries cannot drift apart.
+
+    python -m segformer_lab.train_full --config configs/baseline.yaml --out <run>
+    python -m segformer_lab.train_full --config configs/baseline.yaml \
+        --resume <run>/checkpoints/last.pt --out <run>
+    python -m segformer_lab.train_full --verify-run <run> --config configs/baseline.yaml
+
+Two modes, selected by ``stage.kind`` in the config:
+
+* ``formal``  -- hard guards: full 530/132 split, 50 epochs, flip random, B2,
+  accumulation 1, workers 0, shuffle on, drop_last off, fp16 AMP, warmup_cosine.
+* ``fixture`` -- the resume test only: a fixed small train subset and a small
+  validation subset, a handful of epochs, tagged ``resume_fixture`` in every
+  artefact. It is never a baseline and is never inherited by the formal run.
+
+Resume contract (deliberately narrow): only complete-epoch checkpoints exist, and
+``last.pt`` carries model, optimizer (+ param groups), GradScaler, the whole
+scheduler state *including the 13250/662 budget*, completed/next epoch, real
+step/attempt/skip counters, best score, the epoch metrics, the resolved config,
+the data/code/snapshot identity, all four RNG states and the train loader's
+``generator.get_state()``. A restart rebuilds the objects first and restores the
+RNG last, so model construction cannot consume restored randomness.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import math
+import os
+import random
+import sys
+import time
+import traceback
+from copy import deepcopy
+from pathlib import Path
+from typing import Any
+
+import numpy as np
+import torch
+from torch.utils.data import RandomSampler
+
+from . import data, paths
+from .config import load_config, write_resolved_config
+from .losses import loss_definition
+from .metrics import restore_defect_probability, score_definition
+from .modeling import load_all
+from .pilot import (
+    _LossTally,
+    _atomic_torch_save,
+    _atomic_write_text,
+    _jsonl_append,
+    _preview_npz,
+    _val_summary,
+    advance_schedule,
+    freeze_identity,
+    rounded,
+    sha256_file_text,
+)
+from .smoke import _labels_of, _render_samples
+from .training import (
+    WarmupCosineLR,
+    build_optimizer,
+    evaluate_dataset,
+    gpu_memory,
+    parameter_digest,
+    set_seed,
+    sha256_file,
+    train_step,
+    trainable_parameter_summary,
+    _memory_status,
+)
+
+SCHEMA = "segformer-lab/full-training/1"
+CHECKPOINT_SCHEMA = "segformer-lab/full-checkpoint/1"
+FIXTURE_SCHEMA = "segformer-lab/resume-fixture/1"
+STAGE = "11"
+NOT_A_BASELINE = False
+
+FORMAL_EPOCHS = 50
+FORMAL_TRAIN_IMAGES = 530
+FORMAL_VAL_IMAGES = 132
+
+
+# ------------------------------------------------------------------ contract ----
+def planned_schedule(epochs: int, batches_per_epoch: int, warmup_ratio: float) -> dict[str, Any]:
+    """The one place the update budget and warmup split are computed.
+
+    ``max(1, int(round(total * ratio)))`` keeps the pilot and the baseline on the
+    same formula. Python's round() is ties-to-even, so 13250 * 0.05 = 662.5 maps
+    to 662, not 663. Documented because it changes the first-step LR.
+    """
+    total = int(epochs) * int(batches_per_epoch)
+    warmup = max(1, int(round(total * float(warmup_ratio))))
+    return {"total_steps": total, "warmup_steps": warmup,
+            "cosine_span": total - warmup,
+            "first_step_lr_factor": 1.0 / warmup}
+
+
+def formal_failures(config: dict[str, Any]) -> list[str]:
+    """Everything a formal baseline run must not silently get wrong."""
+    raw = config["raw"]
+    stage = raw.get("stage", {})
+    expected = raw.get("expected", {})
+    data_cfg, train_cfg = raw["data"], raw["train"]
+    eval_cfg, loss_cfg = raw["eval"], raw["loss"]
+    checks = {
+        "stage.kind must be 'formal'": stage.get("kind") == "formal",
+        "data.train_ids_file must be null": config["paths"].get("data.train_ids_file") is None,
+        "data.eval_ids_file must be null": not data_cfg.get("eval_ids_file"),
+        "data.shuffle must be true": data_cfg.get("shuffle") is True,
+        "data.drop_last must be false": data_cfg.get("drop_last") is False,
+        "data.workers must be 0": int(data_cfg["workers"]) == 0,
+        "data.horizontal_flip_p must be 0.5": float(data_cfg["horizontal_flip_p"]) == 0.5,
+        "train.epochs must be 50": int(train_cfg["epochs"]) == FORMAL_EPOCHS,
+        "train.max_steps must be null": train_cfg.get("max_steps") is None,
+        "train.batch_size must be 2": int(train_cfg["batch_size"]) == 2,
+        "train.gradient_accumulation_steps must be 1": int(train_cfg["gradient_accumulation_steps"]) == 1,
+        "train.amp must be true": bool(train_cfg.get("amp")),
+        "train.precision must be fp16_amp": train_cfg.get("precision") == "fp16_amp",
+        "train.flip must be 'random'": train_cfg.get("flip") == "random",
+        "train.lr_scheduler must be warmup_cosine": train_cfg.get("lr_scheduler") == "warmup_cosine",
+        "train.early_stopping must be false": train_cfg.get("early_stopping") is False,
+        "train.learning_rate must be 6e-05": float(train_cfg["learning_rate"]) == 6e-05,
+        "train.min_learning_rate must be 1e-06": float(train_cfg["min_learning_rate"]) == 1e-06,
+        "train.weight_decay must be 0.01": float(train_cfg["weight_decay"]) == 0.01,
+        "train.warmup_ratio must be 0.05": float(train_cfg["warmup_ratio"]) == 0.05,
+        "train.grad_clip_norm must be 1.0": float(train_cfg["grad_clip_norm"]) == 1.0,
+        "model.train_encoder must be true": bool(raw["model"].get("train_encoder")),
+        "eval.precision must be 'ieee_fp32'": eval_cfg.get("precision") == "ieee_fp32",
+        "eval.batch_size must be 1": int(eval_cfg["batch_size"]) == 1,
+        "eval.threshold must be 0.5": float(eval_cfg["threshold"]) == 0.5,
+        "eval.metric_space must be original": eval_cfg.get("metric_space") == "original",
+        "eval.selection_metric must be foreground_iou_global":
+            eval_cfg.get("selection_metric") == "foreground_iou_global",
+        "eval.postprocess must be none": eval_cfg.get("postprocess", "none") == "none",
+        "loss.ce_weight must be 1.0": float(loss_cfg["ce_weight"]) == 1.0,
+        "loss.foreground_dice_weight must be 0.5": float(loss_cfg["foreground_dice_weight"]) == 0.5,
+        "loss.dice_epsilon must be 1e-06": float(loss_cfg["dice_epsilon"]) == 1e-06,
+        "expected.train_images must be 530": int(expected.get("train_images", -1)) == FORMAL_TRAIN_IMAGES,
+        "expected.train_normal must be 482": int(expected.get("train_normal", -1)) == 482,
+        "expected.train_anomaly must be 48": int(expected.get("train_anomaly", -1)) == 48,
+        "expected.val_images must be 132": int(expected.get("val_images", -1)) == FORMAL_VAL_IMAGES,
+        "expected.val_normal must be 120": int(expected.get("val_normal", -1)) == 120,
+        "expected.val_anomaly must be 12": int(expected.get("val_anomaly", -1)) == 12,
+    }
+    return [name for name, ok in checks.items() if not ok]
+
+
+def fixture_failures(config: dict[str, Any]) -> list[str]:
+    """The fixture exists only to exercise resume; keep it small and tagged."""
+    raw = config["raw"]
+    stage = raw.get("stage", {})
+    data_cfg, train_cfg = raw["data"], raw["train"]
+    checks = {
+        "stage.kind must be 'fixture'": stage.get("kind") == "fixture",
+        "fixture needs a train_ids_file": config["paths"].get("data.train_ids_file") is not None,
+        "fixture needs an eval_ids_file": bool(data_cfg.get("eval_ids_file")),
+        "fixture epochs must be 1..5": 1 <= int(train_cfg["epochs"]) <= 5,
+        "fixture batch_size must be 2": int(train_cfg["batch_size"]) == 2,
+        "fixture workers must be 0": int(data_cfg["workers"]) == 0,
+        "fixture amp must be true": bool(train_cfg.get("amp")),
+        "fixture eval.precision must be 'ieee_fp32'": raw["eval"].get("precision") == "ieee_fp32",
+        "fixture flip must be 'random'": train_cfg.get("flip") == "random",
+        "fixture lr_scheduler must be warmup_cosine": train_cfg.get("lr_scheduler") == "warmup_cosine",
+    }
+    return [name for name, ok in checks.items() if not ok]
+
+
+def config_failures(config: dict[str, Any]) -> tuple[str, list[str]]:
+    kind = str(config["raw"].get("stage", {}).get("kind", ""))
+    if kind == "formal":
+        return kind, formal_failures(config)
+    if kind == "fixture":
+        return kind, fixture_failures(config)
+    return kind, [f"stage.kind must be 'formal' or 'fixture', found {kind!r}"]
+
+
+def _resolve_ids(value: str | None) -> Path | None:
+    if not value:
+        return None
+    path = Path(str(value)).expanduser()
+    if not path.is_absolute():
+        path = paths.PROJECT_ROOT / path
+    return path.resolve()
+
+
+def _make_datasets(config: dict[str, Any], processor: Any) -> tuple[Any, Any, Any]:
+    """Bind the selected processor before any dataset can decode a sample."""
+    return (
+        data.PCB1Dataset(config, "train", processor=processor, flip="random", epoch=0,
+                         ids_file=config["paths"].get("data.train_ids_file"), return_original_mask=False),
+        data.PCB1Dataset(config, "val", processor=processor, flip="none",
+                         ids_file=_resolve_ids(config["raw"]["data"].get("eval_ids_file")),
+                         return_original_mask=True),
+        data.PCB1Dataset(config, "val", processor=processor, flip="none", return_original_mask=True,
+                         ids_file=Path(config["paths"]["logging.fixed_preview_manifest"])),
+    )
+
+
+def _validate_resume_path(run_dir: Path, checkpoint: Path) -> None:
+    if checkpoint.resolve() != (run_dir / "checkpoints" / "last.pt").resolve():
+        raise SystemExit("resume requires this run's resolved checkpoints/last.pt path")
+
+
+def _validated_resume_logs(run_dir: Path, payload: dict[str, Any]) -> list[dict[str, Any]]:
+    """Fail closed on torn/uncommitted history, without modifying the evidence.
+
+    This supports ordered, complete epoch stops. Arbitrary crash tails need
+    explicit recovery; silently appending them would duplicate attempts/epochs.
+    Resume event rows remain on disk but are never training epoch records.
+    """
+    rows: dict[str, list[dict[str, Any]]] = {}
+    try:
+        for name in ("epochs", "updates"):
+            rows[name] = [json.loads(line) for line in
+                          (run_dir / f"{name}.jsonl").read_text(encoding="utf-8").splitlines()
+                          if line.strip()]
+        epoch_rows = [row for row in rows["epochs"] if row.get("event") != "resume"]
+        complete = int(payload["epoch_completed"])
+        counts = payload["step"]
+        if [row["epoch"] for row in epoch_rows] != list(range(1, complete + 1)):
+            raise ValueError("epoch history is not exactly the checkpoint's completed prefix")
+        updates = rows["updates"]
+        if [row["attempt"] for row in updates] != list(range(1, int(counts["attempts"]) + 1)):
+            raise ValueError("update history is not exactly the checkpoint's attempted prefix")
+        successful = skipped = 0
+        cursor = 0
+        for entry in epoch_rows:
+            epoch = entry["epoch"]
+            while cursor < len(updates) and updates[cursor]["epoch"] == epoch:
+                row = updates[cursor]
+                if row["skipped"]:
+                    skipped += 1
+                    if row.get("success_index") is not None:
+                        raise ValueError("skipped update has a success index")
+                else:
+                    successful += 1
+                    if row.get("success_index") != successful:
+                        raise ValueError("success indices are not continuous")
+                cursor += 1
+            for key, value in (("attempts_total", cursor), ("successful_total", successful),
+                               ("skipped_total", skipped), ("scheduler_completed", successful)):
+                if entry[key] != value:
+                    raise ValueError(f"epoch {epoch} disagrees with updates: {key}")
+        if cursor != len(updates) or (successful, skipped) != (counts["successful"], counts["skipped"]):
+            raise ValueError("checkpoint counters disagree with history")
+        return epoch_rows
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        raise SystemExit(f"resume history is incomplete or uncommitted; files preserved: {exc}") from exc
+
+
+def _freeze_full_identity(config: dict[str, Any], run_dir: Path, *, label: str) -> dict[str, Any]:
+    """Hash actual bytes, including files ignored by Git and preprocessing."""
+    from .download_model import MODEL_ID, PINNED_REVISION, verify_snapshot
+
+    identity = freeze_identity(config, label=label, extra_sources=(
+        "segformer_lab/train_full.py", "segformer_lab/paths.py", "segformer_lab/download_model.py"))
+    model_dir = Path(config["paths"]["model.pretrained_dir"])
+    source_path = model_dir / "source.json"
+    source = json.loads(source_path.read_text(encoding="utf-8"))
+    if source.get("model_id") != MODEL_ID or source.get("revision") != PINNED_REVISION:
+        raise SystemExit("snapshot is not the pinned pretrained model")
+    problems = verify_snapshot(model_dir, source)
+    if problems:
+        raise SystemExit(f"snapshot bytes differ from source.json: {problems}")
+    identity["snapshot_source_sha256"] = sha256_file(source_path)
+    identity["snapshot_files"] = {item["path"]: sha256_file(model_dir / item["path"])
+                                  for item in source["files"]}
+    eval_ids = _resolve_ids(config["raw"]["data"].get("eval_ids_file"))
+    identity["eval_ids_file"] = (None if eval_ids is None else
+                                  {"path": str(eval_ids), "sha256": sha256_file(eval_ids)})
+    identity["resolved_paths"] = {key: str(value) if value is not None else None
+                                  for key, value in config["paths"].items()}
+    identity["resolved_paths"]["data.eval_ids_file"] = str(eval_ids) if eval_ids else None
+    identity["resolved_config"] = deepcopy(config["raw"])
+    processor_dir = run_dir / "processor"
+    if not (processor_dir / "preprocessor_config.json").is_file():
+        raise SystemExit("run's saved processor/preprocessor_config.json is missing")
+    identity["saved_processor"] = {p.relative_to(processor_dir).as_posix(): sha256_file(p)
+                                    for p in sorted(processor_dir.rglob("*")) if p.is_file()}
+    identity["versions"]["numpy"] = np.__version__
+    return identity
+
+
+def _validate_resume_identity(saved: dict[str, Any], current: dict[str, Any]) -> None:
+    required = ("config", "manifests", "split_meta_sha256", "preview_ids_sha256", "train_ids_file",
+                "eval_ids_file", "snapshot", "snapshot_files", "snapshot_source_sha256",
+                "saved_processor", "resolved_paths", "resolved_config", "code", "versions")
+    mismatched = [key for key in required if key not in saved or key not in current
+                  or saved[key] != current[key]]
+    if mismatched:
+        raise SystemExit(f"resume identity mismatch (legacy/incomplete identities also refused): {mismatched}")
+
+
+def _artifact_inventory(run_dir: Path, *, include_summary: bool) -> dict[str, Any]:
+    excluded = {"artifact_manifest.json"}
+    if not include_summary:
+        excluded.add("summary.json")
+    files = {path.relative_to(run_dir).as_posix():
+             {"bytes": path.stat().st_size, "sha256": sha256_file(path)}
+             for path in sorted(run_dir.rglob("*"))
+             if path.is_file() and path.relative_to(run_dir).as_posix() not in excluded}
+    return {"run_dir": str(run_dir.resolve()), "files": files, "file_count": len(files)}
+
+
+def _validate_resume_best(run_dir: Path, payload: dict[str, Any]) -> None:
+    """A crash between last/best/mirror writes must not preserve a stale best."""
+    best = read_checkpoint(run_dir / "checkpoints" / "best.pt")
+    if (best.get("kind") != "best" or best["epoch_completed"] != payload["best"]["epoch"]
+            or best["best"] != payload["best"]):
+        raise SystemExit("best.pt and last.pt selection disagree; incomplete save preserved for recovery")
+    mirror = torch.load(run_dir / "checkpoints" / "model_state.pt", map_location="cpu", weights_only=True)
+    if set(mirror) != set(best["model"]) or any(
+            not torch.equal(mirror[key], best["model"][key]) for key in mirror):
+        raise SystemExit("best inference mirror disagrees with best.pt; incomplete save preserved")
+
+
+def _validate_resume_payload(payload: dict[str, Any], config: dict[str, Any], device: str,
+                             *, batches_per_epoch: int) -> None:
+    """Reject inconsistent state before construction can alter global RNG."""
+    raw = config["raw"]
+    try:
+        def require(ok: bool, message: str) -> None:
+            if not ok:
+                raise ValueError(message)
+
+        require(payload["schema"] == CHECKPOINT_SCHEMA and payload["stage"] == STAGE,
+                "checkpoint schema/stage mismatch")
+        require(payload["kind"] == "last" and payload["resume_supported"] is True
+                and payload["resume_scope"] == "complete_epoch_boundary", "last epoch boundary required")
+        epoch = payload["epoch_completed"]
+        require(type(epoch) is int and 1 <= epoch <= int(raw["train"]["epochs"]), "invalid completed epoch")
+        require(payload["next_epoch"] == epoch + 1 and payload["metrics"]["epoch"] == epoch,
+                "epoch/metrics boundary mismatch")
+        counts = payload["step"]
+        require(all(type(counts[key]) is int and counts[key] >= 0
+                    for key in ("attempts", "successful", "skipped")), "invalid step counters")
+        require(counts["successful"] + counts["skipped"] == counts["attempts"]
+                == epoch * batches_per_epoch, "step counters do not cover complete epochs")
+        plan = planned_schedule(int(raw["train"]["epochs"]), batches_per_epoch,
+                                 float(raw["train"]["warmup_ratio"]))
+        state = payload["scheduler"]
+        require(payload["scheduler_plan"] == {key: plan[key] for key in ("total_steps", "warmup_steps")},
+                "scheduler budget mismatch")
+        for key in ("total_steps", "warmup_steps"):
+            require(state[key] == plan[key], f"scheduler {key} mismatch")
+        require(state["completed"] == counts["successful"], "scheduler did not follow successful updates")
+        require(state["base_lr"] == float(raw["train"]["learning_rate"])
+                and state["min_lr"] == float(raw["train"]["min_learning_rate"]), "scheduler LR mismatch")
+        schedule = WarmupCosineLR(**state)
+        require(math.isfinite(float(payload["lr"]))
+                and abs(float(payload["lr"]) - schedule.lr_at(schedule.completed)) <= 1e-15,
+                "saved LR disagrees with schedule")
+        loader = payload["loader"]
+        for key, expected in (("batch_size", raw["train"]["batch_size"]),
+                               ("num_workers", raw["data"]["workers"]),
+                               ("shuffle", raw["data"]["shuffle"]),
+                               ("drop_last", raw["data"]["drop_last"]), ("dataset_epoch", epoch)):
+            require(loader[key] == expected, f"loader {key} mismatch")
+        torch.Generator().set_state(loader["generator_state"])
+        rng = payload["rng"]
+        random.Random().setstate(rng["python"])
+        np.random.RandomState().set_state(rng["numpy"])
+        torch.Generator().set_state(rng["torch"])
+        runtime = payload["runtime"]
+        device_type = torch.device(device).type
+        require(runtime["device_type"] == device_type, "resume device type differs")
+        cuda_count = torch.cuda.device_count() if device_type == "cuda" else 0
+        require(runtime["cuda_device_count"] == cuda_count == len(rng["cuda"]), "CUDA RNG/device count mismatch")
+        if device_type == "cuda":
+            current_index = torch.device(device).index
+            current_index = torch.cuda.current_device() if current_index is None else current_index
+            require(runtime["device_index"] == current_index, "CUDA device index differs")
+        require(all(isinstance(value, torch.Tensor) and value.dtype == torch.uint8
+                    and value.ndim == 1 and value.numel() > 0 for value in rng["cuda"]), "invalid CUDA RNG state")
+        require(payload["model"] and all(isinstance(value, torch.Tensor)
+                    and bool(torch.isfinite(value).all()) for value in payload["model"].values()),
+                "model contains nonfinite/non-tensor state")
+        require(len(payload["model_config"]["id2label"]) == 2, "model is not binary")
+        best = payload["best"]
+        require(type(best["epoch"]) is int and 1 <= best["epoch"] <= epoch
+                and math.isfinite(float(best["iou"])) and 0.0 <= float(best["iou"]) <= 1.0,
+                "invalid best selection state")
+        scaler = payload["grad_scaler"]
+        if raw["train"]["amp"]:
+            require(math.isfinite(float(scaler["scale"])) and float(scaler["scale"]) > 0
+                    and int(scaler["_growth_tracker"]) >= 0, "invalid AMP scaler state")
+        else:
+            require(scaler == {}, "AMP scaler provided for non-AMP run")
+        for group in payload["optimizer"]["param_groups"]:
+            require(abs(float(group["lr"]) - float(payload["lr"])) <= 1e-15, "optimizer LR mismatch")
+        parameter_ids = [index for group in payload["optimizer"]["param_groups"]
+                         for index in group["params"]]
+        states = payload["optimizer"]["state"]
+        require(parameter_ids and len(parameter_ids) == len(set(parameter_ids)),
+                "optimizer parameter IDs must be nonempty and unique")
+        if counts["successful"]:
+            require(set(states) == set(parameter_ids), "optimizer parameter states are incomplete")
+            for item in states.values():
+                require({"step", "exp_avg", "exp_avg_sq"} <= set(item)
+                        and float(item["step"]) == counts["successful"],
+                        "optimizer moments or successful-step counters are incomplete")
+        else:
+            require(not states, "optimizer state exists before any successful update")
+        for item in payload["optimizer"]["state"].values():
+            require(all(not isinstance(value, torch.Tensor) or bool(torch.isfinite(value).all())
+                        for value in item.values()), "nonfinite optimizer state")
+    except (KeyError, TypeError, ValueError, RuntimeError, OverflowError) as exc:
+        raise SystemExit(f"inconsistent resume checkpoint: {exc}") from exc
+
+
+# ----------------------------------------------------------------- checkpoint ----
+def _rng_state() -> dict[str, Any]:
+    return {
+        "python": random.getstate(),
+        "numpy": np.random.get_state(),
+        "torch": torch.get_rng_state(),
+        "cuda": torch.cuda.get_rng_state_all() if torch.cuda.is_available() else [],
+    }
+
+
+def save_checkpoint(
+    run_dir: Path,
+    kind: str,
+    *,
+    model: torch.nn.Module,
+    optimizer: torch.optim.Optimizer,
+    scaler: torch.amp.GradScaler,
+    schedule: WarmupCosineLR,
+    loader: Any,
+    dataset: Any,
+    epoch_completed: int,
+    successful: int,
+    attempts: int,
+    skipped: int,
+    best: dict[str, Any],
+    metrics: dict[str, Any],
+    identities: dict[str, Any],
+) -> Path:
+    state = {key: value.detach().cpu() for key, value in model.state_dict().items()}
+    payload = {
+        "schema": CHECKPOINT_SCHEMA,
+        "stage": STAGE,
+        "kind": kind,
+        "epoch_completed": int(epoch_completed),
+        "next_epoch": int(epoch_completed) + 1,
+        "step": {"successful": int(successful), "attempts": int(attempts), "skipped": int(skipped)},
+        "scheduler": schedule.state_dict(),
+        "scheduler_plan": {"total_steps": schedule.total_steps, "warmup_steps": schedule.warmup_steps},
+        "lr": float(optimizer.param_groups[0]["lr"]),
+        "best": dict(best),
+        "metrics": metrics,
+        "model": state,
+        "model_config": model.config.to_dict(),
+        "optimizer": optimizer.state_dict(),
+        "optimizer_groups": [{"weight_decay": group.get("weight_decay"),
+                              "lr": group.get("lr"),
+                              "tensors": len(group["params"])} for group in optimizer.param_groups],
+        "grad_scaler": scaler.state_dict(),
+        "rng": _rng_state(),
+        "loader": {
+            "generator_state": loader.generator.get_state(),
+            "batch_size": int(loader.batch_size),
+            "shuffle": isinstance(loader.sampler, RandomSampler),
+            "num_workers": int(loader.num_workers),
+            "drop_last": bool(loader.drop_last),
+            "dataset_epoch": int(dataset.epoch),
+        },
+        "identity": {key: value for key, value in identities.items() if key != "git"},
+        "git": {"head": identities.get("git", {}).get("head"),
+                "diff_sha256": identities.get("git", {}).get("diff_sha256")},
+        "resume_supported": True,
+        "resume_scope": "complete_epoch_boundary",
+        "runtime": {"device_type": next(model.parameters()).device.type,
+                    "device_index": next(model.parameters()).device.index,
+                    "cuda_device_count": torch.cuda.device_count() if next(model.parameters()).is_cuda else 0},
+    }
+    target = run_dir / "checkpoints" / f"{kind}.pt"
+    _atomic_torch_save(payload, target)
+    return target
+
+
+def read_checkpoint(path: Path) -> dict[str, Any]:
+    # Our own artefact contains RNG tuples and optimizer dicts, so weights_only
+    # cannot be used here; the file is produced by this project, not downloaded.
+    payload = torch.load(path, map_location="cpu", weights_only=False)
+    if payload.get("schema") != CHECKPOINT_SCHEMA:
+        raise SystemExit(f"checkpoint schema mismatch: {payload.get('schema')!r}")
+    if not payload.get("resume_supported"):
+        raise SystemExit("checkpoint does not declare resume support")
+    return payload
+
+
+def restore_checkpoint(
+    payload: dict[str, Any],
+    config: dict[str, Any],
+    device: str,
+    *,
+    identities: dict[str, Any],
+    batches_per_epoch: int | None = None,
+) -> dict[str, Any]:
+    """Rebuild every runtime object, then restore RNG and loader order last."""
+    raw = config["raw"]
+    _validate_resume_identity(payload["identity"], identities)
+    if batches_per_epoch is None:
+        ids_path = config["paths"].get("data.train_ids_file")
+        train_size = (sum(bool(line.strip()) and not line.strip().startswith("#")
+                          for line in Path(ids_path).read_text(encoding="utf-8").splitlines())
+                      if ids_path else len(data.read_manifest(config["paths"]["data.train_manifest"])))
+        batches_per_epoch = math.ceil(train_size / int(raw["train"]["batch_size"]))
+    _validate_resume_payload(payload, config, device, batches_per_epoch=batches_per_epoch)
+
+    from transformers import SegformerConfig, SegformerForSemanticSegmentation
+
+    model_config = SegformerConfig.from_dict(deepcopy(payload["model_config"]))
+    model = SegformerForSemanticSegmentation(model_config)
+    missing, unexpected = model.load_state_dict(payload["model"], strict=True)
+    if missing or unexpected:
+        raise SystemExit(f"strict model restore failed: missing={missing} unexpected={unexpected}")
+    model = model.to(device)
+
+    optimizer, optimizer_info = build_optimizer(
+        model, float(raw["train"]["learning_rate"]), float(raw["train"]["weight_decay"]))
+    fresh_groups = optimizer.state_dict()["param_groups"]
+    saved_groups = payload["optimizer"]["param_groups"]
+    if len(fresh_groups) != len(saved_groups) or any(
+            len(fresh["params"]) != len(saved["params"])
+            or any(fresh[key] != saved[key] for key in ("weight_decay", "betas", "eps"))
+            for fresh, saved in zip(fresh_groups, saved_groups)):
+        raise SystemExit("resume optimizer groups/hyperparameters differ from the protocol")
+    optimizer.load_state_dict(payload["optimizer"])
+    expected_shapes = {index: parameter.shape for group, saved in zip(optimizer.param_groups, saved_groups)
+                       for index, parameter in zip(saved["params"], group["params"])}
+    for index, state in payload["optimizer"]["state"].items():
+        if index not in expected_shapes or any(state[key].shape != expected_shapes[index]
+                                               for key in ("exp_avg", "exp_avg_sq")):
+            raise SystemExit("resume optimizer tensor shapes differ from model parameters")
+
+    scaler = torch.amp.GradScaler("cuda", enabled=bool(raw["train"]["amp"]))
+    scaler.load_state_dict(payload["grad_scaler"])
+
+    plan = payload["scheduler"]
+    schedule = WarmupCosineLR(base_lr=float(plan["base_lr"]), min_lr=float(plan["min_lr"]),
+                              total_steps=int(plan["total_steps"]),
+                              warmup_steps=int(plan["warmup_steps"]),
+                              completed=int(plan["completed"]))
+    schedule.apply(optimizer)
+
+    lr_now = float(optimizer.param_groups[0]["lr"])
+    if any(abs(float(group["lr"]) - float(payload["lr"])) > 1e-15 for group in optimizer.param_groups):
+        raise SystemExit(f"restored LR {lr_now!r} differs from checkpoint LR {payload['lr']!r}")
+
+    # RNG last: model/optimizer construction above may consume global randomness.
+    random.setstate(payload["rng"]["python"])
+    np.random.set_state(payload["rng"]["numpy"])
+    torch.set_rng_state(payload["rng"]["torch"])
+    if torch.cuda.is_available() and payload["rng"]["cuda"]:
+        torch.cuda.set_rng_state_all(payload["rng"]["cuda"])
+
+    return {
+        "model": model,
+        "optimizer": optimizer,
+        "optimizer_info": optimizer_info,
+        "scaler": scaler,
+        "schedule": schedule,
+        "epoch_start": int(payload["next_epoch"]),
+        "successful": int(payload["step"]["successful"]),
+        "attempts": int(payload["step"]["attempts"]),
+        "skipped": int(payload["step"]["skipped"]),
+        "best": dict(payload["best"]),
+        "lr": lr_now,
+        "loader_state": payload["loader"],
+        "restore_record": {
+            "epoch_completed": int(payload["epoch_completed"]),
+            "next_epoch": int(payload["next_epoch"]),
+            "scheduler_completed": int(plan["completed"]),
+            "scheduler_total_steps": int(plan["total_steps"]),
+            "scheduler_warmup_steps": int(plan["warmup_steps"]),
+            "lr_restored": lr_now,
+            "step": dict(payload["step"]),
+            "best": dict(payload["best"]),
+            "scaler_scale": float(scaler.get_scale()),
+            "optimizer_state_entries": len(optimizer.state),
+            "rng_restored": True,
+            "loader_generator_restored": True,
+            "rng_sha256": sha256_file_text(
+                payload["rng"]["torch"].numpy().tobytes().hex()
+                + payload["rng"]["numpy"][1].tobytes().hex()
+                + payload["loader"]["generator_state"].numpy().tobytes().hex()),
+        },
+    }
+
+
+# -------------------------------------------------------------------- helpers ----
+def _anomaly_diagnostics(val: dict[str, Any]) -> dict[str, Any]:
+    anomaly = [row for row in val["per_image"] if row["label"] == "anomaly"]
+    empty = [row["image_id"].split("/")[-1] for row in anomaly
+             if row["predicted_foreground_pixels"] == 0]
+    per_image = [{"image": row["image_id"].split("/")[-1],
+                  "gt_pixels": row["gt_foreground_pixels"],
+                  "predicted_pixels": row["predicted_foreground_pixels"],
+                  "tp": row["tp"], "fp": row["fp"], "fn": row["fn"],
+                  "iou": row["iou"], "dice": row["dice"]}
+                 for row in anomaly]
+    return {"anomaly_images": len(anomaly), "empty_prediction_count": len(empty),
+            "empty_prediction_ids": empty, "per_anomaly_image": per_image}
+
+
+def render_curves(run_dir: Path, epochs_log: list[dict[str, Any]]) -> str | None:
+    if not epochs_log:
+        return None
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    epoch = [entry["epoch"] for entry in epochs_log]
+    ce = [entry["loss"]["ce"] for entry in epochs_log]
+    dice = [entry["loss"]["dice"] for entry in epochs_log]
+    total = [entry["loss"]["total"] for entry in epochs_log]
+    iou = [entry["val"]["global"]["foreground_iou"] or 0.0 for entry in epochs_log]
+    macro = [entry["val"]["anomaly_images"]["macro"]["iou"]["mean"] or 0.0 for entry in epochs_log]
+    best_epoch = max(epochs_log, key=lambda e: (e["val"]["global"]["foreground_iou"] or -1))["epoch"]
+
+    figure, axes = plt.subplots(1, 2, figsize=(11.0, 3.6), dpi=120)
+    axes[0].plot(epoch, total, color="#185FA5", lw=1.6, label="total")
+    axes[0].plot(epoch, ce, color="#BA7517", lw=1.2, ls="--", label="CE (pixel-weighted)")
+    axes[0].plot(epoch, dice, color="#0F6E56", lw=1.2, ls=":", label="Dice term (image-weighted)")
+    axes[0].set_xlabel("epoch", fontsize=9)
+    axes[0].set_title("training loss (weighted epoch aggregate)", fontsize=10)
+    axes[0].legend(fontsize=8)
+    axes[0].grid(alpha=0.3)
+
+    axes[1].plot(epoch, iou, color="#185FA5", lw=1.6, label="val global IoU")
+    axes[1].plot(epoch, macro, color="#993C1D", lw=1.4, ls="--", label="val anomaly macro IoU")
+    axes[1].axvline(best_epoch, color="#888780", lw=0.8, ls="-.")
+    axes[1].annotate(f"best epoch {best_epoch}", xy=(best_epoch, iou[best_epoch - 1]),
+                     xytext=(4, 6), textcoords="offset points", fontsize=8, color="#444441")
+    axes[1].set_xlabel("epoch", fontsize=9)
+    axes[1].set_ylim(0.0, 1.0)
+    axes[1].set_title("validation (132 images, original space, IEEE FP32)", fontsize=10)
+    axes[1].legend(fontsize=8)
+    axes[1].grid(alpha=0.3)
+
+    figure.tight_layout()
+    target = run_dir / "curves.png"
+    figure.savefig(target)
+    plt.close(figure)
+    return target.name
+
+
+def _best_preview(
+    run_dir: Path,
+    config: dict[str, Any],
+    device: str,
+    preview_ds: Any,
+    best_path: Path,
+    threshold: float,
+) -> dict[str, Any]:
+    """Load best.pt in this process, keep the six preview probability maps."""
+    payload = read_checkpoint(best_path)
+    from transformers import SegformerConfig, SegformerForSemanticSegmentation
+
+    model = SegformerForSemanticSegmentation(SegformerConfig.from_dict(payload["model_config"]))
+    model.load_state_dict(payload["model"], strict=True)
+    model = model.to(device)
+    result = evaluate_dataset(model, preview_ds, config, device,
+                              label_of=_labels_of(preview_ds), keep_probabilities=True)
+    names = _render_samples(preview_ds, result, run_dir / "val_previews" / "best", threshold,
+                            f"baseline | best epoch {payload['epoch_completed']}")
+    np.savez_compressed(run_dir / "pre_save_probabilities.npz", **_preview_npz(result))
+    per_image = [{"image": row["image_id"].split("/")[-1], "label": row["label"],
+                  "iou": row["iou"], "predicted_pixels": row["predicted_foreground_pixels"]}
+                 for row in result["per_image"]]
+    return {"epoch": payload["epoch_completed"], "figures": names,
+            "preview_metrics": _val_summary(result), "per_image": per_image,
+            "checkpoint_sha256": sha256_file(best_path)}
+
+
+# --------------------------------------------------------------------- train ----
+def do_train(args: argparse.Namespace) -> int:
+    started = time.perf_counter()
+    config = load_config(args.config)
+    kind, failures = config_failures(config)
+    if failures:
+        raise SystemExit(f"{kind or 'unknown'} config guard failed: {failures}")
+    if args.stop_after_epoch is not None and kind != "fixture":
+        raise SystemExit("--stop-after-epoch is a resume-fixture hook, not a formal option")
+
+    raw = config["raw"]
+    train_cfg, data_cfg, eval_cfg, loss_cfg = raw["train"], raw["data"], raw["eval"], raw["loss"]
+    epochs = int(train_cfg["epochs"])
+    batch_size = int(train_cfg["batch_size"])
+    grad_clip = float(train_cfg["grad_clip_norm"])
+    amp = bool(train_cfg["amp"])
+    base_lr = float(train_cfg["learning_rate"])
+    min_lr = float(train_cfg["min_learning_rate"])
+    warmup_ratio = float(train_cfg["warmup_ratio"])
+    weight_decay = float(train_cfg["weight_decay"])
+    threshold = float(eval_cfg["threshold"])
+    ce_weight = float(loss_cfg["ce_weight"])
+    dice_weight = float(loss_cfg["foreground_dice_weight"])
+    seed = int(raw["experiment"]["seed"])
+
+    out_dir = Path(args.out).resolve()
+    resume_payload = None
+    if args.resume:
+        resume_path = Path(args.resume).resolve()
+        if not resume_path.is_file():
+            raise SystemExit(f"resume checkpoint not found: {resume_path}")
+        _validate_resume_path(out_dir, resume_path)
+        resume_payload = read_checkpoint(resume_path)
+        _validated_resume_logs(out_dir, resume_payload)
+        _validate_resume_best(out_dir, resume_payload)
+    elif out_dir.exists() and any(out_dir.iterdir()):
+        raise SystemExit(f"refusing to overwrite an existing run: {out_dir}")
+
+    device = args.device
+    rng_record = set_seed(seed)
+    init_start = time.perf_counter()
+
+    train_ids_file = config["paths"].get("data.train_ids_file")
+    eval_ids_file = _resolve_ids(data_cfg.get("eval_ids_file"))
+    if resume_payload is not None:
+        from transformers import SegformerImageProcessor
+
+        processor = SegformerImageProcessor.from_pretrained(
+            str(out_dir / "processor"), local_files_only=True, do_resize=False,
+            do_reduce_labels=False, do_rescale=True, do_normalize=True)
+    else:
+        processor = data.build_processor(str(config["paths"]["model.pretrained_dir"]))
+    train_ds, val_ds, preview_ds = _make_datasets(config, processor)
+    train_labels = [row["label"] for row in train_ds.rows]
+    val_labels = [row["label"] for row in val_ds.rows]
+    expected = raw.get("expected", {})
+    if kind == "formal":
+        observed = {"train_images": len(train_ds), "train_normal": train_labels.count("normal"),
+                    "train_anomaly": train_labels.count("anomaly"), "val_images": len(val_ds),
+                    "val_normal": val_labels.count("normal"), "val_anomaly": val_labels.count("anomaly")}
+        wrong = {key: (int(expected[key]), value) for key, value in observed.items()
+                 if int(expected.get(key, -1)) != value}
+        if wrong:
+            raise SystemExit(f"split composition differs from the declared protocol: {wrong}")
+
+    loader = data.build_dataloader(train_ds, batch_size=batch_size,
+                                   shuffle=bool(data_cfg.get("shuffle", True)),
+                                   num_workers=int(data_cfg["workers"]),
+                                   drop_last=bool(data_cfg.get("drop_last", False)))
+    batches_per_epoch = math.ceil(len(train_ds) / batch_size)
+    plan = planned_schedule(epochs, batches_per_epoch, warmup_ratio)
+    label_of_val = _labels_of(val_ds)
+
+    if resume_payload is None:
+        loaded = load_all(Path(config["paths"]["model.pretrained_dir"]), num_labels=2, ignore_index=255)
+        if not loaded.encoder_check.get("ok"):
+            raise SystemExit("encoder weights failed the checkpoint comparison")
+        model = loaded.model.to(device)
+        processor = loaded.processor
+        optimizer, optimizer_info = build_optimizer(model, base_lr, weight_decay)
+        scaler = torch.amp.GradScaler("cuda", enabled=amp)
+        schedule = WarmupCosineLR(base_lr=base_lr, min_lr=min_lr,
+                                  total_steps=plan["total_steps"],
+                                  warmup_steps=plan["warmup_steps"])
+        schedule.apply(optimizer)
+        epoch_start = 1
+        successful = attempts = skipped_total = 0
+        best = {"iou": float("-inf"), "epoch": None}
+        init_digest = parameter_digest(model)
+        encoder_check = {"matched_exact": loaded.encoder_check.get("matched_exact"),
+                         "checkpoint_tensors": loaded.encoder_check.get("checkpoint_tensor_count"),
+                         "max_abs_diff": loaded.encoder_check.get("max_abs_diff")}
+        resume_record = None
+    else:
+        identities = _freeze_full_identity(config, out_dir, label="resume")
+        preview_processor_dir = out_dir / "processor"
+        if not preview_processor_dir.is_dir():
+            raise SystemExit("resume needs the run's saved processor/ directory")
+        restored = restore_checkpoint(resume_payload, config, device, identities=identities,
+                                       batches_per_epoch=batches_per_epoch)
+        model = restored["model"]
+        optimizer, optimizer_info = restored["optimizer"], restored["optimizer_info"]
+        scaler, schedule = restored["scaler"], restored["schedule"]
+        epoch_start = restored["epoch_start"]
+        successful, attempts, skipped_total = (restored["successful"], restored["attempts"],
+                                               restored["skipped"])
+        best = restored["best"]
+        init_digest = {"restored": True}
+        encoder_check = {"restored_from_checkpoint": True}
+        loader_state = restored["loader_state"]
+        if int(loader_state["batch_size"]) != batch_size:
+            raise SystemExit("resume batch size differs from the checkpoint")
+        loader.generator.set_state(loader_state["generator_state"])
+        resume_record = restored["restore_record"]
+        resume_record["loader_generator_set_state"] = True
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / "checkpoints").mkdir(exist_ok=True)
+    if resume_payload is None:
+        processor.save_pretrained(str(out_dir / "processor"))
+        (out_dir / "model_config.json").write_text(json.dumps(model.config.to_dict(), indent=2),
+                                                   encoding="utf-8")
+    identities = _freeze_full_identity(config, out_dir, label="start")
+    write_resolved_config(config, out_dir / "resolved_config.yaml")
+    _atomic_write_text(out_dir / "code_identity_start.json",
+                       json.dumps(identities, indent=2, ensure_ascii=False))
+    if resume_record is not None:
+        _atomic_write_text(out_dir / "resume_log.json",
+                           json.dumps({"at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+                                       "checkpoint": str(Path(args.resume).resolve()),
+                                       "restore": resume_record}, indent=2, ensure_ascii=False))
+    init_seconds = time.perf_counter() - init_start
+
+    torch.cuda.reset_peak_memory_stats()
+    print(f"  run     : {out_dir}  [{kind}]")
+    print(f"  data    : train {len(train_ds)} ({train_labels.count('normal')}N+"
+          f"{train_labels.count('anomaly')}A) / val {len(val_ds)} ({val_labels.count('normal')}N+"
+          f"{val_labels.count('anomaly')}A)")
+    print(f"  budget  : {epochs} epoch x {batches_per_epoch} batch = {plan['total_steps']} updates, "
+          f"warmup {plan['warmup_steps']}, cosine span {plan['cosine_span']}")
+    print(f"  lr      : first {schedule.lr_at(0):.8e} -> base {base_lr:g} at step "
+          f"{plan['warmup_steps']} -> floor {min_lr:g}")
+    if resume_record is not None:
+        print(f"  resume  : from epoch {resume_record['epoch_completed']} -> {epoch_start}, "
+              f"step {successful}/{attempts}, lr {resume_record['lr_restored']:.8e}")
+
+    epochs_log: list[dict[str, Any]] = []
+    if args.resume:
+        epochs_log = _validated_resume_logs(out_dir, resume_payload)
+    consecutive_skips = 0
+    epoch_count = epoch_start - 1
+    phase = "init"
+    last_stop_epoch = args.stop_after_epoch
+
+    updates_mode = "a" if args.resume else "w"
+    epochs_mode = "a" if args.resume else "w"
+    try:
+        with (out_dir / "updates.jsonl").open(updates_mode, encoding="utf-8") as updates_handle, \
+                (out_dir / "epochs.jsonl").open(epochs_mode, encoding="utf-8") as epochs_handle:
+            if args.resume:
+                _jsonl_append(epochs_handle, {"event": "resume", "at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+                                              "from_epoch": resume_record["epoch_completed"],
+                                              "next_epoch": epoch_start,
+                                              "lr": resume_record["lr_restored"],
+                                              "step": resume_record["step"],
+                                              "scheduler_completed": resume_record["scheduler_completed"]})
+            for epoch in range(epoch_start, epochs + 1):
+                phase = f"train epoch {epoch}"
+                train_ds.set_epoch(epoch)
+                model.train()
+                tally = _LossTally()
+                seen_ids: list[str] = []
+                flips: list[str] = []
+                step_times: list[float] = []
+                epoch_attempts = epoch_success = epoch_skips = 0
+                lr_first = lr_last = float(optimizer.param_groups[0]["lr"])
+                train_start = time.perf_counter()
+
+                for batch in loader:
+                    attempts += 1
+                    epoch_attempts += 1
+                    lr_used = float(optimizer.param_groups[0]["lr"])
+                    if epoch_attempts == 1:
+                        lr_first = lr_used
+                    lr_last = lr_used
+                    terms, evidence, step_ms = train_step(
+                        model, batch, config, device, optimizer, scaler,
+                        grad_clip=grad_clip, amp=amp, attempt=attempts)
+                    step_times.append(step_ms)
+                    skipped = evidence["skipped"]
+                    tally.add(float(terms.ce.detach()), float(terms.dice.detach()),
+                              terms.valid_pixels, terms.positive_images)
+                    seen_ids.extend(batch["image_id"])
+                    flips.extend([image_id for image_id, flipped in
+                                  zip(batch["image_id"], batch["flipped"]) if flipped])
+                    _jsonl_append(updates_handle, {
+                        "event": "skipped" if skipped else "update",
+                        "epoch": epoch,
+                        "attempt": attempts,
+                        "success_index": None if skipped else successful + 1,
+                        "ce": round(float(terms.ce.detach()), 8),
+                        "dice": round(float(terms.dice.detach()), 8),
+                        "total": round(float(terms.total.detach()), 8),
+                        "valid_pixels": terms.valid_pixels,
+                        "positive_images": terms.positive_images,
+                        "lr": lr_used,
+                        "scheduler_completed": schedule.completed,
+                        "grad_norm": rounded(evidence["grad_norm"]),
+                        "scale_before": evidence["scale_before"],
+                        "scale_after": evidence["scale_after"],
+                        "skipped": skipped,
+                        "skip_reason": evidence["skip_reason"],
+                        "optimizer_step_executed": evidence["optimizer_step_executed"],
+                        "step_ms": round(step_ms, 2),
+                        "batch_ids": [str(item).split("/")[-1] for item in batch["image_id"]],
+                        "flipped_ids": [str(item).split("/")[-1] for item, flip in
+                                        zip(batch["image_id"], batch["flipped"]) if flip],
+                    })
+                    if skipped:
+                        skipped_total += 1
+                        epoch_skips += 1
+                        consecutive_skips += 1
+                        if consecutive_skips >= 3:
+                            raise RuntimeError(
+                                f"three consecutive AMP skips at attempt {attempts} (epoch {epoch})")
+                        continue
+                    consecutive_skips = 0
+                    successful += 1
+                    epoch_success += 1
+                    advance_schedule(schedule, evidence, optimizer)
+
+                train_seconds = time.perf_counter() - train_start
+                compute_seconds = sum(step_times) / 1000.0
+
+                expected_ids = set(train_ds.image_ids())
+                seen_set = set(seen_ids)
+                coverage = {
+                    "images_seen": len(seen_ids),
+                    "unique_images_seen": len(seen_set),
+                    "missing_ids": sorted(expected_ids - seen_set)[:5],
+                    "unexpected_ids": sorted(seen_set - expected_ids)[:5],
+                    "duplicate_visits": len(seen_ids) - len(seen_set),
+                    "expected_images": len(expected_ids),
+                    "batches": epoch_attempts,
+                    "batch_size_last": len(seen_ids) - batch_size * (epoch_attempts - 1),
+                    "dataset_epoch": train_ds.epoch,
+                    "drop_last": bool(data_cfg.get("drop_last", False)),
+                    "shuffle": bool(data_cfg.get("shuffle", True)),
+                    "flipped_images": len(flips),
+                    "flip_fraction": round(len(flips) / max(1, len(seen_ids)), 6),
+                    "flip_signature_sha256": sha256_file_text("\n".join(sorted(flips))),
+                }
+                if coverage["missing_ids"] or coverage["unexpected_ids"] or coverage["duplicate_visits"]:
+                    raise RuntimeError(f"epoch {epoch} did not traverse the split exactly once: {coverage}")
+                if coverage["unique_images_seen"] != coverage["expected_images"]:
+                    raise RuntimeError(f"epoch {epoch} covered {coverage['unique_images_seen']} images")
+
+                phase = f"validate epoch {epoch}"
+                val_start = time.perf_counter()
+                val_result = evaluate_dataset(model, val_ds, config, device,
+                                              label_of=label_of_val, keep_probabilities=False)
+                val_seconds = time.perf_counter() - val_start
+                val_summary = _val_summary(val_result)
+                diagnostics = _anomaly_diagnostics(val_summary)
+                iou = val_summary["global"]["foreground_iou"]
+                is_best = iou is not None and float(iou) > float(best["iou"])
+                if is_best:
+                    best = {"iou": float(iou), "epoch": epoch}
+
+                phase = f"save epoch {epoch}"
+                save_start = time.perf_counter()
+                metrics_block = {"epoch": epoch, "val": val_summary, "diagnostics": diagnostics}
+                save_checkpoint(out_dir, "last", model=model, optimizer=optimizer, scaler=scaler,
+                                schedule=schedule, loader=loader, dataset=train_ds,
+                                epoch_completed=epoch, successful=successful, attempts=attempts,
+                                skipped=skipped_total, best=best, metrics=metrics_block,
+                                identities=identities)
+                if is_best:
+                    save_checkpoint(out_dir, "best", model=model, optimizer=optimizer, scaler=scaler,
+                                    schedule=schedule, loader=loader, dataset=train_ds,
+                                    epoch_completed=epoch, successful=successful, attempts=attempts,
+                                    skipped=skipped_total, best=best, metrics=metrics_block,
+                                    identities=identities)
+                    if bool(raw.get("checkpoint", {}).get("save_model_state", True)):
+                        _atomic_torch_save({k: v.detach().cpu() for k, v in model.state_dict().items()},
+                                           out_dir / "checkpoints" / "model_state.pt")
+                        _atomic_write_text(out_dir / "model_config.json",
+                                           json.dumps(model.config.to_dict(), indent=2))
+                save_seconds = time.perf_counter() - save_start
+
+                entry = {
+                    "epoch": epoch,
+                    "coverage": coverage,
+                    "attempts_in_epoch": epoch_attempts,
+                    "successful_in_epoch": epoch_success,
+                    "skipped_in_epoch": epoch_skips,
+                    "attempts_total": attempts,
+                    "successful_total": successful,
+                    "skipped_total": skipped_total,
+                    "scheduler_completed": schedule.completed,
+                    "lr_first": lr_first,
+                    "lr_last": lr_last,
+                    "loss": tally.as_dict(ce_weight=ce_weight, dice_weight=dice_weight),
+                    "train_seconds": round(train_seconds, 3),
+                    "compute_seconds": round(compute_seconds, 3),
+                    "loader_wait_seconds": round(train_seconds - compute_seconds, 3),
+                    "val_seconds": round(val_seconds, 3),
+                    "save_seconds": round(save_seconds, 3),
+                    "median_step_ms": round(float(np.median(step_times)), 2) if step_times else None,
+                    "peak_allocated_mib": gpu_memory().get("peak_allocated_mib"),
+                    "peak_reserved_mib": gpu_memory().get("peak_reserved_mib"),
+                    "system_ram": _memory_status(),
+                    "val": val_summary,
+                    "diagnostics": diagnostics,
+                    "is_best": bool(is_best),
+                    "best_so_far": dict(best),
+                }
+                epochs_log.append(entry)
+                _jsonl_append(epochs_handle, entry)
+                epoch_count = epoch
+                print(f"  epoch {epoch}/{epochs}: {epoch_success}/{epoch_attempts} upd "
+                      f"(skip {epoch_skips}), lr {lr_first:.3e}->{lr_last:.3e}, "
+                      f"loss {entry['loss']['total']:.4f} | val IoU {iou} macro "
+                      f"{val_summary['anomaly_images']['macro']['iou']['mean']} empty "
+                      f"{diagnostics['empty_prediction_count']}/{diagnostics['anomaly_images']}"
+                      f"{' [best]' if is_best else ''} | {train_seconds:.1f}s + {val_seconds:.1f}s")
+
+                if last_stop_epoch is not None and epoch >= last_stop_epoch:
+                    print(f"  stop    : --stop-after-epoch {last_stop_epoch} (fixture hook)")
+                    break
+
+        phase = "finalise"
+        identities_end = _freeze_full_identity(config, out_dir, label="end")
+        _atomic_write_text(out_dir / "code_identity_end.json",
+                           json.dumps(identities_end, indent=2, ensure_ascii=False))
+        source_unchanged = (identities["code"] == identities_end["code"]
+                            and identities["config"]["sha256"] == identities_end["config"]["sha256"]
+                            and identities["git"]["diff_sha256"] == identities_end["git"]["diff_sha256"])
+
+        best_path = out_dir / "checkpoints" / "best.pt"
+        preview_block = None
+        if best_path.is_file() and epochs_log:
+            phase = "best preview"
+            preview_block = _best_preview(out_dir, config, device, preview_ds, best_path, threshold)
+        curves = render_curves(out_dir, epochs_log)
+
+        artifact = _artifact_inventory(out_dir, include_summary=False)
+        marker = {
+            "schema": SCHEMA if kind == "formal" else FIXTURE_SCHEMA,
+            "stage": STAGE,
+            "kind": kind,
+            "not_a_baseline": kind != "formal",
+            "resume_fixture": kind == "fixture",
+            "statement": ("Formal single baseline: SegFormer-B0, PCB1 v2 grouped split, seed 42, "
+                          "50 epochs. Validation is the held-out 132-image split."
+                          if kind == "formal" else
+                          "Resume fixture only: tiny subset, tiny budget, never a baseline."),
+            "elapsed_seconds": round(time.perf_counter() - started, 2),
+            "init_seconds": round(init_seconds, 3),
+            "config": {"path": str(Path(config["path"]).resolve()),
+                       "sha256": sha256_file(Path(config["path"]))},
+            "seed": rng_record,
+            "device": device,
+            "data": {
+                "train_images": len(train_ds),
+                "train_labels": {"normal": train_labels.count("normal"),
+                                 "anomaly": train_labels.count("anomaly")},
+                "val_images": len(val_ds),
+                "val_labels": {"normal": val_labels.count("normal"),
+                               "anomaly": val_labels.count("anomaly")},
+                "train_ids_file": str(train_ids_file) if train_ids_file else None,
+                "eval_ids_file": str(eval_ids_file) if eval_ids_file else None,
+                "batches_per_epoch": batches_per_epoch,
+                "batch_size": batch_size,
+                "shuffle": bool(data_cfg.get("shuffle", True)),
+                "drop_last": bool(data_cfg.get("drop_last", False)),
+                "workers": int(data_cfg["workers"]),
+                "manifests": identities["manifests"],
+                "split_meta_sha256": identities["split_meta_sha256"],
+                "test_images_read": False,
+            },
+            "parameters": trainable_parameter_summary(model),
+            "initial_parameter_digest": init_digest,
+            "encoder_check": encoder_check,
+            "optimizer": optimizer_info,
+            "scheduler": {**schedule.describe(), **plan},
+            "loss": loss_definition(ce_weight=ce_weight, dice_weight=dice_weight,
+                                    eps=float(loss_cfg["dice_epsilon"])),
+            "score_definition": score_definition(),
+            "training": {
+                "epochs_planned": epochs,
+                "epochs_completed": epoch_count,
+                "epochs_this_process": epoch_count - (epoch_start - 1),
+                "planned_updates": plan["total_steps"],
+                "attempts": attempts,
+                "successful_updates": successful,
+                "skipped": skipped_total,
+                "final_lr": float(optimizer.param_groups[0]["lr"]),
+                "scheduler_completed": schedule.completed,
+                "stopped_early": last_stop_epoch is not None,
+            },
+            "resume": {"used": resume_record is not None,
+                       "record": resume_record,
+                       "supported": kind == "formal" or kind == "fixture",
+                       "scope": "complete epoch boundary; last.pt only"},
+            "epochs": epochs_log,
+            "best": best,
+            "best_preview": preview_block,
+            "selection": "highest val global foreground IoU; ties keep the earlier epoch",
+            "curves": curves,
+            "timing": {
+                "train_seconds_total": round(sum(e["train_seconds"] for e in epochs_log), 3),
+                "compute_seconds_total": round(sum(e["compute_seconds"] for e in epochs_log), 3),
+                "loader_wait_seconds_total": round(sum(e["loader_wait_seconds"] for e in epochs_log), 3),
+                "val_seconds_total": round(sum(e["val_seconds"] for e in epochs_log), 3),
+                "save_seconds_total": round(sum(e["save_seconds"] for e in epochs_log), 3),
+            },
+            "memory": {"gpu": gpu_memory(), "system_ram": _memory_status()},
+            "identity": {
+                "start": {k: v for k, v in identities.items() if k != "git"} | {
+                    "git_head": identities["git"]["head"],
+                    "git_status": identities["git"]["status_porcelain"],
+                    "git_diff_sha256": identities["git"]["diff_sha256"]},
+                "end_git_head": identities_end["git"]["head"],
+                "end_git_diff_sha256": identities_end["git"]["diff_sha256"],
+                "source_and_config_unchanged": source_unchanged,
+            },
+            "artifacts": artifact,
+            "limitations": [
+                "Only 12 anomaly images are in validation; per-image and macro numbers are noisy.",
+                "Global IoU is area-weighted: a few large defects dominate it.",
+                "workers=0 is the only validated loader setting; decoding blocks the GPU.",
+                "Resume is validated at complete-epoch boundaries only (see resume-fixture report).",
+                "No test image, mask, prediction or score was used in this stage.",
+            ],
+        }
+        _atomic_write_text(out_dir / "summary.json", json.dumps(marker, indent=2, ensure_ascii=False))
+        _atomic_write_text(out_dir / "artifact_manifest.json",
+                           json.dumps(_artifact_inventory(out_dir, include_summary=True), indent=2))
+        print(f"  best    : epoch {best['epoch']} val IoU {best['iou']}")
+        print(f"  totals  : {successful}/{attempts} updates, skipped {skipped_total}, "
+              f"{marker['elapsed_seconds']} s, peak reserved "
+              f"{marker['memory']['gpu'].get('peak_reserved_mib')} MiB")
+        print(f"  source  : unchanged during run = {source_unchanged}")
+        return 0
+    except Exception as exc:
+        failure = {
+            "schema": SCHEMA,
+            "stage": STAGE,
+            "kind": kind,
+            "phase": phase,
+            "epoch": epoch_count,
+            "attempts": attempts,
+            "successful_updates": successful,
+            "skipped": skipped_total,
+            "error": f"{type(exc).__name__}: {exc}",
+            "traceback": traceback.format_exc(),
+            "at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+            "note": "run directory preserved; the last complete epoch is the resume boundary",
+        }
+        _atomic_write_text(out_dir / "failure.json", json.dumps(failure, indent=2, ensure_ascii=False))
+        raise
+
+
+# -------------------------------------------------------------------- verify ----
+def do_verify(args: argparse.Namespace) -> int:
+    """Delegate inference validation to the complete, read-only bundle checker."""
+    from .full_check import main as check_main
+
+    run_dir = Path(args.verify_run).resolve()
+    report = (Path(args.report).resolve() if getattr(args, "report", "")
+              else run_dir.parent / f"{run_dir.name}-reload-check.json")
+    return check_main(["--run", str(run_dir), "--config", str(args.config),
+                       "--out", str(report), "--device", str(args.device)])
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="stage 11: formal 50-epoch baseline")
+    parser.add_argument("--config", default="configs/baseline.yaml")
+    parser.add_argument("--out", default="")
+    parser.add_argument("--resume", default="", help="last.pt of the same run; complete epochs only")
+    parser.add_argument("--verify-run", default="", help="existing run to reload and re-score")
+    parser.add_argument("--report", default="", help="read-only verification report outside the source run")
+    parser.add_argument("--stop-after-epoch", type=int, default=None,
+                        help="resume-fixture hook only; refused in formal mode")
+    parser.add_argument("--device", default="cuda")
+    args = parser.parse_args(argv)
+    if args.verify_run:
+        return do_verify(args)
+    if not args.out:
+        raise SystemExit("--out is required when training")
+    return do_train(args)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
