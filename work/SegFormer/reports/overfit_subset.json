@@ -1,0 +1,227 @@
+{
+  "schema": "segformer-lab/overfit-subset/1",
+  "generated_at": "2026-11-01T11:04:20+0800",
+  "selection": {
+    "seed": 42,
+    "normal_rule": "random.Random(seed).sample over train normals sorted by image path",
+    "anomaly_rule": "ranks 0/33/66/100 % of train anomalies sorted by original foreground pixels",
+    "uses_val_or_test": false
+  },
+  "ids": {
+    "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\overfit_train_ids.txt",
+    "sha256": "2ac81b816dde9888d7483a3af0b9ffa85ae17cd242242542c1ff3f88d1cec6e9",
+    "lines": 8
+  },
+  "manifests": {
+    "train": {
+      "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\train.csv",
+      "sha256": "f1522eb9b474d0acc1d736a391002f5044153208fa10f51eea3dc7df729f65b0",
+      "rows": 530
+    },
+    "val": {
+      "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\val.csv",
+      "sha256": "60a6c6cbf5ed7f5f9e57fb57bb096a5b57db677af5ee73f4fa140ddceaba6191",
+      "rows": 132
+    },
+    "test": {
+      "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\test.csv",
+      "sha256": "4bdc594148f208c7067a66a8cb3b06fde53ebc1f4ab6fda84f08f80383061284",
+      "rows": 442
+    }
+  },
+  "snapshot": {
+    "dir": "E:\\桌面\\AI\\segformer_resources\\models\\mit-b0",
+    "source_sha256": "8e57fa70638ae7aad076ea9ad9603f4e4a87da54e09d2cb698ea26328beb8650",
+    "weights_sha256": "4af8348c2a802bf76115d34797ff5ce1d9f110bb8593c22d9b66d8bd7fa227fc"
+  },
+  "config": {
+    "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\configs\\baseline.yaml",
+    "sha256": "6ae1db76e07699ac15a0e19bb7ae676f40e7037f7e527290af5fb410e84ef356"
+  },
+  "samples": [
+    {
+      "image": "pcb1/Data/Images/Normal/0025.JPG",
+      "split": "train",
+      "label": "normal",
+      "image_sha256": "25c9bc9462d449af13185e803391b2786f9efa96b04d345d6c56eb93bb85ba9c",
+      "image_size_bytes": 268816,
+      "width": 1404,
+      "height": 1070,
+      "original_foreground_pixels": 0,
+      "original_foreground_ratio": 0.0,
+      "foreground_pixels_512": 0,
+      "mask": "",
+      "mask_sha256": "",
+      "mask_size_bytes": 0,
+      "mask_values": "",
+      "recomputed_foreground_pixels_512": 0,
+      "letterbox": {
+        "new_w": 512,
+        "new_h": 390,
+        "pad_left": 0,
+        "pad_top": 61
+      }
+    },
+    {
+      "image": "pcb1/Data/Images/Normal/0121.JPG",
+      "split": "train",
+      "label": "normal",
+      "image_sha256": "b9b53563336be662d67b8d0e3464a7d55035eff93e868fd5e1197d2ad19b4643",
+      "image_size_bytes": 277745,
+      "width": 1404,
+      "height": 1070,
+      "original_foreground_pixels": 0,
+      "original_foreground_ratio": 0.0,
+      "foreground_pixels_512": 0,
+      "mask": "",
+      "mask_sha256": "",
+      "mask_size_bytes": 0,
+      "mask_values": "",
+      "recomputed_foreground_pixels_512": 0,
+      "letterbox": {
+        "new_w": 512,
+        "new_h": 390,
+        "pad_left": 0,
+        "pad_top": 61
+      }
+    },
+    {
+      "image": "pcb1/Data/Images/Normal/0708.JPG",
+      "split": "train",
+      "label": "normal",
+      "image_sha256": "559938fad8969af8d06b81ce791241a2f28eb9a2bcb9e7e6d4634a95630c6eda",
+      "image_size_bytes": 287240,
+      "width": 1404,
+      "height": 1070,
+      "original_foreground_pixels": 0,
+      "original_foreground_ratio": 0.0,
+      "foreground_pixels_512": 0,
+      "mask": "",
+      "mask_sha256": "",
+      "mask_size_bytes": 0,
+      "mask_values": "",
+      "recomputed_foreground_pixels_512": 0,
+      "letterbox": {
+        "new_w": 512,
+        "new_h": 390,
+        "pad_left": 0,
+        "pad_top": 61
+      }
+    },
+    {
+      "image": "pcb1/Data/Images/Normal/0812.JPG",
+      "split": "train",
+      "label": "normal",
+      "image_sha256": "8b9edac84d36aa5fc829cc7f48d6ebcc1d775c631b7d42b28a090a5f6159cff3",
+      "image_size_bytes": 278271,
+      "width": 1404,
+      "height": 1070,
+      "original_foreground_pixels": 0,
+      "original_foreground_ratio": 0.0,
+      "foreground_pixels_512": 0,
+      "mask": "",
+      "mask_sha256": "",
+      "mask_size_bytes": 0,
+      "mask_values": "",
+      "recomputed_foreground_pixels_512": 0,
+      "letterbox": {
+        "new_w": 512,
+        "new_h": 390,
+        "pad_left": 0,
+        "pad_top": 61
+      }
+    },
+    {
+      "image": "pcb1/Data/Images/Anomaly/065.JPG",
+      "split": "train",
+      "label": "anomaly",
+      "image_sha256": "34e36bacabeda8ad3877a7ef206eb9370e6c4e0594e1ee8f9c2803cf93b46988",
+      "image_size_bytes": 257072,
+      "width": 1404,
+      "height": 1070,
+      "original_foreground_pixels": 1150,
+      "original_foreground_ratio": 0.0007655,
+      "foreground_pixels_512": 155,
+      "mask": "pcb1/Data/Masks/Anomaly/065.png",
+      "mask_sha256": "1a98a1141391d98d00e728798b5203dfc1cfd458a1bf341f560a9786f4987f26",
+      "mask_size_bytes": 1880,
+      "mask_values": "0;2",
+      "recomputed_foreground_pixels_512": 155,
+      "letterbox": {
+        "new_w": 512,
+        "new_h": 390,
+        "pad_left": 0,
+        "pad_top": 61
+      }
+    },
+    {
+      "image": "pcb1/Data/Images/Anomaly/038.JPG",
+      "split": "train",
+      "label": "anomaly",
+      "image_sha256": "20971e8c3bf13131530013ec3d7662c05f26a960ea0eb72d7cb67858cd53a9c2",
+      "image_size_bytes": 281860,
+      "width": 1404,
+      "height": 1070,
+      "original_foreground_pixels": 2517,
+      "original_foreground_ratio": 0.00167545,
+      "foreground_pixels_512": 331,
+      "mask": "pcb1/Data/Masks/Anomaly/038.png",
+      "mask_sha256": "1af853acf319b7d463412760dd8421f64db5e3d4de7117a8648656c41172892e",
+      "mask_size_bytes": 2011,
+      "mask_values": "0;2",
+      "recomputed_foreground_pixels_512": 331,
+      "letterbox": {
+        "new_w": 512,
+        "new_h": 390,
+        "pad_left": 0,
+        "pad_top": 61
+      }
+    },
+    {
+      "image": "pcb1/Data/Images/Anomaly/031.JPG",
+      "split": "train",
+      "label": "anomaly",
+      "image_sha256": "cc498f351029d1e891091b69f1163532bdd149a486a5a975778f5b2337543782",
+      "image_size_bytes": 259461,
+      "width": 1404,
+      "height": 1070,
+      "original_foreground_pixels": 3409,
+      "original_foreground_ratio": 0.00226922,
+      "foreground_pixels_512": 443,
+      "mask": "pcb1/Data/Masks/Anomaly/031.png",
+      "mask_sha256": "342af623a38500b01cfbbd626d52a0794516a51dd0400dbbeda34f2a2508f113",
+      "mask_size_bytes": 2537,
+      "mask_values": "0;2",
+      "recomputed_foreground_pixels_512": 443,
+      "letterbox": {
+        "new_w": 512,
+        "new_h": 390,
+        "pad_left": 0,
+        "pad_top": 61
+      }
+    },
+    {
+      "image": "pcb1/Data/Images/Anomaly/043.JPG",
+      "split": "train",
+      "label": "anomaly",
+      "image_sha256": "dbc6b10eaacb7be78fd1ba20e5dc821297e3280be0b67d62ab0e95bdb307f877",
+      "image_size_bytes": 220506,
+      "width": 1404,
+      "height": 1070,
+      "original_foreground_pixels": 191178,
+      "original_foreground_ratio": 0.12725857,
+      "foreground_pixels_512": 25389,
+      "mask": "pcb1/Data/Masks/Anomaly/043.png",
+      "mask_sha256": "b430c544895df14bab7b3e7d15f39ee078f3ba8f0cfa63b0def15654ae64464b",
+      "mask_size_bytes": 4717,
+      "mask_values": "0;4",
+      "recomputed_foreground_pixels_512": 25389,
+      "letterbox": {
+        "new_w": 512,
+        "new_h": 390,
+        "pad_left": 0,
+        "pad_top": 61
+      }
+    }
+  ]
+}

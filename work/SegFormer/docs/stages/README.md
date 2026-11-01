@@ -19,7 +19,7 @@
 | 05 | 预训练权重与模型搭建 | 已通过独立验收 | [05-model-design-and-implementation.md](./05-model-design-and-implementation.md) | 快照 `models\mit-b0\source.json`；`reports\model_download.json`、`model_loading.json`、`model_check.json`；[模型加载与核验报告](../../reports/2026-10-31-stage05-model-loading-and-check.md)；`audit\stage05-*.log` |
 | 06 | Dataset、变换与配置 | 已通过独立验收 | [06-dataset-design-and-implementation.md](./06-dataset-design-and-implementation.md) | `reports\dataset_check.json`（39 项检查）；`segformer_resources\runs\dataset_check`（9 张五联图）；`audit\stage06-*.log`、`stage06-unit-tests.txt` |
 | 07 | 损失与指标 | 已通过独立验收 | [07-loss-metrics-design-and-implementation.md](./07-loss-metrics-design-and-implementation.md) | [验收报告](../../reports/2026-11-01-stage07-acceptance.md)；`loss_metrics_check.json`（42 项）；`stage07-unit-tests.txt`（186 项）；`stage07-acceptance.json`；归档恢复图 |
-| 08 | 20 步冒烟检查 | 未开始 | — | — |
+| 08 | 20 步冒烟检查 | 已完成（待独立验收） | [08-smoke-design-and-implementation.md](./08-smoke-design-and-implementation.md) | `reports\stage08-gates.json`（5/5 技术门禁）；`runs\smoke_001\summary.json`、`updates.jsonl`、`reload_check.json`；`audit\stage08-*.log` |
 | 09 | 8 张训练图过拟合检查 | 未开始 | — | — |
 | 10 | 完整训练集短程试跑 | 未开始 | — | — |
 | 11 | 正式训练与可靠保存 | 未开始 | — | — |
@@ -28,7 +28,17 @@
 
 ## 当前状态一句话
 
-步骤 01—07 已验收：PCB1 v2 分组清单、MiT-B0 快照、Dataset 契约未变；损失与原图指标经 **42 项完整检查、186 项项目回归**验证。原图恢复按「512→裁 padding→原尺寸」；评价 B1、显式 IEEE FP32；单像素漏检记 FN，正常空预测记 NA。**尚未进行本基线训练，没有训练后性能结果**。阶段 08、09 可同轮串行实施，但当前仍是未开始。
+步骤 01—07 已验收；**阶段 08（20 步 CUDA AMP 冒烟）已完成并通过 5/5 技术门禁**：20 次成功更新、编码器与解码头梯度非零、参数真实变化、B1 IEEE FP32 通路评价、新进程 `strict=True` 重载零差异。阶段 09 待执行。**没有训练后基线性能，未评价 test。**
+
+## 阶段 08 关键结论
+
+- 固定子集：`manifests/overfit_train_ids.txt`（SHA `2ac81b81…`），4 正常 + 4 异常；异常前景 1 150 → 191 178 px，跨两个数量级。阶段 09 复用同一文件。
+- 计数：成功更新 **20 / 尝试 20 / 跳步 0**；停止原因 `target reached`。
+- 梯度：编码器 0.0931、解码头 0.0253；参数 `max|Δ|` 分别 6.014e-05 / 6.004e-05，符合一步 AdamW 幅度。
+- 计时与显存：首步 3 423 ms，稳态中位 **58.5 ms**；峰值 allocated 806.5 / reserved **934.0 MiB**（20 步实测，不能当正式训练预算）。
+- 评价：6 张固定 val，B1 FP32（TF32 关闭），IoU 0.0、误报 264 px；**只证通路，不是基线**。
+- 保存重载：run 内结构 + 权重 `strict=True`，missing/unexpected 为 0；6 张图最大概率差 **0.0**，XOR **0**，混淆量与指标完全一致。
+- 已知缺口：AMP 跳步分支未实测触发；`workers=0` 仍是唯一验证过的设置。
 
 ## 阶段 07 关键结论
 

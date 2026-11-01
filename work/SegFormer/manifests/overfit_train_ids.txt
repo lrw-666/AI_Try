@@ -1,0 +1,8 @@
+pcb1/Data/Images/Normal/0025.JPG
+pcb1/Data/Images/Normal/0121.JPG
+pcb1/Data/Images/Normal/0708.JPG
+pcb1/Data/Images/Normal/0812.JPG
+pcb1/Data/Images/Anomaly/065.JPG
+pcb1/Data/Images/Anomaly/038.JPG
+pcb1/Data/Images/Anomaly/031.JPG
+pcb1/Data/Images/Anomaly/043.JPG

@@ -1,0 +1,77 @@
+# Stage 09 overfit configuration -- a debugging experiment, NOT a baseline.
+#
+# Question: can the model learn the current labels at all on 8 fixed training
+# images? This cannot answer anything about generalisation; it exists to catch
+# label/geometry/loss/optimiser mistakes before a 50-epoch run.
+#
+# Differences from configs/smoke.yaml, and nothing else:
+#   * learning rate 1e-4, no warmup, no decay
+#   * up to 200 successful updates with evaluation every 50
+# The model is re-initialised from the same pinned MiT-B0 snapshot; nothing is
+# inherited from the smoke run (no weights, no optimiser, no GradScaler state).
+
+experiment:
+  name: segformer_b0_pcb1_overfit8
+  seed: 42
+  output_root: E:/桌面/AI/segformer_resources/runs
+
+data:
+  root: E:/桌面/AI/segformer_resources/data/visa
+  category: pcb1
+  train_manifest: manifests/train.csv
+  val_manifest: manifests/val.csv
+  test_manifest: manifests/test.csv
+  split_meta: manifests/split_meta.json
+  train_ids_file: manifests/overfit_train_ids.txt   # identical file to stage 08
+  input_size: 512
+  resize_mode: letterbox
+  image_pad_rgb: [124, 116, 104]
+  ignore_index: 255
+  horizontal_flip_p: 0.0
+  workers: 0
+
+model:
+  pretrained_dir: E:/桌面/AI/segformer_resources/models/mit-b0
+  num_labels: 2
+  id2label: {0: background, 1: defect}
+  label2id: {background: 0, defect: 1}
+  train_encoder: true
+
+train:
+  epochs: null
+  max_steps: 200              # successful updates in this run
+  batch_size: 2
+  gradient_accumulation_steps: 1
+  amp: true
+  precision: fp16_amp
+  flip: none
+  learning_rate: 0.0001       # fixed, no decay
+  weight_decay: 0.01
+  warmup_ratio: 0.0
+  lr_scheduler: none
+  grad_clip_norm: 1.0
+
+overfit:
+  max_attempts: 500           # hard cap for this round, including any rerun
+  eval_every: 50
+  check_steps: [100, 200]
+  eval_split: train           # the same 8 images, scored in original space
+  min_iou_gain: 0.02          # "visible learning" floor for the 100-update check
+
+loss:
+  ce_weight: 1.0
+  foreground_dice_weight: 0.5
+  dice_epsilon: 0.000001
+
+eval:
+  batch_size: 1
+  precision: ieee_fp32
+  threshold: 0.5
+  metric_space: original
+  postprocess: none
+  selection_metric: foreground_iou_global
+
+logging:
+  tensorboard: false
+  log_every_micro_steps: 1
+  fixed_preview_manifest: manifests/val_preview_ids.txt

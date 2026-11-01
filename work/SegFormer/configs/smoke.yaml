@@ -1,0 +1,74 @@
+# Stage 08 smoke configuration -- NOT the baseline recipe.
+#
+# Purpose: prove the full CUDA AMP path works (forward, loss, backward,
+# GradScaler, optimiser step, save, fresh-process reload) in exactly 20
+# successful updates on a fixed 8-image training subset.
+#
+# Everything that defines the experiment identity (data, model, loss, input
+# size, ignore index, threshold) is identical to configs/baseline.yaml; only
+# the schedule and the training subset differ. A score produced with this file
+# is a plumbing result, never a baseline.
+
+experiment:
+  name: segformer_b0_pcb1_smoke20
+  seed: 42
+  output_root: E:/桌面/AI/segformer_resources/runs
+
+data:
+  root: E:/桌面/AI/segformer_resources/data/visa
+  category: pcb1
+  train_manifest: manifests/train.csv
+  val_manifest: manifests/val.csv
+  test_manifest: manifests/test.csv
+  split_meta: manifests/split_meta.json
+  train_ids_file: manifests/overfit_train_ids.txt   # the frozen 4 normal + 4 anomaly
+  input_size: 512
+  resize_mode: letterbox
+  image_pad_rgb: [124, 116, 104]
+  ignore_index: 255
+  horizontal_flip_p: 0.0      # explicit: no augmentation in smoke
+  workers: 0
+
+model:
+  pretrained_dir: E:/桌面/AI/segformer_resources/models/mit-b0
+  num_labels: 2
+  id2label: {0: background, 1: defect}
+  label2id: {background: 0, defect: 1}
+  train_encoder: true
+
+train:
+  epochs: null                # terminated by update count, not epochs
+  max_steps: 20               # successful optimiser updates
+  batch_size: 2
+  gradient_accumulation_steps: 1
+  amp: true
+  precision: fp16_amp
+  flip: none                  # explicit; must not rely on the train default
+  learning_rate: 0.00006
+  weight_decay: 0.01
+  warmup_ratio: 0.0           # fixed LR for a 20-step plumbing test
+  lr_scheduler: none
+  grad_clip_norm: 1.0
+
+smoke:
+  target_updates: 20
+  max_attempts: 30            # extra attempts only absorb logged GradScaler skips
+  eval_preview_ids: manifests/val_preview_ids.txt
+
+loss:
+  ce_weight: 1.0
+  foreground_dice_weight: 0.5
+  dice_epsilon: 0.000001
+
+eval:
+  batch_size: 1
+  precision: ieee_fp32        # disable TF32 + autocast inside the evaluation context
+  threshold: 0.5
+  metric_space: original
+  postprocess: none
+  selection_metric: foreground_iou_global
+
+logging:
+  tensorboard: false
+  log_every_micro_steps: 1
+  fixed_preview_manifest: manifests/val_preview_ids.txt

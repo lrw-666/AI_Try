@@ -3,7 +3,7 @@
 本目录是 VisA PCB1 high-shot 协议下 SegFormer-B0 单基线实验的工程根目录：代码、配置、清单、阶段文档。
 环境、缓存、数据、模型与运行产物**不在本目录**，统一放在仓库外的 `E:\桌面\AI\segformer_resources`。
 
-- 当前进度：**步骤 1—7 已通过独立验收**；阶段 07 完整检查 42/42、全项目回归 186 项通过。数据为 v2 分组协议，模型快照固定 commit；尚未进行本基线训练，没有训练后性能结果。
+- 当前进度：**步骤 1—7 已通过独立验收；阶段 08（20 步 AMP 冒烟）已完成并通过 5/5 技术门禁**。数据为 v2 分组协议，模型快照固定 commit；尚无训练后基线性能，未评价 test。
 - 验收记录：[阶段01—02验收与完善](./reports/2026-10-31-stage01-02-acceptance.md)、[第三阶段验收](./reports/2026-10-31-stage03-acceptance.md)、[第四阶段验收](./reports/2026-10-31-stage04-acceptance.md)、[第五阶段模型加载与核验](./reports/2026-10-31-stage05-model-loading-and-check.md)、[第六阶段验收](./reports/2026-10-31-stage06-acceptance.md)
 - 阶段索引：[docs/stages/README.md](./docs/stages/README.md)
 - 最新验收：[第七阶段](./reports/2026-11-01-stage07-acceptance.md)；下一轮可串行完成 [阶段 08—09](./reports/2026-11-01-stage08-09-execution-handoff.md) 后合并交付验收。
@@ -70,8 +70,12 @@ work\SegFormer\                       仓库内（Git）
 ├─ segformer_lab\metrics.py           原图恢复、int64 混淆量累计、全局指标
 ├─ segformer_lab\evaluation.py        IEEE FP32 评价精度上下文
 ├─ segformer_lab\metrics_check.py     42 项损失/指标检查 + 真实数据 probe
+├─ segformer_lab\training.py          共享训练基座（AMP、评价、保存、严格重载）
+├─ segformer_lab\smoke.py             阶段 08 冒烟入口与重载对照
+├─ segformer_lab\subset.py            固定 8 图子集生成与校验
 ├─ configs\baseline.yaml              实验配置（512 letterbox、ignore 255、二类）
-├─ manifests\                         官方 CSV 副本 + train/val/test 清单 + split_meta.json + reviewed_groups.json + val_preview_ids.txt
+├─ configs\smoke.yaml                 阶段 08 冒烟配置
+├─ manifests\                         官方 CSV 副本 + train/val/test 清单 + split_meta.json + reviewed_groups.json + val_preview_ids.txt + overfit_train_ids.txt
 ├─ tests\                             环境/分组/几何/审计/模型/数据集/损失指标的单元测试（186 项）
 ├─ reports\environment.json           最新环境报告
 ├─ reports\data_audit\                审计摘要、逐图统计、重复与近重复候选
@@ -143,8 +147,9 @@ E:\桌面\AI\segformer_resources\       仓库外（不进 Git）
 | 04 数据审计与可视化 | 已通过验收（v2 分组） | [04-data-audit-design-and-implementation.md](./docs/stages/04-data-audit-design-and-implementation.md) |
 | 05 预训练权重与模型搭建 | 已验证 | [05-model-design-and-implementation.md](./docs/stages/05-model-design-and-implementation.md) |
 | 06 Dataset、同步增广与 DataLoader | 已验证 | [06-dataset-design-and-implementation.md](./docs/stages/06-dataset-design-and-implementation.md) |
-| 07 损失与原图尺度指标 | 已验证（待独立验收） | [07-loss-metrics-design-and-implementation.md](./docs/stages/07-loss-metrics-design-and-implementation.md) |
-| 08—13 | 未开始 | 见 [阶段索引](./docs/stages/README.md) |
+| 07 损失与原图尺度指标 | 已通过独立验收 | [07-loss-metrics-design-and-implementation.md](./docs/stages/07-loss-metrics-design-and-implementation.md) |
+| 08 20 步冒烟检查 | 已完成（待独立验收） | [08-smoke-design-and-implementation.md](./docs/stages/08-smoke-design-and-implementation.md) |
+| 09—13 | 未开始 | 见 [阶段索引](./docs/stages/README.md) |
 
 ## 5.1 数据现状（2026-10-31）
 
@@ -204,6 +209,15 @@ E:\桌面\AI\segformer_resources\       仓库外（不进 Git）
 - 评价：B1、FP32模型/输入，`eval.precision: ieee_fp32`，由统一上下文关闭 TF32/autocast。
 - 证据：`reports\loss_metrics_check.json`（42 项）、`reports\figures\stage07-restore-asymmetric.png`；随机头 probe 不算性能。
 
+## 5.6 训练基座与 20 步冒烟（阶段 08）
+
+- `segformer_lab\training.py`：seed、AdamW 分组（bias/norm 不衰减）、AMP+GradScaler 训练循环、跳步判定、B1 IEEE FP32 评价、自包含保存与 `strict=True` 重载。
+- 固定子集：`manifests/overfit_train_ids.txt`（4 正常 + 4 异常，SHA `2ac81b81…`），由 `segformer_lab.subset` 生成；阶段 09 复用同一文件。明细 `reports/overfit_subset.json`。
+- 冒烟配置：`configs/smoke.yaml`；run `segformer_resources\runs\smoke_001`（checkpoint、日志与批量图不进 Git）。
+- 实测：20 成功 / 20 尝试 / 0 跳步；编码器梯度 0.0931、头 0.0253，参数 `max|Δ|` 6.014e-05 / 6.004e-05；稳态 58.5 ms/update，峰值 reserved 934.0 MiB。
+- 重载：新进程 `strict=True`，missing/unexpected 0；6 张图最大概率差 0.0、XOR 0，混淆量与指标一致。
+- 门禁：`reports/stage08-gates.json`（5/5 技术门禁）。冒烟分数只证通路，不是基线。
+
 ## 6. 常见操作
 
 ```powershell
@@ -243,6 +257,17 @@ Invoke-SegPython -m segformer_lab.metrics_check --config 'configs\baseline.yaml'
 # 只跑夹具（仍核验快照身份；不执行 GPU 模型前向；不代表全阶段通过）
 Invoke-SegPython -m segformer_lab.metrics_check --skip-model --device cpu `
   --report "$SegResource\audit\stage07-dryrun.json"
+
+# 固定 8 图子集（阶段 08/09 共用；--verify-only 只复核）
+Invoke-SegPython -m segformer_lab.subset --config 'configs\baseline.yaml'
+
+# 阶段 08：20 步 AMP 冒烟 + 保存
+Invoke-SegPython -m segformer_lab.smoke --config 'configs\smoke.yaml' `
+  --out "$SegResource\runs\smoke_001"
+
+# 阶段 08：新进程严格重载并复算
+Invoke-SegPython -m segformer_lab.smoke --verify-run "$SegResource\runs\smoke_001" `
+  --config 'configs\smoke.yaml'
 
 # 数据准备：重新生成三份清单（已存在且内容相同的图不会被覆盖）
 Invoke-SegPython -m segformer_lab.prepare_data `

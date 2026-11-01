@@ -1,0 +1,90 @@
+{
+  "schema": "segformer-lab/stage08-gates/1",
+  "generated_at": "2026-11-01T11:08:27+0800",
+  "run_dir": "E:\\桌面\\AI\\segformer_resources\\runs\\smoke_001",
+  "gates": {
+    "cuda_amp_20_updates": {
+      "successful_updates": 20,
+      "attempts": 20,
+      "skipped": 0,
+      "stopped_reason": "target reached (20 successful updates)",
+      "pass": true
+    },
+    "gradients_and_real_updates": {
+      "encoder_grad_norm": 0.09309753030538559,
+      "head_grad_norm": 0.02528955601155758,
+      "encoder_max_delta": 6.014108657836914e-05,
+      "head_max_delta": 6.004422903060913e-05,
+      "subset_size": 8,
+      "subset_labels": {
+        "normal": 4,
+        "anomaly": 4
+      },
+      "ids_sha256": "2ac81b816dde9888d7483a3af0b9ffa85ae17cd242242542c1ff3f88d1cec6e9",
+      "pass": true
+    },
+    "val_b1_fp32_eval": {
+      "images": {
+        "total": 6,
+        "normal": 3,
+        "anomaly": 3
+      },
+      "confusion": {
+        "tp": 0,
+        "fp": 264,
+        "fn": 126065,
+        "tn": 8887351,
+        "pixels": 9013680
+      },
+      "tf32_before": {
+        "cudnn_allow_tf32": true,
+        "matmul_allow_tf32": false
+      },
+      "tf32_effective": {
+        "cudnn_allow_tf32": false,
+        "matmul_allow_tf32": false
+      },
+      "autocast_enabled": false,
+      "figures": [
+        "normal_0011.png",
+        "normal_0455.png",
+        "normal_0983.png",
+        "anomaly_087.png",
+        "anomaly_010.png",
+        "anomaly_045.png"
+      ],
+      "batch_size": 1,
+      "pass": true
+    },
+    "reload_from_new_process": {
+      "strict": true,
+      "missing": [],
+      "unexpected": [],
+      "max_abs_probability_diff": 0.0,
+      "xor_pixels": 0,
+      "confusion_identical": true,
+      "global_identical": true,
+      "checkpoint_sha256": "2b66a9d211f1423f41bf56c2210f5c143ba3aa08492aa74341bf197a943ea727",
+      "steps_recorded": 20,
+      "pass": true
+    },
+    "resources_and_timing": {
+      "peak_allocated_mib": 806.5,
+      "peak_reserved_mib": 934.0,
+      "median_step_ms": 58.5,
+      "first_step_ms": 3423.02,
+      "system_ram_available_gib": 1.73,
+      "artifact_files": 13,
+      "pass": true
+    },
+    "docs_and_index": {
+      "document": "docs/stages/08-smoke-design-and-implementation.md",
+      "index_updated": true,
+      "readme_updated": true,
+      "pass": true
+    }
+  },
+  "all_technical_gates_pass": true,
+  "ready_for_stage09": true,
+  "finalized_at": "2026-11-01T11:17:47+0800"
+}
