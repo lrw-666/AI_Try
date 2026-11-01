@@ -7,6 +7,7 @@
 - 验收记录：[阶段01—02验收与完善](./reports/2026-10-31-stage01-02-acceptance.md)、[第三阶段验收](./reports/2026-10-31-stage03-acceptance.md)、[第四阶段验收](./reports/2026-10-31-stage04-acceptance.md)、[第五阶段模型加载与核验](./reports/2026-10-31-stage05-model-loading-and-check.md)、[第六阶段验收](./reports/2026-10-31-stage06-acceptance.md)
 - 阶段索引：[docs/stages/README.md](./docs/stages/README.md)
 - 最新验收：[第十一阶段](./reports/2026-11-01-stage11-acceptance.md)、[机器摘要](./reports/stage11-acceptance.json)、[阶段学习文档](./docs/stages/11-training-design-and-implementation.md)。下一步按[阶段12执行交接](./reports/2026-11-01-stage12-execution-handoff.md)进行独立推理与冻结协议测试。
+- 连续执行入口：[阶段12—13统一交接](./reports/2026-11-01-stage12-13-continuous-execution-handoff.md)。已授权开发Agent按技术门禁连续执行、每阶段分别提交并推送，状态为“完成（待验收）”；本文件更新仅准备交接，尚未启动阶段12或13。
 - 主指南：`../../docs/research/2026-10-31-segformer-baseline-end-to-end-guide.md`
 - 环境隔离规范：`../../docs/research/2026-10-31-segformer-environment-isolation-and-stage-docs.md`
 

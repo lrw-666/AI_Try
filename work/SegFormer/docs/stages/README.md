@@ -7,6 +7,7 @@
 - 隔离规范：`../../../../docs/research/2026-10-31-segformer-environment-isolation-and-stage-docs.md`
 - 文档模板：`../../../../docs/research/templates/segformer-stage-design-and-implementation-template.md`
 - 项目根：`E:\桌面\AI\AI_Try\work\SegFormer`　资源根：`E:\桌面\AI\segformer_resources`
+- 连续执行：[阶段12—13统一交接](../../reports/2026-11-01-stage12-13-continuous-execution-handoff.md)，两阶段自检后分别commit/push，最终独立验收留待用户回来；当前仅生成指令，未启动执行。
 
 ## 状态总览
 
