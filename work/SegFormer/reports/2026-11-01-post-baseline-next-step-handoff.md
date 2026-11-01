@@ -2,7 +2,7 @@
 
 日期：2026-11-01。本文是下一项任务的建议与交接，**不表示已经实施DINOv3或新实验**。以[阶段12—13验收记录](./2026-11-01-stage12-13-acceptance.md)的最终结论为前置条件。
 
-2026-11-02近期安排更新：用户优先看懂现有训练过程，并以当前已完成功能准备开题，不要求换机复现，也不承诺完成后续新模型。本文第2节及可复制指令保留为有时间时的候选；近期以[训练学习指南](../../../docs/research/2026-11-02-segformer-baseline-learning-and-code-guide.md)和[现有成果开题指南](../../../docs/research/2026-11-02-proposal-preparation-and-advisor-discussion-guide.md)为准。
+2026-11-02范围澄清：**开题前的实验完成进度以现有SegFormer基线为准，整篇论文仍暂按“SegFormer → 冻结DINOv3-S/16＋轻量分割头独立训练与对照 → 一项有依据的适配改进”规划，待导师确认。**用户近期先看懂本机训练过程、整理已有证据及完整论文方案，不要求换机复现，也不要求11月16日前完成DINOv3训练或得到其指标。本文第2节仍是后续论文主线的技术交接，不因开题时间紧而取消；实际推进结合导师讨论、毕业时间与资源预算安排。融合、集成或蒸馏为有条件候选。学习与开题安排见[训练学习指南](../../../docs/research/2026-11-02-segformer-baseline-learning-and-code-guide.md)和[开题与论文计划指南](../../../docs/research/2026-11-02-proposal-preparation-and-advisor-discussion-guide.md)。
 
 ## 1. 先把这次实验变成你能解释的成果
 
