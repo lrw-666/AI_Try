@@ -18,7 +18,7 @@
 | 04 | 数据审计与可视化 | 已通过验收，v2 分组清单已重出并验证 | [04-data-audit-design-and-implementation.md](./04-data-audit-design-and-implementation.md) | 当前 `manifests`；`reports/data_audit`；第四阶段验收报告；62 项回归；资源目录 18 张五联图 |
 | 05 | 预训练权重与模型搭建 | 已通过独立验收 | [05-model-design-and-implementation.md](./05-model-design-and-implementation.md) | 快照 `models\mit-b0\source.json`；`reports\model_download.json`、`model_loading.json`、`model_check.json`；[模型加载与核验报告](../../reports/2026-10-31-stage05-model-loading-and-check.md)；`audit\stage05-*.log` |
 | 06 | Dataset、变换与配置 | 已通过独立验收 | [06-dataset-design-and-implementation.md](./06-dataset-design-and-implementation.md) | `reports\dataset_check.json`（39 项检查）；`segformer_resources\runs\dataset_check`（9 张五联图）；`audit\stage06-*.log`、`stage06-unit-tests.txt` |
-| 07 | 损失与指标 | 未开始 | — | — |
+| 07 | 损失与指标 | 已通过独立验收 | [07-loss-metrics-design-and-implementation.md](./07-loss-metrics-design-and-implementation.md) | [验收报告](../../reports/2026-11-01-stage07-acceptance.md)；`loss_metrics_check.json`（42 项）；`stage07-unit-tests.txt`（186 项）；`stage07-acceptance.json`；归档恢复图 |
 | 08 | 20 步冒烟检查 | 未开始 | — | — |
 | 09 | 8 张训练图过拟合检查 | 未开始 | — | — |
 | 10 | 完整训练集短程试跑 | 未开始 | — | — |
@@ -28,18 +28,21 @@
 
 ## 当前状态一句话
 
-PCB1（v2 分组划分）审计通过，MiT-B0 快照按 commit `80983a41…` 固定并逐键核验；**Dataset/collate/DataLoader 已实现并通过 39 项数据契约检查**：B2 张量为 `float32[2,3,512,512]` 与 `int64[2,512,512]`（0/1/255、有效区 512×390、上下各 61 行 255），同步翻转与归一化均有逐值证据，真实 B2 eval 前向得 `[2,2,128,128]`。**尚未实现损失/指标/训练器，未训练，无性能指标**。
+步骤 01—07 已验收：PCB1 v2 分组清单、MiT-B0 快照、Dataset 契约未变；损失与原图指标经 **42 项完整检查、186 项项目回归**验证。原图恢复按「512→裁 padding→原尺寸」；评价 B1、显式 IEEE FP32；单像素漏检记 FN，正常空预测记 NA。**尚未进行本基线训练，没有训练后性能结果**。阶段 08、09 可同轮串行实施，但当前仍是未开始。
 
-## 阶段 06 关键结论
+## 阶段 07 关键结论
 
-- 数据集规模与身份：train 530 / val 132 / test 442；三份清单哈希与 `split_meta.json` 一致。
-- 样本张量：`pixel_values float32 [2,3,512,512]`（CPU，min −1.9638 / max 2.6400），`labels int64 [2,512,512]`、唯一值 `{0,1,255}`。
-- 几何：`1404×1070 → 512×390`，scale 0.364672，pad `L0 T61 R0 B61`，有效区 199 680 px；padding 共 124 928 个 255（2×122×512）。
-- 标签语义：正常图有效区全 0、padding 全 255；异常087原ID0/3合并，512有效区前景313px非空。
-- 同步翻转：`force` 路径下标签 `fliplr` 完全相等、图像 uint8 最大差 0；val/test均拒绝random与force。
-- 归一化：与 `(x/255−mean)/std` 公式最大差 **0.0**；Dataset factory misses=1且共享同一实例（不含模型加载器），`do_resize=False`、`do_reduce_labels=False`。
-- 原图 GT：collate 保留为 list（2 × `[1070,1404]` uint8，取值 `{0,1}`），不强行堆叠；train方向随增强，val/test为文件方向，B2 payload约3MB。
-- 隔离：`__getitem__` 输出在 CPU，源码不含 CUDA/模型加载；真实 B2 eval+no_grad 前向得 `[2,2,128,128]` float32 有限，未创建优化器。
+- 组合损失：`L = 1.0×CE + 0.5×Dice`；CE 在**上采样到 512 的 logits** 上算，`ignore_index=255` 与当初画 padding 的分辨率一致。
+- Dice 分子是逐像素交集 `2Σ(p·g)`；手算夹具（Σp=1.75, Σg=2, Σ(pg)=1.5）得 0.19999987 对 0.2，差来自 eps=1e-6 的 float32 舍入。
+- 全正常 batch 的 Dice 为图相连的精确 0；Dice 单独反传得到零梯度，CE 仍监督正常图。CE 与 Dice 的数值计算均使用 FP32。
+- 全忽略 batch 抛 `ValueError` 而不是返回 NaN；标签出现 0/1/255 之外的值同样拒绝。
+- padding：同分辨率改 padding logits，loss 差 **0.0**；在 128 网格上改**完全落在 61 行 padding 内**的 0–9 行，loss 差也是 **0.0**。
+- 指标：`int64` 累计 TP/FP/FN/TN 后只除一次；2×2 手算 IoU 0.5 / Dice 2/3 / P 1 / R 0.5 全部对上。
+- 人工例子中「每图平均」0.505、「全局累计」2/101，不能混用；这不是一般大小关系。
+- 特定合成恢复夹具：正确路径质心误差 **0.366 px**；漏裁 padding 为 **36.141 px**，不是通用偏移常数。
+- 单像素夹具：512 采样丢掉的 1 个 GT 像素，用原掩码记 **FN=1 / IoU=0**，用放大回去的 512 标签记 **NA**。
+- 真实 probe（6 张 val、随机解码头）：9,013,680 像素；相同 logits 改变累计分组严格一致。旧“12 px”统计错误已撤回；IEEE FP32 下 B2/B1 真 XOR 为 1，最大概率差 `1.4901161193847656e-7`，固定 B1 重复差为零。未定位具体 kernel。**这些是数值通路检查，不是基线性能。**
+- `eval.precision: ieee_fp32` 和 `evaluation_precision` 上下文统一评价策略：关闭 TF32/autocast、退出恢复；训练 AMP 独立。`--skip-model` 仅夹具诊断，不会使全阶段通过。
 
 ## 本轮验收
 
@@ -53,9 +56,11 @@ PCB1（v2 分组划分）审计通过，MiT-B0 快照按 commit `80983a41…` �
 
 [第六阶段验收](../../reports/2026-10-31-stage06-acceptance.md)：39项数据契约、134项回归通过，9张图逐看；修复skip-model假通过和source GT展示，完善子集/processor/seed门槛。完整身份与代码证据见reports/stage06-acceptance.json；workers>0仍未验证。
 
+[第七阶段验收](../../reports/2026-11-01-stage07-acceptance.md)：42 项完整检查、186 项回归通过；明确 NA、原图 255、FP16 CE、真实 XOR、精度策略与前置身份保护，源码及小型证据保存在仓库。旧版和 TF32 对照分别归档，不覆盖失败事实。未训练，不报告模型质量。
+
 ## 下一步
 
-阶段07：实现精确定义的CE+0.5前景Soft Dice、原图logits还原及int64累计指标，用手算数组/非对称几何夹具验证。完整指令见[第六阶段验收第7节](../../reports/2026-10-31-stage06-acceptance.md#7-下一步指令只执行阶段-07)。不启动训练。
+按[阶段 08—09 执行交接](../../reports/2026-11-01-stage08-09-execution-handoff.md)可同轮串行执行：08 完成 20 次成功更新、AMP、保存与新进程重载，内部门槛通过后，09 独立初始化并检查固定 8 张训练图的学习。两份配置、run、中文文档和证据独立，完成后合并交付验收；失败先停当前阶段，不自动进入 10/11。
 
 ## 维护约定
 

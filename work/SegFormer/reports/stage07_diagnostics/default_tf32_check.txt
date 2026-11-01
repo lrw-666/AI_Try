@@ -1,0 +1,13 @@
+E:\桌面\AI\segformer_resources\env\Lib\site-packages\transformers\image_processing_base.py:417: UserWarning: The following named arguments are not valid for `SegformerImageProcessor.__init__` and were ignored: 'feature_extractor_type', 'reduce_labels'
+  image_processor = cls(**image_processor_dict)
+Some weights of SegformerForSemanticSegmentation were not initialized from the model checkpoint at E:\桌面\AI\segformer_resources\models\mit-b0 and are newly initialized: ['decode_head.batch_norm.bias', 'decode_head.batch_norm.num_batches_tracked', 'decode_head.batch_norm.running_mean', 'decode_head.batch_norm.running_var', 'decode_head.batch_norm.weight', 'decode_head.classifier.bias', 'decode_head.classifier.weight', 'decode_head.linear_c.0.proj.bias', 'decode_head.linear_c.0.proj.weight', 'decode_head.linear_c.1.proj.bias', 'decode_head.linear_c.1.proj.weight', 'decode_head.linear_c.2.proj.bias', 'decode_head.linear_c.2.proj.weight', 'decode_head.linear_c.3.proj.bias', 'decode_head.linear_c.3.proj.weight', 'decode_head.linear_fuse.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+stage 7: loss and metrics check
+  config : configs/baseline.yaml
+  identity: manifests_ok=True revision=80983a413c30
+  figure : E:\桌面\AI\segformer_resources\runs\loss_metrics_check\restore_asymmetric.png
+  probe  : same_logits_layout_equal=True differing_pixels=621
+
+  checks passed: 41/42; skipped=0
+  FAILED: ['probe_two_passes_float_close']
+ERROR conda.cli.main_run:execute(125): `conda run python -m segformer_lab.metrics_check --config configs/baseline.yaml --report reports/loss_metrics_check.json` failed. (See above for error)

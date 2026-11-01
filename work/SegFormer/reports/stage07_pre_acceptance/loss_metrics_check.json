@@ -1,0 +1,997 @@
+{
+  "schema": "segformer-lab/loss-metrics-check/1",
+  "generated_at": "2026-11-01T00:09:21+0800",
+  "scope": "loss_metrics_only",
+  "full_stage_verified": true,
+  "not_a_baseline": true,
+  "environment": {
+    "python": "3.12.16",
+    "torch": "2.10.0+cu126",
+    "numpy": "2.5.4",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "device": "cuda"
+  },
+  "identity": {
+    "manifests": {
+      "train": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\train.csv",
+        "sha256": "f1522eb9b474d0acc1d736a391002f5044153208fa10f51eea3dc7df729f65b0",
+        "matches_acceptance": true
+      },
+      "val": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\val.csv",
+        "sha256": "60a6c6cbf5ed7f5f9e57fb57bb096a5b57db677af5ee73f4fa140ddceaba6191",
+        "matches_acceptance": true
+      },
+      "test": {
+        "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\test.csv",
+        "sha256": "4bdc594148f208c7067a66a8cb3b06fde53ebc1f4ab6fda84f08f80383061284",
+        "matches_acceptance": true
+      }
+    },
+    "split_meta": {
+      "path": "E:\\桌面\\AI\\AI_Try\\work\\SegFormer\\manifests\\split_meta.json",
+      "schema": "segformer-lab/split-meta/2",
+      "matches_manifests": true
+    },
+    "reviewed_groups": {
+      "sha256": "220dae5831d2b72502ecd9832a60fd12d349f4b7bb873b5d78e25c657e533ad8",
+      "matches": true
+    },
+    "preview_ids": {
+      "sha256": "4f17789dfecc28023003092dddbe3c4683ac781cb469b483e4180c2ebb8f9718",
+      "matches": true
+    },
+    "snapshot": {
+      "model_id": "nvidia/mit-b0",
+      "revision": "80983a413c30d36a39c20203974ae7807835e2b4",
+      "weights_sha256": "4af8348c2a802bf76115d34797ff5ce1d9f110bb8593c22d9b66d8bd7fa227fc",
+      "revision_matches": true,
+      "weights_match": true
+    },
+    "ok": true
+  },
+  "loss_definition": {
+    "name": "ce_plus_foreground_soft_dice",
+    "total": "ce_weight * CE + dice_weight * mean_over_positive_images(1 - Dice_i)",
+    "ce": {
+      "op": "torch.nn.functional.cross_entropy",
+      "reduction": "mean over pixels with label != ignore_index",
+      "ignore_index": 255,
+      "upsampled_to": "label resolution (512) with bilinear, align_corners=False"
+    },
+    "dice": {
+      "class": 1,
+      "probability": "softmax(logits.float(), dim=1)[:, 1]",
+      "per_image": "(2*sum(p*g) + eps) / (sum(p) + sum(g) + eps)",
+      "valid_region": "label != ignore_index",
+      "averaged_over": "images whose valid GT contains at least one defect pixel",
+      "empty_foreground_batch": "prob.sum() * 0.0 (graph-connected exact zero)",
+      "eps": 1e-06
+    },
+    "defaults": {
+      "ce_weight": 1.0,
+      "dice_weight": 0.5
+    },
+    "rejected": "batch with zero valid pixels"
+  },
+  "score_definition": {
+    "space": "original",
+    "gt_source": "Dataset original_mask (never the 512 label resized back up)",
+    "restore": [
+      "bilinear logits -> 512x512, align_corners=False",
+      "crop pad_top..pad_top+new_h, pad_left..pad_left+new_w",
+      "bilinear valid box -> orig_h x orig_w, align_corners=False",
+      "softmax over 2 channels, take channel 1",
+      "binarize with prob >= threshold"
+    ],
+    "threshold": 0.5,
+    "confusion": "int64 TP/FP/FN/TN summed over images, divided once",
+    "foreground_iou": "TP / (TP + FP + FN)",
+    "foreground_dice": "2TP / (2TP + FP + FN)",
+    "precision": "TP / (TP + FP)",
+    "recall": "TP / (TP + FN)",
+    "no_smoothing": true,
+    "zero_denominator": "null plus a reason string",
+    "normal_image_fp": "sum(FP) / sum(all pixels of normal images)",
+    "per_image": "IoU/Dice are null when GT and prediction are both empty",
+    "macro": "anomaly images only, averaged over images where the value is defined",
+    "rejected": "flipped evaluation samples"
+  },
+  "loss_fixtures": {
+    "ce_hand_computed": {
+      "ce": 0.28768202662467957,
+      "expected": 0.2876820724517809,
+      "valid_pixels": 3,
+      "ignored_pixels": 1,
+      "upsampled": false
+    },
+    "dice_hand_computed": {
+      "dice_loss": 0.1999998688697815,
+      "expected": 0.2,
+      "positive_images": 1,
+      "valid_images": 1
+    },
+    "perfect_prediction_dice": {
+      "dice_loss": 0.0
+    },
+    "all_normal_batch": {
+      "dice": 0.0,
+      "dice_is_exactly_zero": true,
+      "positive_images": 0,
+      "grad_present": true,
+      "grad_finite": true,
+      "grad_abs_sum": 1.0,
+      "total": 0.6931473016738892
+    },
+    "padding_does_not_affect_loss": {
+      "total_base": 0.3876819610595703,
+      "total_perturbed": 0.3876819610595703,
+      "abs_diff": 0.0,
+      "ce_diff": 0.0,
+      "dice_diff": 0.0,
+      "resolution": "logits share the label resolution, so ignore is exact"
+    },
+    "padding_lowres_inner_rows": {
+      "total_base": 2.2139623165130615,
+      "total_perturbed": 2.2139623165130615,
+      "abs_diff": 0.0,
+      "upsampled": true,
+      "note": "rows 0..9 of a 128 grid map to canvas rows 0..39, fully inside the 61-row pad"
+    },
+    "all_ignored_batch": {
+      "rejected": true,
+      "message": "batch has no valid pixel (every label is 255); CE would be 0/0 = NaN. Refusing instead of returning a silent NaN loss."
+    },
+    "batch_split_equivalence": {
+      "whole_ce": 0.8794392347335815,
+      "split_ce": 0.8794392645359039,
+      "whole_dice": 0.706118106842041,
+      "split_dice": 0.7061181366443634,
+      "ce_diff": 2.9802322387695312e-08,
+      "dice_diff": 2.9802322387695312e-08,
+      "caveat": "equal only because both halves have the same valid-pixel count and both contain foreground"
+    }
+  },
+  "metric_fixtures": {
+    "hand_2x2": {
+      "confusion": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 1,
+        "tn": 2
+      },
+      "iou": 0.5,
+      "dice": 0.6666666667,
+      "precision": 1.0,
+      "recall": 0.5,
+      "expected": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 1,
+        "tn": 2,
+        "iou": 0.5,
+        "dice": 0.6666666666666666,
+        "precision": 1.0,
+        "recall": 0.5
+      }
+    },
+    "perfect": {
+      "confusion": {
+        "tp": 6,
+        "fp": 0,
+        "fn": 0,
+        "tn": 10
+      },
+      "iou": 1.0,
+      "dice": 1.0,
+      "expected": {
+        "tp": 6,
+        "fp": 0,
+        "fn": 0,
+        "tn": 10,
+        "iou": 1.0,
+        "dice": 1.0
+      }
+    },
+    "all_background_prediction": {
+      "iou": 0.0,
+      "dice": 0.0,
+      "precision": null,
+      "precision_na": "model predicted no foreground pixel at all",
+      "recall": 0.0,
+      "expected": {
+        "iou": 0.0,
+        "dice": 0.0,
+        "precision": null,
+        "recall": 0.0
+      }
+    },
+    "all_foreground_prediction": {
+      "iou": 0.375,
+      "dice": 0.5454545455,
+      "precision": 0.375,
+      "recall": 1.0,
+      "expected": {
+        "iou": 0.375,
+        "dice": 0.5454545454545454,
+        "precision": 0.375,
+        "recall": 1.0
+      }
+    },
+    "normal_false_positive": {
+      "iou": 0.0,
+      "precision": 0.0,
+      "recall": null,
+      "recall_na": "ground truth has no foreground pixel in this set",
+      "per_image_iou": 0.0,
+      "fp_pixel_ratio": 0.1875,
+      "expected": {
+        "iou": 0.0,
+        "precision": 0.0,
+        "recall": null,
+        "per_image_iou": 0.0,
+        "fp_pixel_ratio": 0.1875
+      }
+    },
+    "normal_empty_prediction": {
+      "per_image_iou": null,
+      "per_image_dice": null,
+      "reason": "GT and prediction are both empty",
+      "fp_pixel_ratio": 0.0
+    },
+    "mean_of_per_image_iou_is_not_global": {
+      "per_image_iou": [
+        1.0,
+        0.01
+      ],
+      "mean_of_per_image": 0.505,
+      "global_iou": 0.0198019802,
+      "confusion": {
+        "tp": 2,
+        "fp": 98,
+        "fn": 1,
+        "tn": 99
+      },
+      "expected_global": 0.019801980198019802,
+      "expected_mean": 0.505
+    },
+    "batch_layout_invariance": {
+      "sequential": {
+        "confusion": {
+          "tp": 69,
+          "fp": 81,
+          "fn": 28,
+          "tn": 206
+        },
+        "iou": 0.3876404494,
+        "dice": 0.5587044534
+      },
+      "reversed": {
+        "confusion": {
+          "tp": 69,
+          "fp": 81,
+          "fn": 28,
+          "tn": 206
+        },
+        "iou": 0.3876404494,
+        "dice": 0.5587044534
+      },
+      "interleaved": {
+        "confusion": {
+          "tp": 69,
+          "fp": 81,
+          "fn": 28,
+          "tn": 206
+        },
+        "iou": 0.3876404494,
+        "dice": 0.5587044534
+      }
+    }
+  },
+  "restore_fixtures": {
+    "asymmetric_restore": {
+      "geometry": {
+        "orig_w": 1404,
+        "orig_h": 1070,
+        "input_size": 512,
+        "pad_left": 0,
+        "pad_top": 61,
+        "new_w": 512,
+        "new_h": 390,
+        "pad_right": 0,
+        "pad_bottom": 61
+      },
+      "centroid_correct": [
+        380.993,
+        701.5
+      ],
+      "centroid_expected": [
+        381.359,
+        702.0
+      ],
+      "centroid_wrong_no_crop": [
+        417.5,
+        701.5
+      ],
+      "correct_error_px": 0.366,
+      "wrong_error_px": 36.141,
+      "prob_shape": [
+        1070,
+        1404
+      ]
+    },
+    "single_pixel_dropped_at_512": {
+      "pixel": {
+        "y": 520,
+        "x": 700
+      },
+      "label512_positive_pixels": 0,
+      "original_gt": {
+        "fn": 1,
+        "tp": 0,
+        "iou": 0.0,
+        "dice": 0.0
+      },
+      "upscaled_shrunk_gt": {
+        "fn": 0,
+        "tp": 0,
+        "iou": null,
+        "iou_is_na": "GT and prediction are both empty"
+      },
+      "conclusion": "original GT records the miss as FN; the resized label silently reports NA"
+    }
+  },
+  "random_head_pipeline_probe": {
+    "warning": "decode head is randomly initialised; these numbers are a pipeline probe, NOT a baseline",
+    "not_a_baseline": true,
+    "device": "cuda",
+    "images": [
+      "pcb1/Data/Images/Normal/0011.JPG",
+      "pcb1/Data/Images/Normal/0455.JPG",
+      "pcb1/Data/Images/Normal/0983.JPG",
+      "pcb1/Data/Images/Anomaly/087.JPG",
+      "pcb1/Data/Images/Anomaly/010.JPG",
+      "pcb1/Data/Images/Anomaly/045.JPG"
+    ],
+    "runs": {
+      "real_forward_batch_2": {
+        "confusion": {
+          "tp": 119662,
+          "fp": 1450462,
+          "fn": 6403,
+          "tn": 7437153,
+          "pixels": 9013680,
+          "accumulator_dtype": "int64"
+        },
+        "global": {
+          "foreground_iou": 0.0759022839,
+          "foreground_dice": 0.1410951256,
+          "precision": 0.0762118151,
+          "recall": 0.9492087415,
+          "na_reasons": {},
+          "aggregation": "sum TP/FP/FN/TN over images, then divide once"
+        },
+        "normal_images": {
+          "count": 3,
+          "false_positive_pixels": 557783,
+          "total_pixels": 4506840,
+          "fp_pixel_ratio": 0.12376365701910873,
+          "predicted_foreground_ratio": {
+            "median": 0.1151589584,
+            "p95": 0.1899253135,
+            "max": 0.1982326863,
+            "percentile_method": "numpy linear interpolation over per-image ratios"
+          },
+          "images_with_any_false_positive": 3,
+          "worst_offenders": [
+            {
+              "image_id": "pcb1/Data/Images/Normal/0011.JPG",
+              "predicted_foreground_pixels": 297801,
+              "predicted_foreground_ratio": 0.1982326863
+            },
+            {
+              "image_id": "pcb1/Data/Images/Normal/0455.JPG",
+              "predicted_foreground_pixels": 173001,
+              "predicted_foreground_ratio": 0.1151589584
+            },
+            {
+              "image_id": "pcb1/Data/Images/Normal/0983.JPG",
+              "predicted_foreground_pixels": 86981,
+              "predicted_foreground_ratio": 0.0578993264
+            }
+          ]
+        },
+        "anomaly_images": {
+          "count": 3,
+          "macro": {
+            "iou": {
+              "mean": 0.0795229757,
+              "defined_images": 3,
+              "na_images": 0
+            },
+            "dice": {
+              "mean": 0.1334717576,
+              "defined_images": 3,
+              "na_images": 0
+            },
+            "precision": {
+              "mean": 0.0801360892,
+              "defined_images": 3,
+              "na_images": 0
+            },
+            "recall": {
+              "mean": 0.8178294159,
+              "defined_images": 3,
+              "na_images": 0
+            }
+          },
+          "na_detail": {
+            "iou_or_dice": []
+          }
+        },
+        "per_image": [
+          {
+            "image_id": "pcb1/Data/Images/Normal/0011.JPG",
+            "label": "normal",
+            "split": "val",
+            "tp": 0,
+            "fp": 297801,
+            "fn": 0,
+            "tn": 1204479,
+            "gt_foreground_pixels": 0,
+            "predicted_foreground_pixels": 297801,
+            "total_pixels": 1502280,
+            "predicted_foreground_ratio": 0.1982326863,
+            "iou": 0.0,
+            "iou_na": "",
+            "dice": 0.0,
+            "dice_na": "",
+            "precision": 0.0,
+            "recall": null
+          },
+          {
+            "image_id": "pcb1/Data/Images/Normal/0455.JPG",
+            "label": "normal",
+            "split": "val",
+            "tp": 0,
+            "fp": 173001,
+            "fn": 0,
+            "tn": 1329279,
+            "gt_foreground_pixels": 0,
+            "predicted_foreground_pixels": 173001,
+            "total_pixels": 1502280,
+            "predicted_foreground_ratio": 0.1151589584,
+            "iou": 0.0,
+            "iou_na": "",
+            "dice": 0.0,
+            "dice_na": "",
+            "precision": 0.0,
+            "recall": null
+          },
+          {
+            "image_id": "pcb1/Data/Images/Normal/0983.JPG",
+            "label": "normal",
+            "split": "val",
+            "tp": 0,
+            "fp": 86981,
+            "fn": 0,
+            "tn": 1415299,
+            "gt_foreground_pixels": 0,
+            "predicted_foreground_pixels": 86981,
+            "total_pixels": 1502280,
+            "predicted_foreground_ratio": 0.0578993264,
+            "iou": 0.0,
+            "iou_na": "",
+            "dice": 0.0,
+            "dice_na": "",
+            "precision": 0.0,
+            "recall": null
+          },
+          {
+            "image_id": "pcb1/Data/Images/Anomaly/087.JPG",
+            "label": "anomaly",
+            "split": "val",
+            "tp": 2141,
+            "fp": 308167,
+            "fn": 187,
+            "tn": 1191785,
+            "gt_foreground_pixels": 2328,
+            "predicted_foreground_pixels": 310308,
+            "total_pixels": 1502280,
+            "predicted_foreground_ratio": 0.2065580318,
+            "iou": 0.0068954412,
+            "iou_na": "",
+            "dice": 0.0136964393,
+            "dice_na": "",
+            "precision": 0.0068995965,
+            "recall": 0.9196735395
+          },
+          {
+            "image_id": "pcb1/Data/Images/Anomaly/010.JPG",
+            "label": "anomaly",
+            "split": "val",
+            "tp": 2924,
+            "fp": 170047,
+            "fn": 2229,
+            "tn": 1327080,
+            "gt_foreground_pixels": 5153,
+            "predicted_foreground_pixels": 172971,
+            "total_pixels": 1502280,
+            "predicted_foreground_ratio": 0.1151389887,
+            "iou": 0.0166894977,
+            "iou_na": "",
+            "dice": 0.0328310615,
+            "dice_na": "",
+            "precision": 0.0169045678,
+            "recall": 0.5674364448
+          },
+          {
+            "image_id": "pcb1/Data/Images/Anomaly/045.JPG",
+            "label": "anomaly",
+            "split": "val",
+            "tp": 114597,
+            "fp": 414465,
+            "fn": 3987,
+            "tn": 969231,
+            "gt_foreground_pixels": 118584,
+            "predicted_foreground_pixels": 529062,
+            "total_pixels": 1502280,
+            "predicted_foreground_ratio": 0.3521726975,
+            "iou": 0.2149839883,
+            "iou_na": "",
+            "dice": 0.353887772,
+            "dice_na": "",
+            "precision": 0.2166041031,
+            "recall": 0.9663782635
+          }
+        ],
+        "forward_ms": [
+          1204.25,
+          17.16,
+          16.45
+        ]
+      },
+      "same_logits_batch_1": {
+        "confusion": {
+          "tp": 119662,
+          "fp": 1450462,
+          "fn": 6403,
+          "tn": 7437153,
+          "pixels": 9013680,
+          "accumulator_dtype": "int64"
+        },
+        "global": {
+          "foreground_iou": 0.0759022839,
+          "foreground_dice": 0.1410951256,
+          "precision": 0.0762118151,
+          "recall": 0.9492087415,
+          "na_reasons": {},
+          "aggregation": "sum TP/FP/FN/TN over images, then divide once"
+        },
+        "normal_images": {
+          "count": 3,
+          "false_positive_pixels": 557783,
+          "total_pixels": 4506840,
+          "fp_pixel_ratio": 0.12376365701910873,
+          "predicted_foreground_ratio": {
+            "median": 0.1151589584,
+            "p95": 0.1899253135,
+            "max": 0.1982326863,
+            "percentile_method": "numpy linear interpolation over per-image ratios"
+          },
+          "images_with_any_false_positive": 3,
+          "worst_offenders": [
+            {
+              "image_id": "pcb1/Data/Images/Normal/0011.JPG",
+              "predicted_foreground_pixels": 297801,
+              "predicted_foreground_ratio": 0.1982326863
+            },
+            {
+              "image_id": "pcb1/Data/Images/Normal/0455.JPG",
+              "predicted_foreground_pixels": 173001,
+              "predicted_foreground_ratio": 0.1151589584
+            },
+            {
+              "image_id": "pcb1/Data/Images/Normal/0983.JPG",
+              "predicted_foreground_pixels": 86981,
+              "predicted_foreground_ratio": 0.0578993264
+            }
+          ]
+        },
+        "anomaly_images": {
+          "count": 3,
+          "macro": {
+            "iou": {
+              "mean": 0.0795229757,
+              "defined_images": 3,
+              "na_images": 0
+            },
+            "dice": {
+              "mean": 0.1334717576,
+              "defined_images": 3,
+              "na_images": 0
+            },
+            "precision": {
+              "mean": 0.0801360892,
+              "defined_images": 3,
+              "na_images": 0
+            },
+            "recall": {
+              "mean": 0.8178294159,
+              "defined_images": 3,
+              "na_images": 0
+            }
+          },
+          "na_detail": {
+            "iou_or_dice": []
+          }
+        },
+        "per_image": [
+          {
+            "image_id": "pcb1/Data/Images/Normal/0011.JPG",
+            "label": "normal",
+            "split": "val",
+            "tp": 0,
+            "fp": 297801,
+            "fn": 0,
+            "tn": 1204479,
+            "gt_foreground_pixels": 0,
+            "predicted_foreground_pixels": 297801,
+            "total_pixels": 1502280,
+            "predicted_foreground_ratio": 0.1982326863,
+            "iou": 0.0,
+            "iou_na": "",
+            "dice": 0.0,
+            "dice_na": "",
+            "precision": 0.0,
+            "recall": null
+          },
+          {
+            "image_id": "pcb1/Data/Images/Normal/0455.JPG",
+            "label": "normal",
+            "split": "val",
+            "tp": 0,
+            "fp": 173001,
+            "fn": 0,
+            "tn": 1329279,
+            "gt_foreground_pixels": 0,
+            "predicted_foreground_pixels": 173001,
+            "total_pixels": 1502280,
+            "predicted_foreground_ratio": 0.1151589584,
+            "iou": 0.0,
+            "iou_na": "",
+            "dice": 0.0,
+            "dice_na": "",
+            "precision": 0.0,
+            "recall": null
+          },
+          {
+            "image_id": "pcb1/Data/Images/Normal/0983.JPG",
+            "label": "normal",
+            "split": "val",
+            "tp": 0,
+            "fp": 86981,
+            "fn": 0,
+            "tn": 1415299,
+            "gt_foreground_pixels": 0,
+            "predicted_foreground_pixels": 86981,
+            "total_pixels": 1502280,
+            "predicted_foreground_ratio": 0.0578993264,
+            "iou": 0.0,
+            "iou_na": "",
+            "dice": 0.0,
+            "dice_na": "",
+            "precision": 0.0,
+            "recall": null
+          },
+          {
+            "image_id": "pcb1/Data/Images/Anomaly/087.JPG",
+            "label": "anomaly",
+            "split": "val",
+            "tp": 2141,
+            "fp": 308167,
+            "fn": 187,
+            "tn": 1191785,
+            "gt_foreground_pixels": 2328,
+            "predicted_foreground_pixels": 310308,
+            "total_pixels": 1502280,
+            "predicted_foreground_ratio": 0.2065580318,
+            "iou": 0.0068954412,
+            "iou_na": "",
+            "dice": 0.0136964393,
+            "dice_na": "",
+            "precision": 0.0068995965,
+            "recall": 0.9196735395
+          },
+          {
+            "image_id": "pcb1/Data/Images/Anomaly/010.JPG",
+            "label": "anomaly",
+            "split": "val",
+            "tp": 2924,
+            "fp": 170047,
+            "fn": 2229,
+            "tn": 1327080,
+            "gt_foreground_pixels": 5153,
+            "predicted_foreground_pixels": 172971,
+            "total_pixels": 1502280,
+            "predicted_foreground_ratio": 0.1151389887,
+            "iou": 0.0166894977,
+            "iou_na": "",
+            "dice": 0.0328310615,
+            "dice_na": "",
+            "precision": 0.0169045678,
+            "recall": 0.5674364448
+          },
+          {
+            "image_id": "pcb1/Data/Images/Anomaly/045.JPG",
+            "label": "anomaly",
+            "split": "val",
+            "tp": 114597,
+            "fp": 414465,
+            "fn": 3987,
+            "tn": 969231,
+            "gt_foreground_pixels": 118584,
+            "predicted_foreground_pixels": 529062,
+            "total_pixels": 1502280,
+            "predicted_foreground_ratio": 0.3521726975,
+            "iou": 0.2149839883,
+            "iou_na": "",
+            "dice": 0.353887772,
+            "dice_na": "",
+            "precision": 0.2166041031,
+            "recall": 0.9663782635
+          }
+        ],
+        "forward_ms": []
+      },
+      "real_forward_batch_1": {
+        "confusion": {
+          "tp": 119662,
+          "fp": 1450450,
+          "fn": 6403,
+          "tn": 7437165,
+          "pixels": 9013680,
+          "accumulator_dtype": "int64"
+        },
+        "global": {
+          "foreground_iou": 0.0759028617,
+          "foreground_dice": 0.1410961238,
+          "precision": 0.0762123976,
+          "recall": 0.9492087415,
+          "na_reasons": {},
+          "aggregation": "sum TP/FP/FN/TN over images, then divide once"
+        },
+        "normal_images": {
+          "count": 3,
+          "false_positive_pixels": 557773,
+          "total_pixels": 4506840,
+          "fp_pixel_ratio": 0.12376143816953786,
+          "predicted_foreground_ratio": {
+            "median": 0.1151589584,
+            "p95": 0.1899121336,
+            "max": 0.1982180419,
+            "percentile_method": "numpy linear interpolation over per-image ratios"
+          },
+          "images_with_any_false_positive": 3,
+          "worst_offenders": [
+            {
+              "image_id": "pcb1/Data/Images/Normal/0011.JPG",
+              "predicted_foreground_pixels": 297779,
+              "predicted_foreground_ratio": 0.1982180419
+            },
+            {
+              "image_id": "pcb1/Data/Images/Normal/0455.JPG",
+              "predicted_foreground_pixels": 173001,
+              "predicted_foreground_ratio": 0.1151589584
+            },
+            {
+              "image_id": "pcb1/Data/Images/Normal/0983.JPG",
+              "predicted_foreground_pixels": 86993,
+              "predicted_foreground_ratio": 0.0579073142
+            }
+          ]
+        },
+        "anomaly_images": {
+          "count": 3,
+          "macro": {
+            "iou": {
+              "mean": 0.0795249082,
+              "defined_images": 3,
+              "na_images": 0
+            },
+            "dice": {
+              "mean": 0.1334753918,
+              "defined_images": 3,
+              "na_images": 0
+            },
+            "precision": {
+              "mean": 0.0801381534,
+              "defined_images": 3,
+              "na_images": 0
+            },
+            "recall": {
+              "mean": 0.8178912922,
+              "defined_images": 3,
+              "na_images": 0
+            }
+          },
+          "na_detail": {
+            "iou_or_dice": []
+          }
+        },
+        "per_image": [
+          {
+            "image_id": "pcb1/Data/Images/Normal/0011.JPG",
+            "label": "normal",
+            "split": "val",
+            "tp": 0,
+            "fp": 297779,
+            "fn": 0,
+            "tn": 1204501,
+            "gt_foreground_pixels": 0,
+            "predicted_foreground_pixels": 297779,
+            "total_pixels": 1502280,
+            "predicted_foreground_ratio": 0.1982180419,
+            "iou": 0.0,
+            "iou_na": "",
+            "dice": 0.0,
+            "dice_na": "",
+            "precision": 0.0,
+            "recall": null
+          },
+          {
+            "image_id": "pcb1/Data/Images/Normal/0455.JPG",
+            "label": "normal",
+            "split": "val",
+            "tp": 0,
+            "fp": 173001,
+            "fn": 0,
+            "tn": 1329279,
+            "gt_foreground_pixels": 0,
+            "predicted_foreground_pixels": 173001,
+            "total_pixels": 1502280,
+            "predicted_foreground_ratio": 0.1151589584,
+            "iou": 0.0,
+            "iou_na": "",
+            "dice": 0.0,
+            "dice_na": "",
+            "precision": 0.0,
+            "recall": null
+          },
+          {
+            "image_id": "pcb1/Data/Images/Normal/0983.JPG",
+            "label": "normal",
+            "split": "val",
+            "tp": 0,
+            "fp": 86993,
+            "fn": 0,
+            "tn": 1415287,
+            "gt_foreground_pixels": 0,
+            "predicted_foreground_pixels": 86993,
+            "total_pixels": 1502280,
+            "predicted_foreground_ratio": 0.0579073142,
+            "iou": 0.0,
+            "iou_na": "",
+            "dice": 0.0,
+            "dice_na": "",
+            "precision": 0.0,
+            "recall": null
+          },
+          {
+            "image_id": "pcb1/Data/Images/Anomaly/087.JPG",
+            "label": "anomaly",
+            "split": "val",
+            "tp": 2141,
+            "fp": 308166,
+            "fn": 187,
+            "tn": 1191786,
+            "gt_foreground_pixels": 2328,
+            "predicted_foreground_pixels": 310307,
+            "total_pixels": 1502280,
+            "predicted_foreground_ratio": 0.2065573661,
+            "iou": 0.0068954634,
+            "iou_na": "",
+            "dice": 0.0136964831,
+            "dice_na": "",
+            "precision": 0.0068996188,
+            "recall": 0.9196735395
+          },
+          {
+            "image_id": "pcb1/Data/Images/Anomaly/010.JPG",
+            "label": "anomaly",
+            "split": "val",
+            "tp": 2925,
+            "fp": 170052,
+            "fn": 2228,
+            "tn": 1327075,
+            "gt_foreground_pixels": 5153,
+            "predicted_foreground_pixels": 172977,
+            "total_pixels": 1502280,
+            "predicted_foreground_ratio": 0.1151429827,
+            "iou": 0.016694729,
+            "iou_na": "",
+            "dice": 0.0328411834,
+            "dice_na": "",
+            "precision": 0.0169097626,
+            "recall": 0.5676305065
+          },
+          {
+            "image_id": "pcb1/Data/Images/Anomaly/045.JPG",
+            "label": "anomaly",
+            "split": "val",
+            "tp": 114596,
+            "fp": 414459,
+            "fn": 3988,
+            "tn": 969237,
+            "gt_foreground_pixels": 118584,
+            "predicted_foreground_pixels": 529055,
+            "total_pixels": 1502280,
+            "predicted_foreground_ratio": 0.3521680379,
+            "iou": 0.2149845322,
+            "iou_na": "",
+            "dice": 0.3538885089,
+            "dice_na": "",
+            "precision": 0.2166050789,
+            "recall": 0.9663698307
+          }
+        ],
+        "forward_ms": [
+          30.75,
+          15.25,
+          13.08,
+          12.81,
+          14.95,
+          14.06
+        ]
+      }
+    },
+    "same_logits_layout_equal": true,
+    "two_forward_passes": {
+      "differing_pixels": 12,
+      "total_pixels": 9013680,
+      "differing_ratio": 1.33131e-06,
+      "reason": "cuDNN picks different kernels for batch 1 and batch 2; thresholded pixels at exactly 0.5 can flip. Not an accumulator bug."
+    },
+    "checkpoint_identity": {
+      "revision": "80983a413c30d36a39c20203974ae7807835e2b4",
+      "encoder_check_ok": true
+    }
+  },
+  "checks": {
+    "identity_manifests": true,
+    "identity_split_meta": true,
+    "identity_reviewed_groups": true,
+    "identity_preview_ids": true,
+    "identity_snapshot": true,
+    "hand_2x2_confusion": true,
+    "hand_2x2_iou": true,
+    "hand_2x2_dice": true,
+    "hand_2x2_precision_recall": true,
+    "perfect_iou_dice": true,
+    "all_background_prediction": true,
+    "all_foreground_prediction": true,
+    "normal_false_positive": true,
+    "normal_empty_prediction_is_na": true,
+    "global_is_not_mean_of_images": true,
+    "batch_layout_invariance": true,
+    "ce_hand_computed": true,
+    "dice_hand_computed": true,
+    "perfect_prediction_dice_zero": true,
+    "all_normal_dice_is_zero_and_backward": true,
+    "padding_does_not_affect_loss": true,
+    "padding_lowres_inner_rows": true,
+    "all_ignored_batch_rejected": true,
+    "batch_split_equivalence": true,
+    "restore_centroid_matches_geometry": true,
+    "restore_without_crop_is_wrong": true,
+    "single_pixel_scores_as_fn": true,
+    "shrunk_gt_would_hide_the_miss": true,
+    "probe_real_data_ran": true,
+    "probe_accumulation_independent_of_layout": true,
+    "probe_two_passes_float_close": true,
+    "probe_encoder_loaded": true
+  },
+  "ok": true,
+  "elapsed_seconds": 6.01
+}

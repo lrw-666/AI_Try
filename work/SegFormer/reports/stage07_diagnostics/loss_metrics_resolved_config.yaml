@@ -1,0 +1,78 @@
+config_path: E:\桌面\AI\AI_Try\work\SegFormer\configs\baseline.yaml
+category: pcb1
+input_size: 512
+ignore_index: 255
+image_pad_rgb:
+- 124
+- 116
+- 104
+num_labels: 2
+paths:
+  data.root: E:\桌面\AI\segformer_resources\data\visa
+  data.train_manifest: E:\桌面\AI\AI_Try\work\SegFormer\manifests\train.csv
+  data.val_manifest: E:\桌面\AI\AI_Try\work\SegFormer\manifests\val.csv
+  data.test_manifest: E:\桌面\AI\AI_Try\work\SegFormer\manifests\test.csv
+  data.split_meta: E:\桌面\AI\AI_Try\work\SegFormer\manifests\split_meta.json
+  data.train_ids_file: null
+  experiment.output_root: E:\桌面\AI\segformer_resources\runs
+  model.pretrained_dir: E:\桌面\AI\segformer_resources\models\mit-b0
+  logging.fixed_preview_manifest: E:\桌面\AI\AI_Try\work\SegFormer\manifests\val_preview_ids.txt
+raw:
+  experiment:
+    name: segformer_b0_pcb1_v2_grouped
+    seed: 42
+    output_root: E:/桌面/AI/segformer_resources/runs
+  data:
+    root: E:/桌面/AI/segformer_resources/data/visa
+    category: pcb1
+    train_manifest: manifests/train.csv
+    val_manifest: manifests/val.csv
+    test_manifest: manifests/test.csv
+    split_meta: manifests/split_meta.json
+    train_ids_file: null
+    input_size: 512
+    resize_mode: letterbox
+    image_pad_rgb:
+    - 124
+    - 116
+    - 104
+    ignore_index: 255
+    horizontal_flip_p: 0.5
+    workers: 0
+  model:
+    pretrained_dir: E:/桌面/AI/segformer_resources/models/mit-b0
+    num_labels: 2
+    id2label:
+      0: background
+      1: defect
+    label2id:
+      background: 0
+      defect: 1
+    train_encoder: true
+  train:
+    epochs: 50
+    max_steps: null
+    batch_size: 2
+    gradient_accumulation_steps: 1
+    amp: true
+    learning_rate: 6.0e-05
+    min_learning_rate: 1.0e-06
+    weight_decay: 0.01
+    warmup_ratio: 0.05
+    grad_clip_norm: 1.0
+    validate_every_epochs: 1
+    early_stopping: false
+  loss:
+    ce_weight: 1.0
+    foreground_dice_weight: 0.5
+    dice_epsilon: 1.0e-06
+  eval:
+    batch_size: 1
+    threshold: 0.5
+    metric_space: original
+    postprocess: none
+    selection_metric: foreground_iou_global
+  logging:
+    tensorboard: true
+    log_every_micro_steps: 20
+    fixed_preview_manifest: manifests/val_preview_ids.txt

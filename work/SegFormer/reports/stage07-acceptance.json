@@ -1,0 +1,258 @@
+{
+  "schema": "segformer-lab/stage07-acceptance/1",
+  "created_at": "2026-11-01T10:54:22.2660635+08:00",
+  "git_base": "52720db247238195df3bab2128aaa53902b160fc",
+  "scope": "loss, original-resolution scoring, IEEE FP32 runtime, hand-computed fixtures and random-head GPU pipeline; no training",
+  "full_stage_verified": true,
+  "not_a_baseline": true,
+  "unit_tests": {
+    "passed": 186,
+    "elapsed_seconds": 10.629,
+    "exit_code": 0,
+    "log": "work/SegFormer/reports/stage07-unit-tests.txt"
+  },
+  "loss_metrics_check": {
+    "passed": 42,
+    "total": 42,
+    "elapsed_seconds": 18.99,
+    "exit_code": 0,
+    "report": "work/SegFormer/reports/loss_metrics_check.json",
+    "checks": {
+      "identity_manifests": true,
+      "identity_split_meta": true,
+      "identity_reviewed_groups": true,
+      "identity_preview_ids": true,
+      "identity_snapshot": true,
+      "identity_audit_data_verifier": true,
+      "identity_acceptance_anchors": true,
+      "formal_eval_batch_size_one": true,
+      "hand_2x2_confusion": true,
+      "hand_2x2_iou": true,
+      "hand_2x2_dice": true,
+      "hand_2x2_precision_recall": true,
+      "perfect_iou_dice": true,
+      "all_background_prediction": true,
+      "all_foreground_prediction": true,
+      "normal_false_positive": true,
+      "normal_empty_prediction_is_na": true,
+      "original_gt255_excluded": true,
+      "all_ignored_original_gt_rejected": true,
+      "global_is_not_mean_of_images": true,
+      "batch_layout_invariance": true,
+      "ce_hand_computed": true,
+      "dice_hand_computed": true,
+      "perfect_prediction_dice_zero": true,
+      "all_normal_dice_is_zero_and_backward": true,
+      "padding_does_not_affect_loss": true,
+      "padding_lowres_inner_rows": true,
+      "all_ignored_batch_rejected": true,
+      "batch_split_equivalence": true,
+      "restore_centroid_matches_geometry": true,
+      "restore_without_crop_is_wrong": true,
+      "single_pixel_scores_as_fn": true,
+      "shrunk_gt_would_hide_the_miss": true,
+      "probe_real_data_ran": true,
+      "probe_accumulation_independent_of_layout": true,
+      "probe_two_passes_float_close": true,
+      "probe_batch_one_repeat_float_close": true,
+      "probe_encoder_loaded": true,
+      "probe_model_unchanged": true,
+      "probe_eval_no_grad": true,
+      "probe_snapshot_unchanged": true,
+      "provenance_files_unchanged": true
+    }
+  },
+  "precision_policy": {
+    "formal_eval_batch_size": 1,
+    "evaluation_precision": {
+      "policy": "ieee_fp32",
+      "api": "torch2.10 allow_tf32 (legacy API only)",
+      "before": {
+        "cudnn_allow_tf32": true,
+        "matmul_allow_tf32": false
+      },
+      "autocast_enabled": false,
+      "scope": "evaluation context; restore backend flags and caller autocast on exit",
+      "training_amp_config_unchanged": true,
+      "bitwise_batch_invariance_guaranteed": false,
+      "effective": {
+        "cudnn_allow_tf32": false,
+        "matmul_allow_tf32": false
+      }
+    },
+    "threshold": 0.5,
+    "seed": 42
+  },
+  "evidence_provenance": {
+    "checked_files": 41,
+    "all_current_hashes_reverified": true,
+    "data_snapshot_and_acceptance_anchors_verified": true
+  },
+  "forward_diagnostics": {
+    "same_logits_layout_equal": true,
+    "batch_two_vs_one": {
+      "xor_pixels": 1,
+      "total_pixels": 9013680,
+      "max_abs_logit_diff": 3.725290298461914E-07,
+      "max_abs_prob_diff": 1.4901161193847656E-07,
+      "float_close": true
+    },
+    "batch_one_repeat": {
+      "xor_pixels": 0,
+      "max_abs_logit_diff": 0.0,
+      "max_abs_prob_diff": 0.0
+    },
+    "old_twelve_pixel_claim_retracted": true
+  },
+  "visual_review": {
+    "figure": "work/SegFormer/reports/figures/stage07-restore-asymmetric.png",
+    "actually_viewed": true,
+    "correct_centroid_error_px": 0.366,
+    "wrong_without_crop_error_px": 36.141,
+    "errors_are_fixture_specific": true
+  },
+  "runtime_note": "Conda launcher failed inside tool sandbox; original project runner verified and final checks run outside sandbox without package, environment or system modification",
+  "next_action": "Stages 08 and 09 may execute serially in one session, with stage 08 internal gates before stage 09 and independent runs/documents; no automatic stage 10/11",
+  "files": [
+    {
+      "path": "docs/research/2026-10-31-segformer-baseline-end-to-end-guide.md",
+      "size_bytes": 80766,
+      "sha256": "4a76c4b9aaf501f4ff3b425584d04392352f54ce7600127133d1d0b017b1cbe1"
+    },
+    {
+      "path": "work/SegFormer/configs/baseline.yaml",
+      "size_bytes": 2100,
+      "sha256": "6ae1db76e07699ac15a0e19bb7ae676f40e7037f7e527290af5fb410e84ef356"
+    },
+    {
+      "path": "work/SegFormer/docs/stages/07-loss-metrics-design-and-implementation.md",
+      "size_bytes": 16541,
+      "sha256": "df538cb5595f2e005d5feb9caf7ba1b912e025ba2746bcf936f138923876d988"
+    },
+    {
+      "path": "work/SegFormer/docs/stages/README.md",
+      "size_bytes": 8329,
+      "sha256": "915766cbf1243ed095fadab9712438c5ace72af367a447076211b9935190bf4f"
+    },
+    {
+      "path": "work/SegFormer/README.md",
+      "size_bytes": 24488,
+      "sha256": "fcc44273b88ddf2c74b66d3086c23ef2bdf3c6972e9dc58fe9a180531225e918"
+    },
+    {
+      "path": "work/SegFormer/reports/2026-11-01-stage07-acceptance.md",
+      "size_bytes": 8248,
+      "sha256": "0928ec7d78b19989440f839173276eb87a578fadb29dd677958cb41402087187"
+    },
+    {
+      "path": "work/SegFormer/reports/2026-11-01-stage08-09-execution-handoff.md",
+      "size_bytes": 18274,
+      "sha256": "0a0acea6b69c04e6b61cf588b4cb1ef79e3603b3ddf2805c3bc4a0a93acbd946"
+    },
+    {
+      "path": "work/SegFormer/reports/figures/stage07-restore-asymmetric.png",
+      "size_bytes": 41843,
+      "sha256": "9c6750f386b701a88cf6ad1ed53eb18a31e6f861e6ccc2d41070abb6ce8abfd9"
+    },
+    {
+      "path": "work/SegFormer/reports/loss_metrics_check.json",
+      "size_bytes": 115203,
+      "sha256": "e02455b3c2def3031f08044963f2d2c0b81f6ef34e1841878b1e7273b1bd4d55"
+    },
+    {
+      "path": "work/SegFormer/reports/loss_metrics_resolved_config.yaml",
+      "size_bytes": 2306,
+      "sha256": "a342ac3a6593f3b2b4a4da1f861cd7b22768b41c76ea35f999fe44302bbbf4d4"
+    },
+    {
+      "path": "work/SegFormer/reports/stage07_diagnostics/default_tf32_check.txt",
+      "size_bytes": 1720,
+      "sha256": "d313063f5ab4d775820a3ea1e51aaade6f506bbe8616086282590c59d0c09deb"
+    },
+    {
+      "path": "work/SegFormer/reports/stage07_diagnostics/default_tf32_loss_metrics_check.json",
+      "size_bytes": 113714,
+      "sha256": "30c1854189d2d53a207698106b8a33312a81318e31e5153fbd467aa052092e1c"
+    },
+    {
+      "path": "work/SegFormer/reports/stage07_diagnostics/ieee_check.txt",
+      "size_bytes": 1615,
+      "sha256": "aa3fe2e9f4820aa4a8abf4ddf4de498519c8e71e50dac4f7b19d909d59008d7d"
+    },
+    {
+      "path": "work/SegFormer/reports/stage07_diagnostics/ieee_loss_metrics_check.json",
+      "size_bytes": 113193,
+      "sha256": "73d7e7b24a3289c1274ed1c95f3bea663a337da8e480077c2bde58827f497e32"
+    },
+    {
+      "path": "work/SegFormer/reports/stage07_diagnostics/loss_metrics_resolved_config.yaml",
+      "size_bytes": 2280,
+      "sha256": "fc399e38e4b3ec209302c942b5a8a0acb57f5587e0a6ed6f23286d735658a1c0"
+    },
+    {
+      "path": "work/SegFormer/reports/stage07_diagnostics/README.md",
+      "size_bytes": 2020,
+      "sha256": "ae6ae04840df1de4120f6921560e83d0c1476375a7fb4bb9e33855ddf031cd34"
+    },
+    {
+      "path": "work/SegFormer/reports/stage07_pre_acceptance/loss_metrics_check.json",
+      "size_bytes": 31068,
+      "sha256": "10b59587f2d7e5fe9004c6de2176b7cc2ce1c7f05a4b35ff2554d583dafc68ae"
+    },
+    {
+      "path": "work/SegFormer/reports/stage07_pre_acceptance/README.md",
+      "size_bytes": 675,
+      "sha256": "9e495f5e87eac760ecfd882cf5da5b0307242c7fbd823ac2cd3983ae7c4e7908"
+    },
+    {
+      "path": "work/SegFormer/reports/stage07-loss-metrics-check.txt",
+      "size_bytes": 1656,
+      "sha256": "7a173443f0dde7054cd26d7b9f71a7e74de43c9b215b06c0d50822533999e6bd"
+    },
+    {
+      "path": "work/SegFormer/reports/stage07-unit-tests.txt",
+      "size_bytes": 29064,
+      "sha256": "a251e7821a2a95049b63d5337195b5d7a73b11460ef4a7f72dd48f1c4632982b"
+    },
+    {
+      "path": "work/SegFormer/segformer_lab/evaluation.py",
+      "size_bytes": 2674,
+      "sha256": "0c30890eb5252d603de73bc792a6ef348fa77c2cf91c5f1b98a7167492787e53"
+    },
+    {
+      "path": "work/SegFormer/segformer_lab/losses.py",
+      "size_bytes": 9939,
+      "sha256": "e7195880bd49a8f03a9fbb39e9069c1f071010c8f7f96ba2bfac80d3d0ba0327"
+    },
+    {
+      "path": "work/SegFormer/segformer_lab/metrics_check.py",
+      "size_bytes": 56542,
+      "sha256": "b85a592f561df2d4666d55426ce6536a6d0d39b30165dfb0ec88ad9ca8381f25"
+    },
+    {
+      "path": "work/SegFormer/segformer_lab/metrics.py",
+      "size_bytes": 17682,
+      "sha256": "7d9625fa29eb94221787c80f7bc47dc429958d588207692f2c0ea1a12ecb5787"
+    },
+    {
+      "path": "work/SegFormer/tests/test_evaluation.py",
+      "size_bytes": 2800,
+      "sha256": "ff8ebc27c43eeb42adbbfc0794d1e4e2d052615ea4fa9c5b2730f64a23b5fade"
+    },
+    {
+      "path": "work/SegFormer/tests/test_loss_metric_acceptance.py",
+      "size_bytes": 7705,
+      "sha256": "8d5e10c0d77ae5f7494acfe2ac83f049633c1a290f7844b9aeb794d62928c2aa"
+    },
+    {
+      "path": "work/SegFormer/tests/test_losses_metrics.py",
+      "size_bytes": 14812,
+      "sha256": "1acf0151bc301bbeb21752d11d28169bca4e7bde77928000ff6b468284bcd084"
+    },
+    {
+      "path": "work/SegFormer/tests/test_metrics_check.py",
+      "size_bytes": 9895,
+      "sha256": "6c0d0fc71604a511544f8f9be93d84e8be7eb74a4bbb6316b7a2fd6e8c73b395"
+    }
+  ]
+}

@@ -3,9 +3,10 @@
 本目录是 VisA PCB1 high-shot 协议下 SegFormer-B0 单基线实验的工程根目录：代码、配置、清单、阶段文档。
 环境、缓存、数据、模型与运行产物**不在本目录**，统一放在仓库外的 `E:\桌面\AI\segformer_resources`。
 
-- 当前进度：**步骤 1—5 已通过验收（数据为 v2 分组协议，模型快照固定 commit）；步骤 6（Dataset/同步增广/DataLoader）已通过验收**；未实现损失、指标与训练器。
+- 当前进度：**步骤 1—7 已通过独立验收**；阶段 07 完整检查 42/42、全项目回归 186 项通过。数据为 v2 分组协议，模型快照固定 commit；尚未进行本基线训练，没有训练后性能结果。
 - 验收记录：[阶段01—02验收与完善](./reports/2026-10-31-stage01-02-acceptance.md)、[第三阶段验收](./reports/2026-10-31-stage03-acceptance.md)、[第四阶段验收](./reports/2026-10-31-stage04-acceptance.md)、[第五阶段模型加载与核验](./reports/2026-10-31-stage05-model-loading-and-check.md)、[第六阶段验收](./reports/2026-10-31-stage06-acceptance.md)
 - 阶段索引：[docs/stages/README.md](./docs/stages/README.md)
+- 最新验收：[第七阶段](./reports/2026-11-01-stage07-acceptance.md)；下一轮可串行完成 [阶段 08—09](./reports/2026-11-01-stage08-09-execution-handoff.md) 后合并交付验收。
 - 主指南：`../../docs/research/2026-10-31-segformer-baseline-end-to-end-guide.md`
 - 环境隔离规范：`../../docs/research/2026-10-31-segformer-environment-isolation-and-stage-docs.md`
 
@@ -65,9 +66,13 @@ work\SegFormer\                       仓库内（Git）
 ├─ segformer_lab\model_check.py       人工张量前向/反向/一步更新/显存
 ├─ segformer_lab\data.py              Dataset、同步翻转、collate、DataLoader
 ├─ segformer_lab\dataset_check.py     39 项数据契约检查 + 五联图
+├─ segformer_lab\losses.py            CE + 0.5×逐图前景 Soft Dice
+├─ segformer_lab\metrics.py           原图恢复、int64 混淆量累计、全局指标
+├─ segformer_lab\evaluation.py        IEEE FP32 评价精度上下文
+├─ segformer_lab\metrics_check.py     42 项损失/指标检查 + 真实数据 probe
 ├─ configs\baseline.yaml              实验配置（512 letterbox、ignore 255、二类）
 ├─ manifests\                         官方 CSV 副本 + train/val/test 清单 + split_meta.json + reviewed_groups.json + val_preview_ids.txt
-├─ tests\                             环境、分组划分、几何/审计/冻结预览/模型/数据集的单元测试（134 项）
+├─ tests\                             环境/分组/几何/审计/模型/数据集/损失指标的单元测试（186 项）
 ├─ reports\environment.json           最新环境报告
 ├─ reports\data_audit\                审计摘要、逐图统计、重复与近重复候选
 ├─ reports\model_*.json               快照下载、加载与运行时核验记录
@@ -138,7 +143,8 @@ E:\桌面\AI\segformer_resources\       仓库外（不进 Git）
 | 04 数据审计与可视化 | 已通过验收（v2 分组） | [04-data-audit-design-and-implementation.md](./docs/stages/04-data-audit-design-and-implementation.md) |
 | 05 预训练权重与模型搭建 | 已验证 | [05-model-design-and-implementation.md](./docs/stages/05-model-design-and-implementation.md) |
 | 06 Dataset、同步增广与 DataLoader | 已验证 | [06-dataset-design-and-implementation.md](./docs/stages/06-dataset-design-and-implementation.md) |
-| 07—13 | 未开始 | 见 [阶段索引](./docs/stages/README.md) |
+| 07 损失与原图尺度指标 | 已验证（待独立验收） | [07-loss-metrics-design-and-implementation.md](./docs/stages/07-loss-metrics-design-and-implementation.md) |
+| 08—13 | 未开始 | 见 [阶段索引](./docs/stages/README.md) |
 
 ## 5.1 数据现状（2026-10-31）
 
@@ -184,6 +190,20 @@ E:\桌面\AI\segformer_resources\       仓库外（不进 Git）
 - 实测证据：强制翻转后标签 `fliplr` 完全相等、图像 uint8 差 0；归一化与 `(x/255−mean)/std` 差 **0.0**；`__getitem__` 输出在 CPU 且源码不含 CUDA/模型加载；真实 B2 eval+no_grad 前向得 `[2,2,128,128]`。
 - 证据与小图：`reports\dataset_check.json`（仓库）；`segformer_resources\runs\dataset_check\`（3张train+6张固定val五联图）。
 
+## 5.5 损失与指标定义（阶段 07）
+
+- 损失：`L = 1.0 × CE(ignore_index=255) + 0.5 × 逐图前景 Soft Dice`，入口 `segformer_lab\losses.py::segformer_loss`。
+  - CE 在**上采样到 512 并转 FP32 的 logits** 上算（bilinear, `align_corners=False`），padding 与当初绘制时同分辨率地被忽略。
+  - Dice 分子是逐像素交集 `2Σ(p·g)`；分母 `Σp + Σg + eps`，eps `1e-6`。
+  - 只对 `Σg > 0` 的图求平均；全正常 batch 返回 `prob.sum()*0.0`（可反向的精确 0）。
+  - 全忽略 batch 抛 `ValueError`；标签出现 0/1/255 之外的值同样拒绝。
+- 指标：`segformer_lab\metrics.py`，`int64` 累计 TP/FP/FN/TN 后只除一次；分母为 0 返回 `null` + 原因，不加平滑项。
+- 原图恢复（唯一入口 `restore_defect_probability`）：`128→512 双线性 → 按 geometry 裁 padding → 原 H/W 双线性 → softmax 取通道 1 → ≥0.5`。
+- GT 用 `original_mask`，**不**把 512 标签放大回去；默认拒绝 `flipped=True`，以遵守 baseline 评价无增强协议。
+- 输出：全局 IoU/Dice/precision/recall、正常图 FP 像素比与逐图面积比中位/P95、异常图宏平均、逐图分数（空 GT 且预测空写 NA）。
+- 评价：B1、FP32模型/输入，`eval.precision: ieee_fp32`，由统一上下文关闭 TF32/autocast。
+- 证据：`reports\loss_metrics_check.json`（42 项）、`reports\figures\stage07-restore-asymmetric.png`；随机头 probe 不算性能。
+
 ## 6. 常见操作
 
 ```powershell
@@ -215,6 +235,14 @@ Invoke-SegPython -m segformer_lab.model_check --config 'configs\baseline.yaml' `
 # Dataset 契约自检（39 项 + 9 张图 + JSON）
 Invoke-SegPython -m segformer_lab.dataset_check --config 'configs\baseline.yaml' `
   --report 'reports\dataset_check.json' --batch-size 2 --seed 42
+
+# 损失与指标自检（42 项；含 6 张固定 val 图的 GPU 前向）
+Invoke-SegPython -m segformer_lab.metrics_check --config 'configs\baseline.yaml' `
+  --report 'reports\loss_metrics_check.json'
+
+# 只跑夹具（仍核验快照身份；不执行 GPU 模型前向；不代表全阶段通过）
+Invoke-SegPython -m segformer_lab.metrics_check --skip-model --device cpu `
+  --report "$SegResource\audit\stage07-dryrun.json"
 
 # 数据准备：重新生成三份清单（已存在且内容相同的图不会被覆盖）
 Invoke-SegPython -m segformer_lab.prepare_data `
@@ -255,7 +283,7 @@ Invoke-SegPip list
 
 [第四阶段验收与完善](./reports/2026-10-31-stage04-acceptance.md)已记录用户五项检查、逐图结论、正常图疑点、v2 协议、真实损失统计和可复制的阶段 05 指令。完整数据审计 13 项通过，项目回归 62 项通过；数据、环境和批量预览不进 Git。当前尚无训练性能指标。
 
-以上是历史阶段依赖；当前阶段06已经验收，下一步为阶段07。继续使用v2清单与同一几何实现。
+以上是历史阶段依赖；当前进度见文首。继续使用v2清单与同一几何实现。
 
 ## 第五阶段验收与下一步
 
@@ -269,4 +297,12 @@ Invoke-SegPip list
 
 继续使用batch2、workers0、按(seed,epoch,index)翻转；原尺寸GT保持list，每轮调用set_epoch。仅数据诊断的exit0不代表全阶段通过，需scope=full_stage且full_stage_verified=true。当前代码/源文件/图哈希在dataset_check.json与stage06-acceptance.json，整批图留资源目录。
 
-下一步只做阶段07的精确定义损失、原图logits恢复与累计指标，用人工数组和几何夹具验证。完整Agent指令见第六阶段验收报告第7节；暂不编写训练器或20步smoke。
+以上为阶段 06 结束时的依赖；阶段 07 已完成，当前下一步见下节。
+
+## 第七阶段验收与下一步
+
+[第七阶段验收](./reports/2026-11-01-stage07-acceptance.md)记录四项损失约定、NA、原图恢复、FP16 CE 边界与数值精度修订。42 项检查和 186 项回归通过；旧“12 px”算法已撤回，现用逐像素 XOR、概率容差及 B1 重复前向验证。
+
+评价统一写 `eval.precision: ieee_fp32`，用 `segformer_lab.evaluation.evaluation_precision` 上下文禁用 TF32/autocast并在退出后恢复，配合 FP32 模型/输入与 B1。训练 AMP 独立保持。原图 GT 不缩小，正常空预测/零 precision 分母报告 NA；probe 不是基线成绩。
+
+下一轮按[08—09 执行交接](./reports/2026-11-01-stage08-09-execution-handoff.md)串行处理：先 20 次成功更新的 smoke 与新进程重载，通过门槛后另建过拟合实验。两个配置、run 和阶段文档独立，完成后一起验收；不自动进入 pilot 或正式训练。环境、数据、模型和批量输出仍留在仓库外。

@@ -55,6 +55,7 @@ loss:
 
 eval:
   batch_size: 1
+  precision: ieee_fp32        # evaluation: disable TF32 + autocast; train.amp stays independent
   threshold: 0.5
   metric_space: original
   postprocess: none
