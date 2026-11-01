@@ -25,7 +25,7 @@
 | 10 | 完整训练集短程试跑 | 已通过独立验收 | [10-pilot-design-and-implementation.md](./10-pilot-design-and-implementation.md) | `runs\pilot_001\summary.json`、`epochs.jsonl`、`updates.jsonl`、`reload_check.json`（仓库外）；`reports\stage10-summary.json`、`reports\stage10-unit-tests.txt`、`reports\figures\stage10-*.png`（仓库） |
 | 11 | 正式训练与可靠保存 | 正式训练及保存模型已验收；恢复数值复现未通过原容差 | [11-training-design-and-implementation.md](./11-training-design-and-implementation.md) | [验收](../../reports/2026-11-01-stage11-acceptance.md)；`reports/stage11-acceptance.json`、`stage11-reload-check.json`、`stage11-resume-fixture.json`、263项回归、`stage11_evidence`原件；权重留仓库外 |
 | 12 | 独立推理与原图评价 | 已完成，自检通过，待独立验收 | [12-evaluation-design-and-implementation.md](./12-evaluation-design-and-implementation.md) | `runs\pcb1_b0_v2_seed42_eval_001\{val,test}`（仓库外）；`reports\stage12-summary.json`、`reports\stage12_evidence\`（56 KB，含 132/442 行逐图统计 gzip）、`reports\stage12-unit-tests.txt`（273 项） |
-| 13 | 结果可视化、失败分析与实验卡 | 未开始 | — | — |
+| 13 | 结果可视化、失败分析与实验卡 | 已完成，自检通过，待独立验收 | [13-results-design-and-implementation.md](./13-results-design-and-implementation.md) | `reports\pcb1_b0_v2_seed42\{results.md, experiment-card.md, reproduction.md, curves.csv, failure-cases.csv, results-summary.json, figures\}`；`reports\stage13-unit-tests.txt`（277 项） |
 
 ## 当前状态一句话
 
@@ -117,11 +117,23 @@
 - 只读：评价前后训练 run 21 个文件 bytes/SHA 未变；全量浮点概率不落盘，只有 6 张预览在内存中比对。
 - 局限：40 张异常 test 图 macro 区间宽；面积加权使全局 IoU 偏高；无图像级判定规则；未测推理延迟；单 seed 单数据集。
 
+**第13阶段已完成，自检通过，待独立验收**：只从阶段 11 的 `epochs.jsonl` 与阶段 12 的评价目录生成 5 张图、`curves.csv`、`failure-cases.csv`、实验卡与复现说明；为 23 张展示图用同一冻结通道重算概率，二值与阶段 12 PNG **23/23 XOR = 0**。回归 277 项通过。失败分析给出 4 条"观察—证据—假设—下一项验证"，未实施任何新训练或调参。
+
+## 阶段 13 关键结论
+
+- 只读消费：曲线来自 `epochs.jsonl`（50 行），指标来自阶段 12 的 `metrics.json`/`per_image.json`，不重算混淆量、不重选 best。
+- 图表口径：概率统一 0—1 色标（不按图拉伸）；TP 绿 / FP 红 / FN 蓝且有图例；正常图画误报而不是空 GT；LR 同时给"实测末步"与"按 `scheduler_completed` 反算"两列（单测逐点对齐 `WarmupCosineLR`）。
+- 曲线要点：总损失 0.8030→0.0773；Dice 项 0.9836→0.1710（只对 48 张正 GT 图平均，0 不代表完美）；val IoU 前 3 轮为 0、第 4 轮跳起、best 0.7775@39；正常 FP 第 4 轮起非零但极小。
+- 失败案例：异常 TP=0 共 3 张（049/057/077），其中**预测完全为空 2 张（049/057）**——两个口径分开记；正常有任意 FP 32/402，误报集中在引脚端/板边。
+- 失败分析 4 条：A 细长金属结构系统性漏检（049/057，val 的 042/051 同类）；B 正常图误报集中在引脚端/板边；C 全局 0.683 vs macro 0.525；D 边界粗糙（003/008）。全部只给"下一项验证"，不实施。
+- 一致性：23 张重算二值与阶段 12 完全一致；图/CSV/实验卡/报告都指向 `pcb1_b0_v2_seed42` 与 best 39。
+- 局限：推理延迟**未测**；无图像级判定规则；失败原因为假设；test 已被查看，后续方法调整须披露。
+
 ## 下一步
 
-第12阶段已完成并自检通过（val 门禁 29/29、test 442 张一次性评价），**等待独立验收**。阶段 13 消费同一批结果生成图表、失败分析与实验卡：只分析并提出后续假设（切块、分辨率、采样、DINOv3 等候选对照），不实施新训练、不改阈值、不重选 best。
+阶段 12 与阶段 13 均已完成并自检通过，**等待用户独立验收**。验收通过后再决定后续方向：切块/高分辨率推理对照（验证细结构漏检）、采样或损失侧对照（针对正常图误报）、DINOv3 等新主干，均需新的授权与独立 run；本目录不再自动推进。
 
-test 已被查看，后续任何方法调整都必须披露"该 test 已参与开发"这一事实。跨机器需另行复制训练 best 与 processor 并核 SHA，Git 中没有权重；`workers>0` 未验证、恢复的跨进程数值限制保留在实验卡中。
+test 已被查看，后续任何基于这些失败模式的调整都必须披露"该 test 已参与开发"。跨机器需另行复制训练 best 与 processor 并核 SHA，Git 中没有权重；`workers>0` 未验证、恢复的跨进程数值限制、推理延迟未测保留在实验卡与阶段文档中。
 
 ## 维护约定
 

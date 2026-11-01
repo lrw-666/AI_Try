@@ -3,7 +3,7 @@
 本目录是 VisA PCB1 high-shot 协议下 SegFormer-B0 单基线实验的工程根目录：代码、配置、清单、阶段文档。
 环境、缓存、数据、模型与运行产物**不在本目录**，统一放在仓库外的 `E:\桌面\AI\segformer_resources`。
 
-- 当前进度：**步骤1—11已验收；第12阶段独立推理与最终test已完成，自检通过，待独立验收。**新进程从 run 内结构与 best 严格重建，完整 132 张 val 通过 **29/29 门禁**（混淆量/全局/macro/逐图/NA 全等，预览概率差 0、XOR 0），随后按冻结协议**一次性**评价 442 张 test：全局 IoU **0.6833**、Dice 0.8119、P 0.9008、R 0.7390，异常 40 张 macro IoU **0.5249**，正常 402 张 FP **3 689 px**（32/402 张有任意 FP）。**273 项回归通过**。test 与 val 分列，未用于选参；阶段 13 尚未开始。
+- 当前进度：**步骤1—11已验收；第12、13阶段均已完成，自检通过，待独立验收。**test 442 张（一次性）：全局 IoU **0.6833**、Dice 0.8119、P 0.9008、R 0.7390，异常 40 张 macro IoU **0.5249**，正常 402 张 FP **3 689 px**（32/402 张）。阶段 13 生成 5 张图、`curves.csv`、`failure-cases.csv`、实验卡与复现说明，23 张展示图重算概率与阶段 12 **XOR 全 0**。**277 项回归通过**。未做新训练/调参，未进入 DINOv3。
 - 验收记录：[阶段01—02验收与完善](./reports/2026-10-31-stage01-02-acceptance.md)、[第三阶段验收](./reports/2026-10-31-stage03-acceptance.md)、[第四阶段验收](./reports/2026-10-31-stage04-acceptance.md)、[第五阶段模型加载与核验](./reports/2026-10-31-stage05-model-loading-and-check.md)、[第六阶段验收](./reports/2026-10-31-stage06-acceptance.md)
 - 阶段索引：[docs/stages/README.md](./docs/stages/README.md)
 - 最新验收：[第十一阶段](./reports/2026-11-01-stage11-acceptance.md)、[机器摘要](./reports/stage11-acceptance.json)、[阶段学习文档](./docs/stages/11-training-design-and-implementation.md)。阶段 12 结果见[第十二阶段文档](./docs/stages/12-evaluation-design-and-implementation.md)、`reports/stage12-summary.json` 与 `reports/stage12_evidence/`，等待独立验收。
@@ -79,6 +79,7 @@ work\SegFormer\                       仓库内（Git）
 ├─ segformer_lab\inference.py         阶段 12 冻结run推理通道（加载/前向/流式/0-1 PNG）
 ├─ segformer_lab\evaluate.py          阶段 12 val门禁 + test 全量评价入口
 ├─ segformer_lab\predict.py           阶段 12 无GT单图预测入口
+├─ segformer_lab\summarize.py         阶段 13 图表/失败案例/实验卡生成器
 ├─ segformer_lab\full_check.py        完整保存状态、全量val与预览只读复验
 ├─ segformer_lab\resume_check.py      冻结恢复边界及真正last数值对照
 ├─ segformer_lab\subset.py            固定 8 图子集生成与校验
@@ -170,7 +171,7 @@ E:\桌面\AI\segformer_resources\       仓库外（不进 Git）
 | 10 完整训练集三轮 pilot | 已通过独立验收 | [10-pilot-design-and-implementation.md](./docs/stages/10-pilot-design-and-implementation.md) |
 | 11 50 轮正式单基线 | 正式训练与保存模型已验收；恢复数值复现未通过 | [11-training-design-and-implementation.md](./docs/stages/11-training-design-and-implementation.md) |
 | 12 独立推理与最终 test | 已完成，自检通过，待独立验收 | [12-evaluation-design-and-implementation.md](./docs/stages/12-evaluation-design-and-implementation.md) |
-| 13 可视化与实验卡 | 未开始 | 见 [阶段索引](./docs/stages/README.md) |
+| 13 可视化、失败分析与实验卡 | 已完成，自检通过，待独立验收 | [13-results-design-and-implementation.md](./docs/stages/13-results-design-and-implementation.md) |
 
 ## 5.1 数据现状（2026-10-31）
 
@@ -285,6 +286,14 @@ E:\桌面\AI\segformer_resources\       仓库外（不进 Git）
 - 只读：评价前后训练 run **21 个文件 bytes/SHA 未变**；耗时 val 19.84 s、test 60.89 s（PNG 写盘 1.83/6.13 s）。
 - 证据：`reports/stage12-summary.json`（15 KB）、`reports/stage12_evidence/`（56 KB，含 132/442 行逐图 CSV 的 gzip）、`reports/stage12-unit-tests.txt`（273 项）。
 
+## 5.11 可视化、失败分析与实验卡（阶段 13）
+
+- 入口 `segformer_lab/summarize.py`：只读 `run/epochs.jsonl` 与阶段 12 的评价目录，**不训练、不重选 best、不重算指标**；为展示图用同一冻结通道重算概率并与阶段 12 的 0/1 PNG 校验（23/23 XOR 0）。
+- 产出（`reports/pcb1_b0_v2_seed42/`）：`figures/training-curves.png`（loss / LR / val IoU+macro / 正常 FP，标 best 39）、`anomaly-fixed-6.png`（5 面板：原图/GT/概率/二值/TP-FP-FN）、`anomaly-worst-cases.png`、`normal-fixed-6.png`、`normal-worst-fp.png`；`curves.csv`（50 行，含"实测末步 LR"与"按 scheduler_completed 反算 LR"两列）、`failure-cases.csv`（23 行含入选理由与重算 XOR）、`results.md`、`experiment-card.md`、`reproduction.md`、`results-summary.json`。
+- 口径：概率统一 0—1 色标（不按图拉伸）；TP 绿 `#00A666` / FP 红 `#E24B4A` / FN 蓝 `#378ADD` 且有图例；正常图画误报而不是空 GT；Dice 项只对 48 张正 GT 图平均，0 不等于"分割完美"。
+- 失败事实：异常 **TP=0 共 3 张**（049/057/077），其中**预测完全为空 2 张**（049/057）；正常有任意 FP **32/402**，集中在引脚端与板边。全局 0.6833 与 macro 0.5249 的差值是"小目标弱于大目标"的直接读数。
+- 失败分析 4 条（观察—证据—假设—下一项验证）：细长金属结构系统性漏检、正常图引脚/边误报、全局 vs macro 差距、边界粗糙。全部只提出后续对照（切块、高分辨率、采样/损失、DINOv3），**未在本轮实施**。
+
 ## 6. 常见操作
 
 ```powershell
@@ -374,6 +383,12 @@ Invoke-SegPython -u -m segformer_lab.predict --config 'configs\baseline.yaml' `
   --image "$SegResource\data\visa\pcb1\Data\Images\Anomaly\045.JPG" `
   --out "$SegResource\runs\pcb1_b0_v2_seed42_eval_001\single_val_045_v2"
 
+# 阶段 13：从既有 run 与评价目录生成曲线/样本图/失败表/实验卡（不训练）
+Invoke-SegPython -u -m segformer_lab.summarize --config 'configs\baseline.yaml' `
+  --run "$SegResource\runs\pcb1_b0_v2_seed42" `
+  --eval-run "$SegResource\runs\pcb1_b0_v2_seed42_eval_001" `
+  --out 'reports\pcb1_b0_v2_seed42'
+
 # 数据准备：重新生成三份清单（已存在且内容相同的图不会被覆盖）
 Invoke-SegPython -m segformer_lab.prepare_data `
   --archive '..\..\docs\dataset\VisA\VisA_20220922.tar' `
@@ -450,6 +465,16 @@ Invoke-SegPip list
 验收补强了NaN/shape/XOR、完整保存状态和起止数据身份门槛，修正了配置构造器原地修改、NA解释及产物数。原模型来源未单独冻结开始时snapshot哈希、增强图无逐样本视觉记录等局限如实保留。小目标漏检仍在，不以全局0.608作为论文成绩。
 
 以上为第十阶段验收时的历史安排，正式训练现已完成；当前下一步见下节。
+
+## 第十三阶段执行结果与下一步
+
+阶段 13 只做"把结果变成可读材料"：`summarize.py` 读 50 轮日志与阶段 12 的评价目录，生成训练曲线（loss / LR / val IoU+macro / 正常 FP）、固定 6 正常 + 6 异常样本表、最差 IoU/recall 与正常 FP 最多的样本表，以及 `curves.csv`、`failure-cases.csv`、`results.md`、`experiment-card.md`、`reproduction.md`。
+
+为了画概率图，对 23 张入选图用同一冻结通道重算概率，并与阶段 12 的 0/1 PNG 逐张比对（**23/23 XOR = 0**）；这些重算**只用于显示**，不改变任何已报指标。失败分析给出 4 条"观察—证据—假设—下一项验证"：细长金属结构系统性漏检（049/057，val 的 042/051 同类）、正常图误报集中在引脚端与板边（32/402）、全局 0.6833 与 macro 0.5249 的差距、边界粗糙（003/008）。本轮**不实施**任何新训练、不调阈值、不换后处理。
+
+`reports/pcb1_b0_v2_seed42/experiment-card.md` 里 val 与 test 分列，推理延迟如实写"未测"；`reproduction.md` 说明 Git 中没有权重，换机必须单独搬 `best.pt`/`model_config.json`/`processor/` 并核 SHA，重下 `mit-b0` 不能替代 best。
+
+下一步：本任务到此为止，等待用户对阶段 12、13 的独立验收。验收后再决定切块/高分辨率、采样或损失侧对照、DINOv3 等方向；test 已被查看，任何后续调整都须披露这一点。
 
 ## 第十二阶段执行结果与下一步
 
