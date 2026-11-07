@@ -318,6 +318,8 @@ RGB 用 Pillow BILINEAR，标签用 NEAREST。processor 关闭重复 resize/redu
 
 ### 7.1 当前优先材料
 
+PDF原文已汇总到[261107编号阅读目录](../paper/261107/README.md)，子文件夹按建议顺序编号。1—5优先阅读，6—10围绕两项方案定向阅读，11—14按需补充；不要求开题前逐字读完全部14篇。已有原文复用到新目录，261029原文与译文仍保留。
+
 | 材料 | 先看哪里/带什么问题 | 应留下的产出 |
 | --- | --- | --- |
 | [VisA/SPD 原文](https://arxiv.org/html/2207.14315v1)、[本地译文](<../paper/261029/1. VisA/full_translation_zh.md>)、[数据卡](../dataset/VisA/dataset-card.md) | 引言、§4协议、§5监督实验；为何局部变化与预训练迁移相关 | 一页对象/监督/划分说明 |
