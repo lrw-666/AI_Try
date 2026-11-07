@@ -12,6 +12,8 @@ The user later enrolled in a part-time Computer Science master's program. The ac
 
 ## Current Research Direction
 
+The current research and learning entry is `docs/research/thesis-research-and-study-guide-zh.md` (updated 2026-11-07). Use it for the latest thesis scope, two-work design draft, learning priorities, and legacy-document migration. The dated 2026-11-07 literature and defense-Q&A files are detail appendices. Older thesis planning reports have been consolidated and removed at the user's request. Preserve all SegFormer experiment artifacts and its three dedicated guides; their historical planning references do not override the current main guide.
+
 As of 2026-09-15, the active graduate research direction is industrial machine vision inspection. The practical goal is to detect defects in components and manufactured products through visual methods.
 
 Future research and learning work should begin with image-processing and computer-vision foundations, then progress through classical inspection algorithms, deep-learning baselines, industrial datasets, controlled evaluation, and deployment.

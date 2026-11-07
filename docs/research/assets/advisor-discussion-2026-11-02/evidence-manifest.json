@@ -1,0 +1,178 @@
+{
+  "description": "Saved baseline evidence only. Display crops/overlays do not alter evaluation.",
+  "source_run": "pcb1_b0_v2_seed42",
+  "source_evaluation": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42_eval_acceptance_20261101\\test",
+  "samples": [
+    {
+      "image_id": "pcb1/Data/Images/Normal/0001.JPG",
+      "rgb_source": "E:\\桌面\\AI\\segformer_resources\\data\\visa\\pcb1\\Data\\Images\\Normal\\0001.JPG",
+      "rgb_sha256": "c71fc38d4d03498c0827c114e21157b5e71d3da25b549a693ac23a961db68202",
+      "prediction_source": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42_eval_acceptance_20261101\\test\\predictions\\pcb1\\Data\\Images\\Normal\\0001.png",
+      "prediction_sha256": "299d48ca7813d3845732dddc30247193685645ad03475b3fb3e37994720311fe",
+      "mask_source": "all-zero normal mask",
+      "mask_sha256": null,
+      "display_crop_xyxy": null,
+      "verified_counts": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0
+      },
+      "archived_per_image": {
+        "image_id": "pcb1/Data/Images/Normal/0001.JPG",
+        "label": "normal",
+        "split": "test",
+        "height": "1070",
+        "width": "1404",
+        "total_pixels": "1502280",
+        "gt_foreground_pixels": "0",
+        "predicted_foreground_pixels": "0",
+        "predicted_foreground_ratio": "0.0",
+        "tp": "0",
+        "fp": "0",
+        "fn": "0",
+        "tn": "1502280",
+        "iou": "",
+        "dice": "",
+        "precision": "",
+        "recall": "",
+        "iou_na": "GT and prediction are both empty",
+        "dice_na": "GT and prediction are both empty",
+        "precision_na": "prediction contains no foreground pixel",
+        "recall_na": "ground truth contains no foreground pixel",
+        "prediction_png": "pcb1/Data/Images/Normal/0001.png"
+      }
+    },
+    {
+      "image_id": "pcb1/Data/Images/Anomaly/049.JPG",
+      "rgb_source": "E:\\桌面\\AI\\segformer_resources\\data\\visa\\pcb1\\Data\\Images\\Anomaly\\049.JPG",
+      "rgb_sha256": "79f3e5e9743e2d7f8fc5b52d1e4498e0c733f6e8a718febce9a13fbfc1339138",
+      "prediction_source": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42_eval_acceptance_20261101\\test\\predictions\\pcb1\\Data\\Images\\Anomaly\\049.png",
+      "prediction_sha256": "299d48ca7813d3845732dddc30247193685645ad03475b3fb3e37994720311fe",
+      "mask_source": "E:\\桌面\\AI\\segformer_resources\\data\\visa\\pcb1\\Data\\Masks\\Anomaly\\049.png",
+      "mask_sha256": "75aee1c3f54cecc1582d4ce08776b169d1be32ae0e312785996372b29d3ed7ff",
+      "display_crop_xyxy": [
+        490,
+        600,
+        810,
+        900
+      ],
+      "verified_counts": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 10459
+      },
+      "archived_per_image": {
+        "image_id": "pcb1/Data/Images/Anomaly/049.JPG",
+        "label": "anomaly",
+        "split": "test",
+        "height": "1070",
+        "width": "1404",
+        "total_pixels": "1502280",
+        "gt_foreground_pixels": "10459",
+        "predicted_foreground_pixels": "0",
+        "predicted_foreground_ratio": "0.0",
+        "tp": "0",
+        "fp": "0",
+        "fn": "10459",
+        "tn": "1491821",
+        "iou": "0.0",
+        "dice": "0.0",
+        "precision": "",
+        "recall": "0.0",
+        "iou_na": "",
+        "dice_na": "",
+        "precision_na": "prediction contains no foreground pixel",
+        "recall_na": "",
+        "prediction_png": "pcb1/Data/Images/Anomaly/049.png"
+      }
+    },
+    {
+      "image_id": "pcb1/Data/Images/Anomaly/003.JPG",
+      "rgb_source": "E:\\桌面\\AI\\segformer_resources\\data\\visa\\pcb1\\Data\\Images\\Anomaly\\003.JPG",
+      "rgb_sha256": "a5cab41d212f58f5e8265a60273c6b52667299d0c97bdba66b29e9298296cb84",
+      "prediction_source": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42_eval_acceptance_20261101\\test\\predictions\\pcb1\\Data\\Images\\Anomaly\\003.png",
+      "prediction_sha256": "5c1cdde25154a339450579e6fa1e7980c62b6cd62dcb814f6c9fc481797e1d20",
+      "mask_source": "E:\\桌面\\AI\\segformer_resources\\data\\visa\\pcb1\\Data\\Masks\\Anomaly\\003.png",
+      "mask_sha256": "ee5fc9bf317c2eb76eb0ea4453bda737798f69f93a8594f81bbf673fd71e3fdf",
+      "display_crop_xyxy": [
+        672,
+        627,
+        1022,
+        957
+      ],
+      "verified_counts": {
+        "tp": 1457,
+        "fp": 142,
+        "fn": 161
+      },
+      "archived_per_image": {
+        "image_id": "pcb1/Data/Images/Anomaly/003.JPG",
+        "label": "anomaly",
+        "split": "test",
+        "height": "1070",
+        "width": "1404",
+        "total_pixels": "1502280",
+        "gt_foreground_pixels": "1618",
+        "predicted_foreground_pixels": "1599",
+        "predicted_foreground_ratio": "0.0010643821",
+        "tp": "1457",
+        "fp": "142",
+        "fn": "161",
+        "tn": "1500520",
+        "iou": "0.8278409091",
+        "dice": "0.9058128691",
+        "precision": "0.9111944966",
+        "recall": "0.9004944376",
+        "iou_na": "",
+        "dice_na": "",
+        "precision_na": "",
+        "recall_na": "",
+        "prediction_png": "pcb1/Data/Images/Anomaly/003.png"
+      }
+    },
+    {
+      "image_id": "pcb1/Data/Images/Normal/0333.JPG",
+      "rgb_source": "E:\\桌面\\AI\\segformer_resources\\data\\visa\\pcb1\\Data\\Images\\Normal\\0333.JPG",
+      "rgb_sha256": "ccdcba7ba28b98819931140a0170cdb51adef8a6f43123d20f3136b1fab18714",
+      "prediction_source": "E:\\桌面\\AI\\segformer_resources\\runs\\pcb1_b0_v2_seed42_eval_acceptance_20261101\\test\\predictions\\pcb1\\Data\\Images\\Normal\\0333.png",
+      "prediction_sha256": "07a5001b46c1d23fbc4ac3c82bb4cd8eef056b49a20d13e7e71c173c35c02932",
+      "mask_source": "all-zero normal mask",
+      "mask_sha256": null,
+      "display_crop_xyxy": [
+        345,
+        563,
+        745,
+        893
+      ],
+      "verified_counts": {
+        "tp": 0,
+        "fp": 575,
+        "fn": 0
+      },
+      "archived_per_image": {
+        "image_id": "pcb1/Data/Images/Normal/0333.JPG",
+        "label": "normal",
+        "split": "test",
+        "height": "1070",
+        "width": "1404",
+        "total_pixels": "1502280",
+        "gt_foreground_pixels": "0",
+        "predicted_foreground_pixels": "575",
+        "predicted_foreground_ratio": "0.0003827516",
+        "tp": "0",
+        "fp": "575",
+        "fn": "0",
+        "tn": "1501705",
+        "iou": "0.0",
+        "dice": "0.0",
+        "precision": "0.0",
+        "recall": "",
+        "iou_na": "",
+        "dice_na": "",
+        "precision_na": "",
+        "recall_na": "ground truth contains no foreground pixel",
+        "prediction_png": "pcb1/Data/Images/Normal/0333.png"
+      }
+    }
+  ]
+}
