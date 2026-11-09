@@ -1,6 +1,6 @@
 # AnomalyDINO：利用 DINOv2 增强基于图像块的少样本异常检测
 
-**原文：**[AnomalyDINO: Boosting Patch-Based Few-Shot Anomaly Detection with DINOv2](<AnomalyDINO- Boosting Patch-Based Few-Shot Anomaly Detection with DINOv2.pdf>)。本译文对应本目录 11 页 WACV 2025 正式论文集开放获取 PDF，原刊页码 1319—1329；除开放获取水印外，与接收版本相同，最终论文集版本见 IEEE Xplore。翻译日期：2026-11-07。
+**原文：**[AnomalyDINO: Boosting Patch-Based Few-Shot Anomaly Detection with DINOv2](<15-AnomalyDINO-2025.pdf>)。本译文对应本目录 11 页 WACV 2025 正式论文集开放获取 PDF，原刊页码 1319—1329；除开放获取水印外，与接收版本相同，最终论文集版本见 IEEE Xplore。翻译日期：2026-11-07。
 
 **作者：**Simon Damm¹、Mike Laszkiewicz¹、Johannes Lederer²、Asja Fischer¹。
 

@@ -2,6 +2,8 @@
 
 制作日期：2026-11-07。
 
+> **2026-11-09现行入口说明：**下方逐页稿保留为11月7日PPT工件快照；本轮未修改PPTX及演讲者备注。现行研究口径以[研究与学习主文档](../../research/thesis-research-and-study-guide-zh.md)为准：保留PCB1 high-shot真实mask监督与已归档验收的SegFormer基线，DINO实验尚未开展；两项目标是PCB任务适配与评分绑定的判别证据，局部细节和正常参照均为候选机制。位置邻域约束不自动等于结构语义，后续应核查DINOSaur等近邻并在设计冻结后安排独立PCB类验证。下文的方案细节和逐页稿不作为11月9日的新执行指令。
+
 - [可编辑PPTX](pcb-thesis-proposal-draft.pptx)
 - [全稿预览](preview.webp)
 - [研究与学习主文档](../../research/thesis-research-and-study-guide-zh.md)

@@ -1,6 +1,6 @@
 # 面向复杂背景表面缺陷分割的变化感知孪生网络
 
-**原文：**[Siamese network with change awareness for surface defect segmentation in complex backgrounds](<Siamese network with change awareness for surface defect segmentation in complex backgrounds.pdf>)。本译文对应本目录的 19 页出版社 PDF，*Scientific Reports* 15，11814（2025），DOI：10.1038/s41598-025-94733-4。翻译日期：2026-11-07。
+**原文：**[Siamese network with change awareness for surface defect segmentation in complex backgrounds](<11-CADNet-Reference-Defect-Segmentation-2025.pdf>)。本译文对应本目录的 19 页出版社 PDF，*Scientific Reports* 15，11814（2025），DOI：10.1038/s41598-025-94733-4。翻译日期：2026-11-07。
 
 **作者：**Biyuan Liu¹、Sijie Luo¹、Huiyao Zhan²、Yicheng Zhou³、Zhou Huang³˒*、Huaixin Chen¹˒*。
 

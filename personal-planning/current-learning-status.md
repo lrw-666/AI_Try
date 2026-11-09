@@ -2,6 +2,8 @@
 
 Date: 2026-09-15
 
+**Status update: 2026-11-09.** The September twelve-week plan below is a historical planning snapshot. Current thesis scope and study priorities are maintained in the [research and study guide](../docs/research/thesis-research-and-study-guide-zh.md). VisA PCB1 high-shot segmentation uses real defect masks; the SegFormer baseline has archived acceptance evidence, while DINO experiments remain planned. The two goals are PCB task adaptation and evidence tied to the actual score, with specific mechanisms still candidates. Other exercise milestones below have not been re-audited.
+
 ## Current State
 
 I am beginning a new research route in industrial machine vision inspection after discussion with my advisor. I am not a complete programming beginner, but I need to rebuild my computer-vision knowledge from practical foundations.
@@ -23,7 +25,7 @@ My previous Video Agent and long-video research plans have been archived. The cu
 - Limited understanding of industrial lighting, optics, cameras, calibration, and measurement.
 - Little experience building and debugging a complete defect-detection pipeline.
 - Limited dataset, annotation, training, evaluation, and failure-analysis practice.
-- No current baseline that can be used to discuss a narrow thesis question with the advisor.
+- At the September planning date, no baseline was available for the advisor discussion. By 2026-11-09, the SegFormer PCB1 baseline has archived acceptance evidence; the current guide defines its limits and the next research questions.
 
 ## Time Budget
 
@@ -103,7 +105,7 @@ The cycle should end with one classical inspection baseline, one public-dataset 
 
 ## Progress Tracking
 
-| Period | Planned Evidence | Current Status | Completion Evidence |
+| Period | Planned Evidence | Status recorded in September 2026 | Completion Evidence |
 |---|---|---|---|
 | Weeks 1-4 | Eight OpenCV exercises and operation notes | Not started | Code, images, and notes |
 | Weeks 5-8 | Classical inspection baseline | Not started | Dataset, pipeline, decisions, and error table |

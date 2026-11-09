@@ -1,6 +1,6 @@
 # S³DNet：面向少样本带钢表面缺陷分割的支持驱动空间—语义解耦
 
-**原文：**[S³DNet: Support-Driven Spatial–Semantic Decoupling for Few-Shot Strip-Steel Surface Defect Segmentation](<S³DNet- Support-Driven Spatial-Semantic Decoupling for Few-Shot Strip-Steel Surface Defect Segmentation.pdf>)。本译文对应本目录的 26 页出版社 PDF，*Mathematics* 2026，14(20)，3730，DOI：10.3390/math14203730。翻译日期：2026-11-07。
+**原文：**[S³DNet: Support-Driven Spatial–Semantic Decoupling for Few-Shot Strip-Steel Surface Defect Segmentation](<07-S3DNet-Few-Shot-Strip-Steel-Segmentation-2026.pdf>)。本译文对应本目录的 26 页出版社 PDF，*Mathematics* 2026，14(20)，3730，DOI：10.3390/math14203730。翻译日期：2026-11-07。
 
 **作者：**Ju Zhao¹、Jingguang Yang¹、Fengling Lei¹、Baitong Wang¹、Zhiguo Li²˒*、Jiacheng Huang³˒*、Xiaofei Zhou³。
 

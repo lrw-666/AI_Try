@@ -1,6 +1,6 @@
 # 迈向工业异常检测的完全召回
 
-**原文：**[Towards Total Recall in Industrial Anomaly Detection](<Towards Total Recall in Industrial Anomaly Detection.pdf>)。本译文对应本目录 11 页 CVPR 2022 正式论文集 PDF，原刊页码 14318—14328。翻译日期：2026-11-07。
+**原文：**[Towards Total Recall in Industrial Anomaly Detection](<09-PatchCore-2022.pdf>)。本译文对应本目录 11 页 CVPR 2022 正式论文集 PDF，原刊页码 14318—14328。翻译日期：2026-11-07。
 
 **作者：**Karsten Roth¹˒*、Latha Pemula²、Joaquin Zepeda²、Bernhard Schölkopf²、Thomas Brox²、Peter Gehler²。
 

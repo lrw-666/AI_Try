@@ -2,6 +2,8 @@
 
 Date: 2026-09-15
 
+**Current thesis entry: 2026-11-09.** Phase dates and deliverables below are the original September learning roadmap. Current progress and research priorities follow the [research and study guide](../docs/research/thesis-research-and-study-guide-zh.md): the real-mask PCB1 high-shot SegFormer baseline has archived acceptance evidence, while DINO work remains planned. PCB task adaptation and score-linked evidence are the two research goals; mechanisms remain candidates. The older phase dates and “one primary method contribution” wording do not override that current two-goal plan.
+
 ## Goal
 
 By graduation in 2028, I should be able to design, implement, evaluate, and explain an industrial visual inspection solution. The expected portfolio is a connected body of work rather than isolated tutorials:

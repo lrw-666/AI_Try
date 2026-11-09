@@ -1,0 +1,146 @@
+{
+  "verified_on": "2026-11-09",
+  "pdf_count": 19,
+  "total_pages": 388,
+  "original_pdf_hashes_preserved": 14,
+  "translation_bodies_preserved": 10,
+  "protected_experiment_text_artifacts_unchanged": 282,
+  "markdown_files_checked": 27,
+  "local_file_links_checked": 280,
+  "missing_current_file_links": [],
+  "pdfs": [
+    {
+      "order": 1,
+      "pages": 25,
+      "sha256": "8924ebdbf1d32373a9f221395a614ff912922b01d201aba91ad216c0e641c9b3",
+      "path": "01. VisA-SPD/01-VisA-SPD-2022.pdf",
+      "status": "pass"
+    },
+    {
+      "order": 2,
+      "pages": 18,
+      "sha256": "6f8867c9600277fe39e046ad1ef9050f0c7087a24736284b85710265821c1027",
+      "path": "02. SegFormer/02-SegFormer-2021.pdf",
+      "status": "pass"
+    },
+    {
+      "order": 3,
+      "pages": 17,
+      "sha256": "09abd4800d05573a1940adb9f2fff40578b20eaf77c6e36d787d657a005ee544",
+      "path": "03. Supervised-Surface-Defect-Segmentation/03-Tabernik-Supervised-Surface-Defect-Segmentation-2019.pdf",
+      "status": "pass"
+    },
+    {
+      "order": 4,
+      "pages": 67,
+      "sha256": "c68dc50b1f73e1641a592f777984fc360759e84b7fe65ac4f6e1377927f20b2e",
+      "path": "04. DINOv3/04-DINOv3-2025.pdf",
+      "status": "pass"
+    },
+    {
+      "order": 5,
+      "pages": 9,
+      "sha256": "f928365f9d8b34f42e1f2f5dbcc0082f7381fd6dd6ee1bee47883bc639d99ae0",
+      "path": "05. Industrial-Transfer-Learning/05-DINOv3-vs-ImageNet-Industrial-Transfer-2026.pdf",
+      "status": "pass"
+    },
+    {
+      "order": 6,
+      "pages": 20,
+      "sha256": "dcee54c489edbd3d91cd6da9a359ad41376853a1330579ac2ca3fb135bf67517",
+      "path": "06. SuperSimpleNet/06-SuperSimpleNet-2024.pdf",
+      "status": "pass"
+    },
+    {
+      "order": 7,
+      "pages": 26,
+      "sha256": "1759974e2e69f52ddfefb7ad5ce8cf66bec8ffe4bedb42abcc7211e1849ee7ec",
+      "path": "07. S3DNet/07-S3DNet-Few-Shot-Strip-Steel-Segmentation-2026.pdf",
+      "status": "pass"
+    },
+    {
+      "order": 8,
+      "pages": 25,
+      "sha256": "826ddff92daf3e450a4f3afd708391479cafb87ed1b05d9c70b2722919474f7b",
+      "path": "08. CM-UNetv2/08-CM-UNetv2-PCB-Defect-Segmentation-2025.pdf",
+      "status": "pass"
+    },
+    {
+      "order": 9,
+      "pages": 11,
+      "sha256": "f2850cb48018aaab6a5d1f6a73bd9af45b75f8de65f9686d53fb1652d945e2fd",
+      "path": "09. PatchCore/09-PatchCore-2022.pdf",
+      "status": "pass"
+    },
+    {
+      "order": 10,
+      "pages": 20,
+      "sha256": "92b581523a2cf925c585c058876f9f7f4b8c1d2d64807cbcf39e8db12b20f39c",
+      "path": "10. DINOSaur/10-DINOSaur-Continual-Anomaly-Detection-2026.pdf",
+      "status": "pass"
+    },
+    {
+      "order": 11,
+      "pages": 19,
+      "sha256": "88eb25e29233779d21744061bb2c84217daa8dda8653d873b0c67d0fe309a86e",
+      "path": "11. CADNet/11-CADNet-Reference-Defect-Segmentation-2025.pdf",
+      "status": "pass"
+    },
+    {
+      "order": 12,
+      "pages": 14,
+      "sha256": "352f784905dbf2f9979c0f460452b62dcb6398b24eb59cb1f3f78e8db567959d",
+      "path": "12. Clever-Hans-Effects/12-Clever-Hans-Effects-2025.pdf",
+      "status": "pass"
+    },
+    {
+      "order": 13,
+      "pages": 11,
+      "sha256": "83b8f56da10e283929fa70548cff8caa4de2a468c1685c2111c9799cc66c9fc6",
+      "path": "13. Sanity-Checks/13-Sanity-Checks-for-Saliency-Maps-2018.pdf",
+      "status": "pass"
+    },
+    {
+      "order": 14,
+      "pages": 27,
+      "sha256": "b12955fdc1ff91ebc13f75ea5464f6f328e5a3a3faa3db7ac96a2a71a556678b",
+      "path": "14. CONVAD/14-CONVAD-2025-preprint-v3-2026.pdf",
+      "status": "pass"
+    },
+    {
+      "order": 15,
+      "pages": 11,
+      "sha256": "ff46a3cfa5cdc3bb684ac37d72fe546f3c6edd7b02f3dcfe12de30a5b7d89977",
+      "path": "15. AnomalyDINO/15-AnomalyDINO-2025.pdf",
+      "status": "pass"
+    },
+    {
+      "order": 16,
+      "pages": 11,
+      "sha256": "860046dad4da3e3d4d4f2a940d2422332891b4ab9653a51793c22c4d35a4d16f",
+      "path": "16. Dinomaly/16-Dinomaly-2025.pdf",
+      "status": "pass"
+    },
+    {
+      "order": 17,
+      "pages": 21,
+      "sha256": "bf9df9d7f71e2775647952b36cdea2431f48e33ec20aa254fca82029791479a9",
+      "path": "17. MVTec-AD2/17-MVTec-AD2-Advanced-Anomaly-Detection-2025.pdf",
+      "status": "pass"
+    },
+    {
+      "order": 18,
+      "pages": 14,
+      "sha256": "8cca384bf2b5e1b50feef449407b465486fb1c52f6e164acbdd7989af35ef70f",
+      "path": "18. VAND4-Application-Benchmark/18-VAND4-Application-Driven-Benchmark-2026.pdf",
+      "status": "pass"
+    },
+    {
+      "order": 19,
+      "pages": 22,
+      "sha256": "8ce7b83971a14508ca711a27c875c9b6914c4f6767cf3150fb1ca6c07aa056d6",
+      "path": "19. ViT/19-ViT-2020.pdf",
+      "status": "pass"
+    }
+  ]
+}

@@ -2,6 +2,8 @@
 
 Date: 2026-09-15
 
+**Current thesis entry: 2026-11-09.** The broad options below preserve the September direction-setting context. The [research and study guide](../docs/research/thesis-research-and-study-guide-zh.md) now defines the working PCB scope: high-shot supervised segmentation with real masks, an accepted SegFormer baseline, and DINO experiments still planned. The two goals are PCB task adaptation and evidence tied to the actual score; local-detail and normal-reference mechanisms remain candidates. Use that guide for current decisions and validation boundaries.
+
 ## Decision Context
 
 The active graduate research direction is industrial machine vision inspection. This decision follows discussion with my advisor and replaces the earlier Video Agent and long-video retrieval route.

@@ -1,6 +1,6 @@
 # 重新思考工业检测中的迁移学习：跨RGB与X射线任务比较DINOv3和ImageNet预训练
 
-**原文：**[Rethinking Transfer Learning for Industrial Inspection: DINOv3 vs. ImageNet Pretraining Across RGB and X-ray Tasks](<Rethinking Transfer Learning for Industrial Inspection- DINOv3 vs. ImageNet Pretraining Across RGB and X-ray Tasks.pdf>)。对应本目录9页PDF，arXiv:2605.23472v1，2026年5月22日。翻译日期：2026-11-07。
+**原文：**[Rethinking Transfer Learning for Industrial Inspection: DINOv3 vs. ImageNet Pretraining Across RGB and X-ray Tasks](<05-DINOv3-vs-ImageNet-Industrial-Transfer-2026.pdf>)。对应本目录9页PDF，arXiv:2605.23472v1，2026年5月22日。翻译日期：2026-11-07。
 
 **作者：**Mehdi Gharbage¹˒²、Céline Teulière²、Pierre Bouges¹、Thierry Chateau²。
 

@@ -1,6 +1,6 @@
 # SuperSimpleNet：统一无监督与有监督学习，实现快速可靠的表面缺陷检测
 
-**原文：**[SuperSimpleNet: Unifying Unsupervised and Supervised Learning for Fast and Reliable Surface Defect Detection](<SuperSimpleNet- Unifying Unsupervised and Supervised Learning for Fast and Reliable Surface Defect Detection.pdf>)。本译文对应本目录 20 页 PDF，arXiv:2408.03143v2，2024 年 8 月 22 日，ICPR 2024 接收版本。翻译日期：2026-11-07。
+**原文：**[SuperSimpleNet: Unifying Unsupervised and Supervised Learning for Fast and Reliable Surface Defect Detection](<06-SuperSimpleNet-2024.pdf>)。本译文对应本目录 20 页 PDF，arXiv:2408.03143v2，2024 年 8 月 22 日，ICPR 2024 接收版本。翻译日期：2026-11-07。
 
 **作者：**Blaž Rolih、Matic Fučka、Danijel Skočaj。
 

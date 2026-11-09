@@ -1,12 +1,14 @@
 # 从 PyTorch 基础到读懂 PCB1 SegFormer 基线：论文、工程、13 阶段与调优学习指南
 
+> **2026-11-09现行入口说明：**本文保留11月2日的基线教学与计划快照，第13.5节的“一项适配改进”不覆盖[现行研究与学习主文档](./thesis-research-and-study-guide-zh.md)。当前保留PCB1 high-shot真实mask监督与已归档验收的SegFormer基线，DINO实验尚未开展；两项目标是PCB任务适配与评分绑定的判别证据，局部细节和正常参照均为候选机制。下文“本机”及E盘环境／资源链接指原实验机器，不能证明当前电脑可运行，运行前须重新核验。
+
 更新日期：2026-11-02（Asia/Shanghai）。面向已经做过基础 PyTorch 练习、由 Agent 较快完成了工程、现在希望真正掌握它的学习者。
 
 本文依据仓库 `714a9cc` 时点的实际源码、配置、阶段文档和验收记录编写；模型结构还核对了本机安装的 Transformers 4.57.6 源码。本文只整理学习材料，不安装环境、不修改实验代码、不启动训练、不重新评价 test。
 
 **你现在已经拥有一条完成验收的有监督分割基线。接下来的首要任务，是能解释“一张原图怎样变成训练信号，又怎样还原成可评价的缺陷掩码”，并能从文件中找到每个解释的证据。**先建立这条主线，再逐步掌握必要的外围审计，无须先把所有脚本逐行看完。
 
-本轮学习重点是**理解本机已经完成的训练过程**。11 月 16 日前的实验完成进度以已验收的 SegFormer 基线为准，不要求重做 13 阶段、换机部署或先完成 DINOv3 训练。但开题报告仍应介绍整篇论文的暂定路线：**SegFormer 基线 → 冻结 DINOv3-S/16＋轻量分割头的独立训练与对照 → 根据证据选择一项适度适配改进**，并与导师确认。本文负责其中的基线学习，不能代替完整论文计划；详细区分见第 13.5 节及[开题与导师沟通指南](./2026-11-02-proposal-preparation-and-advisor-discussion-guide.md)。基础论文也不必全部通读之后才开始整理汇报。
+本轮学习重点是**理解本机已经完成的训练过程**。11 月 16 日前的实验完成进度以已验收的 SegFormer 基线为准，不要求重做 13 阶段、换机部署或先完成 DINOv3 训练。但开题报告仍应介绍整篇论文的暂定路线：**SegFormer 基线 → 冻结 DINOv3-S/16＋轻量分割头的独立训练与对照 → 根据证据选择一项适度适配改进**，并与导师确认。上述路线保留11月2日的计划快照；本文负责基线学习，不能代替完整论文计划，现行两项目标与开题安排见[研究与学习主文档](./thesis-research-and-study-guide-zh.md)。基础论文也不必全部通读之后才开始整理汇报。
 
 ## 1. 先校准当前事实与学习目标
 
@@ -330,9 +332,9 @@ Transformer 是以注意力和 FFN 等组成的模型家族；ViT 是把图像 p
 
 ### 6.7 实际模型实现藏在哪里
 
-本项目 [modeling.py](../../work/SegFormer/segformer_lab/modeling.py) 负责构造/加载/核验，真正网络算子在已安装的 [HF modeling_segformer.py](../../../segformer_resources/env/Lib/site-packages/transformers/models/segformer/modeling_segformer.py) 中。推荐只追这些类：`SegformerOverlapPatchEmbeddings` → `SegformerEfficientSelfAttention` → `SegformerMixFFN` → `SegformerLayer` → `SegformerEncoder` → `SegformerDecodeHead` → `SegformerForSemanticSegmentation`。
+本项目 [modeling.py](../../work/SegFormer/segformer_lab/modeling.py) 负责构造/加载/核验；历史实验的网络算子来自环境中的 `../../../segformer_resources/env/Lib/site-packages/transformers/models/segformer/modeling_segformer.py`。当前未找到该旧环境目录，这里保留路径作恢复后的定位参考。推荐只追这些类：`SegformerOverlapPatchEmbeddings` → `SegformerEfficientSelfAttention` → `SegformerMixFFN` → `SegformerLayer` → `SegformerEncoder` → `SegformerDecodeHead` → `SegformerForSemanticSegmentation`。
 
-本地还有 [configuration_segformer.py](../../../segformer_resources/env/Lib/site-packages/transformers/models/segformer/configuration_segformer.py) 和 [image_processing_segformer.py](../../../segformer_resources/env/Lib/site-packages/transformers/models/segformer/image_processing_segformer.py)。它们属于当前环境，不直接编辑 site-packages。[HF 官方 SegFormer 文档](https://huggingface.co/docs/transformers/model_doc/segformer)帮助理解接口，当前实际行为仍以本地 4.57.6 为准。预训练 `config.json` 内旧 `transformers_version` 是快照元数据，不是本机已安装版本。
+历史环境同目录还包含 `configuration_segformer.py` 和 `image_processing_segformer.py`；不直接编辑 site-packages。[HF 官方 SegFormer 文档](https://huggingface.co/docs/transformers/model_doc/segformer)用于理解接口，原实验行为对应归档中的4.57.6版本，当前重建环境需另核版本。预训练 `config.json` 内旧 `transformers_version` 是快照元数据，不能证明当前机器已安装该版本。
 
 ### 6.8 预训练权重究竟加载了哪些部分
 
@@ -736,7 +738,7 @@ Get-FileHash -LiteralPath 'E:\桌面\AI\segformer_resources\runs\pcb1_b0_v2_seed
 
 这是提交导师讨论的**暂定论文计划**，不是已完成成果或效果承诺。冻结 DINOv3 仍需训练分割头、验证并选择 checkpoint，不等于免训练或无监督异常检测。两种独立方案的比较也包含预训练来源、结构与可训练参数量等差异，不能据此单独归因“自监督一定更好”。
 
-特征融合、预测集成或蒸馏是存在互补证据、算力与时间允许时才考虑的候选，**整篇论文也不预先要求融合**。与导师讨论时应同时确认 PCB 与元器件的对象边界、上述三个环节的工作量，以及后续评价设计，而不是只询问现有基线能否毕业。相关依据见[原研究方向](./2026-10-29-research-direction-and-handoff.md)、[后续技术交接](../../work/SegFormer/reports/2026-11-01-post-baseline-next-step-handoff.md)和[开题沟通指南](./2026-11-02-proposal-preparation-and-advisor-discussion-guide.md)。
+特征融合、预测集成或蒸馏是存在互补证据、算力与时间允许时才考虑的候选，**整篇论文也不预先要求融合**。与导师讨论时应同时确认 PCB 与元器件的对象边界、上述三个环节的工作量，以及后续评价设计，而不是只询问现有基线能否毕业。原研究方向与开题沟通内容已合并至[现行研究与学习主文档](./thesis-research-and-study-guide-zh.md)；[后续技术交接](../../work/SegFormer/reports/2026-11-01-post-baseline-next-step-handoff.md)保留为历史参考。
 
 ## 14. 不碰原实验的学习练习与自测
 
@@ -787,4 +789,4 @@ Get-FileHash -LiteralPath 'E:\桌面\AI\segformer_resources\runs\pcb1_b0_v2_seed
 
 当前仍保留：单 seed/单类别、仅 40 张异常 test、未估计置信区间、推理延迟未测、workers>0 未验证、恢复训练数值轨迹限制、原始部分源码文本缺失、当前冻结 CLI 的完整 bundle 与同绝对路径约束。它们是已知证据边界，不能因为工程闭环通过就省略。
 
-本文的学习目标是让你能独立解释与核查这条已经完成的基线；整篇论文的后续 DINOv3 迁移、独立对照与适配研究仍按第 13.5 节及开题指南暂定。真正开始下一项实验时，应先能写清任务、假设、数据边界、唯一改动、选模规则、评价口径、资源预算和保存位置，再让 Agent 协助实现与验证。
+本文的学习目标是让你能独立解释与核查这条已经完成的基线；整篇论文的后续研究与学习安排以[现行主文档](./thesis-research-and-study-guide-zh.md)为准，第13.5节保留11月2日的计划快照。真正开始下一项实验时，应先能写清任务、假设、数据边界、唯一改动、选模规则、评价口径、资源预算和保存位置，再让 Agent 协助实现与验证。

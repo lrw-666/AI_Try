@@ -3,7 +3,7 @@
 ## 文献信息与翻译说明
 
 - 英文题名：Explainable AI reveals Clever Hans effects in unsupervised learning models。
-- 原文：[本地 PDF](<Explainable AI reveals Clever Hans effects in unsupervised learning models.pdf>)。
+- 原文：[本地 PDF](<12-Clever-Hans-Effects-2025.pdf>)。
 - 作者：Jacob Kauffmann¹²、Jonas Dippel¹²³、Lukas Ruff¹³、Wojciech Samek¹²⁴、Klaus-Robert Müller¹²⁵⁶⁷、Grégoire Montavon¹²⁸。
 - 单位：¹德国柏林工业大学电气工程与计算机科学系；²德国柏林学习与数据基础研究所 BIFOLD；³德国柏林 Aignostics；⁴德国柏林弗劳恩霍夫海因里希·赫兹研究所人工智能部；⁵韩国首尔高丽大学人工智能系；⁶德国萨尔布吕肯马克斯·普朗克信息学研究所；⁷德国柏林 Google DeepMind；⁸德国柏林自由大学数学与计算机科学系。
 - 通讯邮箱：klaus-robert.mueller@tu-berlin.de；gregoire.montavon@fu-berlin.de。

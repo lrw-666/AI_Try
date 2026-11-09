@@ -1,6 +1,6 @@
 # 通过概念瓶颈模型实现可解释视觉异常检测
 
-**原文：**[Explainable Visual Anomaly Detection via Concept Bottleneck Models](<Explainable Visual Anomaly Detection via Concept Bottleneck Models.pdf>)。本译文对应本目录 27 页 PDF，arXiv:2511.20088v3，修订日期 2026 年 10 月 12 日；按预印本引用。翻译日期：2026-11-07。
+**原文：**[Explainable Visual Anomaly Detection via Concept Bottleneck Models](<14-CONVAD-2025-preprint-v3-2026.pdf>)。本译文对应本目录 27 页 PDF，arXiv:2511.20088v3，修订日期 2026 年 10 月 12 日；按预印本引用。翻译日期：2026-11-07。
 
 **作者：**Arianna Stropeni、Valentina Zaccaria、Francesco Borsatti、Davide Dalle Pezze、Manuel Barusco、Gian Antonio Susto。
 

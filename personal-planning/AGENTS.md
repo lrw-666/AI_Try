@@ -1,6 +1,8 @@
 # Personal Planning Agent Context
 
-This folder is the active source of truth for the user's career positioning, graduate research direction, learning roadmap, and periodic reflection.
+This folder records the user's career positioning, long-term learning background, and periodic reflection. For the current thesis scope and study priorities, use the [research and study guide](../docs/research/thesis-research-and-study-guide-zh.md); it takes precedence over the September planning snapshots below.
+
+As of 2026-11-09, the thesis starts from VisA PCB1 high-shot supervised segmentation with real defect masks. The SegFormer baseline has archived acceptance evidence; DINO experiments have not been completed. The two research goals are PCB task adaptation and evidence tied to the actual defect score. Local-detail and normal-reference mechanisms remain candidates. Historical E-drive paths do not establish a runnable environment on the current computer.
 
 All Markdown files and file or folder names should be in English unless the user explicitly requests otherwise.
 
@@ -74,7 +76,7 @@ Future planning should follow these principles:
 
 ## Near-Term Priorities
 
-The current sequence is:
+The sequence below is the foundational curriculum recorded in September 2026. Follow the current research guide for the order of thesis work, and use this curriculum to fill specific knowledge gaps:
 
 1. Image representation and OpenCV foundations.
 2. Filtering, enhancement, thresholding, edges, morphology, contours, connected components, and geometry.

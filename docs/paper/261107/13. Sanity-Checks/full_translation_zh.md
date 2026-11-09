@@ -1,6 +1,6 @@
 # 显著图的合理性检验
 
-**原文：**[Sanity Checks for Saliency Maps](<Sanity Checks for Saliency Maps.pdf>)。本译文对应本目录 11 页 NeurIPS 2018 会议论文 PDF。翻译日期：2026-11-07。
+**原文：**[Sanity Checks for Saliency Maps](<13-Sanity-Checks-for-Saliency-Maps-2018.pdf>)。本译文对应本目录 11 页 NeurIPS 2018 会议论文 PDF。翻译日期：2026-11-07。
 
 **作者：**Julius Adebayo∗、Justin Gilmer♯、Michael Muelly♯、Ian Goodfellow♯、Moritz Hardt♯†、Been Kim♯。
 

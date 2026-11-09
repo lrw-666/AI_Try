@@ -1,5 +1,7 @@
 # SegFormer-B0 单基线全程操作指南：在当前 Windows 电脑上与 Agent 协作完成 PCB 缺陷分割
 
+> **2026-11-09状态说明：**标题中的“当前电脑”和下文E盘路径对应原实验机器，本文保留10月31日实施蓝图与后续验收补记，不能据此假定现机可运行。现行研究与学习以[主文档](./thesis-research-and-study-guide-zh.md)为准：PCB1 high-shot真实mask监督的SegFormer基线已有归档验收证据，DINO实验尚未开展；两项目标是PCB任务适配与评分绑定的判别证据，具体机制仍为候选。本文“待实现”描述属于原编写时状态，继续实验前须核验真实环境与工件。
+
 编写日期：2026-10-31；本轮修订：加入 Conda 独立资源部署与逐阶段学习文档要求。适用对象：已有基础 PyTorch 实践，希望理解并亲自验收完整训练流程的学生。
 
 **本指南的目标：用 VisA PCB1 的官方 2-class high-shot 数据，完成 SegFormer-B0 有监督二值分割的环境、数据、训练、验证、独立推理、原图评价、可视化和复现归档。**每张输入图像输出一张缺陷概率图和二值掩码。
@@ -8,7 +10,7 @@
 
 **本轮新增的执行约定：** 使用指定目录的 Conda 环境，资源统一放 `E:\桌面\AI\segformer_resources`；所有阶段都须交付中文设计与实现 MD。请配套阅读[环境隔离与阶段文档规范](./2026-10-31-segformer-environment-isolation-and-stage-docs.md)及[阶段文档模板](./templates/segformer-stage-design-and-implementation-template.md)。下文的旧分散资源路径与 venv 主方案已统一替换；不会自动迁移或删除已有文件。
 
-当前研究依据：[研究方向与接续说明](./2026-10-29-research-direction-and-handoff.md)、[开题倒排计划](./2026-10-29-proposal-work-plan-to-nov16.md)、[阅读清单](./2026-10-29-reading-list.md)。本指南把第一模型的执行细节补齐；冻结 DINOv3、双编码器融合、云 GPU 和新模型不属于本次基线的必做内容。
+当前研究依据：原研究方向、开题计划与阅读清单已合并至[研究与学习主文档](./thesis-research-and-study-guide-zh.md)。本指南把第一模型的执行细节补齐；冻结 DINOv3、双编码器融合、云 GPU 和新模型不属于本次基线的必做内容。
 
 **实施进度入口（2026-11-01 更新）：** 已完成部分与验收状态以[实验阶段索引](../../work/SegFormer/docs/stages/README.md)为准。本指南中“待实现/尚未创建”的说明描述最初编写时状态；继续前先阅读实际代码和阶段文档，复用现有环境、v2 分组清单与固定模型快照。阶段 07 的精度修订及复测见[第七阶段验收](../../work/SegFormer/reports/2026-11-01-stage07-acceptance.md)。
 

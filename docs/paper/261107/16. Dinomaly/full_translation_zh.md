@@ -1,6 +1,6 @@
 # Dinomaly：多类别无监督异常检测中的“少即是多”哲学
 
-**原文：**[Dinomaly: The Less Is More Philosophy in Multi-Class Unsupervised Anomaly Detection](<Dinomaly- The Less Is More Philosophy in Multi-Class Unsupervised Anomaly Detection.pdf>)。本译文对应本目录 11 页 CVPR 2025 会议论文 PDF，论文集页码 20405—20415。翻译日期：2026-11-07。
+**原文：**[Dinomaly: The Less Is More Philosophy in Multi-Class Unsupervised Anomaly Detection](<16-Dinomaly-2025.pdf>)。本译文对应本目录 11 页 CVPR 2025 会议论文 PDF，论文集页码 20405—20415。翻译日期：2026-11-07。
 
 **作者：**Jia Guo¹、Shuai Lu²、Weihang Zhang²†、Fang Chen³、Huiqi Li²†、Hongen Liao¹˒³✉。
 

@@ -2,6 +2,8 @@
 
 Date: 2026-09-15
 
+**Current thesis entry: 2026-11-09.** This file preserves the September career-positioning background. Use the [research and study guide](../docs/research/thesis-research-and-study-guide-zh.md) for the current PCB research and learning sequence: real-mask high-shot supervision, an accepted SegFormer baseline, and planned DINO comparisons. PCB task adaptation and score-linked evidence are the two goals; specific mechanisms remain candidates. The three-month focus below is the original September plan.
+
 ## Current Decision
 
 After discussing the research direction with my graduate advisor, I will focus my current study and thesis exploration on industrial machine vision inspection. The practical problem is to identify defects in electronic components, mechanical parts, assembled products, or other manufactured objects through visual methods.
