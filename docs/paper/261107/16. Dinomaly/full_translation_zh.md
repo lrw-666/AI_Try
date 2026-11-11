@@ -1,6 +1,6 @@
 # Dinomaly：多类别无监督异常检测中的“少即是多”哲学
 
-**原文：**[Dinomaly: The Less Is More Philosophy in Multi-Class Unsupervised Anomaly Detection](<16-Dinomaly-2025.pdf>)。本译文对应本目录 11 页 CVPR 2025 会议论文 PDF，论文集页码 20405—20415。翻译日期：2026-11-07。
+**原文：**[Dinomaly: The Less Is More Philosophy in Multi-Class Unsupervised Anomaly Detection](<16-Dinomaly-2025.pdf>)。本译文对应本目录 11 页 CVPR 2025 会议论文 PDF，论文集页码 20405—20415。翻译日期：2026-11-07；按本地 PDF 复核补全：2026-11-11。
 
 **作者：**Jia Guo¹、Shuai Lu²、Weihang Zhang²†、Fang Chen³、Huiqi Li²†、Hongen Liao¹˒³✉。
 
@@ -231,3 +231,146 @@ $$D_{\cos}(a,b)=1-\frac{a^{\mathsf T}\cdot b}{\|a\|\,\|b\|}.\tag{6}$$
 ## 致谢
 
 作者感谢中国国家自然科学基金（U22A2051、82027807）、国家重点研发计划（2022YFC2405200）、清华—佛山创新专项基金（2021THFS0104），以及清华大学智能医疗研究院（2022ZLB001）的支持。
+
+
+## 参考文献
+
+[1] Samet Akcay, Amir Atapour-Abarghouei, and Toby P Breckon. 《GANomaly：通过对抗训练进行半监督异常检测》 载于 Computer Vision–ACCV 2018: 14th Asian Conference on Computer Vision, Perth, Australia, December 2–6, 2018, Revised Selected Papers, Part III 14 , 页 622–637. Springer, 2019. 1
+
+[2] Paul Bergmann, Sindy Löwe, Michael Fauser, David Sattlegger, and Carsten Steger. 《通过将结构相似性用于自编码器改善无监督缺陷分割》arXiv 预印本 arXiv:1807.02011, 2018. 1
+
+[3] Paul Bergmann, Michael Fauser, David Sattlegger, and Carsten Steger. 《MVTec AD：用于无监督异常检测的全面真实世界数据集》 载于 Proceedings of the IEEE/CVF conference on computer vision and pattern recognition, 页 9592–9600, 2019. 1, 2, 6, 7
+
+[4] Mathilde Caron, Hugo Touvron, Ishan Misra, Hervé Jégou, Julien Mairal, Piotr Bojanowski, and Armand Joulin. 《自监督视觉 Transformer 中涌现的性质》 载于 Proceedings of the IEEE/CVF international conference on computer vision, 页 9650–9660, 2021. 3, 8, 2
+
+[5] Xinlei Chen and Kaiming He. 《探索简单的孪生表示学习》 载于 Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , 页 15750–15758, 2021. 3
+
+[6] Xinlei Chen, Saining Xie, and Kaiming He. 《训练自监督视觉 Transformer 的实证研究》 InProceedings of the IEEE/CVF international conference on computer vision, 页 9640–9649, 2021. 3, 8, 2
+
+[7] Timothée Darcet, Maxime Oquab, Julien Mairal, and Piotr Bojanowski. 《视觉 Transformer 需要寄存器》 arXiv 预印本 arXiv:2309.16588, 2023. 3, 6, 8, 1, 2
+
+[8] Thomas Defard, Aleksandr Setkov, Angelique Loesch, and Romaric Audigier. 《PaDiM：用于异常检测与定位的图块分布建模框架》 载于 International Conference on Pattern Recognition, 页 475–489. Springer, 2021. 1
+
+[9] David Dehaene and Pierre Eline. 《通过建模感知特征进行异常定位》 arXiv 预印本 arXiv:2008.05369, 2020. 1
+
+[10] Hanqiu Deng and Xingyu Li. 《通过单类嵌入反向蒸馏进行异常检测》 载于 Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, 页 9737–9746, 2022. 5, 6, 7, 1, 8, 9, 10
+
+[11] Jia Deng, Wei Dong, Richard Socher, Li-Jia Li, Kai Li, and Li Fei-Fei. 《ImageNet：大规模分层图像数据库》 载于 IEEE Conference on Computer Vision and Pattern Recognition, 页 248–255, 2009. 2
+
+[12] Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn, Xiaohua Zhai, Thomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg Heigold, Sylvain Gelly, et al. 《一幅图像相当于 16×16 个词：大规模图像识别的 Transformer》 arXiv 预印本 arXiv:2010.11929, 2020. 2, 3
+
+[13] Jia Guo, Shuai Lu, Lize Jia, Weihang Zhang, and Huiqi Li. 《用于医学图像无监督异常检测的编码器—解码器对比》IEEE Transactions on Medical Imaging, 2023. 1
+
+[14] Jia Guo, Shuai Lu, Lize Jia, Weihang Zhang, and Huiqi Li. 《ReContrast：通过对比重建进行领域特定异常检测》 载于 Advances in Neural Information Processing Systems (NeurIPS) , 页 10721–10740, 2023. 2, 3, 5, 6
+
+[15] Dongchen Han, Xuran Pan, Yizeng Han, Shiji Song, and Gao Huang. 《FLatten Transformer：采用聚焦线性注意力的视觉 Transformer》 载于 Proceedings of the IEEE/CVF International Conference on Computer Vision, 页 5961– 5971, 2023. 5
+
+[16] Haoyang He, Jiangning Zhang, Hongxu Chen, Xuhai Chen, Zhishan Li, Xu Chen, Yabiao Wang, Chengjie Wang, and Lei Xie. 《DiAD：基于扩散的多类别异常检测框架》 arXiv 预印本 arXiv:2312.06607, 2023. 1, 3
+
+[17] Haoyang He, Yuhu Bai, Jiangning Zhang, Qingdong He, Hongxu Chen, Zhenye Gan, Chengjie Wang, Xiangtai Li, Guanzhong Tian, and Lei Xie. 《MambaAD：探索用于多类别无监督异常检测的状态空间模型》 arXiv 预印本 arXiv:2404.06564, 2024. 1, 3, 6, 7, 8, 10
+
+[18] Haoyang He, Jiangning Zhang, Hongxu Chen, Xuhai Chen, Zhishan Li, Xu Chen, Yabiao Wang, Chengjie Wang, and Lei Xie. 《基于扩散的多类别异常检测框架》 载于 Proceedings of the AAAI Conference on Artificial Intelligence, 页 8472–8480, 2024. 2, 6, 7, 8, 9, 10
+
+[19] Kaiming He, Xinlei Chen, Saining Xie, Yanghao Li, Piotr Doll´ar, and Ross Girshick. 《掩码自编码器是可扩展的视觉学习者》 载于 Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, 页 16000– 16009, 2022. 3, 8, 2, 5
+
+[20] Geoffrey Hinton, Oriol Vinyals, and Jeff Dean. 《蒸馏神经网络中的知识》 arXiv 预印本 arXiv:1503.02531, 2015. 5
+
+[21] Geoffrey E Hinton, Nitish Srivastava, Alex Krizhevsky, Ilya Sutskever, and Ruslan R Salakhutdinov. 《通过防止特征检测器协同适应改善神经网络》arXiv 预印本 arXiv:1207.0580, 2012. 4
+
+[22] Chaoqin Huang, Haoyan Guan, Aofan Jiang, Ya Zhang, Michael Spratling, and Yan-Feng Wang. 《基于配准的少样本异常检测》 载于 European Conference on Computer Vision, 页 303–319. Springer, 2022. 7
+
+[23] Jongheon Jeong, Yang Zou, Taewan Kim, Dongqing Zhang, Avinash Ravichandran, and Onkar Dabeer. 《WinCLIP：零／少样本异常分类与分割》 arXiv 预印本 arXiv:2303.14814, 2023. 7
+
+[24] Stepan Jezek, Martin Jonak, Radim Burget, Pavel Dvorak, and Milos Skotak. 《基于深度学习的金属零件缺陷检测：复杂条件下现有方法的评价》 载于 2021 13th International Congress on Ultra Modern Telecommunications and Control Systems and Workshops (ICUMT), 页 66–71. IEEE, 2021. 7, 6
+
+[25] Xi Jiang, Jianlin Liu, Jinbao Wang, Qiang Nie, Kai Wu, Yong Liu, Chengjie Wang, and Feng Zheng. 《SoftPatch：含噪数据的无监督异常检测》 Advances in Neural Information Processing Systems , 35:15433–15445, 2022. 6, 7
+
+[26] Angelos Katharopoulos, Apoorv Vyas, Nikolaos Pappas, and Franc ¸ois Fleuret. 《Transformer 是循环神经网络：采用线性注意力的快速自回归 Transformer》 载于 International conference on machine learning, 页 5156–5165. PMLR, 2020. 5
+
+[27] Sungwook Lee, Seunghyun Lee, and Byung Cheol Song. 《CFA：面向目标异常定位的耦合超球面特征适配》 IEEE Access , 10: 78446–78454, 2022. 1
+
+[28] Yujin Lee, Harin Lim, and Hyunsoo Yoon. 《Selformaly：迈向任务无关的统一异常检测》 arXiv 预印本 arXiv:2307.12540, 2023. 3
+
+[29] Chun-Liang Li, Kihyuk Sohn, Jinsung Yoon, and Tomas Pfister. 《CutPaste：用于异常检测与定位的自监督学习》 载于 Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 页 9664–9674, 2021. 1
+
+[30] Chen Liang, Jiahui Yu, Ming-Hsuan Yang, Matthew Brown, Yin Cui, Tuo Zhao, Boqing Gong, and Tianyi Zhou. 《多模态基础模型的逐模块自适应蒸馏》 Advances in Neural Information Processing Systems, 36, 2024. 5
+
+[31] Jiangqi Liu and Feng Wang. 《用于多类别工业异常检测的混合注意力自编码器》 arXiv 预印本 arXiv:2309.12700, 2023. 2
+
+[32] Wenqian Liu, Runze Li, Meng Zheng, Srikrishna Karanam, Ziyan Wu, Bir Bhanu, Richard J Radke, and Octavia Camps. 《迈向变分自编码器的视觉解释》 InProceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, 页 8642–8651, 2020. 1
+
+[33] Ze Liu, Yutong Lin, Yue Cao, Han Hu, Yixuan Wei, Zheng Zhang, Stephen Lin, and Baining Guo. 《Swin Transformer：采用移位窗口的分层视觉 Transformer》 InIEEE/CVF International Conference on Computer Vision , 页 10012–10022, 2021. 3
+
+[34] Zhikang Liu, Yiming Zhou, Yuansheng Xu, and Zilei Wang. 《SimpleNet：用于图像异常检测与定位的简单网络》 arXiv 预印本 arXiv:2303.15140, 2023. 6, 7, 1, 8, 9, 10
+
+[35] Ilya Loshchilov and Frank Hutter. 《解耦权重衰减正则化》 arXiv 预印本 arXiv:1711.05101, 2017. 6
+
+[36] Ruiying Lu, YuJie Wu, Long Tian, Dongsheng Wang, Bo Chen, Xiyang Liu, and Ruimin Hu. 《用于多类别无监督异常检测的分层向量量化 Transformer》 arXiv 预印本 arXiv:2310.14228, 2023. 1, 2, 4
+
+[37] Amira Ben Mabrouk and Ezzeddine Zagrouba. 《智能视频监控系统中的异常行为识别综述》 Expert Systems with Applications, 91:480– 491, 2018. 1
+
+[38] Pankaj Mishra, Riccardo Verk, Daniele Fornasier, Claudio Piciarelli, and Gian Luca Foresti. 《VT-ADL：用于图像异常检测与定位的视觉 Transformer 网络》 载于 2021 IEEE 30th International Symposium on Industrial Electronics (ISIE), 页 01–06. IEEE, 2021. 7, 6
+
+[39] Maxime Oquab, Timothée Darcet, Théo Moutakanni, Huy Vo, Marc Szafraniec, Vasil Khalidov, Pierre Fernandez, Daniel Haziza, Francisco Massa, Alaaeldin El-Nouby, et al. 《DINOv2：在无监督下学习鲁棒视觉特征》arXiv 预印本 arXiv:2304.07193, 2023. 3, 8, 2
+
+[40] Z Peng, L Dong, H Bao, Q Ye, and F Wei. 《BEiT v2：采用向量量化视觉标记器的掩码图像建模》 arXiv 预印本 arXiv:2208.06366, 2022. 3, 2
+
+[41] Sashank J Reddi, Satyen Kale, and Sanjiv Kumar. 《Adam 的收敛性及其他问题》 arXiv 预印本 arXiv:1904.09237, 2019. 6, 1
+
+[42] Tal Reiss, Niv Cohen, Liron Bergman, and Yedid Hoshen. 《PANDA：适配预训练特征以进行异常检测与分割》 载于 Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, 页 2806–2814, 2021. 7
+
+[43] Tal Reiss, Niv Cohen, Eliahu Horwitz, Ron Abutbul, and Yedid Hoshen. 《异常检测需要更好的表示》 载于 European Conference on Computer Vision, 页 56–68. Springer, 2022. 3, 7
+
+[44] Sucheng Ren, Zeyu Wang, Hongru Zhu, Junfei Xiao, Alan Yuille, and Cihang Xie. 《使 Image-GPT 重新成为强大的视觉表示学习器》 arXiv 预印本 arXiv:2312.02147, 2023. 8, 2
+
+[45] Karsten Roth, Latha Pemula, Joaquin Zepeda, Bernhard Sch¨olkopf, Thomas Brox, and Peter Gehler. 《迈向工业异常检测的全面召回》 载于 Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, 页 14318–14328, 2022. 7, 1, 3
+
+[46] Mohammadreza Salehi, Niousha Sadjadi, Soroosh Baselizadeh, Mohammad H Rohban, and Hamid R Rabiee. 《用于异常检测的多分辨率知识蒸馏》 载于 Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , 页 14902–14912, 2021. 5, 1
+
+[47] Thomas Schlegl, Philipp Seeb ¨ock, Sebastian M Waldstein, Georg Langs, and Ursula Schmidt-Erfurth. 《f-AnoGAN：采用生成对抗网络的快速无监督异常检测》 Medical image analysis, 54:30–44, 2019. 1
+
+[48] Zhuoran Shen, Mingyuan Zhang, Haiyu Zhao, Shuai Yi, and Hongsheng Li. 《高效注意力：具有线性复杂度的注意力》 载于 Proceedings of the IEEE/CVF winter conference on applications of computer vision, 页 3531– 3539, 2021. 5
+
+[49] Shelly Sheynin, Sagie Benaim, and Lior Wolf. 《用于少样本异常检测的分层变换判别生成模型》 载于 Proceedings of the IEEE/CVF International Conference on Computer Vision, 页 8495–8504, 2021. 1
+
+[50] Hugo Touvron, Matthieu Cord, Matthijs Douze, Francisco Massa, Alexandre Sablayrolles, and Herv’e J’egou. 《通过注意力训练数据高效的图像 Transformer 并进行蒸馏》 arXiv 预印本 arXiv:2012.12877, 2021. 8, 2
+
+[51] Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Łukasz Kaiser, and Illia Polosukhin. 《注意力就是你所需要的全部》 载于 Advances in Neural Information Processing Systems, 页 5998–6008, 2017. 2
+
+[52] Pascal Vincent, Hugo Larochelle, Yoshua Bengio, and Pierre-Antoine Manzagol. 《利用去噪自编码器提取与组合鲁棒特征》 载于 Proceedings of the 25th international conference on Machine learning , 页 1096–1103, 2008. 4
+
+[53] Pascal Vincent, Hugo Larochelle, Isabelle Lajoie, Yoshua Bengio, and Pierre-Antoine Manzagol. 《堆叠去噪自编码器：采用局部去噪准则在深层网络中学习有用表示》 载于 Journal of Machine Learning Research, 页 3371–3408, 2010. 4
+
+[54] Chengjie Wang, Wenbing Zhu, Bin-Bin Gao, Zhenye Gan, Jianning Zhang, Zhihao Gu, Shuguang Qian, Mingang Chen, and Lizhuang Ma. 《Real-IAD：用于通用工业异常检测基准评测的真实世界多视角数据集》arXiv 预印本 arXiv:2403.12580, 2024. 2, 6, 7, 3
+
+[55] Guodong Wang, Shumin Han, Errui Ding, and Di Huang. 《用于异常检测的学生—教师特征金字塔匹配》 载于 The British Machine Vision Conference (BMVC), 2021. 1
+
+[56] Mitchell Wortsman, Tim Dettmers, Luke Zettlemoyer, Ari Morcos, Ali Farhadi, and Ludwig Schmidt. 《大规模视觉语言模型的稳定低精度训练》 Advances in Neural Information Processing Systems, 36: 10271–10298, 2023. 6, 1
+
+[57] Zhenda Xie, Zheng Zhang, Yue Cao, Yutong Lin, Jianmin Bao, Zhuliang Yao, Qi Dai, and Han Hu. 《SimMIM：掩码图像建模的简单框架》 载于 Proceedings of the IEEE/CVF conference on computer vision and pattern recognition, 页 9653–9663, 2022. 3
+
+[58] Jie Yang, Yong Shi, and Zhiquan Qi. 《DFR：用于无监督异常分割的深度特征重建》 arXiv 预印本 arXiv:2012.07122, 2020. 5, 1
+
+[59] Haonan Yin, Guanlong Jiao, Qianhui Wu, Borje F Karlsson, Biqing Huang, and Chin Yew Lin. 《LAFITE：采用特征编辑进行无监督多类别异常检测的潜在扩散模型》 arXiv 预印本 arXiv:2307.08059, 2023. 1, 2, 3, 4
+
+[60] Zhiyuan You, Lei Cui, Yujun Shen, Kai Yang, Xin Lu, Yu Zheng, and Xinyi Le. 《多类别异常检测的统一模型》 arXiv 预印本 arXiv:2206.03687, 2022. 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+
+[61] Weihao Yu, Chenyang Si, Pan Zhou, Mi Luo, Yichen Zhou, Jiashi Feng, Shuicheng Yan, and Xinchao Wang. 《面向视觉的 MetaFormer 基线》 IEEE Transactions on Pattern Analysis and Machine Intelligence, 2023. 4
+
+[62] Vitjan Zavrtanik, Matej Kristan, and Danijel Skočaj. 《DRAEM：用于表面异常检测的判别式训练重建嵌入》 载于 Proceedings of the IEEE/CVF International Conference on Computer Vision, 页 8330– 8339, 2021. 4, 1
+
+[63] Vitjan Zavrtanik, Matej Kristan, and Danijel Skocaj. 《通过修补重建进行视觉异常检测》 Pattern Recognition, 112:107706, 2021. 1
+
+[64] Dingwen Zhang, Guohai Huang, Qiang Zhang, Jungong Han, Junwei Han, Yizhou Wang, and Yizhou Yu. 《探索多模态磁共振图像脑肿瘤分割的任务结构》 IEEE Transactions on Image Processing, 29:9032–9043, 2020. 7
+
+[65] Jiangning Zhang, Xuhai Chen, Yabiao Wang, Chengjie Wang, Yong Liu, Xiangtai Li, Ming-Hsuan Yang, and Dacheng Tao. 《探索普通 ViT 重建以进行多类别无监督异常检测》 arXiv 预印本 arXiv:2312.07495, 2023. 3, 5, 6, 7
+
+[66] Jiangning Zhang, Haoyang He, Zhenye Gan, Qingdong He, Yuxuan Cai, Zhucun Xue, Yabiao Wang, Chengjie Wang, Lei Xie, and Yong Liu. 《ADER：多类别视觉异常检测的综合基准》 arXiv 预印本 arXiv:2406.03262, 2024. 7, 2, 6
+
+[67] Xuan Zhang, Shiyu Li, Xi Li, Ping Huang, Jiulong Shan, and Ting Chen. 《DeSTSeg：用于异常检测的分割引导去噪学生—教师模型》 载于 Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, 页 3914–3923, 2023. 4, 6, 1, 7, 8, 9, 10
+
+[68] Ying Zhao. 《OmniAL：用于无监督异常定位的统一卷积神经网络框架》 载于 Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 页 3924–3933, 2023. 1, 3
+
+[69] Jinghao Zhou, Chen Wei, Huiyu Wang, Wei Shen, Cihang Xie, Alan Yuille, and Tao Kong. 《iBOT：采用在线标记器的图像 BERT 预训练》 arXiv 预印本 arXiv:2111.07832 , 2021. 3, 8, 2
+
+[70] Yang Zou, Jongheon Jeong, Latha Pemula, Dongqing Zhang, and Onkar Dabeer. 《用于异常检测与分割的找不同自监督预训练》 载于 European Conference on Computer Vision , 页 392–408. Springer, 2022. 2, 6, 7, 3

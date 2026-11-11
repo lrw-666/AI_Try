@@ -1,6 +1,6 @@
 # 面向复杂背景表面缺陷分割的变化感知孪生网络
 
-**原文：**[Siamese network with change awareness for surface defect segmentation in complex backgrounds](<11-CADNet-Reference-Defect-Segmentation-2025.pdf>)。本译文对应本目录的 19 页出版社 PDF，*Scientific Reports* 15，11814（2025），DOI：10.1038/s41598-025-94733-4。翻译日期：2026-11-07。
+**原文：**[Siamese network with change awareness for surface defect segmentation in complex backgrounds](<11-CADNet-Reference-Defect-Segmentation-2025.pdf>)。本译文对应本目录的 19 页出版社 PDF，*Scientific Reports* 15，11814（2025），DOI：10.1038/s41598-025-94733-4。翻译日期：2026-11-07；按本地 PDF 复核补全：2026-11-11。
 
 **作者：**Biyuan Liu¹、Sijie Luo¹、Huiyao Zhan²、Yicheng Zhou³、Zhou Huang³˒*、Huaixin Chen¹˒*。
 
@@ -155,3 +155,367 @@ $$\mathrm{loss}=\lambda_1\mathrm{CEL}+\lambda_2\mathrm{BCL}. \tag{16}$$
 实验中 $\lambda_1$ 和 $\lambda_2$ 均设为 1。
 
 > 译注：原文将式（15）指数中的 $\widehat y$ 称为“预测概率”，但该写法通常将指数前数值解释为 logits；译文保留原式和原文字定义，不擅自将其改写成另一损失。
+
+## 实验与结果
+
+### 数据集
+
+评估涉及三个数据集，包括具有复杂背景和微小纹理异常的自建合成 LCD 数据集与 PKU-Market-PCB [31]。此外，采用异常检测基准 MVTec-AD [16]，在全监督学习条件下验证方法的泛化能力。
+
+**合成 LCD 缺陷数据集。**为验证模型在不同成像、生产条件和缺陷外观下的分割能力，我们构建了名为 SynLCD 的合成 LCD 缺陷数据集。在实际 LCD 检测中，专门设计显示图案以显露点、线、Mura 等不同缺陷 [63]。图案由纯色块、色图、文本块、灰度渐变和人脸构成。图 4 展示十种无缺陷显示图案；检测界面分为五个功能区，以全面评价显示性能：
+
+- 右下角（人脸图像）：人类视觉系统对人脸特征高度敏感。该区域测试显示器准确呈现肤色、头发纹理、人脸轮廓等复杂生物细节的能力。色彩平衡、饱和度或纹理清晰度偏差可能意味着面板驱动问题或颜色校准缺陷。
+- 左下角（灰度渐变）：采用由纯黑到白的渐变，评价亮度均匀性、对比度响应和背光一致性。缺陷屏幕可能出现条带（不自然的颜色阶跃）、亮度不均或背光泄漏（例如 Mura 缺陷），损害视觉平滑性。
+- 右上角（文本图案）：用于评价高频细节呈现。低质量面板经常出现文字边缘锯齿、像素块缺失或背景噪声，这些问题与子像素排列异常、驱动电路不稳定或 TFT（薄膜晶体管）阵列缺陷有关。
+- 人脸图像上方（RGB 色度图）：通过标准色轮或渐变测量色域覆盖范围和准确性。偏色、混叠、去饱和等异常提示彩色滤光片或信号处理算法存在问题。
+- 左上角（纯色块）：包含红、绿、蓝、黑等基本颜色，用于测试颜色纯度和背光均匀性。局部亮度波动、色斑或暗点（例如线缺陷）等异常揭示制造瑕疵。
+
+**图 4：无缺陷 LCD 图案。**在实际检测中，工业 LCD 显示图案由 RGB 色块、灰度渐变、色图、字符和人脸组成，用于显露点、线及 Mura 等不同类型缺陷 [63]。
+
+SynLCD 包含位置与分布随机的三类缺陷样本：线缺陷、异常点（abpt）及混合缺陷，如图 5。部分缺陷与背景图案极为相似；线缺陷与背景对比度较低，且横贯整个屏幕。
+
+**图 5：SynLCD 样本与数据集挑战。**（a）异常点缺陷样本；（b）线缺陷样本；（c）混合缺陷样本；（d）混合缺陷图像的二值标签；（e）RGB 偏差和不规则屏幕纹理；（f）非线性饱和度差异；（g）低对比度异常点与线缺陷。
+
+**表 1：SynLCD 数据集统计详情。**
+
+| 属性 | 类型 | 数值 | 说明 |
+|---|---|---|---|
+| 数量 | 背景图案 | 10 | 人脸、色图等变化 |
+| 数量 | 缺陷类型 | 3 | 线、异常点、混合缺陷 |
+| 数量 | 缺陷样本 | 10×300×3 | 每种类型、每种图案各 300 个样本 |
+| 数量 | 无缺陷样本 | 10×900 | 亮度、对比度等变化 |
+| 缺陷 | 形状 | 2 | 线和异常点 |
+| 缺陷 | 颜色 | 5 | 黑、白、红、绿、蓝 |
+| 缺陷 | 不透明度 | 10%—100% | 间隔 10% |
+| 缺陷 | 宽度 | 3—33 像素 | 间隔 3%（原表如此） |
+| 屏幕 | 亮度 | 偏置：1—6 | 间隔 1 |
+| 屏幕 | 对比度 | alpha：0.5—1.5 | 间隔 0.1 |
+| 屏幕 | ISO 噪声 | 10%—100% | 间隔 10% |
+| 屏幕 | RGB 偏差 | 3—33 灰度级 | 间隔 3 |
+
+表 1 给出统计详情。根据式（1）的假设，缺陷图像 $x_{ng}$ 由干净表面图像 $x_{ok}$ 经非线性整体表面变化 $\sigma$ 后叠加缺陷 $x_{defect}$ 形成。为生成线缺陷，首先将干净图像划分为 $K$ 个区域，然后在每个区域预绘颜色、透明度和宽度随机的线。这些线贯穿屏幕，模拟实际线缺陷。异常点倾向于出现在边缘、头发和文字等高频过渡区域。为生成异常点样本，我们把灰度阈值从 50 改变至 200，得到各阈值下的分割结果，并从中提取边缘点集合。随后用 K-means 对这些点随机聚类，为每个子类分配随机颜色、尺度和透明度。获得两类缺陷后，利用高斯模糊与泊松无缝融合 [64] 将其叠加到干净图像上；引入随机亮度、对比度、ISO 噪声和 RGB 色偏以增加多样性。为避免分类任务中的样本不平衡干扰，对图 4 每幅干净图像生成 300 个缺陷和无缺陷样本。总计有 4,200 个训练样本（七种标准背景图案，每种 600 个样本）和 1,800 个测试样本。
+
+> 译注：表 1 的缺陷数量为 10×300×3、无缺陷数量为 10×900，合计 18,000；本段训练与测试数量合计为 6,000。原文两处统计不一致，均保留。
+
+**PKU-Market-PCB。**该数据集 [31] 包含 1,386 幅图像及六种缺陷，用于验证模型在复杂背景和微小缺陷场景下的泛化。原始图像尺寸不一致。为简化训练，我们将原图缩放、裁剪为 1000×1000 子图，只保留包含缺陷的子图。最终 1,566 幅（70%）用于训练，676 幅（30%）用于测试。预处理数据随源码发布于 <https://github.com/HATFormer/CADNet>。
+
+**MVTec-AD。**为进一步验证一般缺陷检测，我们采用广泛使用的异常检测基准 MVTec-AD [16] 比较。为更有效训练并精确分割缺陷，将原始数据重组为全监督训练数据。原始 5,354 幅图像及对应真值标注随机打乱，分为 3,747 幅（70%）训练图像及 1,607 幅（30%）测试图像。
+
+### 实验设置与指标
+
+**实现细节。**模型基于 MMSegmentation，在 RTX3090 GPU 上训练。输入缩放为 512×512；训练使用随机裁剪、翻转和颜色归一化等常见增强。全监督比较中，各数据集分别以 70% 和 30% 用于训练与测试。对比方法输入原数据集中的单幅样本；我们的方法同时输入该样本及对应干净图像。SynLCD 有图 4 的十幅固定干净图像；PKU-Market-PCB [31] 同样提供十幅干净图像；MVTec-AD [16] 每类选择一幅无缺陷图像，在训练与测试中共用。所有模型训练 30 轮，根据各模型显存占用，混合批量大小在 4—8 之间。
+
+半监督比较中，带标签样本比例为 0%、5%、10%、15%（0% 实际是无监督，为简便纳入半监督比较）。为与使用无标签数据训练的 UAPS [5] 比较，遵循 [5] 的设置，加入 10% 无标签数据。
+
+**指标。**采用语义分割指标评价逐像素预测，包括平均交并比（mIoU）、准确率（Acc）和 Fscore，亦见 [36,65]。TP、FP、FN 分别表示真阳性、假阳性和假阴性：
+
+- 精确率 $P=TP/(TP+FP)$，召回率 $R=TP/(TP+FN)$；
+- $Fscore=2PR/(P+R)$；
+- $Acc=(TP+TN)/(TP+FN+FP+TN)$；
+- $mIoU=\frac1C\sum_{i=0}^{C-1}\frac{TP_i}{TP_i+FP_i+FN_i}$。
+
+通过参数量（Params）与十亿浮点运算次数（GFLOPs）衡量复杂度。所有表格中 ↑ 表示越高越好，↓ 表示越低越好。
+
+**对比方法。**从两个方面评价：（1）全监督分割，在有充足像素标签时证明变化建模相较外观建模的优势，比较表 2 中六种语义分割方法。（2）半监督分割，评价标签不足时的鲁棒性，因为实际生产缺陷难以具备大量外观一致的样本，比较表 2 中五种先进半监督方法。
+
+**表 2：用于比较的全监督与半监督分割方法概览。**
+
+| 类型 | 方法 | 描述 |
+|---|---|---|
+| 全监督 | FCN [66] | 利用全卷积层对任意尺寸图像作稠密预测。 |
+| 全监督 | PSPNet [67] | 利用金字塔池化聚合全局上下文，进行复杂场景解析。 |
+| 全监督 | DeepLabV3+ [36] | 引入空洞空间卷积金字塔（ASPP），增强多尺度上下文。 |
+| 全监督 | DANet [68] | 通过自注意力自适应整合空间和通道维度的语义依赖。 |
+| 全监督 | OCRNet [69] | 引入对象上下文表示，利用像素与对象关系增强像素表示。 |
+| 全监督 | SegFormer [40] | 将 Transformer 与轻量 MLP 解码器结合，简化语义分割框架。 |
+| 半监督 | DCT [45] | 使用一个网络，确保同一样本不同视图的一致性。 |
+| 半监督 | CPS [43] | 强制两个不同初始化的分割网络保持一致。 |
+| 半监督 | UAMT [46] | 鼓励不同扰动下的预测一致性，估计不确定性以学习无标签数据。 |
+| 半监督 | UCC [44] | 共享编码器、采用双解码器，通过数据增强约束解码器一致性。 |
+| 半监督 | UAPS [5] | 单次前向传播中动态混合多头伪标签，进行不确定性正则化。 |
+
+### 定量比较
+
+#### 全监督分割
+
+表 3 显示，我们的方法相较其他分割模型有显著改进。相较次优结果，四项指标（线 IoU、异常点 IoU、mIoU、mFscore）分别提高 12.65%、0.82%、8.17%、4.15%。表 4、5 中，模型在 PCB 和 MVTec-AD 的大多数指标上取得最佳结果。
+
+在效率方面，模型参数量与 SegFormer 相当，两者计算开销均显著优于其他模型。相较 SegFormer，仅增加 1.84 GFLOPs，mIoU、mAcc、mFscore 分别提高 9.79%、6.42%、5.15%。这既体现适合资源受限工业设备的效率，也体现变化建模机制的优势。
+
+> 译注：以上差值按原文保留；表 3 中本方法与 SegFormer 的直接差值为 mIoU 7.47、mAcc 5.37、mFscore 4.45 个百分点，与正文不一致。
+
+**表 3：SynLCD 上与主流语义分割方法的比较。**原表用粗体、粗斜体、斜体标出各指标前三名。
+
+| 方法 | 线 IoU↑ | 异常点 IoU↑ | mIoU↑ | mAcc↑ | mFscore↑ | 参数量（百万）↓ | GFLOPs↓ |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| FCN [66] | 51.86 | 11.48 | 31.67 | 36.06 | 44.45 | 49.5 | 57.91 |
+| PSPNet [67] | 79.00 | 52.54 | 65.77 | 71.56 | 78.58 | 12.76 | 54.27 |
+| DeepLabV3+ [36] | 81.96 | 72.93 | 77.45 | 90.24 | 87.22 | 43.58 | 176.22 |
+| DANet [68] | 79.92 | 57.04 | 68.48 | 76.27 | 80.74 | 49.82 | 199.05 |
+| OCRNet [69] | 83.46 | 62.19 | 72.83 | 86.08 | 83.84 | 12.07 | 52.83 |
+| SegFormer [40] | 82.99 | 69.62 | 76.31 | 83.68 | 86.39 | 3.72 | 6.37 |
+| 本文 CADNet | 94.02 | 73.53 | 83.78 | 89.05 | 90.84 | 3.90 | 8.21 |
+
+**表 4：PCB 数据集上的比较。**原表用三种字型标出各指标前三名。
+
+| 方法 | 类别1 IoU↑ | 类别2 IoU↑ | 类别3 IoU↑ | 类别4 IoU↑ | 类别5 IoU↑ | 类别6 IoU↑ | mIoU↑ | mAcc↑ | mFscore↑ |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| FCN [66] | 50.13 | 69.19 | 68.65 | 45.45 | 50.35 | 36.36 | 53.35 | 60.80 | 68.79 |
+| PSPNet [67] | 74.04 | 72.59 | 72.61 | 71.29 | 66.39 | 72.46 | 71.56 | 81.77 | 83.40 |
+| DeepLabV3+ [36] | 75.39 | 73.56 | 74.22 | 73.57 | 69.94 | 76.47 | 73.85 | 82.10 | 84.94 |
+| DANet [68] | 74.31 | 73.02 | 71.21 | 72.14 | 68.86 | 75.02 | 72.42 | 82.01 | 83.99 |
+| OCRNet [69] | 76.08 | 73.00 | 73.78 | 75.98 | 71.13 | 78.13 | 74.68 | 83.45 | 85.48 |
+| SegFormer [40] | 75.79 | 71.39 | 72.31 | 72.29 | 70.75 | 78.04 | 73.42 | 82.29 | 84.65 |
+| 本文 CADNet | 77.21 | 73.98 | 75.08 | 79.95 | 76.47 | 82.44 | 77.52 | 85.87 | 87.31 |
+
+**表 5：MVTec-AD 上的比较。**原表用三种字型标出前三名。该数据集有 15 类，此处报告其中六类。
+
+| 方法 | 类别1 IoU↑ | 类别2 IoU↑ | 类别3 IoU↑ | 类别4 IoU↑ | 类别5 IoU↑ | 类别6 IoU↑ | mIoU↑ | mAcc↑ | mFscore↑ |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| FCN [66] | 76.10 | 60.14 | 35.93 | 69.73 | 13.51 | 79.65 | 58.14 | 64.84 | 70.00 |
+| PSPNet [67] | 72.00 | 68.24 | 43.86 | 74.89 | 42.43 | 83.44 | 65.42 | 76.25 | 77.58 |
+| DeepLabV3+ [36] | 76.65 | 63.48 | 41.18 | 72.31 | 34.93 | 81.12 | 63.77 | 77.59 | 76.19 |
+| DANet [68] | 75.13 | 56.37 | 37.95 | 72.42 | 27.10 | 80.92 | 61.63 | 72.49 | 73.94 |
+| OCRNet [69] | 70.89 | 65.18 | 45.67 | 65.47 | 35.41 | 81.51 | 59.89 | 68.98 | 72.31 |
+| SegFormer [40] | 81.63 | 64.63 | 53.81 | 70.81 | 44.14 | 84.71 | 65.97 | 71.21 | 77.51 |
+| 本文 CADNet | 82.60 | 74.16 | 61.19 | 73.06 | 52.69 | 86.41 | 71.35 | 80.85 | 82.24 |
+
+#### 半监督分割
+
+当有充足标签、缺陷外观定义明确时，SegFormer 等一般分割模型表现令人满意。但现实应用中缺陷样本有限、外观多样，基于外观建模不能保证稳健泛化。因此，我们深入探索标签有限、甚至完全无标签的缺陷分割。
+
+LL、AA、LA、AL 实验的首字母表示在线（L）或异常点（A）上训练，第二个字母表示测试类型。图 6 显示，多数分割模型取得可接受的全监督结果，却因基于外观建模而无法检测未见缺陷（IoU、Acc、Fscore 等低于 0.5%）。变化感知模型在训练未见的缺陷外观上仍取得可观结果。LA（线缺陷训练、异常点测试）的准确率明显下降，可能是异常点尺寸更小、更难与背景区分。
+
+**图 6：交叉测试性能比较。**推理样本不出现在训练阶段。LL、AA、LA、AL 首字母为训练类型，第二个字母为测试类型，L 表示线缺陷，A 表示异常点。图内 IoU、Acc、Fscore 分别为交并比、准确率、F 分数。
+
+表 6 显示，模型在不同监督设置下优于五种先进半监督分割方法，表明其有潜力仅用少量真实生产样本灵活应用，显著降低数据采集与标注成本。
+
+**表 6：SynLCD 上不同标签比例（0%—15%）下与先进半监督方法的比较。**所有模型先在异常点上预训练，再用线缺陷微调和测试；原表粗体为最优结果。
+
+| 方法 | mIoU 0%↑ | mIoU 5%↑ | mIoU 10%↑ | mIoU 15%↑ | Fscore 0%↑ | Fscore 5%↑ | Fscore 10%↑ | Fscore 15%↑ |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| DCT [45] | 0.05 | 56.96 | 73.67 | 71.85 | 0.10 | 71.27 | 84.57 | 82.75 |
+| UAMT [46] | 0.44 | 61.68 | 68.73 | 71.96 | 0.88 | 75.48 | 80.94 | 83.15 |
+| CPS [43] | 1.09 | 65.07 | 65.63 | 76.02 | 2.15 | 78.29 | 78.70 | 85.68 |
+| UCC [44] | 0.015 | 61.40 | 70.48 | 71.55 | 0.03 | 75.41 | 82.27 | 82.78 |
+| UAPS [5] | 0.44 | 58.86 | 74.43 | 81.34 | 0.88 | 72.52 | 84.35 | 89.22 |
+| 本文 CADNet | 46.89 | 82.93 | 84.52 | 84.71 | 63.84 | 90.87 | 91.64 | 91.72 |
+
+### 消融研究
+
+研究对比损失 CL、平衡对比损失 BCL、变化感知解码器 CAD 的影响。根据表 7 与图 7，可得如下结论。
+
+- 以 CL 监督中间层，无额外计算开销即可显著改善大部分准确率指标。图 7 的无 CL 距离图与有 CL 距离图比较说明，对比约束能减少背景噪声，找到更有判别性的变化（缺陷）区域。无 CL 距离图中线比异常点更容易区分，说明对比约束不平衡。
+- 图 7 中 CL 和 BCL 距离图说明，BCL 能有效增强异常点强度，在保持线 IoU 稳定时进一步提高异常点 IoU，因而提高整体 mIoU 和 mFscore。
+- CAD 仅增加极少计算成本即可提升全部准确率指标。无 CAD 与有 CAD 的概率图比较表明，变化信息和空间上下文对于修复断线、减轻噪声检测具有重要作用。
+
+**表 7：损失函数与解码器消融。**CEL 为交叉熵，CL 为对比损失，BCL 为平衡对比损失，CAD 为变化感知解码器。
+
+| CEL | CL | BCL | CAD | 线 IoU↑ | 异常点 IoU↑ | mIoU↑ | mAcc↑ | mFscore↑ | 参数量↓ | GFLOPs↓ |
+|---|---|---|---|---:|---:|---:|---:|---:|---:|---:|
+| ✓ | — | — | — | 84.21 | 73.00 | 78.61 | 85.09 | 87.91 | 3.72 | 8.16 |
+| ✓ | ✓ | — | — | 89.40 | 70.17 | 79.78 | 85.22 | 88.43 | 3.72 | 8.16 |
+| ✓ | — | ✓ | — | 89.56 | 72.96 | 81.26 | 87.32 | 89.43 | 3.72 | 8.16 |
+| ✓ | — | ✓ | ✓ | 94.02 | 73.53 | 83.78 | 89.05 | 90.84 | 3.90 | 8.21 |
+
+**图 7：消融可视化结果。**展示有无 CAD、CL、BCL 时的最终预测（pred）、输出前概率图（prob）与距离图 DistMap。图内 noCL／CL／BCL 表示无对比损失／对比损失／平衡对比损失；noCAM／CAM 为原图对有无注意力模块的命名。
+
+### 定性结果
+
+图 8 左侧两图的精确率—召回率曲线表明，变化感知网络在线和异常点检测上始终优于其他模型，尤其是在高召回率处。右侧两图的 Fscore—阈值曲线表明，模型在不同二值化阈值下始终具有较高 Fscore。此外，较大线缺陷相较异常点通常具有更高精确率和 Fscore。
+
+**图 8：精确率—召回率（PR）和 Fscore—阈值（FT）曲线比较。**从左至右为线缺陷 PR、异常点 PR、线缺陷 FT、异常点 FT。Precision／Recall／Threshold 为精确率／召回率／阈值。
+
+图 9、10 进一步展示 SynLCD 和 PCB 的可视化比较。为直观观察，全部多类别缺陷统一设为白色；绿色表示漏检，红色表示误检，黄色误差汇总漏检和误检。细线比粗线更容易漏检，因为特征提取下采样可能丢失信息。总体而言，其他模型效果弱于 CADNet，这与准确率指标一致；其在所有测试图像中存在大量漏检和误检。
+
+**图 9：SynLCD 上的可视化比较。**白色为线与异常点缺陷，绿色为漏检，红色为误检；黄色误差（Err）汇总漏检与误检。图内 NG／GT／Err 为待检图像／真实标注／误差。
+
+**图 10：PCB 上的可视化比较。**白色为缺陷，绿色为漏检，红色为误检；黄色误差（Err）汇总漏检与误检。
+
+图 11 展示本方法与 SegFormer 在一般工业产品场景的结果。第 3、4 行的高层语义缺陷具有正常纹理，因此常规分割方法无法处理。图 12 展示本模型在全监督及无监督下的预测。有趣的是，虽然未见缺陷的 mIoU 下降，视觉影响并不明显；CADNet 的 mIoU 仍相当令人满意。以 SegFormer 在 COCO [70] 上为参照，其实时 B0 版本 mIoU 为 35.6%，非实时 B5 版本为 46.7%，解释了本方法为何能对未见对象得到可接受视觉结果。
+
+**图 11：MVTec-AD 上的可视化比较。**结果体现加入对比约束后的优势。前两行及后两行为低对比度、复杂背景场景，第 3、4 行为高层语义异常。
+
+**图 12：全监督及半监督训练设置下的模型预测可视化。**图内 LL、AA、LA、AL 的训练／测试含义同图 6；GT 为真实标注，Pred 为预测。
+
+## 结论
+
+计算机视觉进步推动工业缺陷检测显著发展，但细粒度分割仍面临两个主要障碍：（1）缺陷数据采集与标注有限，使多数数据驱动语义分割模型无效；（2）模型开发与应用阶段的外观不一致，成为许多外观建模算法的瓶颈，尤其是 LCD、PCB 和印刷产品等复杂背景缺陷。为此，我们基于“缺陷区域本质是缺陷图像与无缺陷图像的差异”这一假设，开发基于变化建模的框架，定位像素级多类别缺陷。
+
+在自建 SynLCD 与两个公开数据集上进行了深入实验。模型在合理计算成本下优于六种领先分割模型，半监督分割也优于五种先进方法。尤其在其他模型结果崩溃时，CADNet 仍达到 46.89% mIoU 和 63.84% F1。消融验证了各组件有效性。
+
+这一突破表明，变化建模机制比外观建模语义分割更有效。变化感知使模型在外观高度变化的现实场景中具有相当应用潜力。得益于高效变化建模架构，计算成本与标签需求均相对较低，使仅凭少量样本开发精简基础工业检测模型成为可能。
+
+局限与后续研究如下。（1）模型对较大几何错位敏感；视角变化或传感器数据错位等非理想检测条件会影响实际性能，需要进一步研究异构数据有效对齐。（2）虽然已用一定数据增强，更先进方法可进一步提高鲁棒性，例如使用扩散模型合成扩充缺陷数据，以改善未见缺陷泛化。当前尚未探索，是重要后续方向。（3）虽然准确率较好、计算成本相对较低，在真实工业环境尤其大规模数据中仍可能有较高计算负担，未来可通过剪枝、硬件加速等优化效率。
+
+## 数据可用性
+
+本研究全部数据集见 <https://github.com/HATFormer/CADNet>。
+
+收稿：2024 年 12 月 10 日；录用：2025 年 3 月 17 日。
+
+## 参考文献
+
+[1] Tabernik, D., Šela, S., Skvarč, J. & Skočaj, D. 《基于分割的表面缺陷检测深度学习方法》 Journal of Intelligent Manufacturing 31, 759–776 (2020).
+
+[2] Huang, Z., Wu, J. & Xie, F. 《采用深度可分离 U 形网络的热轧钢带表面缺陷自动分割》 Materials Letters 301, 130271 (2021).
+
+[3] Lin, H., Li, B., Wang, X., Shu, Y. & Niu, S. 《采用深度卷积神经网络的 LED 芯片自动缺陷检测》 Journal of Intelligent Manufacturing 30, 2525–2534 (2019).
+
+[4] Liu, T. & Ye, W. 《磁瓦表面缺陷分类的半监督学习方法》 Machine Vision and Applications 33, 35 (2022).
+
+[5] Sime, D. M., Wang, G., Zeng, Z. & Peng, B. 《面向半监督缺陷分割的不确定性感知动态混合伪标签》 Computers in Industry 152, 103995 (2023).
+
+[6] Masci, J., Meier, U., Ciresan, D., Schmidhuber, J. & Fricout, G. 《采用最大池化卷积神经网络的钢材缺陷分类》 载于 The 2012 international joint conference on neural networks (IJCNN), 1–6 (IEEE, 2012).
+
+[7] Faghih-Roohi, S., Hajizadeh, S., Núñez, A., Babuska, R. & De Schutter, B. 《用于铁轨表面缺陷检测的深度卷积神经网络》 载于 2016 International joint conference on neural networks (IJCNN), 2584–2589 (IEEE, 2016).
+
+[8] Racki, D., Tomazevic, D. & Skocaj, D. 《用于纹理表面异常检测的紧凑卷积神经网络》 载于 2018 IEEE winter conference on applications of computer vision (WACV), 1331–1339 (IEEE, 2018).
+
+[9] Božič, J., Tabernik, D. & Skočaj, D. 《缺陷检测两阶段神经网络的端到端训练》 载于 2020 25th International Conference on Pattern Recognition (ICPR), 5619–5626 (IEEE, 2021).
+
+[10] Božič, J., Tabernik, D. & Skočaj, D. 《表面缺陷检测的混合监督：从弱监督到全监督学习》 Computers in Industry 129, 103459 (2021).
+
+[11] Zhou, B., Khosla, A., Lapedriza, A., Oliva, A. & Torralba, A. 《学习用于判别定位的深层特征》 载于 Proceedings of the IEEE conference on computer vision and pattern recognition, 2921–2929 (2016).
+
+[12] Lin, D. et al. 《采用三元组特征正则化、CAM 引导多路径解码 U-Net 的缺陷检测与分割》 Knowledge-Based Systems 228, 107272 (2021).
+
+[13] Roth, K. et al. 《迈向工业异常检测的全面召回》 载于 Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, 14318–14328 (2022).
+
+[14] Hyun, J. et al. 《ReconPatch：用于工业异常检测的对比图块表示学习》 载于 Proceedings of the IEEE/ CVF Winter Conference on Applications of Computer Vision, 2052–2061 (2024).
+
+[15] Rudolph, M., Wandt, B. & Rosenhahn, B. 《相同却不同：采用归一化流的半监督缺陷检测》 载于 Proceedings of the IEEE/CVF winter conference on applications of computer vision, 1907–1916 (2021).
+
+[16] Bergmann, P., Fauser, M., Sattlegger, D. & Steger, C. 《MVTec AD：用于无监督异常检测的全面真实世界数据集》 载于 Proceedings of the IEEE/CVF conference on computer vision and pattern recognition, 9592–9600 (2019).
+
+[17] Schlegl, T., Seeböck, P., Waldstein, S. M., Schmidt-Erfurth, U. & Langs, G. 《利用生成对抗网络引导标志物发现的无监督异常检测》 载于 International conference on information processing in medical imaging, 146–157 (Springer, 2017).
+
+[18] Batzner, K., Heckler, L. & König, R. 《EfficientAD：毫秒级延迟的准确视觉异常检测》 载于 Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision, 128–138 (2024).
+
+[19] Ruff, L. et al. 《深层与浅层异常检测的统一综述》 Proceedings of the IEEE 109, 756–795 (2021).
+
+[20] Gao, X., Jian, M., Hu, M., Tanniru, M. & Li, S. 《结合 FCN 与 Faster R-CNN 的盾构隧道快速多缺陷检测系统》 Advances in Structural Engineering 22, 2907–2921 (2019).
+
+[21] He, T. et al. 《用于木材缺陷定位与识别的全卷积神经网络》 IEEE Access 7, 123453–123462 (2019).
+
+[22] Du, W., Shen, H. & Fu, J. 《基于深度学习的 X 射线图像自动缺陷分割》 IEEE Transactions on Industrial Electronics 12912–12920 (2021).
+
+[23] Dong, H. et al. 《PGA-Net：用于自动表面缺陷检测的金字塔特征融合与全局上下文注意力网络》 IEEE Transactions on Industrial Informatics 16, 7448–7458 (2019).
+
+[24] Caiazzo, B. et al. 《迈向零缺陷制造范式：先进方法与开放挑战综述》 Computers in Industry 134, 103548 (2022).
+
+[25] Luo, X. et al. 《MAMINet：用于表面缺陷检测的记忆注意多推理网络》 Computers in Industry 145, 103834 (2023).
+
+[26] Huang, Y. & Xiang, Z. 《RPDNet：基于卷积神经网络与重复模式分析的自动织物缺陷检测》 Sensors 22, 6226 (2022).
+
+[27] Xu, R., Hao, R. & Huang, B. 《采用自监督学习策略与分割网络的高效表面缺陷检测》 Advanced Engineering Informatics 52, 101566 (2022).
+
+[28] Sime, D. M., Wang, G., Zeng, Z., Wang, W. & Peng, B. 《采用成对相似图一致性与集成交叉伪标签的半监督缺陷分割》 IEEE Transactions on Industrial Informatics (2022).
+
+[29] Xie, E. et al. 《SegFormer：基于 Transformer 的简单高效语义分割设计》 载于 Advances in Neural Information Processing Systems 34, 12077–12090 (2021).
+
+[30] Saad, A., Hamarneh, G. & Möller, T. 《利用形状与外观先验探索和可视化分割不确定性》 IEEE Transactions on Visualization and Computer Graphics 16, 1366–1375 (2010).
+
+[31] Ding, R., Dai, L., Li, G. & Liu, H. 《TDD-Net：用于印刷电路板的微小缺陷检测网络》 CAAI Transactions on Intelligence Technology 4, 110–116 (2019).
+
+[32] Ul Amin, S., Kim, B., Jung, Y., Seo, S. & Park, S. 《利用三维卷积和长短期记忆模块高效融合时空特征的视频异常检测》 Advanced Intelligent Systems 2300706 (2024).
+
+[33] Amin, S. U., Taj, S., Hussain, A. & Seo, S. 《采用集成学习方法自动分析 COVID-19、结核病与肺炎胸部 X 射线图像》 Biomedical Signal Processing and Control 87, 105408 (2024).
+
+[34] Deng, H. & Li, X. 《通过单类嵌入反向蒸馏进行异常检测》 载于 Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, 9737–9746 (2022).
+
+[35] Long, J., Shelhamer, E. & Darrell, T. 《用于语义分割的全卷积网络》 载于 Proceedings of the IEEE conference on computer vision and pattern recognition, 3431–3440 (2015).
+
+[36] Chen, L.-C., Zhu, Y., Papandreou, G., Schroff, F. & Adam, H. 《采用空洞可分离卷积的语义图像分割编码器—解码器》 载于 Ferrari, V., Hebert, M., Sminchisescu, C. & Weiss, Y. (eds.) Computer Vision – ECCV 2018, 833–851 (Springer International Publishing, Cham, 2018).
+
+[37] Du, W., Shen, H. & Fu, J. 《基于深度学习的 X 射线图像自动缺陷分割》 IEEE Transactions on Industrial Electronics 68, 12912–12920 (2020).
+
+[38] Ronneberger, O., Fischer, P. & Brox, T. 《U-Net：用于生物医学图像分割的卷积网络》 载于 International Conference on Medical image computing and computer-assisted intervention, 234–241 (Springer, 2015).
+
+[39] Yeung, C.-C. & Lam, K.-M. 《采用 Transformer 的缺陷语义分割注意边界感知融合》 IEEE Transactions on Instrumentation and Measurement (2023).
+
+[40] Xie, E. et al. 《SegFormer：基于 Transformer 的简单高效语义分割设计》 Advances in Neural Information Processing Systems 34, 12077–12090 (2021).
+
+[41] Agarwal, R. et al. 《用于生物医学 CT 图像分割的双编码器—解码器深层准循环自注意力》 IEEE Journal of Biomedical and Health Informatics (2024).
+
+[42] Agarwal, R., Ghosal, P., Sadhu, A. K., Murmu, N. & Nandi, D. 《用于生物医学图像分割的多尺度双通道特征嵌入解码器》 Computer Methods and Programs in Biomedicine 257, 108464 (2024).
+
+[43] Chen, X., Yuan, Y., Zeng, G. & Wang, J. 《采用交叉伪监督的半监督语义分割》 载于 Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, 2613–2622 (2021).
+
+[44] Fan, J., Gao, B., Jin, H. & Jiang, L. 《UCC：用于半监督语义分割的不确定性引导跨头协同训练》 载于 Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, 9947–9956 (2022).
+
+[45] Qiao, S., Shen, W., Zhang, Z., Wang, B. & Yuille, A. 《用于半监督图像识别的深度协同训练》 载于 Proceedings of the european conference on computer vision (eccv), 135–152 (2018).
+
+[46] Yu, L., Wang, S., Li, X., Fu, C.-W. & Heng, P.-A. 《用于半监督三维左心房分割的不确定性感知自集成模型》 载于 Medical Image Computing and Computer Assisted Intervention–MICCAI 2019: 22nd International Conference, Shenzhen, China, October 13–17, 2019, Proceedings, Part II 22, 605–613 (Springer, 2019).
+
+[47] Amin, S. U., Hussain, A., Kim, B. & Seo, S. 《用于数据标注并改善分类模型整体性能的深度主动学习技术》 Expert Systems with Applications 228, 120391 (2023).
+
+[48] Liu, B., Chen, H., Wang, Z., Xie, W. & Shuai, L. 《LSNet：用于遥感图像变化检测的极轻量孪生网络》 载于 IGARSS 2022-2022 IEEE International Geoscience and Remote Sensing Symposium, 2358–2361 (IEEE, 2022).
+
+[49] Liu, B., Chen, H., Li, K. & Yang, M. Y. 《采用多任务一致性约束、基于 Transformer 的多模态变化检测》 Information Fusion 108, 102358 (2024).
+
+[50] Bromley, J., Guyon, I., LeCun, Y., Säckinger, E. & Shah, R. 《采用孪生时延神经网络的签名验证》 Advances in neural information processing systems 6 (1993).
+
+[51] Guo, E. et al. 《学习度量变化：用于场景变化检测的全卷积孪生度量网络》 arXiv preprint arXiv:1810.09111 (2018).
+
+[52] Fridman, Y., Rusanovsky, M. & Oren, G. 《ChangeChip：面向 PCB 缺陷检测的基于参考的无监督变化检测》 载于 2021 IEEE Physical Assurance and Inspection of Electronics (PAINE), 1–8 (IEEE, 2021).
+
+[53] Zagoruyko, S. & Komodakis, N. 《学习通过卷积神经网络比较图像图块》 载于 Proceedings of the IEEE conference on computer vision and pattern recognition, 4353–4361 (2015).
+
+[54] Caye Daudt, R., Le Saux, B. & Boulch, A. 《用于变化检测的全卷积孪生网络》 载于 2018 25th IEEE International Conference on Image Processing (ICIP), 4063–4067 (2018).
+
+[55] Zhan, Y. et al. 《基于深度孪生卷积网络的光学航空图像变化检测》 IEEE Geoscience and Remote Sensing Letters 14, 1845–1849 (2017).
+
+[56] Hadsell, R., Chopra, S. & LeCun, Y. 《通过学习不变映射进行降维》 载于 2006 IEEE Computer Society Conference on Computer Vision and Pattern Recognition (CVPR’06), vol. 2, 1735–1742 (IEEE, 2006).
+
+[57] Sae-Ang, B.-I., Kumwilaisak, W. & Kaewtrakulpong, P. 《采用自编码器辅助模块的半监督缺陷分割学习》 Sensors 22, 2915 (2022).
+
+[58] Lv, C., Shen, F., Zhang, Z., Xu, D. & He, Y. 《基于稳定背景重建的新型逐像素缺陷检测方法》 IEEE Transactions on Instrumentation and Measurement 70, 1–13 (2020).
+
+[59] Vaswani, A. et al. 《注意力就是你所需要的全部》 Advances in neural information processing systems 30 (2017).
+
+[60] Wang, W. et al. 《金字塔视觉 Transformer：无需卷积的通用稠密预测主干》 载于 Proceedings of the IEEE/CVF international conference on computer vision, 568–578 (2021).
+
+[61] Chen, J. et al. 《DASNet：用于高分辨率卫星图像变化检测的双注意全卷积孪生网络》 IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing 14, 1194–1206 (2020).
+
+[62] Hou, Q., Zhou, D. & Feng, J. 《面向高效移动网络设计的坐标注意力》 载于 Proceedings of the IEEE/CVF conference on computer vision and pattern recognition, 13713–13722 (2021).
+
+[63] Ming, W. et al. 《基于机器视觉的液晶显示器 Mura 缺陷检测综述》 Crystals 11, 1444 (2021).
+
+[64] Pérez, P., Gangnet, M. & Blake, A. 《泊松图像编辑》 载于 ACM SIGGRAPH 2003 Papers, 313–318 (2003).
+
+[65] Liu, B.-Y., Chen, H.-X., Huang, Z., Liu, X. & Yang, Y.-Z. 《ZoomInNet：采用跨尺度知识蒸馏的新型无人机图像小目标检测器》 Remote Sensing 13, 1198 (2021).
+
+[66] Long, J., Shelhamer, E. & Darrell, T. 《用于语义分割的全卷积网络》 载于 2015 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 3431–3440 (2015).
+
+[67] Zhao, H., Shi, J., Qi, X., Wang, X. & Jia, J. 《金字塔场景解析网络》 载于 Proceedings of the IEEE conference on computer vision and pattern recognition, 2881–2890 (2017).
+
+[68] Fu, J. et al. 《用于场景分割的双注意力网络》 载于 Proceedings of the IEEE/CVF conference on computer vision and pattern recognition, 3146–3154 (2019).
+
+[69] Yuan, Y., Chen, X. & Wang, J. 《用于语义分割的对象上下文表示》 载于 Vedaldi, A., Bischof, H., Brox, T. & Frahm, J.-M. (eds.) Computer Vision – ECCV 2020, 173–190 (Springer International Publishing, Cham, 2020).
+
+[70] Lin, T.-Y. et al. 《Microsoft COCO：上下文中的常见物体》 载于 European conference on computer vision, 740–755 (Springer, 2014).
+
+## 致谢
+
+本论文获中国广东省“扬帆计划”重大项目（[2020] 05 号）支持。
+
+## 作者贡献
+
+B.L. 构思研究、制定方法并撰写初稿。S.L. 进行数据分析和可视化。H.Z. 开发和整理 SynLCD 合成 LCD 缺陷数据集并管理数据。Y.Z. 进行验证。Z.H. 对稿件作重要修订。H.C. 管理项目、获取经费、监督研究设计，并参与撰写和编辑。所有作者均审阅稿件。
+
+## 声明
+
+### 利益冲突
+
+作者声明不存在利益冲突。
+
+### 其他信息
+
+通信及材料请求请联系 Z.H. 或 H.C.。重印与许可信息见 <https://www.nature.com/reprints>。
+
+**出版者声明：**Springer Nature 对所发表地图及机构隶属信息中的管辖权主张保持中立。
+
+**开放获取：**本文采用知识共享署名 4.0 国际许可，允许以任何媒介或格式使用、共享、改编、传播和复制，条件是适当注明原作者和来源、提供许可链接，并说明是否作了修改。除非材料署名另有说明，文中图像或其他第三方材料均包括在本文知识共享许可中。若材料不在该许可内，且拟定用途不为法律法规允许或超出允许范围，须直接向版权持有人取得许可。许可文本见 <https://creativecommons.org/licenses/by/4.0/>。
+
+© 作者 2025。

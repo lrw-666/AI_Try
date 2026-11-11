@@ -8,7 +8,7 @@
 - 单位：¹德国柏林工业大学电气工程与计算机科学系；²德国柏林学习与数据基础研究所 BIFOLD；³德国柏林 Aignostics；⁴德国柏林弗劳恩霍夫海因里希·赫兹研究所人工智能部；⁵韩国首尔高丽大学人工智能系；⁶德国萨尔布吕肯马克斯·普朗克信息学研究所；⁷德国柏林 Google DeepMind；⁸德国柏林自由大学数学与计算机科学系。
 - 通讯邮箱：klaus-robert.mueller@tu-berlin.de；gregoire.montavon@fu-berlin.de。
 - 版本：Nature Machine Intelligence，第 7 卷，412–422 页，2025 年 3 月；DOI：[10.1038/s42256-025-01000-2](https://doi.org/10.1038/s42256-025-01000-2)。2024 年 7 月 27 日收稿，2024 年 12 月 19 日接收，2025 年 3 月 17 日在线发表。
-- 翻译日期：2026-11-07。
+- 翻译日期：2026-11-07；按本地 PDF 复核补全：2026-11-11。
 - 覆盖范围：本地 PDF 全部 14 页，包括论文正文、方法、全部公式、4 幅图的图注与关键标签、2 张完整数据表、90 条参考文献、出版声明，以及末尾 3 页扫描版 Nature Portfolio 研究报告摘要表。原图不重绘，可与 PDF 对照阅读。论文提到的独立在线补充说明 A–D 没有包含在本地 PDF 中，因此这里只翻译其引用说明，不把未提供的附件称为已翻译内容。
 - 翻译约定：Clever Hans 译为“聪明汉斯”，简称 CH；原文文献序号、模型名和数学符号保留。研究报告表的勾选情况按原文件记录；存在原文符号或引文疑点时另加译注。
 
@@ -245,3 +245,310 @@ R_{ii'k}=\sum_j\frac{[x-u_j]_i[x-u_j]_{i'}[v_k]_i[v_k]_{i'}}{\epsilon+\|x-u_j\|^
 
 ## 参考文献
 
+[1] Brown, T. B. et al. 《语言模型是少样本学习者》 载于 Advances in Neural Information Processing Systems, NeurIPS Vol. 33 (eds Larochelle, H. et al.) 1877–1901 (Curran Associates, 2020).
+
+[2] Ruff, L. et al. 《深层与浅层异常检测的统一综述》 Proc. IEEE109, 756–795 (2021).
+
+[3] Krishnan, R., Rajpurkar, P. & Topol, E. J. 《医学与医疗保健中的自监督学习》 Nat. Biomed. Eng.6, 1346–1352 (2022).
+
+[4] Li, A. et al. 《转录组谱无监督分析揭示六种胶质瘤亚型》 Cancer Res.69, 2091–2099 (2009).
+
+[5] Jiang, L., Xiao, Y., Ding, Y., Tang, J. & Guo, F. 《通过多种谱数据的准确融合策略发现癌症亚型》 Front. Genet.10, 20 (2019).
+
+[6] Eberle, O. et al. 《规模化历史洞察：对近代早期天文表格的全语料机器学习分析》 Sci. Adv.10, eadj1719 (2024).
+
+[7] Rettig, L., Khayati, M., Cudré-Mauroux, P. & Piórkowski, M. in 应用数据科学 289–312 (Springer, 2019).
+
+[8] Eskin, E., Arnold, A., Prerau, M. J., Portnoy, L. & Stolfo, S. J. in 计算机安全中的数据挖掘应用, Advances in Information Security 77–101 (Springer, 2002).
+
+[9] Bergmann, P., Batzner, K., Fauser, M., Sattlegger, D. & Steger, C. 《MVTec 异常检测数据集：用于无监督异常检测的全面真实世界数据集》 Int. J. Comput. Vis.129, 1038–1059 (2021).
+
+[10] Zipfel, J. et al. 《工业质量保证中的异常检测：无监督深度学习模型比较评估》 Comput. Ind. Eng.177, 109045 (2023).
+
+[11] Bommasani, R. et al. 《基础模型的机遇与风险》 预印本：https://doi.org/10.48550/arXiv.2108.07258 (2021).
+
+[12] Chen, T., Kornblith, S., Swersky, K., Norouzi, M. & Hinton, G. E. 《大型自监督模型是强大的半监督学习者》 载于 Advances in Neural Information Processing Systems, NeurIPS Vol. 33 (eds Larochelle, H. et al.) 22243–22255 (Curran Associates, 2020).
+
+[13] Radford, A. et al. 《通过自然语言监督学习可迁移视觉模型》 载于 ICMLProc. Machine Learning ResearchVol. 139, 8748–8763 (2021).
+
+[14] Moor, M. et al. 《通用医学人工智能的基础模型》 Nature616, 259–265 (2023).
+
+[15] Dippel, J. et al. 《RudolfV：病理学家为病理学家构建的基础模型》 预印本：https://doi.org/10.48550/arXiv.2401.04079 (2024).
+
+[16] Lapuschkin, S. et al. 《揭露聪明汉斯预测器并评估机器真正学到了什么》 Nat. Commun.10, 1096 (2019).
+
+[17] Geirhos, R. et al. 《深度神经网络中的捷径学习》 Nat. Mach. Intell.2, 665–673 (2020).
+
+[18] Schramowski, P. et al. 《通过与解释交互使深度神经网络出于正确的科学理由作出正确判断》 Nat. Mach. Intell.2, 476–486 (2020).
+
+[19] DeGrave, A. J., Janizek, J. D. & Lee, S.-I. 《用于 COVID-19 放射影像检测的人工智能选择捷径而非信号》 Nat. Mach. Intell.3, 610–619 (2021).
+
+[20] Anders, C. J. et al. 《发现并移除聪明汉斯：利用解释方法调试和改善深度模型》 Inf. Fusion77, 261–295 (2022).
+
+[21] Linhardt, L., Müller, K.-R. & Montavon, G. 《预先剪除深度神经网络中的聪明汉斯策略》 Inf. Fusion103, 102094 (2024).
+
+[22] Winkler, J. K. et al. 《皮肤镜图像中的外科皮肤标记与黑色素瘤识别深度卷积神经网络诊断性能之间的关联》 JAMA Dermatol.155, 1135–1141 (2019).
+
+[23] Montavon, G., Samek, W. & Müller, K.-R. 《解释与理解深度神经网络的方法》 Digit. Signal Process.73, 1–15 (2018).
+
+[24] Gunning, D. et al. 《XAI：可解释人工智能》 Sci. Robot.4, eaay7120 (2019).
+
+[25] Arrieta, A. B. et al. 《可解释人工智能：迈向负责任人工智能的概念、分类、机遇与挑战》 Inf. Fusion58, 82–115 (2020).
+
+[26] Samek, W., Montavon, G., Lapuschkin, S., Anders, C. J. & Müller, K.-R. 《解释深度神经网络及其他模型：方法与应用综述》 Proc. IEEE109, 247–278 (2021).
+
+[27] Klauschen, F. et al. 《迈向精准病理学的可解释人工智能》 Annu. Rev. Pathol.19, 541–570 (2024).
+
+[28] Bach, S. et al. 《通过逐层相关性传播对非线性分类器决策进行逐像素解释》 PLoS ONE10, e0130140 (2015).
+
+[29] Montavon, G., Binder, A., Lapuschkin, S., Samek, W. & Müller, K.-R. in 计算机科学讲义 Vol. 11700 (eds Samek, W. et al.) 193–209 (Springer, 2019).
+
+[30] Kauffmann, J., Müller, K.-R. & Montavon, G. 《迈向异常解释：单类模型的深度泰勒分解》 Pattern Recognit.101, 107198 (2020).
+
+[31] Eberle, O. et al. 《构建与解释深度相似性模型》 IEEE Trans. Pattern Anal. Mach. Intell.44, 1149–1161 (2022).
+
+[32] Vielhaben, J., Lapuschkin, S., Montavon, G. & Samek, W. 《通过虚拟检查层解释时间序列人工智能》 Pattern Recognit.150, 110309 (2024).
+
+[33] Chormai, P., Herrmann, J., Müller, K.-R. & Montavon, G. 《通过寻找相关子空间解耦神经网络预测解释》 IEEE Trans. Pattern Anal. Mach. Intell.46, 7283–7299 (2024).
+
+[34] Zhou, C. et al. 《LIMA：对齐中少即是多》 载于 Advances in Neural Information Processing Systems, NeurIPS Vol. 36 (eds Oh, A. et al.) 55006–55021 (Curran Associates, 2023).
+
+[35] Muttenthaler, L., Dippel, J., Linhardt, L., Vandermeulen, R. A. & Kornblith, S. 《神经网络表示与人类的对齐》 载于 Proc. International Conference on Learning Representations (ICLR) (OpenReview.net, 2023).
+
+[36] Wang, X. et al. 《ChestX-Ray8：医院规模胸部 X 射线数据库及常见胸部疾病弱监督分类与定位基准》 载于 Proc. IEEE Conference on Computer Vision and Pattern Recognition (CVPR) 3462–3471 (IEEE, 2017).
+
+[37] Cohen, J. P. et al. 《COVID-19 图像数据集合：前瞻性预测是未来》 预印本：https://doi.org/10.48550/arXiv.2006.11988 (2020).
+
+[38] Azizi, S. et al. 《大型自监督模型推动医学图像分类》 载于 Proc. International Conference on Computer Vision (ICCV) 3458–3468 (IEEE, 2021).
+
+[39] Eslami, S., Meinel, C. & de Melo, G. 《PubMedCLIP：CLIP 对医学领域视觉问答有多大帮助？》 载于 Proc. Findings of the Association for Computational Linguistics (EACL) 1151–1163 (Association for Computational Linguistics, 2023).
+
+[40] Huang, S.-C. et al. 《医学图像分类的自监督学习：系统综述与实现指南》 npj Digit. Med.6, 74 (2023).
+
+[41] Chen, T., Kornblith, S., Norouzi, M. & Hinton, G. E. 《视觉表示对比学习的简单框架》 载于 ICMLProc. Machine Learning Research Vol. 119, 1597–1607 (PMLR, 2020).
+
+[42] Zbontar, J., Jing, L., Misra, I., LeCun, Y. & Deny, S. 《Barlow Twins：通过冗余缩减实现自监督学习》 载于 ICMLProc. Machine Learning Research Vol. 139, 2310–12320 (PMLR, 2021).
+
+[43] Deng, J. et al. 《ImageNet：大规模分层图像数据库》 载于 Proc. IEEE Conference on Computer Vision and Pattern Recognition (CVPR) 248–255 (IEEE, 2009).
+
+[44] Chen, T., Luo, C. & Li, L. 《对比损失的有趣性质》 载于 Advances in Neural Information Processing Systems, NeurIPSVol. 34 (eds Ranzato, M. et al.) 11834–11845 (Curran Associates, 2021).
+
+[45] Robinson, J. et al. 《对比学习能避免捷径解吗？》 34 (eds Ranzato, M. et al.) 4974–4986 (Curran Associates, 2021).
+
+[46] Dippel, J., Vogler, S. & Höhne, J. 《结合对比学习、图像重建与注意力加权池化迈向细粒度视觉表示》 载于 ICML Workshop: Self-Supervised Learning for Reasoning and Perception(2021).
+
+[47] Li, T. et al. 《解决无监督视觉表示中的特征抑制》 载于 Proc. Winter Conference on Applications of Computer Vision (WACV) 1411–1420 (IEEE, 2023).
+
+[48] Roth, K. et al. 《迈向工业异常检测的全面召回》 载于 IEEE/CVFConference on Computer Vision and Pattern Recognition 14298–14308 (IEEE, 2022).
+
+[49] Batzner, K., Heckler, L. & König, R. 《EfficientAD：毫秒级延迟的准确视觉异常检测》 载于 Proc. Winter Conference on Applications of Computer Vision (WACV) 127–137 (IEEE, 2024).
+
+[50] Harmeling, S., Dornhege, G., Tax, D., Meinecke, F. & Müller, K.-R. 《从离群点到原型：对数据排序》 Neurocomputing69, 1608–1618 (2006).
+
+[51] Aggarwal, C. C. 《离群点分析》（Springer，2013）。
+
+[52] Chandola, V., Banerjee, A. & Kumar, V. 《异常检测综述》 ACM Comput. Surv.41, 15:1–15:58 (2009).
+
+[53] Parzen, E. 《概率密度函数与众数的估计》 Ann. Math. Stat.33, 1065–1076 (1962).
+
+[54] Kim, J. & Scott, C. D. 《鲁棒核密度估计》 J. Mach. Learn. Res.13, 2529–2565 (2012).
+
+[55] Schölkopf, B., Platt, J. C., Shawe-Taylor, J., Smola, A. J. & Williamson, R. C. 《估计高维分布的支撑集》 Neural Comput.13, 1443–1471 (2001).
+
+[56] Montavon, G., Kauffmann, J. R., Samek, W. & Müller, K.-R. in 计算机科学讲义 Vol. 13200 (eds Holzinger, A. et al.) 117–138 (Springer, 2020).
+
+[57] Yu, Y., Qian, J. & Wu, Q. 《基于频域多尺度分析的视觉显著性及其在光学卫星图像船舶检测中的应用》 Front. Neurorobot.15, 767299 (2022).
+
+[58] Parmar, G., Zhang, R. & Zhu, J. 《混叠缩放与 GAN 评估中出人意料的细节》 载于 Proc. IEEE Conference on Computer Vision and Pattern Recognition (CVPR) 11400–11410 (IEEE, 2022).
+
+[59] Kirichenko, P., Izmailov, P. & Wilson, A. G. 《仅重新训练最后一层就足以获得对伪相关的鲁棒性》 载于 Proc. International Conference on Learning Representations (ICLR)(OpenReview.net, 2023).
+
+[60] Sugiyama, M., Krauledat, M. & Müller, K.-R. 《通过重要性加权交叉验证适应协变量偏移》 J. Mach. Learn. Res.8, 985–1005 (2007).
+
+[61] Sugiyama, M. & Kawanabe, M. 《非平稳环境中的机器学习：协变量偏移适应导论》（MIT Press，2012）。
+
+[62] Iwasawa, Y. & Matsuo, Y. 《用于模型无关领域泛化的测试时分类器调整模块》 载于 Advances in Neural Information Processing Systems, NeurIPS Vol. 34 (eds Ranzato, M. et al.) 2427–2440 (Curran Associates, 2021).
+
+[63] Esposito, C., Landrum, G. A., Schneider, N., Stiefl, N. & Riniker, S. 《GHOST：调整决策阈值以处理机器学习中的不平衡数据》 J. Chem. Inf. Model.61, 2623–2640 (2021).
+
+[64] Niven, T. & Kao, H. 《探测神经网络对自然语言论证的理解》 载于 Proc. Conference of the Association for Computational Linguistics (eds Korhonen, A. et al.) 4658–4664 (Association for Computational Linguistics, 2019).
+
+[65] Heinzerling, B. 《自然语言处理的聪明汉斯时刻已经到来》 J. Cogn. Sci.21, 161–170 (2020).
+
+[66] Braun, M. L., Buhmann, J. M. & Müller, K.-R. 《核特征空间中的相关维度》 J. Mach. Learn. Res.9, 1875–1908 (2008).
+
+[67] Basri, R. et al. 《非均匀密度输入下神经网络的频率偏置》 载于 ICMLProc. Machine Learning ResearchVol. 119, 685–694 (PMLR, 2020).
+
+[68] Fridovich-Keil, S., Lopes, R. G. & Roelofs, R. 《实践中的频谱偏置：函数频率在泛化中的作用》 载于 Advances in Neural Information Processing Systems, NeurIPSVol. 35 (eds Koyejo, S. et al.) (Curran Associates, 2022).
+
+[69] Arras, L. et al. in 计算机科学讲义 Vol. 11700 (eds Samek, W. et al.) 211–238 (Springer, 2019).
+
+[70] Schnake, T. et al. 《通过相关游走对图神经网络作高阶解释》 IEEE Trans. Pattern Anal. Mach. Intell.44, 7581–7596 (2022).
+
+[71] Ali, A. et al. 《Transformer 的可解释人工智能：通过守恒传播获得更好解释》 载于 ICMLProc. Machine Learning Research Vol. 162, 435–451, (PMLR, 2022).
+
+[72] Jafari, F. R., Montavon, G., Muller, K. R. & Eberle, O. 《MambaLRP：解释选择性状态空间序列模型》 载于 Advances in Neural Information Processing Systems, NeurIPS Vol. 37 (eds Globerson, A. et al.) 118540–118570 (Curran Associates, 2024).
+
+[73] Munir, M., Siddiqui, S. A., Dengel, A. & Ahmed, S. 《DeepAnT：用于时间序列无监督异常检测的深度学习方法》 IEEE Access7, 1991–2005 (2019).
+
+[74] Devlin, J., Chang, M., Lee, K. & Toutanova, K. 《BERT：用于语言理解的深度双向 Transformer 预训练》 载于 Proc. Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies (NAACL-HLT) (eds Burstein, J. et al.) 4171–4186 (Association for Computational Linguistics, 2019).
+
+[75] Pelka, O., Koitka, S., Rückert, J., Nensa, F. & Friedrich, C. M. in 计算机科学讲义 Vol. 11043 (eds Stoyanov, D. et al.) 180–189 (Springer, 2018).
+
+[76] PubMedCLIP 模型（Hugging Face） Hugging Face https://huggingface.co/sarahESL/PubMedCLIP (2024).
+
+[77] OpenAI CLIP 代码库 GitHub https://github.com/openai/CLIP (2024).
+
+[78] Facebook Research. Barlow Twins 代码库 GitHub https://github.com/facebookresearch/barlowtwins (2022).
+
+[79] NIHCC CXR8 数据集 NIHCC https://nihcc.app.box.com/v/ChestXray-NIHCC (2017).
+
+[80] ieee8023 COVID 胸部 X 射线数据集 GitHub https://github.com/ieee8023/covid-chestxray-dataset (2020).
+
+[81] Pang, G., Shen, C., Cao, L. & van den Hengel, A. 《用于异常检测的深度学习综述》 ACM Comput. Surv.54, 38:1–38:38 (2022).
+
+[82] Rippel, O., Mertens, P. & Merhof, D. 《在预训练深层特征中建模正常数据分布以进行异常检测》 载于 ICPR 6726–6733 (IEEE, 2020).
+
+[83] Jelinek, F., Mercer, R. L., Bahl, L. R. & Baker, J. K. 《困惑度：语音识别任务难度的度量》 J. Acoust. Soc. Am.62, S63–S63 (2005).
+
+[84] Amazon Science. PatchCore 检测代码库 GitHub https://github.com/amazon-science/patchcore-inspection (2022).
+
+[85] Bradski, G. 《OpenCV 库》 Dr. Dobb’s Journal of Software Tools120, 122–125 (2000).
+
+[86] 《Torchvision：PyTorch 的计算机视觉库》 <https://pytorch.org/vision> (2016).
+
+[87] Samek, W., Montavon, G., Vedaldi, A., Hansen, L. K. & Müller, K.-R. 《可解释人工智能：解读、解释和可视化深度学习》卷 11700 (Springer, 2019).
+
+[88] Zennit 代码库. GitHub https://github.com/chr5tphr/zennit (2021).
+
+[89] Kauffmann, J. et al. 《可解释人工智能揭示无监督学习模型中的聪明汉斯效应：代码》 Zenodo https://doi.org/10.5281/zenodo.14186119 (2024).
+
+[90] Ml-workgroup. 《COVID-19 图像库》 GitHub https://github.com/ml-workgroup/covid-19-image-repository (2020).
+
+## 致谢
+
+本研究部分获得德国联邦教育与研究部支持（01IS14013A-E、01GQ1115、01GQ0850、01IS18056A、01IS18025A、01IS18037A），德国研究基金会（DFG）Math+ 柏林数学研究中心（EXC 2046/1，项目 390685689）与 DeSBi 研究单元（KI-FOR 5363，项目 459422098），以及 DFG KI-FOR 5363 支持。K.-R.M. 还部分获得韩国政府科学技术信息通信部资助的信息通信技术规划评估院（IITP）项目支持：2019-0-00079（高丽大学人工智能研究生院项目）及 2022-0-00984（用于个性化即插即用解释及解释验证的人工智能技术开发）。感谢 S. Ganscha 对稿件提出宝贵意见。
+
+## 作者贡献
+
+概念与方法：J.K.、J.D.、L.R.、W.S.、K.-R.M.、G.M.。实验与软件：J.K.、J.D.。结果分析：J.K.、J.D.、L.R.、G.M.。监督：W.S.、K.-R.M.、G.M.。写作：J.K.、J.D.、L.R.、W.S.、K.-R.M.、G.M.。
+
+## 经费
+
+开放获取经费由柏林工业大学提供。
+
+## 利益冲突
+
+作者声明不存在利益冲突。
+
+## 其他信息
+
+**补充信息：**在线版本含补充材料，见 <https://doi.org/10.1038/s42256-025-01000-2>。
+
+**通信及材料请求：**请联系 Klaus-Robert Müller 或 Grégoire Montavon。
+
+**同行评审信息：**《Nature Machine Intelligence》感谢 Haiyang Huang 及其他匿名审稿人对本研究同行评审的贡献。
+
+**重印与许可：**见 <https://www.nature.com/reprints>。
+
+**出版者声明：**Springer Nature 对所发表地图及机构隶属信息中的管辖权主张保持中立。
+
+**开放获取：**本文采用知识共享署名 4.0 国际许可，允许在任何媒介或格式中使用、共享、改编、传播及复制，但须适当注明原作者和来源、提供许可链接，并说明是否修改。除非材料署名另有说明，文中图像及其他第三方材料包括在本文知识共享许可中。若材料不在许可内，且拟定用途不为法律法规允许或超出允许范围，须直接向版权持有人取得许可。许可见 <https://creativecommons.org/licenses/by/4.0/>。
+
+© 作者 2025。
+
+## Nature Portfolio 研究报告摘要（本地 PDF 第 12—14 页）
+
+通信作者：Grégoire Montavon、Klaus-Robert Müller。作者最后更新：2024 年 11 月 27 日。表单版本：2023 年 4 月。
+
+Nature Portfolio 致力于提高所发表工作的可重复性。本表为一致、透明的研究报告提供结构。有关政策，参见其编辑政策与编辑政策核查清单。
+
+### 统计
+
+对全部统计分析，确认下列项目是否已在图注、表注、正文或方法中说明。下表逐项保留原表勾选状态。
+
+| 项目 | 状态 |
+|---|---|
+| 每个实验组／条件的确切样本量 n，以离散数值和测量单位给出 | 已确认 |
+| 说明测量来自不同样本，还是同一样本重复测量 | 不适用 |
+| 使用的统计检验，以及单侧还是双侧；仅常见检验可只给名称，更复杂技术应在方法中说明 | 不适用 |
+| 所有检验协变量的描述 | 不适用 |
+| 任何假设或校正的描述，例如正态性检验及多重比较校正 | 不适用 |
+| 完整描述统计参数，包括集中趋势（如均值）、基本估计（如回归系数），及变异（如标准差）或不确定性估计（如置信区间） | 不适用 |
+| 零假设检验的统计量（如 F、t、r）、置信区间、效应量、自由度、P 值；适宜时给出确切 P 值 | 已确认 |
+| 贝叶斯分析的先验选择与马尔可夫链蒙特卡洛设置 | 不适用 |
+| 分层及复杂设计中，说明适当检验层级并完整报告结果 | 不适用 |
+| 效应量估计（如 Cohen 的 d、Pearson 的 r）及计算方式 | 不适用 |
+
+“面向生物学家的统计学”网络文集中包含上述许多问题的文章。
+
+### 软件与代码
+
+政策信息：计算机代码可用性。
+
+**数据采集：**未使用软件采集数据。
+
+**数据分析：**<https://github.com/jacobkauffmann/unsupervised-ch>。
+
+若稿件使用对研究至关重要、尚未在已发表文献中描述的自定义算法或软件，必须向编辑和审稿人提供软件。强烈鼓励在 GitHub 等社区代码库中保存代码。进一步信息参见 Nature Portfolio 代码与软件提交指南。
+
+### 数据
+
+政策信息：数据可用性。所有稿件必须包含数据可用性声明，适用时应提供公开数据集的登录号、唯一标识符或网页链接、数据访问限制说明；临床或第三方数据应确保声明符合相关政策。
+
+本文使用的所有数据，特别是 NIH CXR8、“COVID-19 图像数据集合”、ImageNet 和 MVTec-AD 数据集，以及预训练模型，均公开可用。数据与模型网址见方法部分。
+
+### 涉及人类参与者、其数据或生物材料的研究
+
+政策信息：涉及人类参与者或人类数据的研究；另参见生理性别、社会性别（认同／呈现）、性取向及种族、族裔和种族主义相关政策。
+
+| 项目 | 填写内容 |
+|---|---|
+| 生理性别与社会性别报告 | 不适用 |
+| 种族、族裔或其他社会相关分组报告 | 不适用 |
+| 人群特征 | 不适用 |
+| 招募 | 不适用 |
+| 伦理监督 | 不适用 |
+
+研究方案批准的完整信息也必须在稿件中提供。
+
+### 领域特定报告
+
+请选择最适合研究的领域；如不能确定，应先阅读相应章节。原表勾选“生命科学”；未勾选“行为与社会科学”“生态、进化与环境科学”。包含全部章节的参考表单见 <https://www.nature.com/documents/nr-reporting-summary-flat.pdf>。
+
+### 生命科学研究设计
+
+全部研究均须披露下列事项，即使结果为否。
+
+| 项目 | 填写内容 |
+|---|---|
+| 样本量 | 样本量由数据集大小预先决定。 |
+| 数据排除 | 未排除数据。 |
+| 重复验证 | 代码可用于复现，实验使用多个随机种子运行。 |
+| 随机化 | 适用时，数据随机划分为训练集与测试集。 |
+| 盲法 | 不适用。 |
+
+### 特定材料、系统和方法报告
+
+作者须提供许多研究常用材料、实验系统和方法的信息，说明各项与研究是否相关；不能确定时应先阅读相应章节。
+
+| 类别 | 项目 | 原表状态 |
+|---|---|---|
+| 材料与实验系统 | 抗体 | 不适用 |
+| 材料与实验系统 | 真核细胞系 | 不适用 |
+| 材料与实验系统 | 古生物学与考古学 | 不适用 |
+| 材料与实验系统 | 动物与其他生物 | 不适用 |
+| 材料与实验系统 | 临床数据 | 不适用 |
+| 材料与实验系统 | 受关注的双重用途研究 | 不适用 |
+| 材料与实验系统 | 植物 | 不适用 |
+| 方法 | ChIP-seq（染色质免疫沉淀测序） | 不适用 |
+| 方法 | 流式细胞术 | 不适用 |
+| 方法 | 基于 MRI 的神经影像学 | 不适用 |
+
+### 植物
+
+| 项目 | 填写内容 |
+|---|---|
+| 种子资源 | 不适用 |
+| 新植物基因型 | 不适用 |
+| 鉴定 | 不适用 |

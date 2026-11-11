@@ -1,8 +1,8 @@
 # Proposal reading PDFs - 261107
 
-Updated: 2026-11-09. This is the numbered source collection for the [current research guide](../../research/thesis-research-and-study-guide-zh.md) and the [industrial/PCB field review](../../research/2026-11-09-industrial-vision-pcb-research-status-and-roadmap-zh.md).
+Updated: 2026-11-11. This is the numbered source collection for the [current research guide](../../research/thesis-research-and-study-guide-zh.md) and the [industrial/PCB field review](../../research/2026-11-09-industrial-vision-pcb-research-status-and-roadmap-zh.md).
 
-The original 14 papers are retained and five focused references have been added, giving **19 original PDFs**. Folder numbers and PDF filename prefixes now match. The original PDF bytes are unchanged; the ten existing Chinese translations have moved with their papers, with only their source-PDF links updated. No new full translations are implied for the five additions. The older `261029` sources and translations remain unchanged.
+The original 14 papers are retained and five focused references have been added, giving **19 original PDFs**. Folder numbers and PDF filename prefixes match. The original PDF bytes are unchanged. On 2026-11-11, five missing Chinese translations (03, 08, 10, 17, 18) were added, three truncated translations (11, 12, 16) were completed, and the other seven existing translations were checked against their local PDFs. The four previously translated foundation papers (01 VisA, 02 SegFormer, 04 DINOv3, 19 ViT) were explicitly excluded from retranslation; their translations remain under `261029`. See the [Chinese translation index and coverage record](translation-status.md) and [structural/hash verification](translation-verification-20261111.json).
 
 The currently adopted thesis title is “Research on PCB Appearance Defect Detection Methods” (English rendering). The collection supports two advisor-guided objectives: **Work 1: detection accuracy improvement; Work 2: explainability**. PCB representation adaptation is a candidate means for Work 1; normal-reference evidence tied to the actual score is a candidate means for Work 2. Retrieval, scoring and matching checks serve explanation, rather than replacing it with retrieval optimization. Existing components can support an evidenced PCB application contribution, but a dataset change alone does not establish methodological novelty. Local-detail branches and position-restricted references remain candidates, not compulsory architectures.
 
@@ -70,7 +70,7 @@ The present learning priority is to understand the two objectives and SegFormer'
 
 The [download manifest](download-manifest.json) records every original title, source, stored version, purpose, page count, size and SHA-256, and the previous order/path for the 14 renamed originals. All five additions passed PDF signature/EOF checks, full-page parsing, first-page title/version checks and visual inspection of the first/final pages. Original text and page content were not edited.
 
-The new PDFs have concise ASCII filenames beginning with their reading number. Existing translations retain `full_translation_zh.md`; their original translation dates and text remain intact. The table below separates primary landing pages from the actual PDF acquisition source.
+The PDFs have concise ASCII filenames beginning with their reading number. Translations use `full_translation_zh.md`; the 2026-11-11 continuation preserves existing translated text and adds missing material, with review dates recorded in the completed files. The table below separates primary landing pages from the actual PDF acquisition source.
 
 | Order | Primary landing page | PDF source / local reuse |
 | ---: | --- | --- |
