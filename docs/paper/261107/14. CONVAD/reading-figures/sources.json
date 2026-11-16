@@ -1,0 +1,21 @@
+[
+  {
+    "source_pdf": "14-CONVAD-2025-preprint-v3-2026.pdf",
+    "pdf_page": 2,
+    "figure_label": "Figure 1",
+    "render_scale": 3,
+    "crop_pixels": [
+      42,
+      65,
+      1177,
+      529
+    ],
+    "image": "original-figure-1.png",
+    "source_url": "https://arxiv.org/abs/2511.20088v3",
+    "source_sha256": "b12955fdc1ff91ebc13f75ea5464f6f328e5a3a3faa3db7ac96a2a71a556678b",
+    "rendered_page_pixels": [
+      1226,
+      1854
+    ]
+  }
+]

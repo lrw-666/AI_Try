@@ -1,0 +1,20 @@
+[
+  {
+    "source_pdf": "07-S3DNet-Few-Shot-Strip-Steel-Segmentation-2026.pdf",
+    "pdf_page": 8,
+    "figure_label": "Figure 2",
+    "crop_pixels": [
+      232,
+      177,
+      1697,
+      897
+    ],
+    "render_scale": 3,
+    "rendered_page_pixels": [
+      1786,
+      2526
+    ],
+    "image": "original-figure-2.png",
+    "source_sha256": "1759974e2e69f52ddfefb7ad5ce8cf66bec8ffe4bedb42abcc7211e1849ee7ec"
+  }
+]

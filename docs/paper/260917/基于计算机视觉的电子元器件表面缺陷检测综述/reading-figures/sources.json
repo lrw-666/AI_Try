@@ -1,0 +1,19 @@
+{
+  "source_pdf": "../基于计算机视觉的电子元器件表面缺陷检测综述.pdf",
+  "pdf_page": 3,
+  "figure_label": "图3、图4 / Figs. 3–4",
+  "render_scale": 3,
+  "rendered_page_pixels": [
+    1786,
+    2526
+  ],
+  "crop_pixels": [
+    158,
+    367,
+    875,
+    1033
+  ],
+  "image": "original-figure.png",
+  "note": "原PDF页面直接渲染裁剪，未重绘；PDF页码从1开始。",
+  "source_sha256": "2d40dbb0dfb9cdf8af7c85b304a80549e509b26531f521b39d58420fdcb36a81"
+}

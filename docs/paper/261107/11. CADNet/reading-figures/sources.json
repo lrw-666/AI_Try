@@ -1,0 +1,21 @@
+[
+  {
+    "source_pdf": "11-CADNet-Reference-Defect-Segmentation-2025.pdf",
+    "pdf_page": 5,
+    "figure_label": "Figure 2",
+    "render_scale": 3,
+    "crop_pixels": [
+      108,
+      94,
+      1678,
+      1009
+    ],
+    "image": "original-figure-2.png",
+    "source_url": "https://doi.org/10.1038/s41598-025-94733-4",
+    "source_sha256": "88eb25e29233779d21744061bb2c84217daa8dda8653d873b0c67d0fe309a86e",
+    "rendered_page_pixels": [
+      1786,
+      2348
+    ]
+  }
+]

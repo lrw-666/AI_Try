@@ -1,0 +1,19 @@
+{
+  "source_pdf": "../Survey of semiconductor wafer defect detection method based on machine vision.pdf",
+  "pdf_page": 18,
+  "figure_label": "图6 / Fig. 6",
+  "render_scale": 3,
+  "rendered_page_pixels": [
+    1837,
+    2577
+  ],
+  "crop_pixels": [
+    175,
+    1725,
+    1667,
+    2383
+  ],
+  "image": "original-figure.png",
+  "note": "原PDF页面直接渲染裁剪，未重绘；PDF页码从1开始。",
+  "source_sha256": "ef453a554603ddd083bd8d36e42aae435e22f74358ce285a9b5091194ffd8893"
+}

@@ -1,0 +1,19 @@
+{
+  "source_pdf": "../Deep Learning Algorithms for Defect Detection on Electronic Assemblies- A Systematic Literature Review.pdf",
+  "pdf_page": 6,
+  "figure_label": "Figure 2",
+  "render_scale": 3,
+  "rendered_page_pixels": [
+    1786,
+    2526
+  ],
+  "crop_pixels": [
+    483,
+    1108,
+    1392,
+    1933
+  ],
+  "image": "original-figure.png",
+  "note": "原PDF页面直接渲染裁剪，未重绘；PDF页码从1开始。",
+  "source_sha256": "04b11f146f9097336ff7f1708746243cf8df59a2b8d1c40c7cdb08421c2abefa"
+}

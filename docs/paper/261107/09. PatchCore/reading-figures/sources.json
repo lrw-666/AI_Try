@@ -1,0 +1,21 @@
+[
+  {
+    "source_pdf": "09-PatchCore-2022.pdf",
+    "pdf_page": 4,
+    "figure_label": "Figure 2",
+    "render_scale": 3,
+    "crop_pixels": [
+      129,
+      214,
+      1708,
+      761
+    ],
+    "image": "original-figure-2.png",
+    "source_url": "https://doi.org/10.1109/CVPR52688.2022.01392",
+    "source_sha256": "f2850cb48018aaab6a5d1f6a73bd9af45b75f8de65f9686d53fb1652d945e2fd",
+    "rendered_page_pixels": [
+      1836,
+      2376
+    ]
+  }
+]

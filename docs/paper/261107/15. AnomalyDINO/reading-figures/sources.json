@@ -1,0 +1,21 @@
+[
+  {
+    "source_pdf": "15-AnomalyDINO-2025.pdf",
+    "pdf_page": 2,
+    "figure_label": "Figure 1",
+    "render_scale": 3,
+    "crop_pixels": [
+      129,
+      214,
+      1708,
+      986
+    ],
+    "image": "original-figure-1.png",
+    "source_url": "https://github.com/dammsi/AnomalyDINO",
+    "source_sha256": "ff46a3cfa5cdc3bb684ac37d72fe546f3c6edd7b02f3dcfe12de30a5b7d89977",
+    "rendered_page_pixels": [
+      1836,
+      2376
+    ]
+  }
+]

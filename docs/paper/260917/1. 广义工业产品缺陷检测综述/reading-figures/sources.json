@@ -1,0 +1,19 @@
+{
+  "source_pdf": "../AI-enabled defect detection in industrial products_ A comprehensive survey, key insights and future research challenges.pdf",
+  "pdf_page": 3,
+  "figure_label": "Fig. 1",
+  "render_scale": 3,
+  "rendered_page_pixels": [
+    1786,
+    2382
+  ],
+  "crop_pixels": [
+    192,
+    147,
+    1625,
+    1135
+  ],
+  "image": "original-figure.png",
+  "note": "原PDF页面直接渲染裁剪，未重绘；PDF页码从1开始。",
+  "source_sha256": "14f8e6d0b29684ac06db2e4bff3ae83196d18b4b88653feede9f5fb8c271aa6a"
+}

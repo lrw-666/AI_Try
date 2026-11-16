@@ -1,0 +1,20 @@
+[
+  {
+    "source_pdf": "05-DINOv3-vs-ImageNet-Industrial-Transfer-2026.pdf",
+    "pdf_page": 5,
+    "figure_label": "Figure 2",
+    "crop_pixels": [
+      936,
+      606,
+      1689,
+      1224
+    ],
+    "render_scale": 3,
+    "rendered_page_pixels": [
+      1836,
+      2376
+    ],
+    "image": "original-figure-2.png",
+    "source_sha256": "f928365f9d8b34f42e1f2f5dbcc0082f7381fd6dd6ee1bee47883bc639d99ae0"
+  }
+]

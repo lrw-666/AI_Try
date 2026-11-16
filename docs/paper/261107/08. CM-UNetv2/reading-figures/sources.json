@@ -1,0 +1,20 @@
+[
+  {
+    "source_pdf": "08-CM-UNetv2-PCB-Defect-Segmentation-2025.pdf",
+    "pdf_page": 6,
+    "figure_label": "Figure 1",
+    "crop_pixels": [
+      482,
+      215,
+      1607,
+      783
+    ],
+    "render_scale": 3,
+    "rendered_page_pixels": [
+      1786,
+      2526
+    ],
+    "image": "original-figure-1.png",
+    "source_sha256": "826ddff92daf3e450a4f3afd708391479cafb87ed1b05d9c70b2722919474f7b"
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "source_pdf": "../基于视觉的液晶屏_OLED屏缺陷检测方法综述.pdf",
+  "pdf_page": 9,
+  "figure_label": "表4 / Table 4",
+  "render_scale": 3,
+  "rendered_page_pixels": [
+    1837,
+    2577
+  ],
+  "crop_pixels": [
+    175,
+    272,
+    1667,
+    1020
+  ],
+  "image": "original-figure.png",
+  "note": "原PDF页面直接渲染裁剪，未重绘；PDF页码从1开始。",
+  "source_sha256": "adb2bd3fd34ca76fde8345c97cb72ea4f0f19578e706fcccaccf7a08e7688b2b"
+}

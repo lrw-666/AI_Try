@@ -1,0 +1,19 @@
+{
+  "source_pdf": "../Automatic printed circuit board inspection- a comprehensible survey.pdf",
+  "pdf_page": 3,
+  "figure_label": "Fig. 2",
+  "render_scale": 3,
+  "rendered_page_pixels": [
+    1786,
+    2373
+  ],
+  "crop_pixels": [
+    142,
+    1375,
+    1658,
+    1767
+  ],
+  "image": "original-figure.png",
+  "note": "原PDF页面直接渲染裁剪，未重绘；PDF页码从1开始。",
+  "source_sha256": "f6e6a33c144a429ad29d5af3a869706700851d9bda95e55a877bce0b22e5786f"
+}

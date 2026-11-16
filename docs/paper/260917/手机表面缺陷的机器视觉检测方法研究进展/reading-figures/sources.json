@@ -1,0 +1,19 @@
+{
+  "source_pdf": "../手机表面缺陷的机器视觉方法研究进展.pdf",
+  "pdf_page": 14,
+  "figure_label": "表9 / Table 9",
+  "render_scale": 3,
+  "rendered_page_pixels": [
+    1786,
+    2526
+  ],
+  "crop_pixels": [
+    150,
+    350,
+    1642,
+    1025
+  ],
+  "image": "original-figure.png",
+  "note": "原PDF页面直接渲染裁剪，未重绘；PDF页码从1开始。",
+  "source_sha256": "6777a831c29a3e3d3c03cabd3d17e7aa365fdb7a3a702d8fc14a2114577a7fc8"
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "source_pdf": "02-SegFormer-2021.pdf",
+    "pdf_page": 3,
+    "figure_label": "Figure 2",
+    "crop_pixels": [
+      239,
+      166,
+      1671,
+      855
+    ],
+    "render_scale": 3,
+    "rendered_page_pixels": [
+      1836,
+      2376
+    ],
+    "image": "original-figure-2.png",
+    "source_sha256": "6f8867c9600277fe39e046ad1ef9050f0c7087a24736284b85710265821c1027"
+  }
+]

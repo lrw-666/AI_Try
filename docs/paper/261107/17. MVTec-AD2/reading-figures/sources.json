@@ -1,0 +1,44 @@
+[
+  {
+    "source_pdf": "17-MVTec-AD2-Advanced-Anomaly-Detection-2025.pdf",
+    "source_sha256": "bf9df9d7f71e2775647952b36cdea2431f48e33ec20aa254fca82029791479a9",
+    "pdf_page": 8,
+    "figure_label": "原图4",
+    "render_scale": 3,
+    "crop_pixels": [
+      128,
+      128,
+      1710,
+      705
+    ],
+    "image": "figure-04-pro-vs-tpr.png"
+  },
+  {
+    "source_pdf": "17-MVTec-AD2-Advanced-Anomaly-Detection-2025.pdf",
+    "source_sha256": "bf9df9d7f71e2775647952b36cdea2431f48e33ec20aa254fca82029791479a9",
+    "pdf_page": 8,
+    "figure_label": "原图5",
+    "render_scale": 3,
+    "crop_pixels": [
+      915,
+      1383,
+      1710,
+      2205
+    ],
+    "image": "figure-05-fpr-limit.png"
+  },
+  {
+    "source_pdf": "17-MVTec-AD2-Advanced-Anomaly-Detection-2025.pdf",
+    "source_sha256": "bf9df9d7f71e2775647952b36cdea2431f48e33ec20aa254fca82029791479a9",
+    "pdf_page": 7,
+    "figure_label": "原图3",
+    "render_scale": 3,
+    "crop_pixels": [
+      135,
+      120,
+      1710,
+      1215
+    ],
+    "image": "figure-03-lighting.png"
+  }
+]

@@ -1,0 +1,21 @@
+[
+  {
+    "source_pdf": "13-Sanity-Checks-for-Saliency-Maps-2018.pdf",
+    "pdf_page": 5,
+    "figure_label": "Figure 2",
+    "render_scale": 3,
+    "crop_pixels": [
+      238,
+      452,
+      1599,
+      1403
+    ],
+    "image": "original-figure-2.png",
+    "source_url": "https://arxiv.org/abs/1810.03292",
+    "source_sha256": "83b8f56da10e283929fa70548cff8caa4de2a468c1685c2111c9799cc66c9fc6",
+    "rendered_page_pixels": [
+      1836,
+      2376
+    ]
+  }
+]

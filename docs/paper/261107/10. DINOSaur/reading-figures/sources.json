@@ -1,0 +1,21 @@
+[
+  {
+    "source_pdf": "10-DINOSaur-Continual-Anomaly-Detection-2026.pdf",
+    "pdf_page": 6,
+    "figure_label": "Figure 2",
+    "render_scale": 3,
+    "crop_pixels": [
+      184,
+      178,
+      1654,
+      964
+    ],
+    "image": "original-figure-2.png",
+    "source_url": "https://arxiv.org/abs/2605.24251v2",
+    "source_sha256": "92b581523a2cf925c585c058876f9f7f4b8c1d2d64807cbcf39e8db12b20f39c",
+    "rendered_page_pixels": [
+      1836,
+      2376
+    ]
+  }
+]

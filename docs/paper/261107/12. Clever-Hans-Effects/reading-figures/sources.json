@@ -1,0 +1,21 @@
+[
+  {
+    "source_pdf": "12-Clever-Hans-Effects-2025.pdf",
+    "pdf_page": 5,
+    "figure_label": "Figure 4",
+    "render_scale": 3,
+    "crop_pixels": [
+      108,
+      143,
+      1678,
+      1140
+    ],
+    "image": "original-figure-4.png",
+    "source_url": "https://doi.org/10.1038/s42256-025-01000-2",
+    "source_sha256": "352f784905dbf2f9979c0f460452b62dcb6398b24eb59cb1f3f78e8db567959d",
+    "rendered_page_pixels": [
+      1786,
+      2373
+    ]
+  }
+]

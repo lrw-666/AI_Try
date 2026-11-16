@@ -1,0 +1,20 @@
+[
+  {
+    "source_pdf": "03-Tabernik-Supervised-Surface-Defect-Segmentation-2019.pdf",
+    "pdf_page": 4,
+    "figure_label": "Fig. 2",
+    "crop_pixels": [
+      89,
+      177,
+      1715,
+      859
+    ],
+    "render_scale": 3,
+    "rendered_page_pixels": [
+      1786,
+      2526
+    ],
+    "image": "original-fig-2.png",
+    "source_sha256": "09abd4800d05573a1940adb9f2fff40578b20eaf77c6e36d787d657a005ee544"
+  }
+]

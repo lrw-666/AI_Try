@@ -1,0 +1,19 @@
+{
+  "source_pdf": "../A survey of deep learning for industrial visual anomaly detection.pdf",
+  "pdf_page": 24,
+  "figure_label": "Fig. 6",
+  "render_scale": 3,
+  "rendered_page_pixels": [
+    1319,
+    1999
+  ],
+  "crop_pixels": [
+    133,
+    1458,
+    1192,
+    1862
+  ],
+  "image": "original-figure.png",
+  "note": "原PDF页面直接渲染裁剪，未重绘；PDF页码从1开始。",
+  "source_sha256": "25c8139304c29e6ab4f9a05cf7011e5cfad2b161d94d716d934ca5ec824be67a"
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "source_pdf": "An Image is Worth 16x16 Words- Transformers for Image Recognition at Scale.pdf",
+    "source_sha256": "8ce7b83971a14508ca711a27c875c9b6914c4f6767cf3150fb1ca6c07aa056d6",
+    "pdf_page": 3,
+    "figure_label": "原图1",
+    "render_scale": 3,
+    "crop_pixels": [
+      315,
+      210,
+      1530,
+      968
+    ],
+    "image": "figure-01-vit.png"
+  }
+]

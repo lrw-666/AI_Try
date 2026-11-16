@@ -1,0 +1,20 @@
+[
+  {
+    "source_pdf": "01-VisA-SPD-2022.pdf",
+    "pdf_page": 7,
+    "figure_label": "Fig. 4",
+    "crop_pixels": [
+      367,
+      356,
+      1506,
+      950
+    ],
+    "render_scale": 3,
+    "rendered_page_pixels": [
+      1836,
+      2376
+    ],
+    "image": "original-fig-4.png",
+    "source_sha256": "8924ebdbf1d32373a9f221395a614ff912922b01d201aba91ad216c0e641c9b3"
+  }
+]

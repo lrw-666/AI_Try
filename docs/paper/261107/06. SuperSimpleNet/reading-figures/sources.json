@@ -1,0 +1,20 @@
+[
+  {
+    "source_pdf": "06-SuperSimpleNet-2024.pdf",
+    "pdf_page": 6,
+    "figure_label": "Fig. 2",
+    "crop_pixels": [
+      275,
+      309,
+      1579,
+      1521
+    ],
+    "render_scale": 3,
+    "rendered_page_pixels": [
+      1836,
+      2376
+    ],
+    "image": "original-fig-2.png",
+    "source_sha256": "dcee54c489edbd3d91cd6da9a359ad41376853a1330579ac2ca3fb135bf67517"
+  }
+]

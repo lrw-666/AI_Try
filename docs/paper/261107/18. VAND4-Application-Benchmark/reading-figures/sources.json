@@ -1,0 +1,44 @@
+[
+  {
+    "source_pdf": "18-VAND4-Application-Driven-Benchmark-2026.pdf",
+    "source_sha256": "8cca384bf2b5e1b50feef449407b465486fb1c52f6e164acbdd7989af35ef70f",
+    "pdf_page": 5,
+    "figure_label": "原表1",
+    "render_scale": 3,
+    "crop_pixels": [
+      158,
+      195,
+      900,
+      652
+    ],
+    "image": "table-01-regular-track.png"
+  },
+  {
+    "source_pdf": "18-VAND4-Application-Driven-Benchmark-2026.pdf",
+    "source_sha256": "8cca384bf2b5e1b50feef449407b465486fb1c52f6e164acbdd7989af35ef70f",
+    "pdf_page": 5,
+    "figure_label": "原表2",
+    "render_scale": 3,
+    "crop_pixels": [
+      938,
+      765,
+      1680,
+      1088
+    ],
+    "image": "table-02-zero-shot.png"
+  },
+  {
+    "source_pdf": "18-VAND4-Application-Driven-Benchmark-2026.pdf",
+    "source_sha256": "8cca384bf2b5e1b50feef449407b465486fb1c52f6e164acbdd7989af35ef70f",
+    "pdf_page": 13,
+    "figure_label": "原图2",
+    "render_scale": 3,
+    "crop_pixels": [
+      938,
+      210,
+      1680,
+      1065
+    ],
+    "image": "figure-02-efficiency.png"
+  }
+]

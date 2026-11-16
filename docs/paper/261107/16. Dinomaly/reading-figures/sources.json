@@ -1,0 +1,21 @@
+[
+  {
+    "source_pdf": "16-Dinomaly-2025.pdf",
+    "pdf_page": 3,
+    "figure_label": "Figure 2",
+    "render_scale": 3,
+    "crop_pixels": [
+      109,
+      214,
+      1728,
+      785
+    ],
+    "image": "original-figure-2.png",
+    "source_url": "https://github.com/guojiajeremy/Dinomaly",
+    "source_sha256": "860046dad4da3e3d4d4f2a940d2422332891b4ab9653a51793c22c4d35a4d16f",
+    "rendered_page_pixels": [
+      1836,
+      2376
+    ]
+  }
+]
