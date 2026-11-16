@@ -29,7 +29,9 @@ ViT把图像切成一组固定大小的图像块，把每块变成向量，再�
 
 设输入为$H\times W\times C$，图像块边长为$P$，假设高宽均可整除。原论文第3.1节给出空间词元数：
 
-$$N=\frac{HW}{P^2}.$$
+$$
+N=\frac{HW}{P^2}.
+$$
 
 每块有$P^2C$个像素数值，展平成一个向量，再乘投影矩阵$E\in\mathbb R^{(P^2C)\times D}$，变为$D$维特征。$D$是特征维度，不是图像宽度，也不是类别数。
 
@@ -43,7 +45,9 @@ $$N=\frac{HW}{P^2}.$$
 
 原论文公式（1）可写为：
 
-$$z_0=[x_{\mathrm{class}};x_p^1E;\ldots;x_p^NE]+E_{\mathrm{pos}}.$$
+$$
+z_0=[x_{\mathrm{class}};x_p^1E;\ldots;x_p^NE]+E_{\mathrm{pos}}.
+$$
 
 分号表示沿序列拼接。$x_p^iE$说明第$i$块看起来怎样，位置向量说明它位于哪个序列位置。两者相加以后，模型才有条件把外观与位置一起使用。
 
@@ -55,8 +59,12 @@ $$z_0=[x_{\mathrm{class}};x_p^1E;\ldots;x_p^NE]+E_{\mathrm{pos}}.$$
 
 原文附录A讨论注意力。单头自注意力的标准形式是：
 
-$$Q=ZW_Q,\quad K=ZW_K,\quad V=ZW_V,$$
-$$\mathrm{Attention}(Q,K,V)=\mathrm{softmax}(QK^\top/\sqrt{d_k})V.$$
+$$
+Q=ZW_Q,\quad K=ZW_K,\quad V=ZW_V,
+$$
+$$
+\mathrm{Attention}(Q,K,V)=\mathrm{softmax}(QK^\top/\sqrt{d_k})V.
+$$
 
 把三个量理解为不同角色会更容易：查询$Q$表示当前位置需要寻找什么信息；键$K$表示各位置可怎样被匹配；值$V$表示匹配之后要汇入的内容。$QK^\top$形成位置两两关系，逐行归一化后，每个位置按不同权重汇总其他位置的值。
 
@@ -70,8 +78,12 @@ $$\mathrm{Attention}(Q,K,V)=\mathrm{softmax}(QK^\top/\sqrt{d_k})V.$$
 
 原论文公式（2）（3）描述预归一化结构：
 
-$$z'_\ell=\mathrm{MSA}(\mathrm{LN}(z_{\ell-1}))+z_{\ell-1},$$
-$$z_\ell=\mathrm{MLP}(\mathrm{LN}(z'_\ell))+z'_\ell.$$
+$$
+z'_\ell=\mathrm{MSA}(\mathrm{LN}(z_{\ell-1}))+z_{\ell-1},
+$$
+$$
+z_\ell=\mathrm{MLP}(\mathrm{LN}(z'_\ell))+z'_\ell.
+$$
 
 注意力主要让词元之间交换信息；MLP在每个位置对通道作非线性变换；归一化有助于稳定数值；残差保留原信息并帮助优化。MLP在位置上分别应用，不代表它的输入仍然只来自局部，因为注意力已经把上下文混入。
 

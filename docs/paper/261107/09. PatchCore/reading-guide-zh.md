@@ -50,7 +50,9 @@
 
 所有正常图的块向量合并为 $\mathcal M$。式(5)选择小集合 $\mathcal M_C\subset\mathcal M$，让最难被代表的正常点离核心集也尽量近：
 
-$$\min_{\mathcal M_C\subset\mathcal M}\max_{m\in\mathcal M}\min_{c\in\mathcal M_C}\|m-c\|_2.$$
+$$
+\min_{\mathcal M_C\subset\mathcal M}\max_{m\in\mathcal M}\min_{c\in\mathcal M_C}\|m-c\|_2.
+$$
 
 从内向外读：先找每个正常点最近的代表，再找覆盖最差的正常点，最后选择代表集以缩小最坏距离。精确求解困难，算法1用贪心近似：不断加入“到当前核心集最近距离仍最大”的点；随机投影降低选点维度与成本。用于选择的低维投影，不应误认为最终评分必然只在该低维空间进行。
 
@@ -62,7 +64,9 @@ $$\min_{\mathcal M_C\subset\mathcal M}\max_{m\in\mathcal M}\min_{c\in\mathcal M_
 
 测试位置u的分数可写为：
 
-$$d_u=\min_{m\in\mathcal M_C}\|z_u-m\|_2,\qquad s^*=\max_ud_u.$$
+$$
+d_u=\min_{m\in\mathcal M_C}\|z_u-m\|_2,\qquad s^*=\max_ud_u.
+$$
 
 $z_u$ 是测试向量，$m$ 是库向量；先用最小值回答“最像哪个正常块”，再用最大值回答“整图最不像正常的是哪里”。论文式(7)在最大块距离上再加与其正常近邻支持有关的重加权，因此讲原版时不能只说最终分数永远等于最大距离。
 

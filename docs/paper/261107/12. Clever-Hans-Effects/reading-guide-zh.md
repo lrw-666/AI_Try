@@ -28,7 +28,9 @@
 
 Methods式(2)的构造为：
 
-$$\operatorname{BiLRP}(s)=\sum_k\operatorname{LRP}(\Phi_k(x))\otimes\operatorname{LRP}(\Phi_k(x')).$$
+$$
+\operatorname{BiLRP}(s)=\sum_k\operatorname{LRP}(\Phi_k(x))\otimes\operatorname{LRP}(\Phi_k(x')).
+$$
 
 $\otimes$ 是外积，两条向量的每一项两两相乘，结果是矩阵，不是两个热图简单叠加。逐表示维度先分别传播LRP，再组合贡献，近零关系可省略，像素对可汇成块对。图2的二部图就是这种关系的可视化。它解释的是所定义的相似度，不直接等同于下游缺陷分割决策。
 
@@ -40,7 +42,9 @@ $\otimes$ 是外积，两条向量的每一项两两相乘，结果是矩阵，�
 
 D2Neighbors把图像像素当向量，与正常训练样本 $u_j$ 比较。Methods中用广义均值形成软最小，可教学性写成：
 
-$$o(x)=-\frac1\gamma\log\left[\frac1N\sum_{j=1}^{N}\exp(-\gamma\|x-u_j\|_p^p)\right].$$
+$$
+o(x)=-\frac1\gamma\log\left[\frac1N\sum_{j=1}^{N}\exp(-\gamma\|x-u_j\|_p^p)\right].
+$$
 
 $N$ 为正常样本数，$p$ 控制距离幂，$\gamma$ 控制接近硬最小的程度；论文主分析含平方欧氏距离。距离小的样本具有更大权重，式(3)将异常总分按这些权重分给正常邻居，叫“min-take-most”。它不是对离得最远的正常图赋最大解释权重。
 

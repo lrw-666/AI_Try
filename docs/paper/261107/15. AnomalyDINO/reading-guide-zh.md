@@ -40,13 +40,17 @@
 
 原文第3.1节先把正常参考的图像块特征并入库。令$f(x)=(p_1,\ldots,p_n)$，则可简写为：
 
-$$\mathcal M=\bigcup_{x\in X_{\mathrm{ref}}}\{p_j(x):j=1,\ldots,n\}.$$
+$$
+\mathcal M=\bigcup_{x\in X_{\mathrm{ref}}}\{p_j(x):j=1,\ldots,n\}.
+$$
 
 这里$X_{\mathrm{ref}}$是正常参考集，$p_j(x)$是第$j$个位置的特征向量，$n$由输入分辨率和图像块大小决定。原文DINOv2块边长为14；这与拟用DINOv3-S/16的16不同，网格大小不能混算。
 
 原文公式（2）（3）分别给出近邻评分和余弦距离：
 
-$$d_{NN}(p;\mathcal M)=\min_{m\in\mathcal M}d(p,m),\qquad d(p,m)=1-\frac{p^\top m}{\|p\|\|m\|}.$$
+$$
+d_{NN}(p;\mathcal M)=\min_{m\in\mathcal M}d(p,m),\qquad d(p,m)=1-\frac{p^\top m}{\|p\|\|m\|}.
+$$
 
 先对一个测试块寻找特征方向最相近的正常块，再把最小差异当异常分数。距离小表示库内至少有一个相似正常表示；距离大表示在当前表征和库覆盖下缺少相似参照。后者不是“已证明存在物理故障”。
 

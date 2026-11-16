@@ -34,13 +34,17 @@
 
 原文公式（2）对支持特征做掩码平均：
 
-$$p_l^{(k)}=\frac{\sum_t S_{l,t}^{(k)}m_{l,t}^{(k)}}{\sum_t m_{l,t}^{(k)}+\epsilon},\qquad \bar p_l=\frac1K\sum_k p_l^{(k)}.$$
+$$
+p_l^{(k)}=\frac{\sum_t S_{l,t}^{(k)}m_{l,t}^{(k)}}{\sum_t m_{l,t}^{(k)}+\epsilon},\qquad \bar p_l=\frac1K\sum_k p_l^{(k)}.
+$$
 
 $S$是支持词元，$m$是调整到网格的支持mask，$p$是前景原型。直觉是忽略背景，把支持缺陷压成一个平均表示，再在多支持样本间平均。这样减少背景污染，但也可能把外观多峰、形状各异的缺陷压缩得过于简单；极小支持mask如何落到词元网格也值得核对。
 
 低秩更新为原文公式（3）（4）：
 
-$$\Delta q_l=\alpha_l B_l\sigma(A_l\bar p_l),\qquad\widetilde Q_{l,t}=Q_{l,t}+\Delta q_l.$$
+$$
+\Delta q_l=\alpha_l B_l\sigma(A_l\bar p_l),\qquad\widetilde Q_{l,t}=Q_{l,t}+\Delta q_l.
+$$
 
 $A$先压到较小通道空间，$B$再展开，$\sigma$为非线性，$\alpha$控制幅度。同一支持派生更新加到该层所有查询位置，因此主要改变通道语义偏好，而非直接绘制空间mask。零初始化的展开投影使初始更新为零，从冻结表征起步。
 
@@ -58,7 +62,9 @@ $A$先压到较小通道空间，$B$再展开，$\sigma$为非线性，$\alpha$�
 
 原文公式（6）重新计算对齐后的支持原型$P_l$，再按式（7）（8）得到：
 
-$$A_l(u,v)=\mathrm{sigmoid}\left(\tau_l\frac{\langle F_q^l(u,v),P_l\rangle}{\|F_q^l(u,v)\|\|P_l\|+\epsilon}\right),\qquad\widetilde F_c^l=F_c^l\odot A_l.$$
+$$
+A_l(u,v)=\mathrm{sigmoid}\left(\tau_l\frac{\langle F_q^l(u,v),P_l\rangle}{\|F_q^l(u,v)\|\|P_l\|+\epsilon}\right),\qquad\widetilde F_c^l=F_c^l\odot A_l.
+$$
 
 $F_q$是适配后的查询语义，$F_c$是局部空间特征，$A$是每个位置的门控强度。与支持前景相似的位置更允许局部信息通过，背景相关性弱的位置被衰减，然后再与语义特征拼接。
 

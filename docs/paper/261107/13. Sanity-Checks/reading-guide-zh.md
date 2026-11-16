@@ -28,7 +28,9 @@
 
 论文§2的IG定义为：
 
-$$IG_i(x)=(x_i-\bar x_i)\int_0^1\frac{\partial S_c(\bar x+\alpha(x-\bar x))}{\partial x_i}\,d\alpha.$$
+$$
+IG_i(x)=(x_i-\bar x_i)\int_0^1\frac{\partial S_c(\bar x+\alpha(x-\bar x))}{\partial x_i}\,d\alpha.
+$$
 
 $\bar x$ 为基线，$\alpha$ 为从0到1的路径位置；这不是训练参数。对线性函数 $S=w^\top x$、零基线，IG简化为 $x\odot w$，而普通梯度等于w。这个小差别是理解“输入结构能支配可视化”的关键。
 
